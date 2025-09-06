@@ -9,6 +9,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Button, Input } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginSuccess, setLoading } from '@/store/authSlice';
@@ -19,6 +20,7 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({ email: '', password: '' });
 
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const { isLoading } = useAppSelector((state) => state.auth);
@@ -29,18 +31,18 @@ const LoginScreen: React.FC = () => {
     let isValid = true;
 
     if (!email) {
-      newErrors.email = 'El email es requerido';
+      newErrors.email = t('auth.validation.emailRequired');
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Ingresa un email válido';
+      newErrors.email = t('auth.validation.emailInvalid');
       isValid = false;
     }
 
     if (!password) {
-      newErrors.password = 'La contraseña es requerida';
+      newErrors.password = t('auth.validation.passwordRequired');
       isValid = false;
     } else if (password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+      newErrors.password = t('auth.validation.passwordMinLength');
       isValid = false;
     }
 
@@ -117,15 +119,15 @@ const LoginScreen: React.FC = () => {
           <View style={[styles.logo, getLogoStyle()]}>
             <Text style={styles.logoText}>N</Text>
           </View>
-          <Text style={[styles.title, getTitleStyle()]}>Bienvenido a Nebu</Text>
+          <Text style={[styles.title, getTitleStyle()]}>{t('auth.welcome')}</Text>
           <Text style={[styles.subtitle, getSubtitleStyle()]}>
-            Inicia sesión para continuar
+            {t('auth.welcomeSubtitle')}
           </Text>
         </View>
 
         <View style={styles.form}>
           <Input
-            placeholder="Correo electrónico"
+            placeholder={t('auth.email')}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -134,7 +136,7 @@ const LoginScreen: React.FC = () => {
           />
 
           <Input
-            placeholder="Contraseña"
+            placeholder={t('auth.password')}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -143,7 +145,7 @@ const LoginScreen: React.FC = () => {
 
           <View style={styles.buttonContainer}>
             <Button
-              title="Iniciar Sesión"
+              title={t('auth.login')}
               onPress={handleLogin}
               loading={isLoading}
               size="large"

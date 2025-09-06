@@ -9,12 +9,14 @@ import {
   TextStyle,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Header } from '@/components';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { toggleTheme } from '@/store/themeSlice';
 import { getTheme } from '@/utils/theme';
 
 const HomeScreen: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const { user } = useAppSelector((state) => state.auth);
@@ -102,10 +104,10 @@ const HomeScreen: React.FC = () => {
   });
 
   const quickActions = [
-    { id: 1, title: 'Explorar Servicios', icon: 'compass-outline' },
-    { id: 2, title: 'Mis Actividades', icon: 'list-outline' },
-    { id: 3, title: 'Configuración', icon: 'settings-outline' },
-    { id: 4, title: 'Ayuda y Soporte', icon: 'help-circle-outline' },
+    { id: 1, title: t('home.exploreServices'), icon: 'compass-outline' },
+    { id: 2, title: t('home.myActivities'), icon: 'list-outline' },
+    { id: 3, title: t('home.settings'), icon: 'settings-outline' },
+    { id: 4, title: t('home.helpSupport'), icon: 'help-circle-outline' },
   ];
 
   const renderQuickAction = (action: typeof quickActions[0]) => (
@@ -135,7 +137,7 @@ const HomeScreen: React.FC = () => {
   return (
     <View style={[styles.container, getContainerStyle()]}>
       <Header
-        title="Inicio"
+        title={t('navigation.home')}
         rightComponent={
           <TouchableOpacity onPress={handleToggleTheme}>
             <Ionicons
@@ -154,16 +156,16 @@ const HomeScreen: React.FC = () => {
       >
         <View style={[styles.welcomeCard, getWelcomeCardStyle()]}>
           <Text style={[styles.welcomeText, getWelcomeTextStyle()]}>
-            ¡Hola, {user?.name}!
+            {t('home.welcome', { name: user?.name })}
           </Text>
           <Text style={[styles.subtitleText, getSubtitleTextStyle()]}>
-            Bienvenido de nuevo a Nebu. ¿Qué te gustaría hacer hoy?
+            {t('home.welcomeSubtitle')}
           </Text>
         </View>
 
         <View style={[styles.quickActions, getQuickActionsStyle()]}>
           <Text style={[styles.sectionTitle, getSectionTitleStyle()]}>
-            Acciones Rápidas
+            {t('home.quickActions')}
           </Text>
           {quickActions.map(renderQuickAction)}
         </View>
@@ -171,10 +173,10 @@ const HomeScreen: React.FC = () => {
         <View style={[styles.themeToggle, getThemeToggleStyle()]}>
           <View style={styles.themeToggleContent}>
             <Text style={[styles.actionText, getActionTextStyle()]}>
-              Modo {isDarkMode ? 'Claro' : 'Oscuro'}
+              {t('home.themeToggle', { mode: isDarkMode ? t('home.lightMode') : t('home.darkMode') })}
             </Text>
             <Text style={[styles.subtitleText, getSubtitleTextStyle()]}>
-              Cambiar apariencia de la aplicación
+              {t('home.themeToggleDescription')}
             </Text>
           </View>
           <TouchableOpacity onPress={handleToggleTheme}>

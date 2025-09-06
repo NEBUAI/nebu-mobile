@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/types';
@@ -21,6 +22,7 @@ type SplashScreenNavigationProp = NativeStackNavigationProp<
 const { width, height } = Dimensions.get('window');
 
 const SplashScreen: React.FC = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation<SplashScreenNavigationProp>();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -74,9 +76,9 @@ const SplashScreen: React.FC = () => {
       <View style={[styles.logoContainer, getLogoContainerStyle()]}>
         <Text style={styles.logoText}>N</Text>
       </View>
-      <Text style={[styles.title, getTitleStyle()]}>Nebu</Text>
+      <Text style={[styles.title, getTitleStyle()]}>{t('app.name')}</Text>
       <Text style={[styles.subtitle, getSubtitleStyle()]}>
-        Conectando el futuro
+        {t('app.tagline')}
       </Text>
     </View>
   );

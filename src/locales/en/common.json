@@ -1,0 +1,72 @@
+{
+    "app": {
+        "name": "Nebu",
+        "tagline": "Connecting the future"
+    },
+    "navigation": {
+        "home": "Home",
+        "profile": "Profile",
+        "back": "Back"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "save": "Save",
+        "edit": "Edit",
+        "delete": "Delete",
+        "search": "Search",
+        "close": "Close",
+        "yes": "Yes",
+        "no": "No"
+    },
+    "auth": {
+        "welcome": "Welcome to Nebu",
+        "welcomeSubtitle": "Sign in to continue",
+        "email": "Email",
+        "password": "Password",
+        "login": "Sign In",
+        "logout": "Sign Out",
+        "logoutConfirm": "Are you sure you want to sign out?",
+        "validation": {
+            "emailRequired": "Email is required",
+            "emailInvalid": "Enter a valid email",
+            "passwordRequired": "Password is required",
+            "passwordMinLength": "Password must be at least 6 characters"
+        }
+    },
+    "home": {
+        "welcome": "Hello, {{name}}!",
+        "welcomeSubtitle": "Welcome back to Nebu. What would you like to do today?",
+        "quickActions": "Quick Actions",
+        "exploreServices": "Explore Services",
+        "myActivities": "My Activities",
+        "settings": "Settings",
+        "helpSupport": "Help & Support",
+        "themeToggle": "{{mode}} Mode",
+        "themeToggleDescription": "Change app appearance",
+        "darkMode": "Dark",
+        "lightMode": "Light"
+    },
+    "profile": {
+        "title": "Profile",
+        "accountSettings": "Account Settings",
+        "support": "Support",
+        "editProfile": "Edit Profile",
+        "notifications": "Notifications",
+        "privacy": "Privacy",
+        "language": "Language",
+        "helpCenter": "Help Center",
+        "contactSupport": "Contact Support",
+        "termsConditions": "Terms & Conditions",
+        "aboutNebu": "About Nebu"
+    },
+    "settings": {
+        "language": "Language",
+        "theme": "Theme",
+        "notifications": "Notifications",
+        "privacy": "Privacy"
+    }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { MainTabParamList } from '@/types';
 import { useAppSelector } from '@/store/hooks';
 import { getTheme } from '@/utils/theme';
@@ -11,6 +12,7 @@ import ProfileScreen from '@/screens/ProfileScreen';
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 const MainNavigator: React.FC = () => {
+  const { t } = useTranslation();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const theme = getTheme(isDarkMode);
 
@@ -52,14 +54,14 @@ const MainNavigator: React.FC = () => {
         name="Home" 
         component={HomeScreen}
         options={{
-          tabBarLabel: 'Inicio',
+          tabBarLabel: t('navigation.home'),
         }}
       />
       <Tab.Screen 
         name="Profile" 
         component={ProfileScreen}
         options={{
-          tabBarLabel: 'Perfil',
+          tabBarLabel: t('navigation.profile'),
         }}
       />
     </Tab.Navigator>

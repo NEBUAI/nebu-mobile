@@ -10,6 +10,7 @@ Una aplicación móvil moderna construida con React Native y Expo, diseñada con
 - **React Navigation** - Navegación nativa fluida
 - **Tema Dinámico** - Soporte para modo claro y oscuro
 - **Componentes Reutilizables** - UI consistente y modular
+- **Internacionalización (i18n)** - Soporte para múltiples idiomas (ES/EN)
 - **Arquitectura Escalable** - Estructura organizada de carpetas
 
 ## 📱 Pantallas Principales
@@ -26,6 +27,7 @@ Una aplicación móvil moderna construida con React Native y Expo, diseñada con
 - TypeScript 5.3.3
 - Redux Toolkit 2.0.1
 - React Navigation 6.x
+- React i18next 13.5.0
 - Expo Vector Icons
 
 ## 📋 Requisitos Previos
@@ -118,6 +120,7 @@ nebu-mobile/
 │   │   ├── Button.tsx
 │   │   ├── Input.tsx
 │   │   ├── Header.tsx
+│   │   ├── LanguageSelector.tsx
 │   │   └── index.ts
 │   ├── screens/             # Pantallas principales
 │   │   ├── SplashScreen.tsx
@@ -134,11 +137,19 @@ nebu-mobile/
 │   │   ├── index.ts
 │   │   ├── authSlice.ts
 │   │   ├── themeSlice.ts
+│   │   ├── languageSlice.ts
 │   │   └── hooks.ts
+│   ├── locales/            # Archivos de traducción
+│   │   ├── es/
+│   │   │   └── common.json
+│   │   ├── en/
+│   │   │   └── common.json
+│   │   └── index.ts
 │   ├── types/              # Definiciones de TypeScript
 │   │   └── index.ts
 │   └── utils/              # Utilidades y temas
-│       └── theme.ts
+│       ├── theme.ts
+│       └── i18n.ts
 ├── assets/                 # Recursos estáticos
 │   ├── icon.png
 │   ├── splash.png
@@ -170,6 +181,43 @@ import { getTheme } from '@/utils/theme';
 
 const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
 const theme = getTheme(isDarkMode);
+```
+
+## 🌍 Internacionalización (i18n)
+
+La aplicación incluye soporte completo para múltiples idiomas usando react-i18next:
+
+### Idiomas Soportados
+
+- **Español (es)** - Idioma por defecto
+- **Inglés (en)** - Idioma secundario
+
+### Cambiar Idioma
+
+Los usuarios pueden cambiar el idioma desde:
+1. **Pantalla de Perfil** → **Idioma** → Selector de idioma
+2. El idioma seleccionado se persiste en el estado global
+
+### Agregar Nuevos Idiomas
+
+1. Crear nueva carpeta en `src/locales/[código-idioma]/`
+2. Agregar archivo `common.json` con las traducciones
+3. Actualizar `src/locales/index.ts` para incluir el nuevo idioma
+4. Agregar el idioma al array `languages` en el mismo archivo
+
+### Usar Traducciones en Componentes
+
+```typescript
+import { useTranslation } from 'react-i18next';
+
+const MyComponent = () => {
+  const { t } = useTranslation();
+  
+  return (
+    <Text>{t('auth.welcome')}</Text>
+    <Text>{t('home.welcome', { name: 'Usuario' })}</Text>
+  );
+};
 ```
 
 ## 🔧 Scripts Disponibles

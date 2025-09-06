@@ -15,9 +15,14 @@ export interface ThemeState {
   isDarkMode: boolean;
 }
 
+export interface LanguageState {
+  currentLanguage: 'es' | 'en';
+}
+
 export interface RootState {
   auth: AuthState;
   theme: ThemeState;
+  language: LanguageState;
 }
 
 export type RootStackParamList = {

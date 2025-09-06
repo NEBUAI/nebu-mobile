@@ -1,0 +1,72 @@
+{
+    "app": {
+        "name": "Nebu",
+        "tagline": "Conectando el futuro"
+    },
+    "navigation": {
+        "home": "Inicio",
+        "profile": "Perfil",
+        "back": "Atrás"
+    },
+    "common": {
+        "loading": "Cargando...",
+        "error": "Error",
+        "success": "Éxito",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "save": "Guardar",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "search": "Buscar",
+        "close": "Cerrar",
+        "yes": "Sí",
+        "no": "No"
+    },
+    "auth": {
+        "welcome": "Bienvenido a Nebu",
+        "welcomeSubtitle": "Inicia sesión para continuar",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "login": "Iniciar Sesión",
+        "logout": "Cerrar Sesión",
+        "logoutConfirm": "¿Estás seguro que deseas cerrar sesión?",
+        "validation": {
+            "emailRequired": "El email es requerido",
+            "emailInvalid": "Ingresa un email válido",
+            "passwordRequired": "La contraseña es requerida",
+            "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
+        }
+    },
+    "home": {
+        "welcome": "¡Hola, {{name}}!",
+        "welcomeSubtitle": "Bienvenido de nuevo a Nebu. ¿Qué te gustaría hacer hoy?",
+        "quickActions": "Acciones Rápidas",
+        "exploreServices": "Explorar Servicios",
+        "myActivities": "Mis Actividades",
+        "settings": "Configuración",
+        "helpSupport": "Ayuda y Soporte",
+        "themeToggle": "Modo {{mode}}",
+        "themeToggleDescription": "Cambiar apariencia de la aplicación",
+        "darkMode": "Oscuro",
+        "lightMode": "Claro"
+    },
+    "profile": {
+        "title": "Perfil",
+        "accountSettings": "Configuración de Cuenta",
+        "support": "Soporte",
+        "editProfile": "Editar Perfil",
+        "notifications": "Notificaciones",
+        "privacy": "Privacidad",
+        "language": "Idioma",
+        "helpCenter": "Centro de Ayuda",
+        "contactSupport": "Contactar Soporte",
+        "termsConditions": "Términos y Condiciones",
+        "aboutNebu": "Acerca de Nebu"
+    },
+    "settings": {
+        "language": "Idioma",
+        "theme": "Tema",
+        "notifications": "Notificaciones",
+        "privacy": "Privacidad"
+    }
+}

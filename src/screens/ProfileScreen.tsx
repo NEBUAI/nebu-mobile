@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,15 @@ import {
   TextStyle,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Header, Button } from '@/components';
+import { useTranslation } from 'react-i18next';
+import { Header, Button, LanguageSelector } from '@/components';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { logout } from '@/store/authSlice';
 import { getTheme } from '@/utils/theme';
 
 const ProfileScreen: React.FC = () => {
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const { user } = useAppSelector((state) => state.auth);
@@ -23,15 +26,15 @@ const ProfileScreen: React.FC = () => {
 
   const handleLogout = () => {
     Alert.alert(
-      'Cerrar Sesión',
-      '¿Estás seguro que deseas cerrar sesión?',
+      t('auth.logout'),
+      t('auth.logoutConfirm'),
       [
         {
-          text: 'Cancelar',
+          text: t('common.cancel'),
           style: 'cancel',
         },
         {
-          text: 'Cerrar Sesión',
+          text: t('auth.logout'),
           style: 'destructive',
           onPress: () => dispatch(logout()),
         },
@@ -111,17 +114,17 @@ const ProfileScreen: React.FC = () => {
   });
 
   const menuItems = [
-    { id: 1, title: 'Editar Perfil', icon: 'person-outline' },
-    { id: 2, title: 'Notificaciones', icon: 'notifications-outline' },
-    { id: 3, title: 'Privacidad', icon: 'shield-outline' },
-    { id: 4, title: 'Idioma', icon: 'language-outline' },
+    { id: 1, title: t('profile.editProfile'), icon: 'person-outline' },
+    { id: 2, title: t('profile.notifications'), icon: 'notifications-outline' },
+    { id: 3, title: t('profile.privacy'), icon: 'shield-outline' },
+    { id: 4, title: t('profile.language'), icon: 'language-outline', onPress: () => setShowLanguageSelector(true) },
   ];
 
   const supportItems = [
-    { id: 5, title: 'Centro de Ayuda', icon: 'help-circle-outline' },
-    { id: 6, title: 'Contactar Soporte', icon: 'mail-outline' },
-    { id: 7, title: 'Términos y Condiciones', icon: 'document-text-outline' },
-    { id: 8, title: 'Acerca de Nebu', icon: 'information-circle-outline' },
+    { id: 5, title: t('profile.helpCenter'), icon: 'help-circle-outline' },
+    { id: 6, title: t('profile.contactSupport'), icon: 'mail-outline' },
+    { id: 7, title: t('profile.termsConditions'), icon: 'document-text-outline' },
+    { id: 8, title: t('profile.aboutNebu'), icon: 'information-circle-outline' },
   ];
 
   const renderMenuItem = (item: typeof menuItems[0]) => (
@@ -129,6 +132,7 @@ const ProfileScreen: React.FC = () => {
       key={item.id}
       style={[styles.menuItem, getMenuItemStyle()]}
       activeOpacity={0.7}
+      onPress={item.onPress}
     >
       <View style={[styles.menuIconContainer, getMenuIconContainerStyle()]}>
         <Ionicons
@@ -150,7 +154,7 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, getContainerStyle()]}>
-      <Header title="Perfil" />
+      <Header title={t('profile.title')} />
       
       <ScrollView
         style={styles.scrollView}
@@ -172,24 +176,29 @@ const ProfileScreen: React.FC = () => {
         </View>
 
         <Text style={[styles.sectionTitle, getSectionTitleStyle()]}>
-          Configuración de Cuenta
+          {t('profile.accountSettings')}
         </Text>
         {menuItems.map(renderMenuItem)}
 
         <Text style={[styles.sectionTitle, getSectionTitleStyle()]}>
-          Soporte
+          {t('profile.support')}
         </Text>
         {supportItems.map(renderMenuItem)}
 
         <View style={styles.logoutContainer}>
           <Button
-            title="Cerrar Sesión"
+            title={t('auth.logout')}
             onPress={handleLogout}
             variant="outline"
             size="large"
           />
         </View>
       </ScrollView>
+      
+      <LanguageSelector
+        visible={showLanguageSelector}
+        onClose={() => setShowLanguageSelector(false)}
+      />
     </View>
   );
 };
