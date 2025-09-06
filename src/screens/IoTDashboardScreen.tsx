@@ -27,58 +27,19 @@ const IoTDashboardScreen: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // Simulate loading demo data
-    loadDemoData();
+    // Initialize empty state - real data will come from actual IoT connections
+    dispatch(setLoading(false));
   }, []);
-
-  const loadDemoData = () => {
-    dispatch(setLoading(true));
-    
-    setTimeout(() => {
-      const demoDevices: IoTDevice[] = [
-        {
-          id: '1',
-          name: 'Sensor de Temperatura',
-          type: 'sensor',
-          status: 'online',
-          lastSeen: new Date().toISOString(),
-          temperature: 23.5,
-          batteryLevel: 85,
-        },
-        {
-          id: '2',
-          name: 'Sensor de Humedad',
-          type: 'sensor',
-          status: 'online',
-          lastSeen: new Date().toISOString(),
-          humidity: 65,
-          batteryLevel: 72,
-        },
-        {
-          id: '3',
-          name: 'Cámara Entrada',
-          type: 'camera',
-          status: 'offline',
-          lastSeen: new Date(Date.now() - 300000).toISOString(),
-          batteryLevel: 12,
-        },
-      ];
-      
-      dispatch(setDevices(demoDevices));
-      dispatch(setLoading(false));
-    }, 1000);
-  };
 
   const handleConnect = async () => {
     try {
       dispatch(setLoading(true));
-      // Simulate connection
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsConnected(true);
+      // TODO: Implement real IoT connection logic here
+      // This should connect to actual IoT devices/services
+      dispatch(setError('Función de conexión no implementada. Conectar a dispositivos IoT reales.'));
       dispatch(setLoading(false));
-      Alert.alert('Éxito', 'Conectado al sistema IoT');
     } catch (err) {
-      dispatch(setError('Error al conectar'));
+      dispatch(setError('Error al conectar con dispositivos IoT'));
       dispatch(setLoading(false));
     }
   };

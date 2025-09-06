@@ -36,17 +36,17 @@ export class LiveKitIoTService {
       const roomName = config.roomName || 'iot-room';
       const participantName = config.participantName || `device-${Date.now()}`;
 
-      // For demo purposes, we'll use a mock token
-      const token = 'demo_token';
-
-      // Create and configure room
-      this.room = new Room();
-      this.setupRoomEventHandlers();
-
-      // Connect to LiveKit room
-      await this.room.connect(serverUrl, token);
+      // TODO: Implement real token generation
+      // This should call your backend API to generate a valid LiveKit token
+      // Example:
+      // const token = await generateTokenFromBackend(participantName, roomName);
+      // 
+      // this.room = new Room();
+      // this.setupRoomEventHandlers();
+      // await this.room.connect(serverUrl, token);
+      // this.onConnectionStatusCallback?.('connected');
       
-      this.onConnectionStatusCallback?.('connected');
+      throw new Error('LiveKit token generation not implemented. Connect to real LiveKit server with valid authentication.');
     } catch (error) {
       console.error('Failed to connect to LiveKit:', error);
       this.onConnectionStatusCallback?.('error');

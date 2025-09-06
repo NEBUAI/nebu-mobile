@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
   ViewStyle,
   TextStyle,
 } from 'react-native';
@@ -55,15 +56,18 @@ const LoginScreen: React.FC = () => {
 
     dispatch(setLoading(true));
 
-    // Simulate API call
-    setTimeout(() => {
-      dispatch(loginSuccess({
-        id: '1',
-        email: email,
-        name: 'Usuario Demo',
-        avatar: undefined,
-      }));
-    }, 1500);
+    try {
+      // TODO: Implement real authentication API call here
+      // Example:
+      // const response = await authAPI.login(email, password);
+      // dispatch(loginSuccess(response.user));
+      
+      dispatch(setLoading(false));
+      Alert.alert('Error', 'Autenticación no implementada. Conectar con API de autenticación real.');
+    } catch (error) {
+      dispatch(setLoading(false));
+      Alert.alert('Error', 'Error al iniciar sesión. Verificar credenciales.');
+    }
   };
 
   const getContainerStyle = (): ViewStyle => ({
