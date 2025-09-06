@@ -8,6 +8,7 @@ import { getTheme } from '@/utils/theme';
 
 import HomeScreen from '@/screens/HomeScreen';
 import ProfileScreen from '@/screens/ProfileScreen';
+import IoTDashboardScreen from '@/screens/IoTDashboardScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -25,6 +26,8 @@ const MainNavigator: React.FC = () => {
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'IoTDashboard') {
+            iconName = focused ? 'hardware-chip' : 'hardware-chip-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           } else {
@@ -55,6 +58,13 @@ const MainNavigator: React.FC = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: t('navigation.home'),
+        }}
+      />
+      <Tab.Screen 
+        name="IoTDashboard" 
+        component={IoTDashboardScreen}
+        options={{
+          tabBarLabel: 'IoT Devices',
         }}
       />
       <Tab.Screen 
