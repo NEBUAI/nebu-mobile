@@ -74,3 +74,4 @@ web-build/
 
 # typescript
 *.tsbuildinfo
+.env
