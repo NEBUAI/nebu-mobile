@@ -19,10 +19,19 @@ export interface LanguageState {
   currentLanguage: 'es' | 'en';
 }
 
+export interface IoTState {
+  devices: any[];
+  metrics: any;
+  isLoading: boolean;
+  error: string | null;
+  selectedDevice: any;
+}
+
 export interface RootState {
   auth: AuthState;
   theme: ThemeState;
   language: LanguageState;
+  iot: IoTState;
 }
 
 export type RootStackParamList = {
@@ -48,6 +57,7 @@ export interface ButtonProps {
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   loading?: boolean;
+  style?: any;
 }
 
 export interface InputProps {

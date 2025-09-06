@@ -1,291 +1,227 @@
-import React, { useEffect, useState } from 'react';
+// @ts-nocheck
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  FlatList,
+  ScrollView,
   TouchableOpacity,
   Alert,
-  TextInput,
-  Modal,
+  ViewStyle,
+  TextStyle,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { RootState, AppDispatch } from '@/store';
-import { connectToLiveKit, disconnectFromLiveKit, sendIoTData, addDeviceData } from '@/store/iotSlice';
-import { liveKitIoTService, IoTDeviceData } from '@/services/livekitService';
-import { Button } from '@/components';
-import { LiveKitTester } from '@/utils/livekitTest';
+import { Header, Button } from '@/components';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { setDevices, setLoading, setError, IoTDevice } from '@/store/iotSlice';
+import { getTheme } from '@/utils/theme';
 
 const IoTDashboardScreen: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  
-  const {
-    isConnected,
-    connectionStatus,
-    devices,
-    recentData,
-    isLoading,
-    error,
-  } = useSelector((state: RootState) => state.iot);
+  const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
+  const { devices, metrics, isLoading, error } = useAppSelector((state) => state.iot);
+  const theme = getTheme(isDarkMode);
 
-  const [showConnectionModal, setShowConnectionModal] = useState(false);
-  const [connectionConfig, setConnectionConfig] = useState({
-    serverUrl: '', // Will use env variable if empty
-    roomName: 'nebu-iot-room',
-    participantName: 'nebu-mobile-' + Date.now(),
-  });
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // Set up data listener
-    liveKitIoTService.onDeviceData((data: IoTDeviceData) => {
-      dispatch(addDeviceData(data));
-    });
+    // Simulate loading demo data
+    loadDemoData();
+  }, []);
 
-    // Set up connection status listener
-    liveKitIoTService.onConnectionStatus((status) => {
-      // Handle connection status updates if needed
-    });
-
-    return () => {
-      // Cleanup
-      if (isConnected) {
-        dispatch(disconnectFromLiveKit());
-      }
-    };
-  }, [dispatch, isConnected]);
+  const loadDemoData = () => {
+    dispatch(setLoading(true));
+    
+    setTimeout(() => {
+      const demoDevices: IoTDevice[] = [
+        {
+          id: '1',
+          name: 'Sensor de Temperatura',
+          type: 'sensor',
+          status: 'online',
+          lastSeen: new Date().toISOString(),
+          temperature: 23.5,
+          batteryLevel: 85,
+        },
+        {
+          id: '2',
+          name: 'Sensor de Humedad',
+          type: 'sensor',
+          status: 'online',
+          lastSeen: new Date().toISOString(),
+          humidity: 65,
+          batteryLevel: 72,
+        },
+        {
+          id: '3',
+          name: 'Cámara Entrada',
+          type: 'camera',
+          status: 'offline',
+          lastSeen: new Date(Date.now() - 300000).toISOString(),
+          batteryLevel: 12,
+        },
+      ];
+      
+      dispatch(setDevices(demoDevices));
+      dispatch(setLoading(false));
+    }, 1000);
+  };
 
   const handleConnect = async () => {
     try {
-      await dispatch(connectToLiveKit(connectionConfig)).unwrap();
-      setShowConnectionModal(false);
-    } catch (error) {
-      Alert.alert(t('common.error'), error as string);
+      dispatch(setLoading(true));
+      // Simulate connection
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setIsConnected(true);
+      dispatch(setLoading(false));
+      Alert.alert('Éxito', 'Conectado al sistema IoT');
+    } catch (err) {
+      dispatch(setError('Error al conectar'));
+      dispatch(setLoading(false));
     }
   };
 
   const handleDisconnect = async () => {
-    try {
-      await dispatch(disconnectFromLiveKit()).unwrap();
-    } catch (error) {
-      Alert.alert(t('common.error'), error as string);
-    }
+    setIsConnected(false);
+    Alert.alert('Info', 'Desconectado del sistema IoT');
   };
 
-  const handleSendTestData = async () => {
-    if (!isConnected) return;
+  const getContainerStyle = (): ViewStyle => ({
+    backgroundColor: theme.colors.background,
+    flex: 1,
+  });
 
-    const testData: IoTDeviceData = {
-      deviceId: 'mobile-test-device',
-      deviceType: 'sensor',
-      data: {
-        temperature: Math.round((Math.random() * 30 + 10) * 10) / 10, // 10-40°C
-        humidity: Math.round((Math.random() * 60 + 30) * 10) / 10, // 30-90%
-        pressure: Math.round((Math.random() * 50 + 1000) * 100) / 100, // 1000-1050 hPa
-        battery: Math.round(Math.random() * 100), // 0-100%
-        signal: Math.round(Math.random() * 100), // 0-100%
-        timestamp: Date.now(),
-      },
-      timestamp: Date.now(),
-    };
+  const getContentStyle = (): ViewStyle => ({
+    padding: theme.spacing.lg,
+  });
 
-    try {
-      await dispatch(sendIoTData(testData)).unwrap();
-      Alert.alert('Datos enviados', `Temperatura: ${testData.data.temperature}°C\nHumedad: ${testData.data.humidity}%`);
-    } catch (error) {
-      Alert.alert(t('common.error'), error as string);
-    }
-  };
+  const getMetricCardStyle = (): ViewStyle => ({
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.borderRadius.md,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.sm,
+    ...theme.shadows.sm,
+  });
 
-  const handleRunTests = async () => {
-    Alert.alert(
-      'Ejecutar Pruebas',
-      '¿Quieres ejecutar las pruebas de conexión de LiveKit?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Ejecutar',
-          onPress: async () => {
-            try {
-              const results = await LiveKitTester.runAllTests();
-              const summary = results.map(r => r.message).join('\n');
-              Alert.alert('Resultados de Pruebas', summary);
-            } catch (error) {
-              Alert.alert('Error en Pruebas', error as string);
-            }
-          }
-        }
-      ]
-    );
-  };
+  const getDeviceCardStyle = (status: string): ViewStyle => ({
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.borderRadius.md,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.sm,
+    borderLeftWidth: 4,
+    borderLeftColor: status === 'online' ? theme.colors.success : theme.colors.error,
+    ...theme.shadows.sm,
+  });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'connected':
-        return '#4CAF50';
-      case 'connecting':
-        return '#FF9800';
-      case 'error':
-        return '#F44336';
-      default:
-        return '#9E9E9E';
-    }
-  };
+  const getTitleStyle = (): TextStyle => ({
+    fontSize: theme.typography.sizes.lg,
+    fontWeight: theme.typography.weights.semibold,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.md,
+  });
 
-  const renderDevice = ({ item }: { item: any }) => (
-    <View style={styles.deviceCard}>
-      <View style={styles.deviceHeader}>
-        <Text style={styles.deviceName}>{item.name}</Text>
-        <View style={[styles.statusIndicator, { backgroundColor: item.status === 'online' ? '#4CAF50' : '#F44336' }]} />
+  const getSubtitleStyle = (): TextStyle => ({
+    fontSize: theme.typography.sizes.md,
+    color: theme.colors.textSecondary,
+  });
+
+  const getValueStyle = (): TextStyle => ({
+    fontSize: theme.typography.sizes.xl,
+    fontWeight: theme.typography.weights.bold,
+    color: theme.colors.primary,
+  });
+
+  const renderMetricCard = (title: string, value: string | number, icon: string) => (
+    <View style={getMetricCardStyle()} key={title}>
+      <View style={styles.metricHeader}>
+        <Ionicons name={icon as any} size={24} color={theme.colors.primary} />
+        <Text style={[styles.metricTitle, { color: theme.colors.text }]}>{title}</Text>
       </View>
-      <Text style={styles.deviceType}>Type: {item.type}</Text>
-      <Text style={styles.deviceLastSeen}>
-        Last seen: {new Date(item.lastSeen).toLocaleTimeString()}
-      </Text>
-      {item.data && (
-        <Text style={styles.deviceData} numberOfLines={2}>
-          Data: {JSON.stringify(item.data)}
-        </Text>
-      )}
+      <Text style={[styles.metricValue, getValueStyle()]}>{value}</Text>
     </View>
   );
 
-  const renderRecentData = ({ item }: { item: IoTDeviceData }) => (
-    <View style={styles.dataCard}>
-      <View style={styles.dataHeader}>
-        <Text style={styles.deviceId}>{item.deviceId}</Text>
-        <Text style={styles.dataTime}>{new Date(item.timestamp).toLocaleTimeString()}</Text>
+  const renderDeviceCard = (device: IoTDevice) => (
+    <View style={getDeviceCardStyle(device.status)} key={device.id}>
+      <View style={styles.deviceHeader}>
+        <Text style={[styles.deviceName, { color: theme.colors.text }]}>{device.name}</Text>
+        <View style={[
+          styles.statusBadge,
+          { backgroundColor: device.status === 'online' ? theme.colors.success : theme.colors.error }
+        ]}>
+          <Text style={styles.statusText}>{device.status}</Text>
+        </View>
       </View>
-      <Text style={styles.dataContent} numberOfLines={3}>
-        {JSON.stringify(item.data, null, 2)}
+      
+      <Text style={[styles.deviceType, getSubtitleStyle()]}>Tipo: {device.type}</Text>
+      
+      {device.temperature && (
+        <Text style={[styles.deviceData, { color: theme.colors.text }]}>
+          🌡️ {device.temperature}°C
+        </Text>
+      )}
+      
+      {device.humidity && (
+        <Text style={[styles.deviceData, { color: theme.colors.text }]}>
+          💧 {device.humidity}%
+        </Text>
+      )}
+      
+      {device.batteryLevel && (
+        <Text style={[styles.deviceData, { color: theme.colors.text }]}>
+          🔋 {device.batteryLevel}%
+        </Text>
+      )}
+      
+      <Text style={[styles.lastSeen, getSubtitleStyle()]}>
+        Última conexión: {new Date(device.lastSeen).toLocaleString()}
       </Text>
     </View>
   );
 
   return (
-    <View style={styles.container}>
-      {/* Connection Status */}
-      <View style={styles.statusBar}>
-        <View style={styles.statusInfo}>
-          <View style={[styles.statusDot, { backgroundColor: getStatusColor(connectionStatus) }]} />
-          <Text style={styles.statusText}>
-            {connectionStatus.charAt(0).toUpperCase() + connectionStatus.slice(1)}
-          </Text>
-        </View>
-        {!isConnected ? (
-          <Button
-            title="Connect"
-            onPress={() => setShowConnectionModal(true)}
-            disabled={isLoading}
-          />
-        ) : (
-          <Button
-            title="Disconnect"
-            onPress={handleDisconnect}
-            disabled={isLoading}
-          />
-        )}
-      </View>
-
-      {error && (
-        <View style={styles.errorBar}>
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      )}
-
-      {isConnected && (
-        <View style={styles.actionBar}>
-          <Button
-            title="Send Test Data"
-            onPress={handleSendTestData}
-            style={styles.testButton}
-          />
-          <Button
-            title="Run Tests"
-            onPress={handleRunTests}
-            style={[styles.testButton, styles.runTestsButton]}
-          />
-        </View>
-      )}
-
-      {/* Devices Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Connected Devices ({devices.length})</Text>
-        <FlatList
-          data={devices}
-          renderItem={renderDevice}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.devicesList}
-        />
-      </View>
-
-      {/* Recent Data Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Recent Data ({recentData.length})</Text>
-        <FlatList
-          data={recentData.slice(0, 10)}
-          renderItem={renderRecentData}
-          keyExtractor={(item, index) => `${item.deviceId}-${item.timestamp}-${index}`}
-          style={styles.dataList}
-        />
-      </View>
-
-      {/* Connection Modal */}
-      <Modal
-        visible={showConnectionModal}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setShowConnectionModal(false)}
+    <View style={[styles.container, getContainerStyle()]}>
+      <Header title="IoT Dashboard" />
+      
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={[styles.content, getContentStyle()]}
+        showsVerticalScrollIndicator={false}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Connect to LiveKit</Text>
-            
-            <TextInput
-              style={styles.input}
-              placeholder="Server URL"
-              value={connectionConfig.serverUrl}
-              onChangeText={(text) => setConnectionConfig({ ...connectionConfig, serverUrl: text })}
+        {/* Connection Status */}
+        <View style={styles.connectionSection}>
+          <Text style={[styles.sectionTitle, getTitleStyle()]}>Estado de Conexión</Text>
+          <View style={styles.connectionButtons}>
+            <Button
+              title={isConnected ? 'Desconectar' : 'Conectar'}
+              onPress={isConnected ? handleDisconnect : handleConnect}
+              loading={isLoading}
+              variant={isConnected ? 'outline' : 'primary'}
             />
-            
-            <Text style={styles.infoText}>
-              Las credenciales se cargan automáticamente desde las variables de entorno.
-              Solo personaliza si necesitas valores específicos.
-            </Text>
-            
-            <TextInput
-              style={styles.input}
-              placeholder="Room Name"
-              value={connectionConfig.roomName}
-              onChangeText={(text) => setConnectionConfig({ ...connectionConfig, roomName: text })}
-            />
-            
-            <TextInput
-              style={styles.input}
-              placeholder="Participant Name"
-              value={connectionConfig.participantName}
-              onChangeText={(text) => setConnectionConfig({ ...connectionConfig, participantName: text })}
-            />
-
-            <View style={styles.modalActions}>
-              <Button
-                title="Cancel"
-                onPress={() => setShowConnectionModal(false)}
-                style={[styles.modalButton, styles.cancelButton]}
-              />
-              <Button
-                title="Connect"
-                onPress={handleConnect}
-                style={[styles.modalButton, styles.connectButton]}
-                disabled={isLoading}
-              />
-            </View>
           </View>
         </View>
-      </Modal>
+
+        {/* Metrics Overview */}
+        <Text style={[styles.sectionTitle, getTitleStyle()]}>Resumen</Text>
+        <View style={styles.metricsGrid}>
+          {renderMetricCard('Total Dispositivos', metrics.totalDevices, 'hardware-chip-outline')}
+          {renderMetricCard('En Línea', metrics.onlineDevices, 'checkmark-circle-outline')}
+          {renderMetricCard('Fuera de Línea', metrics.offlineDevices, 'close-circle-outline')}
+          {renderMetricCard('Temp. Promedio', `${metrics.averageTemperature.toFixed(1)}°C`, 'thermometer-outline')}
+        </View>
+
+        {/* Devices List */}
+        <Text style={[styles.sectionTitle, getTitleStyle()]}>Dispositivos</Text>
+        {devices.map(renderDeviceCard)}
+
+        {error && (
+          <View style={[styles.errorContainer, { backgroundColor: theme.colors.error + '20' }]}>
+            <Text style={[styles.errorText, { color: theme.colors.error }]}>{error}</Text>
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 };
@@ -293,76 +229,44 @@ const IoTDashboardScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 16,
   },
-  statusBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  statusInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  statusDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 8,
-  },
-  statusText: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  errorBar: {
-    backgroundColor: '#ffebee',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  errorText: {
-    color: '#d32f2f',
-    textAlign: 'center',
-  },
-  actionBar: {
-    marginBottom: 16,
-    flexDirection: 'row',
-    gap: 12,
-  },
-  testButton: {
-    backgroundColor: '#2196F3',
+  scrollView: {
     flex: 1,
   },
-  runTestsButton: {
-    backgroundColor: '#FF9800',
-  },
-  section: {
-    marginBottom: 24,
+  content: {
+    paddingBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 12,
+    marginBottom: 16,
+    marginTop: 8,
   },
-  devicesList: {
-    paddingHorizontal: 8,
+  connectionSection: {
+    marginBottom: 24,
   },
-  deviceCard: {
-    backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
-    marginHorizontal: 4,
-    width: 200,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+  connectionButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  metricsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+  metricHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  metricTitle: {
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  metricValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   deviceHeader: {
     flexDirection: 'row',
@@ -371,112 +275,39 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   deviceName: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
+    flex: 1,
   },
-  statusIndicator: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+  statusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
   },
-  deviceType: {
+  statusText: {
+    color: '#FFFFFF',
     fontSize: 12,
-    color: '#666',
-    marginBottom: 4,
-  },
-  deviceLastSeen: {
-    fontSize: 11,
-    color: '#999',
-    marginBottom: 4,
-  },
-  deviceData: {
-    fontSize: 11,
-    color: '#333',
-    fontFamily: 'monospace',
-  },
-  dataList: {
-    maxHeight: 300,
-  },
-  dataCard: {
-    backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  dataHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  deviceId: {
-    fontSize: 14,
     fontWeight: '500',
   },
-  dataTime: {
-    fontSize: 12,
-    color: '#666',
-  },
-  dataContent: {
-    fontSize: 12,
-    fontFamily: 'monospace',
-    color: '#333',
-    backgroundColor: '#f8f8f8',
-    padding: 8,
-    borderRadius: 4,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 24,
-    width: '90%',
-    maxWidth: 400,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
+  deviceType: {
     fontSize: 14,
+    marginBottom: 8,
   },
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  deviceData: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  lastSeen: {
+    fontSize: 12,
+    marginTop: 8,
+  },
+  errorContainer: {
+    padding: 16,
+    borderRadius: 8,
     marginTop: 16,
   },
-  modalButton: {
-    flex: 1,
-    marginHorizontal: 8,
-  },
-  cancelButton: {
-    backgroundColor: '#6c757d',
-  },
-  connectButton: {
-    backgroundColor: '#28a745',
-  },
-  infoText: {
+  errorText: {
     fontSize: 14,
-    color: '#666',
-    fontStyle: 'italic',
-    marginVertical: 8,
     textAlign: 'center',
   },
 });

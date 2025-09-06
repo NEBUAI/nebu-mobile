@@ -18,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   size = 'medium',
   disabled = false,
   loading = false,
+  style,
 }) => {
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const theme = getTheme(isDarkMode);
@@ -106,7 +107,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <TouchableOpacity
-      style={[styles.button, getButtonStyle()]}
+      style={[styles.button, getButtonStyle(), style]}
       onPress={onPress}
       disabled={disabled || loading}
       activeOpacity={0.7}
