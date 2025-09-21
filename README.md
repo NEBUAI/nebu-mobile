@@ -1,11 +1,13 @@
-# 🎓 Outliers Academy - Learning Management System
+# 🤖 Nebu Mobile - AI-Powered IoT & Voice Control Platform
 
 [![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](https://docker.com)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://postgresql.org)
 [![Redis](https://img.shields.io/badge/Redis-7+-red.svg)](https://redis.io)
+[![LiveKit](https://img.shields.io/badge/LiveKit-Real--time-purple.svg)](https://livekit.io)
+[![React Native](https://img.shields.io/badge/React%20Native-Mobile-blue.svg)](https://reactnative.dev)
 
-A modern, full-stack Learning Management System (LMS) built with **Next.js**, **NestJS**, **PostgreSQL**, and **Redis**, fully containerized with Docker.
+A cutting-edge platform combining **React Native mobile app**, **NestJS backend**, **LiveKit real-time communication**, and **IoT device control** for seamless voice-powered robot and device management.
 
 ## 🚀 Quick Start
 
@@ -20,7 +22,7 @@ A modern, full-stack Learning Management System (LMS) built with **Next.js**, **
 ```bash
 # Clone the repository
 git clone <your-repository-url>
-cd theme-outliers-academy
+cd nebu-mobile
 
 # Run the automated installer
 ./prerrequisites.sh
@@ -31,83 +33,139 @@ make dev
 ```
 
 That's it! Your application will be running at:
-- 🌐 **Frontend**: http://localhost:3000
-- 🔧 **Backend API**: http://localhost:3001
+- 🤖 **Backend API**: http://localhost:3001
+- 📚 **API Documentation**: http://localhost:3001/api/docs
+- 🎙️ **LiveKit Server**: http://localhost:7880
 - 📊 **Traefik Dashboard**: http://localhost:8080
-
-## 📋 Manual Installation
-
-If you prefer to install dependencies manually:
-
-### 1. Install Docker & Docker Compose
-
-```bash
-# Update package list
-sudo apt update
-
-# Install basic dependencies
-sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release make git
-
-# Add Docker's official GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-# Add Docker repository
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-# Install Docker
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io
-
-# Install Docker Compose
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-# Add user to docker group
-sudo usermod -aG docker $USER
-```
-
-### 2. Configure Environment
-
-```bash
-# Copy environment template
-cp template.env .env
-
-# Edit with your credentials
-nano .env
-```
-
-### 3. Start the Application
-
-```bash
-# Start all services
-make dev
-
-# Or manually with Docker Compose
-docker-compose up -d
-```
+- 🔧 **N8N Automation**: http://localhost:5678
 
 ## 🏗️ Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend       │    │   Database      │
-│   (Next.js)     │◄──►│   (NestJS)      │◄──►│   (PostgreSQL)  │
-│   Port: 3000    │    │   Port: 3001    │    │   Port: 5432    │
+│   📱 Mobile App │    │   🤖 IoT Robot  │    │  🎙️ Voice Agent│
+│  (React Native) │    │   (Any Device)  │    │   (AI Powered)  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │   Cache/Session │
-                    │   (Redis)       │
-                    │   Port: 6379    │
-                    └─────────────────┘
+         │ ┌─────────────────────┼───────────────────────┼─────┐
+         │ │              🎬 LiveKit Server              │     │
+         │ │         (Real-time Communication)           │     │
+         │ └─────────────────────┼───────────────────────┼─────┘
+         │                       │                       │
+         └─────────────────┐     │     ┌─────────────────┘
+                           │     │     │
+                    ┌─────────────────────────┐
+                    │    🔧 NestJS Backend    │
+                    │   (API & Coordination)  │
+                    │      Port: 3001         │
+                    └─────────────────────────┘
+                              │
+                    ┌─────────────────────────┐
+                    │     🗄️ PostgreSQL      │
+                    │   (Data & Sessions)     │
+                    │      Port: 5432         │
+                    └─────────────────────────┘
+                              │
+                    ┌─────────────────────────┐
+                    │      🚀 Redis Cache     │
+                    │   (Sessions & Queue)    │
+                    │      Port: 6379         │
+                    └─────────────────────────┘
+```
+
+## 🤖 Features & Capabilities
+
+### 📱 Mobile App (React Native)
+- ✅ **Voice Control**: AI-powered voice commands for robot control
+- ✅ **Real-time Communication**: Direct audio/video with IoT devices
+- ✅ **Device Management**: Register, monitor, and control IoT devices
+- ✅ **Live Streaming**: View camera feeds from robots in real-time
+- ✅ **Sensor Monitoring**: Real-time telemetry and sensor data
+- ✅ **Cross-platform**: iOS and Android support via Expo
+
+### 🔧 Backend API (NestJS)
+- ✅ **230+ Endpoints**: Comprehensive REST API with Swagger documentation
+- ✅ **IoT Device Registry**: Manage and coordinate multiple robots/devices
+- ✅ **Voice Session Management**: AI conversation tracking and analytics
+- ✅ **Real-time Coordination**: LiveKit integration for instant communication
+- ✅ **Analytics & Insights**: Device performance and usage analytics
+- ✅ **Authentication**: JWT-based secure access with refresh tokens
+
+### 🎙️ LiveKit Integration
+- ✅ **Real-time Audio/Video**: Ultra-low latency communication
+- ✅ **Data Channels**: Send commands and receive sensor data
+- ✅ **Multi-participant**: Support for multiple users and devices
+- ✅ **Automatic Reconnection**: Robust connection handling
+- ✅ **Room Management**: Dynamic room creation and participant management
+
+### 🤖 IoT & Robot Support
+- ✅ **Device Types**: Sensors, actuators, cameras, microphones, speakers
+- ✅ **Network Flexibility**: WiFi, Ethernet, 4G/5G connectivity options
+- ✅ **Auto-discovery**: Automatic backend and LiveKit server discovery
+- ✅ **Command Processing**: Voice-to-action command translation
+- ✅ **Telemetry**: Battery, temperature, humidity, position tracking
+
+## 🚀 Mobile App Deployment
+
+### Quick Deploy with Expo
+```bash
+cd mobile
+
+# Development build (recommended)
+npx eas build --profile development --platform android
+
+# Preview build for testing
+npx eas build --profile preview --platform android
+
+# Production build
+npx eas build --profile production --platform android
+```
+
+### Network Configuration
+The mobile app can connect to the backend in multiple ways:
+- **Local Network**: Same WiFi as backend (localhost:3001)
+- **Remote Server**: Backend deployed on cloud server
+- **Hotspot**: Using mobile hotspot for portable setup
+
+## 🤖 Robot Integration
+
+### Supported Connection Methods
+1. **Same WiFi Network**: Robot and backend on same local network
+2. **Ethernet + WiFi**: Robot wired, backend on WiFi
+3. **Internet Connection**: Robot with 4G/5G, backend on cloud
+4. **Mobile Hotspot**: Portable setup using phone's hotspot
+
+### Robot Setup Example (Python)
+```python
+import requests
+import livekit_client
+
+# 1. Register with backend
+device_response = requests.post(
+    "http://192.168.1.100:3001/api/v1/iot/devices",
+    json={
+        "name": "My Robot",
+        "deviceType": "controller",
+        "location": "Living Room"
+    }
+)
+
+# 2. Get LiveKit connection info
+token_response = requests.get(
+    f"http://192.168.1.100:3001/api/v1/iot/devices/{device_id}/livekit-token"
+)
+
+# 3. Connect to LiveKit for real-time communication
+room = livekit_client.Room()
+await room.connect(
+    token_response["livekitUrl"],
+    token_response["token"]
+)
 ```
 
 ## 🛠️ Available Commands
 
 ### Development Commands
-
 ```bash
 make dev              # Start development environment
 make start            # Start all services
@@ -117,7 +175,6 @@ make status           # Show service status
 ```
 
 ### Database Commands
-
 ```bash
 make db-init          # Initialize databases
 make db-migrate       # Run database migrations
@@ -126,131 +183,20 @@ make db-backup        # Create database backup
 ```
 
 ### Monitoring & Debugging
-
 ```bash
 make logs             # Show logs for all services
-make logs-service     # Show logs for specific service (make logs-service SERVICE=backend)
 make health           # Run health checks
 make ps               # Show running containers
-```
-
-### Utility Commands
-
-```bash
-make shell-backend    # Access backend container shell
-make shell-postgres   # Access PostgreSQL shell
-make shell-redis      # Access Redis shell
-make clean            # Clean up Docker resources
-```
-
-### Production Commands
-
-```bash
-make prod             # Start production environment with SSL config generation
-make prod-legacy      # Start production without SSL config generation (legacy)
-make config           # Generate Traefik SSL configuration only
-make backup           # Create full system backup
-make restore          # Restore from backup (make restore DATE=20240101)
-```
-
-### SSL Configuration Commands
-
-```bash
-make config           # Generate SSL configuration with environment variables
-./gateway/traefik-manager.sh certs    # Check SSL certificate status
-./gateway/traefik-manager.sh setup    # Setup SSL directories and permissions
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Edit `.env` file with your credentials:
-
-```bash
-# Database
-DATABASE_PASSWORD=your_database_password_here
-
-# Authentication
-JWT_SECRET=your_jwt_secret_here
-NEXTAUTH_SECRET=your_nextauth_secret_here
-
-# OAuth (Optional)
-GOOGLE_CLIENT_ID=your_google_client_id_here
-GOOGLE_CLIENT_SECRET=your_google_client_secret_here
-GITHUB_CLIENT_ID=your_github_client_id_here
-GITHUB_CLIENT_SECRET=your_github_client_secret_here
-
-# Stripe (Optional)
-STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key_here
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key_here
-
-# Cloudinary (Optional)
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name_here
-CLOUDINARY_API_KEY=your_cloudinary_api_key_here
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret_here
-```
-
-### SSL Configuration (Production)
-
-For production deployments with SSL certificates:
-
-```bash
-# Required environment variables
-DOMAIN=your-domain.com
-ACME_EMAIL=admin@your-domain.com
-```
-
-**SSL Features:**
-- ✅ Automatic Let's Encrypt certificate generation
-- ✅ Environment variable interpolation for security
-- ✅ Automatic certificate renewal
-- ✅ HTTP to HTTPS redirection
-- ✅ Modern TLS configuration (TLS 1.2+)
-
-### External Services Setup
-
-1. **Stripe**: Configure in Stripe Dashboard (test mode)
-2. **Cloudinary**: Set up in Cloudinary Dashboard for image uploads
-3. **OAuth**: Configure Google/GitHub OAuth apps (optional)
-
-## 📁 Project Structure
-
-```
-theme-outliers-academy/
-├── 📁 backend/                 # NestJS Backend API
-│   ├── src/
-│   │   ├── auth/              # Authentication & Authorization
-│   │   ├── courses/           # Course Management
-│   │   ├── users/             # User Management
-│   │   ├── payments/          # Stripe Integration
-│   │   └── ...
-│   └── Dockerfile
-├── 📁 frontend/               # Next.js Frontend
-│   ├── src/
-│   │   ├── app/               # App Router Pages
-│   │   ├── components/        # React Components
-│   │   └── lib/               # Utilities
-│   └── Dockerfile
-├── 📁 scripts/                # Automation Scripts
-├── 📁 db/                     # Database Scripts & Backups
-├── 📁 gateway/                # Traefik Configuration
-├── 📁 monitoring/             # Grafana & Prometheus
-├── 📁 n8n/                    # Automation Workflows
-├── docker-compose.yml         # Main Docker Compose
-├── Makefile                   # Development Commands
-├── prerrequisites.sh          # Automated Installer
-└── template.env               # Environment Template
 ```
 
 ## 🐳 Docker Services
 
 | Service | Image | Port | Description |
 |---------|-------|------|-------------|
-| **frontend** | Custom Next.js | 3000 | Main application frontend |
-| **backend** | Custom NestJS | 3001 | REST API and business logic |
-| **postgres** | postgres:15-alpine | 5432 | Primary database |
-| **redis** | redis:7-alpine | 6379 | Cache and session store |
+| **backend** | Custom NestJS | 3001 | REST API, IoT coordination, and business logic |
+| **livekit** | livekit/livekit-server | 7880, 7881, 7882 | Real-time communication server |
+| **postgres** | postgres:15-alpine | 5432 | Primary database for users, sessions, devices |
+| **redis** | redis:7-alpine | 6379 | Cache, session store, and LiveKit state |
 | **traefik** | traefik:v3.0 | 80/443 | Reverse proxy and load balancer |
 | **n8n** | n8nio/n8n:latest | 5678 | Automation workflows |
 
@@ -263,9 +209,72 @@ make health
 ```
 
 Individual service health:
-- Frontend: http://localhost:3000/api/health
 - Backend: http://localhost:3001/api/v1/health
+- LiveKit: http://localhost:7880/
 - Traefik: http://localhost:8080/ping
+
+API Documentation:
+- Swagger UI: http://localhost:3001/api/docs
+- OpenAPI Spec: http://localhost:3001/api/docs-json
+
+## 📁 Project Structure
+
+```
+nebu-mobile/
+├── 📁 backend/                 # NestJS Backend API
+│   ├── src/
+│   │   ├── auth/              # Authentication & Authorization
+│   │   ├── iot/               # IoT Device Management
+│   │   ├── livekit/           # LiveKit Integration
+│   │   ├── voice/             # Voice Agent & AI Sessions
+│   │   ├── users/             # User Management
+│   │   ├── analytics/         # Analytics & Insights
+│   │   ├── notifications/     # Push Notifications
+│   │   └── ...                # 20+ feature modules
+│   └── Dockerfile
+├── 📁 mobile/                 # React Native Mobile App
+│   ├── src/
+│   │   ├── components/        # Reusable UI Components
+│   │   ├── screens/           # App Screens
+│   │   ├── services/          # API & LiveKit Services
+│   │   ├── navigation/        # Navigation Setup
+│   │   └── store/             # State Management
+│   ├── app.json              # Expo Configuration
+│   └── eas.json              # EAS Build Configuration
+├── 📁 livekit/                # LiveKit Server Configuration
+│   └── livekit.yaml          # LiveKit Config
+├── 📁 scripts/                # Automation Scripts
+├── 📁 db/                     # Database Scripts & Backups
+├── 📁 gateway/                # Traefik Configuration
+├── 📁 monitoring/             # Grafana & Prometheus
+├── 📁 n8n/                    # Automation Workflows
+├── docker-compose.yml         # Main Docker Compose
+├── Makefile                   # Development Commands
+├── prerrequisites.sh          # Automated Installer
+└── template.env               # Environment Template
+```
+
+## 🎯 Use Cases
+
+### 🏠 Home Automation
+- Control smart home devices via voice commands
+- Monitor environmental sensors (temperature, humidity)
+- Security camera streaming and control
+
+### 🏭 Industrial IoT
+- Remote robot operation and monitoring
+- Real-time sensor data collection
+- Equipment status and maintenance alerts
+
+### 🎓 Educational Robotics
+- Programming and controlling educational robots
+- Real-time sensor data visualization
+- Multi-user collaborative robot control
+
+### 🚗 Autonomous Vehicles
+- Remote vehicle monitoring and control
+- Real-time telemetry and GPS tracking
+- Emergency intervention capabilities
 
 ## 🚨 Troubleshooting
 
@@ -281,40 +290,54 @@ Individual service health:
    ```bash
    make stop
    # Check what's using the port
-   sudo netstat -tulpn | grep :3000
+   sudo netstat -tulpn | grep :3001
    ```
 
-3. **Database connection failed**
+3. **LiveKit connection failed**
    ```bash
-   make db-init
-   make db-migrate
+   # Check LiveKit status
+   docker logs nebu-mobile-livekit
+   # Restart if needed
+   docker-compose restart livekit
    ```
 
-4. **Environment variables not loaded**
+4. **Mobile app can't connect**
    ```bash
-   cp template.env .env
-   # Edit .env with your values
+   # Update IP in mobile app config
+   # mobile/src/services/api.ts
+   # Change localhost to your machine's IP
    ```
 
-### Reset Everything
+## 🔧 Configuration
 
+### Environment Variables
+
+Copy and edit the environment file:
 ```bash
-make clean-all  # WARNING: This removes all data!
+cp template.env .env
+nano .env
 ```
 
-## 📊 Monitoring
+Key variables:
+```bash
+# LiveKit Configuration
+LIVEKIT_URL=http://livekit:7880
+LIVEKIT_WS_URL=ws://localhost:7880  # Change to your IP for mobile access
 
-Access monitoring dashboards:
-- **Traefik**: http://localhost:8080
-- **N8N**: http://localhost:5678 (admin/admin123)
+# Database
+DATABASE_PASSWORD=your_secure_password
+
+# Authentication
+JWT_SECRET=your_jwt_secret
+```
 
 ## 🔒 Security
 
 - All services run in isolated Docker networks
-- Environment variables for sensitive data
 - JWT authentication with refresh tokens
-- Rate limiting and CORS protection
-- Security headers via Traefik
+- Environment variables for sensitive data
+- CORS protection for mobile app access
+- Rate limiting and security headers
 
 ## 🤝 Contributing
 
@@ -323,10 +346,6 @@ Access monitoring dashboards:
 3. Make your changes
 4. Test with `make dev`
 5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🆘 Support
 
@@ -339,4 +358,4 @@ If you encounter any issues:
 
 ---
 
-**Made with ❤️ for Outliers Academy**
+**Made with 🤖 for the Future of IoT & Robotics**
