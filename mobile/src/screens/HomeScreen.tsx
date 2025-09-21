@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import { Header } from '@/components';
+import { Header, AnimatedCard, GradientText, ParticleBackground } from '@/components';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { toggleTheme } from '@/store/themeSlice';
 import { getTheme } from '@/utils/theme';
@@ -128,12 +128,14 @@ const HomeScreen: React.FC = () => {
     { id: 4, title: t('home.settings'), icon: 'settings-outline', color: theme.colors.textSecondary, screen: 'profile' },
   ];
 
-  const renderQuickAction = (action: typeof quickActions[0]) => (
-    <TouchableOpacity
+  const renderQuickAction = (action: typeof quickActions[0], index: number) => (
+    <AnimatedCard
       key={action.id}
-      style={[styles.actionCard, getActionCardStyle()]}
-      activeOpacity={0.7}
+      animationType="slideIn"
+      delay={index * 100} // Stagger animation like reference CSS
+      hoverLift={true}
       onPress={() => handleNavigateToScreen(action.screen)}
+      style={getActionCardStyle()}
     >
       <View style={[styles.actionIconContainer, getActionIconContainerStyle(action.color)]}>
         <Ionicons
@@ -150,47 +152,57 @@ const HomeScreen: React.FC = () => {
         size={20}
         color={theme.colors.textSecondary}
       />
-    </TouchableOpacity>
+    </AnimatedCard>
   );
 
   return (
-    <View style={[styles.container, getContainerStyle()]}>
-      <Header
-        title={t('navigation.home')}
-        rightComponent={
-          <TouchableOpacity onPress={handleToggleTheme}>
-            <Ionicons
-              name={isDarkMode ? 'sunny' : 'moon'}
-              size={24}
-              color={theme.colors.text}
-            />
-          </TouchableOpacity>
-        }
-      />
-      
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={[styles.content, getContentStyle()]}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={[styles.welcomeCard, getWelcomeCardStyle()]}>
-          <Text style={[styles.welcomeText, getWelcomeTextStyle()]}>
-            {t('home.welcome', { name: user?.name })}
-          </Text>
+    <ParticleBackground particleCount={6}>
+      <View style={[styles.container, getContainerStyle()]}>
+        <Header
+          title={t('navigation.home')}
+          rightComponent={
+            <TouchableOpacity onPress={handleToggleTheme}>
+              <Ionicons
+                name={isDarkMode ? 'sunny' : 'moon'}
+                size={24}
+                color={theme.colors.text}
+              />
+            </TouchableOpacity>
+          }
+        />
+        
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={[styles.content, getContentStyle()]}
+          showsVerticalScrollIndicator={false}
+        >
+        <AnimatedCard
+          animationType="fadeIn"
+          delay={0}
+          hoverLift={false}
+          style={getWelcomeCardStyle()}
+        >
+          <GradientText
+            variant="primary"
+            style={getWelcomeTextStyle()}
+          >
+            {t('home.welcome', { name: user?.name || 'Usuario' })}
+          </GradientText>
           <Text style={[styles.subtitleText, getSubtitleTextStyle()]}>
             {t('home.welcomeSubtitle')}
           </Text>
-        </View>
+        </AnimatedCard>
 
         <View style={[styles.quickActions, getQuickActionsStyle()]}>
           <Text style={[styles.sectionTitle, getSectionTitleStyle()]}>
             {t('home.quickActions')}
           </Text>
-          {quickActions.map(renderQuickAction)}
+          {quickActions.map((action, index) => renderQuickAction(action, index))}
         </View>
 
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </ParticleBackground>
   );
 };
 

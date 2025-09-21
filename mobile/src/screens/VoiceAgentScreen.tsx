@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { Header, Button } from '@/components';
+import { Header, Button, AnimatedCard, StatusBadge, FloatingActionButton } from '@/components';
 import { useAppSelector } from '@/store/hooks';
 import { getTheme } from '@/utils/theme';
 import { OpenAIVoiceAgent, ConversationMessage } from '@/services/openaiVoiceService';
@@ -266,30 +266,38 @@ const VoiceAgentScreen: React.FC = () => {
         }
       />
 
-      {/* Status Bar */}
-      <View style={[styles.statusBar, getCardStyle()]}>
-        <View style={styles.statusInfo}>
-          <Text style={[styles.statusIcon, { fontSize: 24 }]}>
-            {getStatusIcon()}
-          </Text>
-          <View>
-            <Text style={[styles.statusText, { color: getStatusColor() }]}>
-              {getStatusText()}
+        {/* Status Bar */}
+        <AnimatedCard
+          animationType="slideIn"
+          delay={100}
+          variant="glass"
+          style={styles.statusBar}
+        >
+          <View style={styles.statusInfo}>
+            <Text style={[styles.statusIcon, { fontSize: 24 }]}>
+              {getStatusIcon()}
             </Text>
-            <Text style={[styles.statusSubtext, { color: theme.colors.textSecondary }]}>
-              {isConnected ? 'OpenAI conectado' : 'Desconectado'}
-            </Text>
+            <View>
+              <Text style={[styles.statusText, { color: getStatusColor() }]}>
+                {getStatusText()}
+              </Text>
+              <StatusBadge
+                status={isConnected ? 'online' : 'offline'}
+                text={isConnected ? 'OpenAI conectado' : 'Desconectado'}
+                size="sm"
+                pulseEffect={agentStatus === 'listening'}
+              />
+            </View>
           </View>
-        </View>
-        
-        {agentStatus === 'listening' && (
-          <View style={styles.listeningAnimation}>
-            <View style={[styles.soundWave, styles.wave1]} />
-            <View style={[styles.soundWave, styles.wave2]} />
-            <View style={[styles.soundWave, styles.wave3]} />
-          </View>
-        )}
-      </View>
+          
+          {agentStatus === 'listening' && (
+            <View style={styles.listeningAnimation}>
+              <View style={[styles.soundWave, styles.wave1]} />
+              <View style={[styles.soundWave, styles.wave2]} />
+              <View style={[styles.soundWave, styles.wave3]} />
+            </View>
+          )}
+        </AnimatedCard>
 
       {/* Conversation */}
       <ScrollView
@@ -313,6 +321,19 @@ const VoiceAgentScreen: React.FC = () => {
           conversation.map(renderMessage)
         )}
       </ScrollView>
+
+      {/* Floating Voice Button */}
+      {isConnected && agentStatus !== 'processing' && (
+        <FloatingActionButton
+          icon={agentStatus === 'listening' ? 'stop' : 'mic'}
+          onPress={agentStatus === 'listening' ? handleStopListening : handleStartListening}
+          variant="voice"
+          size="lg"
+          position="bottom-right"
+          glitchEffect={agentStatus === 'listening'}
+          floatEffect={true}
+        />
+      )}
 
       {/* Controls */}
       <View style={[styles.controlsContainer, getCardStyle()]}>

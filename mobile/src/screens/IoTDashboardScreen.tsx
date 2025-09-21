@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { Header, Button } from '@/components';
+import { Header, Button, AnimatedCard, StatusBadge, FloatingActionButton } from '@/components';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { setDevices, setLoading, setError, IoTDevice } from '@/store/iotSlice';
 import { getTheme } from '@/utils/theme';
@@ -249,17 +249,20 @@ const IoTDashboardScreen: React.FC = () => {
         )}
 
         {/* Connection Status */}
-        <View style={getMetricCardStyle()}>
+        <AnimatedCard
+          animationType="fadeIn"
+          delay={200}
+          variant="elevated"
+          style={getMetricCardStyle()}
+        >
           <View style={styles.statusHeader}>
             <Text style={[styles.sectionTitle, getTitleStyle()]}>Estado de Conexión</Text>
-            <View style={[
-              styles.connectionBadge,
-              { backgroundColor: isConnected ? '#4caf50' : '#f44336' }
-            ]}>
-              <Text style={styles.connectionText}>
-                {isConnected ? '🟢 Conectado' : '🔴 Desconectado'}
-              </Text>
-            </View>
+            <StatusBadge
+              status={isConnected ? 'online' : 'offline'}
+              text={isConnected ? 'Conectado' : 'Desconectado'}
+              pulseEffect={isConnected}
+              size="md"
+            />
           </View>
           
           {roomInfo && (
@@ -280,7 +283,7 @@ const IoTDashboardScreen: React.FC = () => {
             loading={isLoading}
             style={{ marginTop: 12 }}
           />
-        </View>
+        </AnimatedCard>
 
         {/* Audio Controls */}
         <View style={getMetricCardStyle()}>
