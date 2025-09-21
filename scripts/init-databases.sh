@@ -17,25 +17,7 @@ done
 
 echo "✅ PostgreSQL is ready!"
 
-# Create N8N database if it doesn't exist
-echo "🔧 Creating N8N database..."
-docker exec outliers-academy-postgres psql -U outliers_academy -d outliers_academy_dev -c "
-DO \$\$ 
-BEGIN
-    IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'n8n_db') THEN
-        PERFORM dblink_exec('dbname=outliers_academy_dev', 'CREATE DATABASE n8n_db');
-    END IF;
-END
-\$\$;
-" || docker exec outliers-academy-postgres psql -U outliers_academy -d outliers_academy_dev -c "CREATE DATABASE n8n_db;" 2>/dev/null || true
-
-# Verify N8N database was created
-if docker exec outliers-academy-postgres psql -U outliers_academy -d n8n_db -c "SELECT 1;" >/dev/null 2>&1; then
-    echo "✅ N8N database created successfully!"
-else
-    echo "❌ Failed to create N8N database"
-    exit 1
-fi
+# N8N database creation removed - not needed for Nebu Mobile
 
 echo "🎉 Database initialization completed!"
 
