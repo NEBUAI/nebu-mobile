@@ -126,8 +126,8 @@ services:
       - REDIS_PORT=${REDIS_PORT:-6379}
       - JWT_SECRET=${JWT_SECRET}
       - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
-      # Optimizado: Solo CORS_ORIGIN usando NEXT_PUBLIC_APP_URL
-      - CORS_ORIGIN=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      # CORS para mobile app - permitir localhost para desarrollo
+      - CORS_ORIGIN=http://localhost:8081,http://localhost:19000,http://localhost:19006
       # Stripe Configuration (optimizado - solo secret key en servidor)
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
@@ -179,78 +179,6 @@ services:
       - "traefik.http.services.backend.loadbalancer.server.port=3001"
 
   # ==============================================
-  # FRONTEND - NEXT.JS
-  # ==============================================
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      target: ${DOCKER_TARGET:-development}
-      args:
-        # URLs optimizadas (sin redundancias)
-        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.localhost}
-        # Servicios externos
-        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
-        NEXT_PUBLIC_CLOUDINARY_API_KEY: ${NEXT_PUBLIC_CLOUDINARY_API_KEY}
-        NEXT_PUBLIC_CLOUDINARY_API_SECRET: ${NEXT_PUBLIC_CLOUDINARY_API_SECRET}
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
-        # Auth
-        NEXTAUTH_URL: ${NEXTAUTH_URL:-${NEXT_PUBLIC_APP_URL:-http://localhost:3000}}
-        NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-    container_name: outliers-academy-frontend
-    restart: unless-stopped
-    environment:
-      - NODE_ENV=${NODE_ENV:-development}
-      # URLs optimizadas (sin redundancias)
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-https://api.localhost}
-      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
-      # Servicios externos
-      - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
-      - NEXT_PUBLIC_CLOUDINARY_API_KEY=${NEXT_PUBLIC_CLOUDINARY_API_KEY}
-      - NEXT_PUBLIC_CLOUDINARY_API_SECRET=${NEXT_PUBLIC_CLOUDINARY_API_SECRET}
-      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
-      # Auth
-      - NEXTAUTH_URL=${NEXTAUTH_URL:-${NEXT_PUBLIC_APP_URL:-http://localhost:3000}}
-      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      # URLs internas
-      - BACKEND_URL=${BACKEND_URL:-http://backend:3001}
-      - DATABASE_URL=${DATABASE_URL}
-      - PORT=${FRONTEND_PORT:-3000}
-      # OAuth Configuration
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
-      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
-      # Frontend Feature Flags
-      - NEXT_PUBLIC_ENABLE_ANALYTICS=${NEXT_PUBLIC_ENABLE_ANALYTICS}
-      - NEXT_PUBLIC_ENABLE_WEBSOCKET=${NEXT_PUBLIC_ENABLE_WEBSOCKET}
-      - NEXT_PUBLIC_ENABLE_CHAT=${NEXT_PUBLIC_ENABLE_CHAT}
-      - NEXT_PUBLIC_ENABLE_NOTIFICATIONS=${NEXT_PUBLIC_ENABLE_NOTIFICATIONS}
-      - NEXT_PUBLIC_ENABLE_EMAIL_NOTIFICATIONS=${NEXT_PUBLIC_ENABLE_EMAIL_NOTIFICATIONS}
-      - NEXT_PUBLIC_ENABLE_OAUTH=${NEXT_PUBLIC_ENABLE_OAUTH}
-      - NEXT_PUBLIC_ENABLE_STRIPE=${NEXT_PUBLIC_ENABLE_STRIPE}
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - frontend_node_modules:/app/node_modules
-      - frontend_next:/app/.next
-      - frontend_logs:/app/logs
-    networks:
-      - outliers-network
-      - traefik-network
-    depends_on:
-      backend:
-        condition: service_healthy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`${DOMAIN:-localhost}`) || Host(`www.${DOMAIN:-localhost}`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-
-  # ==============================================
   # MONITORING & LOGS (OPCIONAL)
   # ==============================================
   watchtower:
@@ -267,6 +195,39 @@ services:
       - outliers-network
     profiles:
       - monitoring
+
+  # ==============================================
+  # LIVEKIT - REAL-TIME AUDIO/VIDEO
+  # ==============================================
+  livekit:
+    image: livekit/livekit-server:latest
+    container_name: nebu-mobile-livekit
+    restart: unless-stopped
+    environment:
+      - LIVEKIT_CONFIG=/etc/livekit.yaml
+    volumes:
+      - ./livekit/livekit.yaml:/etc/livekit.yaml:ro
+      - livekit_logs:/var/log/livekit
+    ports:
+      - "7880:7880" # HTTP API
+      - "7881:7881" # RTMP
+      - "7882:7882/udp" # WebRTC UDP
+      - "50000-50200:50000-50200/udp" # WebRTC ICE range
+    networks:
+      - outliers-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.livekit.rule=Host(`livekit.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.livekit.entrypoints=websecure"
+      - "traefik.http.routers.livekit.tls.certresolver=letsencrypt"
+      - "traefik.http.services.livekit.loadbalancer.server.port=7880"
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:7880/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ==============================================
   # N8N - AUTOMATION WORKFLOWS
@@ -344,14 +305,6 @@ volumes:
   backend_uploads:
     driver: local
 
-  # Frontend
-  frontend_node_modules:
-    driver: local
-  frontend_next:
-    driver: local
-  frontend_logs:
-    driver: local
-
   # Traefik
   traefik_logs:
     driver: local
@@ -360,6 +313,10 @@ volumes:
   n8n_data:
     driver: local
   n8n_logs:
+    driver: local
+
+  # LiveKit
+  livekit_logs:
     driver: local
 
 # ==============================================

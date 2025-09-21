@@ -70,39 +70,6 @@ services:
           memory: 512M
           cpus: '0.25'
 
-  # ==============================================
-  # FRONTEND - PRODUCTION CONFIGURATION
-  # ==============================================
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      target: production
-    environment:
-      - NODE_ENV=production
-      # Frontend URLs - All hardcoded for production stability
-      - NEXT_PUBLIC_APP_URL=https://outliers.academy
-      - NEXT_PUBLIC_FRONTEND_URL=https://outliers.academy
-      - NEXT_PUBLIC_API_URL=https://api.outliers.academy
-      - NEXT_PUBLIC_BACKEND_URL=https://api.outliers.academy
-      # Auth configuration
-      - NEXTAUTH_URL=https://outliers.academy
-      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      # Internal URLs (can use env vars since they're not exposed to client)
-      - BACKEND_URL=https://api.outliers.academy
-      - PORT=${FRONTEND_PORT:-3000}
-      - DATABASE_URL=postgresql://outliers_academy:outliers_academy_2024!@postgres:5432/outliers_academy_db
-    # In production, no volumes mounted - everything is in the container
-    volumes: !reset []
-    restart: always
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '0.3'
-        reservations:
-          memory: 256M
-          cpus: '0.15'
 
   # ==============================================
   # MONITORING - PRODUCTION ONLY

@@ -1,5 +1,5 @@
 # ==============================================
-# OUTLIERS ACADEMY - MAKEFILE
+# NEBU MOBILE - MAKEFILE
 # ==============================================
 
 .PHONY: help start stop restart status logs health clean build dev prod backup
@@ -15,13 +15,13 @@ RED := \033[31m
 NC := \033[0m
 
 # Variables
-PROJECT_NAME := outliers-academy
+PROJECT_NAME := nebu-mobile
 COMPOSE_FILE := docker-compose.yml
 ENV_FILE := .env
 
 ## Help
 help: ## Show this help message
-	@echo "$(BLUE)Outliers Academy - Container Management$(NC)"
+	@echo "$(BLUE)Nebu Mobile - Container Management$(NC)"
 	@echo "======================================"
 	@echo ""
 	@echo "$(GREEN)Available commands:$(NC)"
@@ -93,9 +93,9 @@ prod: check-deps config ## Start production environment with SSL config generati
 	@echo "$(GREEN)✅ Production environment started!$(NC)"
 	@echo ""
 	@echo "$(BLUE)🌐 Available services:$(NC)"
-	@echo "  Frontend: https://$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
 	@echo "  API:      https://api.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
 	@echo "  Traefik:  https://traefik.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
+	@echo "  N8N:      https://n8n.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
 	@echo ""
 	@echo "$(YELLOW)⚠️  SSL certificates will be generated automatically$(NC)"
 
@@ -185,8 +185,12 @@ restore: ## Restore from backup (make restore DATE=20240101)
 shell-backend: ## Access backend container shell
 	@docker-compose exec backend bash
 
-shell-frontend: ## Access frontend container shell
-	@docker-compose exec frontend bash
+shell-mobile: ## Access mobile development environment (use 'cd mobile && npm start')
+	@echo "$(BLUE)Starting mobile development server...$(NC)"
+	@cd mobile && npm start
+
+shell-livekit: ## Access LiveKit container shell
+	@docker-compose exec livekit sh
 
 shell-postgres: ## Access PostgreSQL shell
 	@docker-compose exec postgres psql -U outliers_academy -d outliers_academy_db
@@ -213,8 +217,7 @@ images: ## Show Docker images
 ## Security Commands
 security-scan: ## Run security scan on images
 	@echo "$(GREEN)Running security scan...$(NC)"
-	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image outliers-academy-backend:latest
-	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image outliers-academy-frontend:latest
+	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image nebu-mobile-backend:latest
 
 ## Documentation
 docs: ## Generate documentation
