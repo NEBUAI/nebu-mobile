@@ -170,6 +170,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      livekit:
+        condition: service_healthy
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health" ]
       interval: 30s
@@ -208,8 +210,7 @@ services:
     image: livekit/livekit-server:latest
     container_name: nebu-mobile-livekit
     restart: unless-stopped
-    environment:
-      - LIVEKIT_CONFIG=/etc/livekit.yaml
+    command: --config /etc/livekit.yaml
     volumes:
       - ./livekit/livekit.yaml:/etc/livekit.yaml:ro
       - livekit_logs:/var/log/livekit
