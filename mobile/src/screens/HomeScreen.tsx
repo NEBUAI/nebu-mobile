@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import { Header } from '@/components';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { toggleTheme } from '@/store/themeSlice';
@@ -18,6 +19,7 @@ import { getTheme } from '@/utils/theme';
 const HomeScreen: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const { user } = useAppSelector((state) => state.auth);
   const theme = getTheme(isDarkMode);
@@ -103,11 +105,27 @@ const HomeScreen: React.FC = () => {
     ...theme.shadows.sm,
   });
 
+  const handleNavigateToScreen = (screenName: string) => {
+    switch (screenName) {
+      case 'voiceAgent':
+        navigation.navigate('VoiceAgent' as never);
+        break;
+      case 'iotDevices':
+        navigation.navigate('IoTDashboard' as never);
+        break;
+      case 'profile':
+        navigation.navigate('Profile' as never);
+        break;
+      default:
+        break;
+    }
+  };
+
   const quickActions = [
-    { id: 1, title: t('home.voiceAgent'), icon: 'mic-outline', color: theme.colors.primary },
-    { id: 2, title: t('home.iotDevices'), icon: 'hardware-chip-outline', color: theme.colors.tertiary },
-    { id: 3, title: t('home.dashboard'), icon: 'analytics-outline', color: theme.colors.secondary },
-    { id: 4, title: t('home.settings'), icon: 'settings-outline', color: theme.colors.textSecondary },
+    { id: 1, title: t('home.voiceAgent'), icon: 'mic-outline', color: theme.colors.primary, screen: 'voiceAgent' },
+    { id: 2, title: t('home.iotDevices'), icon: 'hardware-chip-outline', color: theme.colors.tertiary, screen: 'iotDevices' },
+    { id: 3, title: t('home.dashboard'), icon: 'analytics-outline', color: theme.colors.secondary, screen: 'iotDevices' },
+    { id: 4, title: t('home.settings'), icon: 'settings-outline', color: theme.colors.textSecondary, screen: 'profile' },
   ];
 
   const renderQuickAction = (action: typeof quickActions[0]) => (
@@ -115,6 +133,7 @@ const HomeScreen: React.FC = () => {
       key={action.id}
       style={[styles.actionCard, getActionCardStyle()]}
       activeOpacity={0.7}
+      onPress={() => handleNavigateToScreen(action.screen)}
     >
       <View style={[styles.actionIconContainer, getActionIconContainerStyle(action.color)]}>
         <Ionicons

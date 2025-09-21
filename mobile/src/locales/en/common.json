@@ -68,5 +68,34 @@
         "theme": "Theme",
         "notifications": "Notifications",
         "privacy": "Privacy"
+    },
+    "voiceAgent": {
+        "title": "Voice Assistant",
+        "subtitle": "Talk to your smart assistant",
+        "statusIdle": "Ready to chat",
+        "statusConnecting": "Connecting...",
+        "statusConnected": "Connected - Ready to talk",
+        "statusRecording": "Listening...",
+        "statusProcessing": "Processing your message...",
+        "statusSpeaking": "Responding...",
+        "endSession": "End Session",
+        "conversation": "Conversation",
+        "error": "Error",
+        "connectionError": "Could not connect to voice assistant"
+    },
+    "iotDashboard": {
+        "title": "IoT Dashboard",
+        "subtitle": "Control your smart devices",
+        "connectionStatus": "Connection Status",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "devices": "Devices",
+        "metrics": "Metrics",
+        "temperature": "Temperature",
+        "humidity": "Humidity",
+        "pressure": "Pressure",
+        "online": "Online",
+        "offline": "Offline",
+        "lastSeen": "Last seen"
     }
 }

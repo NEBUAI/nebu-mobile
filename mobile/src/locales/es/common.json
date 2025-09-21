@@ -68,5 +68,34 @@
         "theme": "Tema",
         "notifications": "Notificaciones",
         "privacy": "Privacidad"
+    },
+    "voiceAgent": {
+        "title": "Asistente de Voz",
+        "subtitle": "Habla con tu asistente inteligente",
+        "statusIdle": "Listo para conversar",
+        "statusConnecting": "Conectando...",
+        "statusConnected": "Conectado - Listo para hablar",
+        "statusRecording": "Escuchando...",
+        "statusProcessing": "Procesando tu mensaje...",
+        "statusSpeaking": "Respondiendo...",
+        "endSession": "Finalizar Sesión",
+        "conversation": "Conversación",
+        "error": "Error",
+        "connectionError": "No se pudo conectar con el asistente de voz"
+    },
+    "iotDashboard": {
+        "title": "Panel IoT",
+        "subtitle": "Controla tus dispositivos inteligentes",
+        "connectionStatus": "Estado de Conexión",
+        "connected": "Conectado",
+        "disconnected": "Desconectado",
+        "devices": "Dispositivos",
+        "metrics": "Métricas",
+        "temperature": "Temperatura",
+        "humidity": "Humedad",
+        "pressure": "Presión",
+        "online": "En línea",
+        "offline": "Desconectado",
+        "lastSeen": "Última conexión"
     }
 }
