@@ -170,23 +170,6 @@ const HomeScreen: React.FC = () => {
           {quickActions.map(renderQuickAction)}
         </View>
 
-        <View style={[styles.themeToggle, getThemeToggleStyle()]}>
-          <View style={styles.themeToggleContent}>
-            <Text style={[styles.actionText, getActionTextStyle()]}>
-              {t('home.themeToggle', { mode: isDarkMode ? t('home.lightMode') : t('home.darkMode') })}
-            </Text>
-            <Text style={[styles.subtitleText, getSubtitleTextStyle()]}>
-              {t('home.themeToggleDescription')}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={handleToggleTheme}>
-            <Ionicons
-              name={isDarkMode ? 'sunny' : 'moon'}
-              size={24}
-              color={theme.colors.primary}
-            />
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </View>
   );

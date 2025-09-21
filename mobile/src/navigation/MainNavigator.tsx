@@ -9,6 +9,7 @@ import { getTheme } from '@/utils/theme';
 import HomeScreen from '@/screens/HomeScreen';
 import ProfileScreen from '@/screens/ProfileScreen';
 import IoTDashboardScreen from '@/screens/IoTDashboardScreen';
+import VoiceAgentScreen from '@/screens/VoiceAgentScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -28,6 +29,8 @@ const MainNavigator: React.FC = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'IoTDashboard') {
             iconName = focused ? 'hardware-chip' : 'hardware-chip-outline';
+          } else if (route.name === 'VoiceAgent') {
+            iconName = focused ? 'mic' : 'mic-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           } else {
@@ -64,7 +67,14 @@ const MainNavigator: React.FC = () => {
         name="IoTDashboard" 
         component={IoTDashboardScreen}
         options={{
-          tabBarLabel: 'IoT Devices',
+          tabBarLabel: 'LiveKit',
+        }}
+      />
+      <Tab.Screen 
+        name="VoiceAgent" 
+        component={VoiceAgentScreen}
+        options={{
+          tabBarLabel: '🤖 AI Voice',
         }}
       />
       <Tab.Screen 

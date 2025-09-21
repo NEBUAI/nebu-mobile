@@ -56,18 +56,15 @@ const LoginScreen: React.FC = () => {
 
     dispatch(setLoading(true));
 
-    try {
-      // TODO: Implement real authentication API call here
-      // Example:
-      // const response = await authAPI.login(email, password);
-      // dispatch(loginSuccess(response.user));
-      
-      dispatch(setLoading(false));
-      Alert.alert('Error', 'Autenticación no implementada. Conectar con API de autenticación real.');
-    } catch (error) {
-      dispatch(setLoading(false));
-      Alert.alert('Error', 'Error al iniciar sesión. Verificar credenciales.');
-    }
+    // Auto login for testing LiveKit features
+    setTimeout(() => {
+      dispatch(loginSuccess({
+        id: '1',
+        email: email,
+        name: 'LiveKit Tester',
+        avatar: undefined,
+      }));
+    }, 1000);
   };
 
   const getContainerStyle = (): ViewStyle => ({

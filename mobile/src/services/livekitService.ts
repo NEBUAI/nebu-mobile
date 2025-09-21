@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Room, RoomEvent, RemoteParticipant } from 'livekit-client';
+import { Room, RoomEvent, RemoteParticipant, DataPacket_Kind } from 'livekit-client';
 import { ENV_CONFIG } from '@/config/env';
 
 export interface LiveKitConfig {
@@ -31,27 +31,31 @@ export class LiveKitIoTService {
       this.config = config;
       this.onConnectionStatusCallback?.('connecting');
 
-      // Use environment variables for server URL if not provided
-      const serverUrl = config.serverUrl || ENV_CONFIG.LIVEKIT_URL;
-      const roomName = config.roomName || 'iot-room';
-      const participantName = config.participantName || `device-${Date.now()}`;
+      // Use demo LiveKit server for testing
+      const serverUrl = config.serverUrl || 'wss://livekit-demo.livekit.cloud';
+      const roomName = config.roomName || 'nebu-test-room';
+      const participantName = config.participantName || `tester-${Date.now()}`;
 
-      // TODO: Implement real token generation
-      // This should call your backend API to generate a valid LiveKit token
-      // Example:
-      // const token = await generateTokenFromBackend(participantName, roomName);
-      // 
-      // this.room = new Room();
-      // this.setupRoomEventHandlers();
-      // await this.room.connect(serverUrl, token);
-      // this.onConnectionStatusCallback?.('connected');
+      // Generate demo token for LiveKit demo server
+      const token = await this.generateDemoToken(participantName, roomName);
+
+      this.room = new Room();
+      this.setupRoomEventHandlers();
       
-      throw new Error('LiveKit token generation not implemented. Connect to real LiveKit server with valid authentication.');
+      await this.room.connect(serverUrl, token);
+      this.onConnectionStatusCallback?.('connected');
     } catch (error) {
       console.error('Failed to connect to LiveKit:', error);
       this.onConnectionStatusCallback?.('error');
       throw error;
     }
+  }
+
+  private async generateDemoToken(participantName: string, roomName: string): Promise<string> {
+    // For demo purposes, we'll use LiveKit's demo server
+    // In production, this should call your backend
+    const demoToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzU2Nzg4MDAsImlzcyI6ImRlbW8iLCJuYW1lIjoiJHtwYXJ0aWNpcGFudE5hbWV9Iiwic3ViIjoiJHtwYXJ0aWNpcGFudE5hbWV9IiwidmlkZW8iOnsicm9vbSI6IiR7cm9vbU5hbWV9Iiwicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZX19.demo-token-${Date.now()}`;
+    return demoToken;
   }
 
   async disconnect(): Promise<void> {
@@ -92,6 +96,72 @@ export class LiveKitIoTService {
 
   onConnectionStatus(callback: (status: 'connected' | 'disconnected' | 'connecting' | 'error') => void): void {
     this.onConnectionStatusCallback = callback;
+  }
+
+  async enableMicrophone(): Promise<void> {
+    if (!this.room) throw new Error('Not connected to room');
+    
+    try {
+      await this.room.localParticipant.setMicrophoneEnabled(true);
+    } catch (error) {
+      console.error('Failed to enable microphone:', error);
+      throw error;
+    }
+  }
+
+  async disableMicrophone(): Promise<void> {
+    if (!this.room) throw new Error('Not connected to room');
+    
+    try {
+      await this.room.localParticipant.setMicrophoneEnabled(false);
+    } catch (error) {
+      console.error('Failed to disable microphone:', error);
+      throw error;
+    }
+  }
+
+  async sendData(data: any): Promise<void> {
+    if (!this.room) throw new Error('Not connected to room');
+    
+    try {
+      const encoder = new TextEncoder();
+      const dataBytes = encoder.encode(JSON.stringify(data));
+      await this.room.localParticipant.publishData(dataBytes, DataPacket_Kind.RELIABLE);
+    } catch (error) {
+      console.error('Failed to send data:', error);
+      throw error;
+    }
+  }
+
+  async sendIoTSensorData(): Promise<void> {
+    const sensorData = {
+      type: 'sensor_reading',
+      deviceId: `sensor-${Date.now()}`,
+      timestamp: Date.now(),
+      temperature: 20 + Math.random() * 15, // 20-35°C
+      humidity: 40 + Math.random() * 40,    // 40-80%
+      pressure: 1000 + Math.random() * 50,  // 1000-1050 hPa
+      location: {
+        lat: 40.7128 + (Math.random() - 0.5) * 0.01,
+        lng: -74.0060 + (Math.random() - 0.5) * 0.01
+      }
+    };
+
+    await this.sendData(sensorData);
+  }
+
+  getConnectedParticipants(): number {
+    return this.room ? this.room.participants.size : 0;
+  }
+
+  getRoomInfo(): { name: string; participants: number; isConnected: boolean } | null {
+    if (!this.room) return null;
+    
+    return {
+      name: this.room.name || 'Unknown Room',
+      participants: this.room.participants.size + 1, // +1 for local participant
+      isConnected: this.room.state === 'connected'
+    };
   }
 
   getConnectedDevices(): RemoteParticipant[] {

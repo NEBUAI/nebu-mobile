@@ -47,6 +47,7 @@ export type AuthStackParamList = {
 export type MainTabParamList = {
   Home: undefined;
   IoTDashboard: undefined;
+  VoiceAgent: undefined;
   Profile: undefined;
 };
 
