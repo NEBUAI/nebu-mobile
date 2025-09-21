@@ -173,7 +173,7 @@ services:
       livekit:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health" ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health" ] #CAMBIAR POR IP DEL VPS
       interval: 30s
       timeout: 10s
       retries: 3
