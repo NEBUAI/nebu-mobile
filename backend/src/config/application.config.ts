@@ -4,10 +4,10 @@ export const applicationConfig = registerAs('app', () => {
 
   return {
     // Application settings
-    name: process.env.APP_NAME || 'Outliers Academy',
+    name: process.env.APP_NAME || 'Nebu Mobile',
     version: process.env.APP_VERSION || '1.0.0',
-    description: process.env.APP_DESCRIPTION || 'Plataforma de educación online',
-    supportEmail: process.env.SUPPORT_EMAIL || 'support@outliersacademy.com',
+    description: process.env.APP_DESCRIPTION || 'AI-Powered IoT & Voice Control Platform',
+    supportEmail: process.env.SUPPORT_EMAIL || 'support@nebu.com',
     defaultLocale: process.env.DEFAULT_LOCALE || 'es',
     supportedLocales: process.env.SUPPORTED_LOCALES?.split(',') || ['es', 'en'],
     timezone: process.env.APP_TIMEZONE || 'America/Mexico_City',
@@ -19,7 +19,7 @@ export const applicationConfig = registerAs('app', () => {
       documentation: {
         enabled: process.env.API_DOCS_ENABLED !== 'false',
         path: process.env.API_DOCS_PATH || '/api/docs',
-        title: process.env.API_DOCS_TITLE || 'Outliers Academy API',
+        title: process.env.API_DOCS_TITLE || 'Nebu Mobile API',
         version: process.env.API_DOCS_VERSION || '1.0.0',
       },
       cors: {

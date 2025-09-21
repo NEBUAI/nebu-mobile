@@ -25,7 +25,7 @@ export class HealthService {
       const healthData = {
         status: 'ok',
         timestamp: new Date().toISOString(),
-        service: 'outliers-academy-backend',
+        service: 'nebu-mobile-backend',
         version: '1.0.0',
         environment: this.configService.get<string>('NODE_ENV'),
         uptime: Math.floor(process.uptime()),
@@ -66,7 +66,7 @@ export class HealthService {
       return {
         status: 'error',
         timestamp: new Date().toISOString(),
-        service: 'outliers-academy-backend',
+        service: 'nebu-mobile-backend',
         error: error instanceof Error ? error.message : 'Unknown error',
         uptime: Math.floor(process.uptime()),
         performance: {
@@ -195,14 +195,14 @@ export class HealthService {
       return {
         status: isReady ? 'ready' : 'not-ready',
         timestamp: new Date().toISOString(),
-        service: 'outliers-academy-backend',
+        service: 'nebu-mobile-backend',
         checks,
       };
     } catch (error) {
       return {
         status: 'error',
         timestamp: new Date().toISOString(),
-        service: 'outliers-academy-backend',
+        service: 'nebu-mobile-backend',
         error: error instanceof Error ? error.message : 'Unknown error',
       };
     }

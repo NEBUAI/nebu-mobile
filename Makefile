@@ -104,9 +104,9 @@ prod-legacy: ## Start production environment without SSL config generation (lega
 	@echo "$(GREEN)Production environment started!$(NC)"
 
 ## Database Commands
-db-init: ## Initialize all databases (including N8N)
-	@echo "$(GREEN)Initializing databases...$(NC)"
-	@./scripts/init-databases.sh
+db-init: ## Initialize databases (automatic with TypeORM)
+	@echo "$(GREEN)Database initialization is automatic with TypeORM synchronize=true$(NC)"
+	@echo "$(YELLOW)No manual initialization needed for Nebu Mobile$(NC)"
 
 db-migrate: ## Run database migrations
 	@echo "$(GREEN)Running database migrations...$(NC)"
