@@ -1,10 +1,11 @@
 export const colors = {
-  primary: '#007AFF',
-  primaryDark: '#0056CC',
-  secondary: '#5856D6',
-  success: '#34C759',
-  warning: '#FF9500',
-  error: '#FF3B30',
+  primary: '#6C63FF', // Purple-blue for Nebu
+  primaryDark: '#5A52E5',
+  secondary: '#FF6B6B', // Coral accent
+  tertiary: '#4ECDC4', // Teal for IoT elements
+  success: '#51CF66',
+  warning: '#FFD43B',
+  error: '#FF6B6B',
   
   // Light theme colors
   light: {

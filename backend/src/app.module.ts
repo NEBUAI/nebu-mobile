@@ -40,6 +40,7 @@ import { DiscountsModule } from './discounts/discounts.module';
 import { CompanyModule } from './company/company.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { BlogModule } from './blog/blog.module';
+import { LiveKitModule } from './livekit/livekit.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
 
 @Module({
@@ -142,6 +143,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     CompanyModule,
     CloudinaryModule,
     BlogModule,
+    LiveKitModule,
 
     // Dynamic Modules (loaded based on feature flags)
     DynamicModulesConfig.forRoot(new ConfigService()),

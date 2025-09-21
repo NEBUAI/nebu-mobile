@@ -34,10 +34,10 @@ class CloudinaryMigration {
       folder = 'outliers-academy/migrated'
     } = options;
 
-    console.log('🚀 Starting Cloudinary migration...');
-    console.log(`📁 Target folder: ${folder}`);
-    console.log(`🔍 Dry run: ${dryRun}`);
-    console.log(`📦 Batch size: ${batchSize}`);
+  console.log('Starting Cloudinary migration...');
+  console.log(`Target folder: ${folder}`);
+  console.log(`Dry run: ${dryRun}`);
+  console.log(`Batch size: ${batchSize}`);
 
     // Get all course media records
     const mediaRecords = await this.courseMediaRepository.find({
@@ -47,10 +47,10 @@ class CloudinaryMigration {
       order: { createdAt: 'ASC' }
     });
 
-    console.log(`📊 Found ${mediaRecords.length} media records to migrate`);
+  console.log(`Found ${mediaRecords.length} media records to migrate`);
 
     if (mediaRecords.length === 0) {
-      console.log('✅ No media records to migrate');
+  console.log('No media records to migrate');
       return;
     }
 
@@ -61,14 +61,14 @@ class CloudinaryMigration {
     // Process in batches
     for (let i = 0; i < mediaRecords.length; i += batchSize) {
       const batch = mediaRecords.slice(i, i + batchSize);
-      console.log(`\n📦 Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(mediaRecords.length / batchSize)}`);
+  console.log(`\nProcessing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(mediaRecords.length / batchSize)}`);
 
       for (const media of batch) {
         try {
-          console.log(`🔄 Migrating: ${media.originalName} (${media.id})`);
+          console.log(`Migrating: ${media.originalName} (${media.id})`);
 
           if (dryRun) {
-            console.log(`   📝 Would migrate to: ${folder}/${media.fileName}`);
+            console.log(`   Would migrate to: ${folder}/${media.fileName}`);
             successCount++;
             continue;
           }
@@ -79,7 +79,7 @@ class CloudinaryMigration {
           try {
             await fs.access(localPath);
           } catch {
-            console.log(`   ⚠️  Local file not found: ${localPath}`);
+            console.log(`   Local file not found: ${localPath}`);
             errorCount++;
             errors.push({ id: media.id, error: 'Local file not found' });
             continue;
@@ -126,11 +126,11 @@ class CloudinaryMigration {
 
           await this.courseMediaRepository.save(media);
 
-          console.log(`   ✅ Migrated successfully: ${cloudinaryResult.secureUrl}`);
+          console.log(`   Migrated successfully: ${cloudinaryResult.secureUrl}`);
           successCount++;
 
         } catch (error) {
-          console.log(`   ❌ Migration failed: ${error.message}`);
+          console.log(`   Migration failed: ${error.message}`);
           errorCount++;
           errors.push({ id: media.id, error: error.message });
         }
@@ -143,20 +143,20 @@ class CloudinaryMigration {
     }
 
     // Print summary
-    console.log('\n📊 Migration Summary:');
-    console.log(`✅ Successfully migrated: ${successCount}`);
-    console.log(`❌ Failed migrations: ${errorCount}`);
-    console.log(`📊 Total processed: ${successCount + errorCount}`);
+  console.log('\nMigration Summary:');
+  console.log(`Successfully migrated: ${successCount}`);
+  console.log(`Failed migrations: ${errorCount}`);
+  console.log(`Total processed: ${successCount + errorCount}`);
 
     if (errors.length > 0) {
-      console.log('\n❌ Errors:');
+  console.log('\nErrors:');
       errors.forEach(({ id, error }) => {
         console.log(`   ${id}: ${error}`);
       });
     }
 
     if (!dryRun && successCount > 0) {
-      console.log('\n🧹 Consider cleaning up local files after verification');
+  console.log('\nConsider cleaning up local files after verification');
     }
   }
 
@@ -211,7 +211,7 @@ async function main() {
   try {
     await migration.migrate(options);
   } catch (error) {
-    console.error('❌ Migration failed:', error);
+  console.error('Migration failed:', error);
     process.exit(1);
   } finally {
     await app.close();

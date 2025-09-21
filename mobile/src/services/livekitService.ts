@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Room, RoomEvent, RemoteParticipant, DataPacket_Kind } from 'livekit-client';
 import { ENV_CONFIG } from '@/config/env';
+import { apiService } from './api';
 
 export interface LiveKitConfig {
   serverUrl?: string;
@@ -31,8 +32,8 @@ export class LiveKitIoTService {
       this.config = config;
       this.onConnectionStatusCallback?.('connecting');
 
-      // Use demo LiveKit server for testing
-      const serverUrl = config.serverUrl || 'wss://livekit-demo.livekit.cloud';
+      // Use local LiveKit server in development, demo server as fallback
+      const serverUrl = config.serverUrl || (__DEV__ ? 'ws://localhost:7880' : 'wss://livekit-demo.livekit.cloud');
       const roomName = config.roomName || 'nebu-test-room';
       const participantName = config.participantName || `tester-${Date.now()}`;
 
@@ -52,8 +53,21 @@ export class LiveKitIoTService {
   }
 
   private async generateDemoToken(participantName: string, roomName: string): Promise<string> {
-    // For demo purposes, we'll use LiveKit's demo server
-    // In production, this should call your backend
+    try {
+      // Try to get real token from backend first
+      const response = await apiService.generateVoiceAgentToken({
+        userId: 'demo-user',
+        sessionId: `${Date.now()}`
+      });
+
+      if (response.success && response.data?.token) {
+        return response.data.token;
+      }
+    } catch (error) {
+      console.warn('Failed to get token from backend, using demo token:', error);
+    }
+
+    // Fallback to demo token for development
     const demoToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzU2Nzg4MDAsImlzcyI6ImRlbW8iLCJuYW1lIjoiJHtwYXJ0aWNpcGFudE5hbWV9Iiwic3ViIjoiJHtwYXJ0aWNpcGFudE5hbWV9IiwidmlkZW8iOnsicm9vbSI6IiR7cm9vbU5hbWV9Iiwicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZX19.demo-token-${Date.now()}`;
     return demoToken;
   }

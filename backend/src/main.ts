@@ -44,15 +44,15 @@ async function bootstrap() {
   // Swagger documentation
   if (process.env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()
-      .setTitle('Outliers Academy API')
-      .setDescription('API completa para el LMS de Outliers Academy')
+      .setTitle('Nebu Mobile API')
+      .setDescription('API completa para Nebu Mobile - IoT y Voice Agent Platform')
       .setVersion('1.0')
       .addTag('auth', 'Autenticación y autorización')
       .addTag('users', 'Gestión de usuarios')
-      .addTag('courses', 'Gestión de cursos')
-      .addTag('progress', 'Progreso y tracking')
-      .addTag('community', 'Comunidad e interacciones')
-      .addTag('payments', 'Pagos y suscripciones')
+      .addTag('iot', 'Gestión de dispositivos IoT')
+      .addTag('voice', 'Agente de voz y audio')
+      .addTag('livekit', 'Comunicación tiempo real')
+      .addTag('ai', 'Servicios de inteligencia artificial')
       .addBearerAuth()
       .build();
 
@@ -86,7 +86,7 @@ async function bootstrap() {
 
   // eslint-disable-next-line no-console
   console.log(`
-🚀 Outliers Academy Backend iniciado!
+🚀 Nebu Mobile Backend iniciado!
 📍 URL: http://localhost:${port}
 📚 API Docs: http://localhost:${port}/api/docs
 🔍 Health Check: http://localhost:${port}/health
@@ -95,6 +95,9 @@ async function bootstrap() {
 ❤️ Liveness: http://localhost:${port}/health/liveness
 �📁 Uploads: http://localhost:${port}/uploads/
 🔧 Admin Panel: http://localhost:${port}/admin
+🎙️ LiveKit: http://localhost:7880
+🤖 Voice Agent: Ready for AI integration
+📱 Mobile API: Ready for React Native
   `);
 }
 

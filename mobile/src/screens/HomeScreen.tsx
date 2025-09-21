@@ -76,11 +76,11 @@ const HomeScreen: React.FC = () => {
     ...theme.shadows.sm,
   });
 
-  const getActionIconContainerStyle = (): ViewStyle => ({
+  const getActionIconContainerStyle = (color: string): ViewStyle => ({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: color,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: theme.spacing.md,
@@ -104,10 +104,10 @@ const HomeScreen: React.FC = () => {
   });
 
   const quickActions = [
-    { id: 1, title: t('home.exploreServices'), icon: 'compass-outline' },
-    { id: 2, title: t('home.myActivities'), icon: 'list-outline' },
-    { id: 3, title: t('home.settings'), icon: 'settings-outline' },
-    { id: 4, title: t('home.helpSupport'), icon: 'help-circle-outline' },
+    { id: 1, title: t('home.voiceAgent'), icon: 'mic-outline', color: theme.colors.primary },
+    { id: 2, title: t('home.iotDevices'), icon: 'hardware-chip-outline', color: theme.colors.tertiary },
+    { id: 3, title: t('home.dashboard'), icon: 'analytics-outline', color: theme.colors.secondary },
+    { id: 4, title: t('home.settings'), icon: 'settings-outline', color: theme.colors.textSecondary },
   ];
 
   const renderQuickAction = (action: typeof quickActions[0]) => (
@@ -116,7 +116,7 @@ const HomeScreen: React.FC = () => {
       style={[styles.actionCard, getActionCardStyle()]}
       activeOpacity={0.7}
     >
-      <View style={[styles.actionIconContainer, getActionIconContainerStyle()]}>
+      <View style={[styles.actionIconContainer, getActionIconContainerStyle(action.color)]}>
         <Ionicons
           name={action.icon as keyof typeof Ionicons.glyphMap}
           size={20}

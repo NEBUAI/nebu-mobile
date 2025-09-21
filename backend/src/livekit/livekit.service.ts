@@ -1,0 +1,181 @@
+import { Injectable, Logger } from '@nestjs/common';
+import { AccessToken, RoomServiceClient } from 'livekit-server-sdk';
+
+@Injectable()
+export class LiveKitService {
+  private readonly logger = new Logger(LiveKitService.name);
+  private readonly apiKey: string;
+  private readonly apiSecret: string;
+  private readonly livekitUrl: string;
+  private roomService: RoomServiceClient;
+
+  constructor() {
+    this.apiKey = process.env.LIVEKIT_API_KEY || 'nebu-dev';
+    this.apiSecret = process.env.LIVEKIT_SECRET_KEY || 'nebu-dev-secret-key-2024';
+    this.livekitUrl = process.env.LIVEKIT_URL || 'http://livekit:7880';
+    
+    this.roomService = new RoomServiceClient(this.livekitUrl, this.apiKey, this.apiSecret);
+  }
+
+  /**
+   * Genera un token JWT para conectarse a una sala de LiveKit
+   */
+  generateToken(
+    roomName: string, 
+    participantName: string, 
+    options: {
+      canPublish?: boolean;
+      canSubscribe?: boolean;
+      canPublishData?: boolean;
+      metadata?: string;
+    } = {}
+  ): string {
+    const {
+      canPublish = true,
+      canSubscribe = true,
+      canPublishData = true,
+      metadata = ''
+    } = options;
+
+    const at = new AccessToken(this.apiKey, this.apiSecret, {
+      identity: participantName,
+      metadata,
+    });
+
+    at.addGrant({
+      room: roomName,
+      roomJoin: true,
+      canPublish,
+      canSubscribe,
+      canPublishData,
+    });
+
+    const token = at.toJwt();
+    
+    this.logger.log(`Token generated for ${participantName} in room ${roomName}`);
+    return token;
+  }
+
+  /**
+   * Crea una nueva sala en LiveKit
+   */
+  async createRoom(roomName: string, options: {
+    maxParticipants?: number;
+    emptyTimeout?: number;
+    metadata?: string;
+  } = {}): Promise<any> {
+    try {
+      const room = await this.roomService.createRoom({
+        name: roomName,
+        maxParticipants: options.maxParticipants || 50,
+        emptyTimeout: options.emptyTimeout || 300,
+        metadata: options.metadata || '',
+      });
+
+      this.logger.log(`Room created: ${roomName}`);
+      return room;
+    } catch (error) {
+      this.logger.error(`Failed to create room ${roomName}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Lista todas las salas activas
+   */
+  async listRooms(): Promise<any[]> {
+    try {
+      const rooms = await this.roomService.listRooms();
+      return rooms;
+    } catch (error) {
+      this.logger.error('Failed to list rooms:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Obtiene información de una sala específica
+   */
+  async getRoom(roomName: string): Promise<any> {
+    try {
+      const room = await this.roomService.listRooms([roomName]);
+      return room[0] || null;
+    } catch (error) {
+      this.logger.error(`Failed to get room ${roomName}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Lista participantes de una sala
+   */
+  async listParticipants(roomName: string): Promise<any[]> {
+    try {
+      const participants = await this.roomService.listParticipants(roomName);
+      return participants;
+    } catch (error) {
+      this.logger.error(`Failed to list participants for room ${roomName}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Desconecta a un participante de una sala
+   */
+  async removeParticipant(roomName: string, participantIdentity: string): Promise<void> {
+    try {
+      await this.roomService.removeParticipant(roomName, participantIdentity);
+      this.logger.log(`Participant ${participantIdentity} removed from room ${roomName}`);
+    } catch (error) {
+      this.logger.error(`Failed to remove participant ${participantIdentity} from room ${roomName}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Elimina una sala
+   */
+  async deleteRoom(roomName: string): Promise<void> {
+    try {
+      await this.roomService.deleteRoom(roomName);
+      this.logger.log(`Room deleted: ${roomName}`);
+    } catch (error) {
+      this.logger.error(`Failed to delete room ${roomName}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Genera token para Voice Agent (configuración específica)
+   */
+  generateVoiceAgentToken(userId: string, sessionId: string): string {
+    const roomName = `voice-agent-${userId}-${sessionId}`;
+    return this.generateToken(roomName, `user-${userId}`, {
+      canPublish: true,
+      canSubscribe: true,
+      canPublishData: true,
+      metadata: JSON.stringify({
+        type: 'voice-agent',
+        userId,
+        sessionId,
+        timestamp: Date.now()
+      })
+    });
+  }
+
+  /**
+   * Genera token para IoT Device (configuración específica)
+   */
+  generateIoTToken(deviceId: string, roomName: string): string {
+    return this.generateToken(roomName, `device-${deviceId}`, {
+      canPublish: true,
+      canSubscribe: false,
+      canPublishData: true,
+      metadata: JSON.stringify({
+        type: 'iot-device',
+        deviceId,
+        timestamp: Date.now()
+      })
+    });
+  }
+}

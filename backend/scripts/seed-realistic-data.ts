@@ -11,7 +11,7 @@ class RealisticDataSeeder {
 
   async runSeeding(): Promise<void> {
     try {
-      console.log('🎯 Starting realistic data seeding...');
+  console.log('Starting realistic data seeding...');
       
       await this.cleanDatabase();
       await this.seedCategories();
@@ -20,15 +20,15 @@ class RealisticDataSeeder {
       await this.seedEnrollments();
       await this.showStats();
       
-      console.log('✅ Realistic data seeding completed successfully!');
+  console.log('Realistic data seeding completed successfully!');
     } catch (error) {
-      console.error('❌ Realistic data seeding failed:', error);
+  console.error('Realistic data seeding failed:', error);
       throw error;
     }
   }
 
   private async cleanDatabase(): Promise<void> {
-    console.log('🧹 Cleaning database...');
+  console.log('Cleaning database...');
     
     // Delete in correct order to respect foreign key constraints
     await this.dataSource.query('DELETE FROM course_students');
@@ -36,11 +36,11 @@ class RealisticDataSeeder {
     await this.dataSource.query('DELETE FROM categories');
     await this.dataSource.query('DELETE FROM users');
     
-    console.log('✅ Database cleaned');
+  console.log('Database cleaned');
   }
 
   private async seedCategories(): Promise<void> {
-    console.log('🏷️ Seeding categories...');
+  console.log('Seeding categories...');
     
     const categoryRepository = this.dataSource.getRepository(Category);
     
@@ -92,13 +92,13 @@ class RealisticDataSeeder {
       if (!existingCategory) {
         const category = categoryRepository.create(categoryData);
         await categoryRepository.save(category);
-        console.log(`✅ Created category: ${categoryData.name}`);
+  console.log(`Created category: ${categoryData.name}`);
       }
     }
   }
 
   private async seedUsers(): Promise<void> {
-    console.log('👥 Seeding users...');
+  console.log('Seeding users...');
     
     const userRepository = this.dataSource.getRepository(User);
     

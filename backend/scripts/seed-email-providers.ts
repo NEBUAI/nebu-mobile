@@ -43,7 +43,7 @@ async function seedEmailProviders() {
     });
 
     await emailProviderRepository.save(hostingerProvider);
-    console.log('✅ Hostinger provider created');
+  console.log('Hostinger provider created');
 
     // Create Gmail provider (backup)
     const gmailProvider = emailProviderRepository.create({
@@ -61,7 +61,7 @@ async function seedEmailProviders() {
     });
 
     await emailProviderRepository.save(gmailProvider);
-    console.log('✅ Gmail provider created');
+  console.log('Gmail provider created');
 
     // Create email accounts
     const accounts = [
@@ -115,13 +115,13 @@ async function seedEmailProviders() {
       });
 
       await emailAccountRepository.save(account);
-      console.log(`✅ Account ${accountData.email} created`);
+  console.log(`Account ${accountData.email} created`);
     }
 
-    console.log('🎉 Email providers and accounts seeded successfully!');
+  console.log('Email providers and accounts seeded successfully!');
 
   } catch (error) {
-    console.error('❌ Error seeding email providers:', error);
+  console.error('Error seeding email providers:', error);
   } finally {
     await AppDataSource.destroy();
     console.log('Database connection closed');
