@@ -1,7 +1,5 @@
 import React from 'react';
 import { Text, StyleSheet, TextStyle } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import MaskedView from '@react-native-masked-view/masked-view';
 import { useAppSelector } from '@/store/hooks';
 import { getTheme } from '@/utils/theme';
 
@@ -46,23 +44,12 @@ const GradientText: React.FC<GradientTextProps> = ({
     ...style,
   });
 
+  // Simplified version without external dependencies
+  // Use primary color for now, can be enhanced later with expo-linear-gradient
   return (
-    <MaskedView
-      style={styles.container}
-      maskElement={
-        <Text style={[styles.text, getTextStyle()]}>
-          {children}
-        </Text>
-      }
-    >
-      <LinearGradient
-        colors={getGradientColors()}
-        locations={locations}
-        start={start}
-        end={end}
-        style={styles.gradient}
-      />
-    </MaskedView>
+    <Text style={[styles.text, getTextStyle(), { color: theme.colors.primary }]}>
+      {children}
+    </Text>
   );
 };
 

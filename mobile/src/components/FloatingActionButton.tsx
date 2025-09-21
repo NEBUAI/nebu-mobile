@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import {
+  View,
   TouchableOpacity,
   StyleSheet,
   Animated,
@@ -182,29 +183,10 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
     return sizes[size];
   };
 
-  const animatedStyle = {
+  const animatedStyle: any = {
     transform: [
       { translateY: floatAnim },
       { scale: scaleAnim },
-      { 
-        rotate: rotateAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['0deg', '15deg'],
-        })
-      },
-      // Glitch effects
-      { 
-        translateX: glitchAnim1.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 2],
-        })
-      },
-      { 
-        translateY: glitchAnim2.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, -2],
-        })
-      },
     ],
     opacity: disabled ? theme.animations.opacity.disabled : theme.animations.opacity.visible,
   };
@@ -218,20 +200,22 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
       animatedStyle,
       style,
     ]}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        disabled={disabled}
-        activeOpacity={0.8}
-      >
-        <Ionicons
-          name={icon}
-          size={getIconSize()}
-          color="#FFFFFF"
-        />
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={onPress}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          disabled={disabled}
+          activeOpacity={0.8}
+        >
+          <Ionicons
+            name={icon}
+            size={getIconSize()}
+            color="#FFFFFF"
+          />
+        </TouchableOpacity>
+      </View>
     </Animated.View>
   );
 };

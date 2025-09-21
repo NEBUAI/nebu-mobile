@@ -1,6 +1,8 @@
 import { IsString, IsOptional, IsEnum, IsNumber, IsUUID, IsObject, Min } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { SessionStatus, MessageType } from '../entities/voice-session.entity';
+
+export type SessionStatus = 'active' | 'ended' | 'paused' | 'error';
+export type MessageType = 'user' | 'assistant' | 'system';
 
 export class CreateVoiceSessionDto {
   @ApiPropertyOptional({ description: 'User ID who owns this session' })
