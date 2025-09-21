@@ -1,0 +1,374 @@
+services:
+  # ==============================================
+  # TRAEFIK CONFIG GENERATOR
+  # ==============================================
+  traefik-config:
+    image: alpine:latest
+    container_name: outliers-academy-traefik-config
+    volumes:
+      - ./gateway:/gateway
+    environment:
+      - ACME_EMAIL=${ACME_EMAIL}
+      - DOMAIN=${DOMAIN}
+    command: >
+      sh -c "
+        apk add --no-cache gettext &&
+        envsubst < /gateway/traefik.prod.template.yml > /gateway/traefik.prod.yml &&
+        echo 'Config generated with email:' &&
+        grep -A1 'email:' /gateway/traefik.prod.yml | tail -1
+      "
+    profiles:
+      - config
+
+  # ==============================================
+  # TRAEFIK - REVERSE PROXY & LOAD BALANCER
+  # ==============================================
+  traefik:
+    image: traefik:v3.0
+    container_name: outliers-academy-traefik
+    restart: unless-stopped
+    ports:
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "8080:8080" # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./gateway/traefik.prod.yml:/etc/traefik/traefik.yml:ro
+      - ./gateway/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - ./gateway/letsencrypt:/letsencrypt
+      - traefik_logs:/logs
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+      - ACME_EMAIL=${ACME_EMAIL:-admin@outliers.academy}
+    networks:
+      - traefik-network
+      - outliers-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+    healthcheck:
+      test: [ "CMD", "traefik", "healthcheck", "--ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ==============================================
+  # DATABASE - POSTGRESQL
+  # ==============================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: outliers-academy-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
+      - ./backend/scripts/setup-database.sql:/docker-entrypoint-initdb.d/setup-database.sql:ro
+      - ./db/init:/docker-entrypoint-initdb.d/custom:ro
+    networks:
+      - outliers-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # ==============================================
+  # CACHE & SESSION STORE - REDIS
+  # ==============================================
+  redis:
+    image: redis:7-alpine
+    container_name: outliers-academy-redis
+    restart: unless-stopped
+    command: >
+      redis-server  --appendonly yes  --appendfsync everysec --maxmemory 512mb --maxmemory-policy allkeys-lru --tcp-keepalive 60
+    volumes:
+      - redis_data:/data
+      - redis_logs:/var/log/redis
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - outliers-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ==============================================
+  # BACKEND API - NESTJS
+  # ==============================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: ${DOCKER_TARGET:-development}
+    container_name: outliers-academy-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=${BACKEND_PORT:-3001}
+      - DATABASE_HOST=${DATABASE_HOST:-postgres}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL=${DATABASE_SSL:-false}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - JWT_SECRET=${JWT_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      # Optimizado: Solo CORS_ORIGIN usando NEXT_PUBLIC_APP_URL
+      - CORS_ORIGIN=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      # Stripe Configuration (optimizado - solo secret key en servidor)
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      # Cloudinary Configuration
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      # SMTP Configuration
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_SECURE=${SMTP_SECURE}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_FROM=${SMTP_FROM}
+      # Feature Flags
+      - ENABLE_ANALYTICS=${ENABLE_ANALYTICS}
+      - ENABLE_WEBSOCKET=${ENABLE_WEBSOCKET}
+      - ENABLE_CHAT=${ENABLE_CHAT}
+      - ENABLE_NOTIFICATIONS=${ENABLE_NOTIFICATIONS}
+      - ENABLE_EMAIL_NOTIFICATIONS=${ENABLE_EMAIL_NOTIFICATIONS}
+      - ENABLE_OAUTH=${ENABLE_OAUTH}
+      - ENABLE_STRIPE=${ENABLE_STRIPE}
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+      - backend_logs:/app/logs
+      - backend_uploads:/app/uploads
+    ports:
+      - "3001:3001"
+    networks:
+      - outliers-network
+      - traefik-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=3001"
+
+  # ==============================================
+  # FRONTEND - NEXT.JS
+  # ==============================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: ${DOCKER_TARGET:-development}
+      args:
+        # URLs optimizadas (sin redundancias)
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.localhost}
+        # Servicios externos
+        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
+        NEXT_PUBLIC_CLOUDINARY_API_KEY: ${NEXT_PUBLIC_CLOUDINARY_API_KEY}
+        NEXT_PUBLIC_CLOUDINARY_API_SECRET: ${NEXT_PUBLIC_CLOUDINARY_API_SECRET}
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+        # Auth
+        NEXTAUTH_URL: ${NEXTAUTH_URL:-${NEXT_PUBLIC_APP_URL:-http://localhost:3000}}
+        NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+    container_name: outliers-academy-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      # URLs optimizadas (sin redundancias)
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-https://api.localhost}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      # Servicios externos
+      - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
+      - NEXT_PUBLIC_CLOUDINARY_API_KEY=${NEXT_PUBLIC_CLOUDINARY_API_KEY}
+      - NEXT_PUBLIC_CLOUDINARY_API_SECRET=${NEXT_PUBLIC_CLOUDINARY_API_SECRET}
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+      # Auth
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-${NEXT_PUBLIC_APP_URL:-http://localhost:3000}}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      # URLs internas
+      - BACKEND_URL=${BACKEND_URL:-http://backend:3001}
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${FRONTEND_PORT:-3000}
+      # OAuth Configuration
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      # Frontend Feature Flags
+      - NEXT_PUBLIC_ENABLE_ANALYTICS=${NEXT_PUBLIC_ENABLE_ANALYTICS}
+      - NEXT_PUBLIC_ENABLE_WEBSOCKET=${NEXT_PUBLIC_ENABLE_WEBSOCKET}
+      - NEXT_PUBLIC_ENABLE_CHAT=${NEXT_PUBLIC_ENABLE_CHAT}
+      - NEXT_PUBLIC_ENABLE_NOTIFICATIONS=${NEXT_PUBLIC_ENABLE_NOTIFICATIONS}
+      - NEXT_PUBLIC_ENABLE_EMAIL_NOTIFICATIONS=${NEXT_PUBLIC_ENABLE_EMAIL_NOTIFICATIONS}
+      - NEXT_PUBLIC_ENABLE_OAUTH=${NEXT_PUBLIC_ENABLE_OAUTH}
+      - NEXT_PUBLIC_ENABLE_STRIPE=${NEXT_PUBLIC_ENABLE_STRIPE}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+      - frontend_next:/app/.next
+      - frontend_logs:/app/logs
+    networks:
+      - outliers-network
+      - traefik-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`${DOMAIN:-localhost}`) || Host(`www.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+
+  # ==============================================
+  # MONITORING & LOGS (OPCIONAL)
+  # ==============================================
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: outliers-academy-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+    networks:
+      - outliers-network
+    profiles:
+      - monitoring
+
+  # ==============================================
+  # N8N - AUTOMATION WORKFLOWS
+  # ==============================================
+  n8n-service:
+    image: n8nio/n8n:latest
+    container_name: outliers-academy-n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=${NODE_ENV:-development}
+      - WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://localhost:5678}
+      - GENERIC_TIMEZONE=${TZ:-UTC}
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=${N8N_DATABASE:-n8n_db}
+      - DB_POSTGRESDB_USER=${DATABASE_USERNAME}
+      - DB_POSTGRESDB_PASSWORD=${DATABASE_PASSWORD}
+      - N8N_METRICS=true
+      - N8N_LOG_LEVEL=info
+      - N8N_LOG_OUTPUT=console
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - n8n_logs:/var/log/n8n
+    networks:
+      - outliers-network
+      - traefik-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.n8n.rule=Host(`n8n.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.n8n.entrypoints=websecure"
+      - "traefik.http.routers.n8n.tls.certresolver=letsencrypt"
+      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
+      - "traefik.http.routers.n8n.middlewares=security-headers"
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5678/healthz" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+# ==============================================
+# VOLUMES
+# ==============================================
+volumes:
+  # Base de datos
+  postgres_data:
+    driver: local
+  postgres_logs:
+    driver: local
+
+  # Cache
+  redis_data:
+    driver: local
+  redis_logs:
+    driver: local
+
+  # Backend
+  backend_node_modules:
+    driver: local
+  backend_logs:
+    driver: local
+  backend_uploads:
+    driver: local
+
+  # Frontend
+  frontend_node_modules:
+    driver: local
+  frontend_next:
+    driver: local
+  frontend_logs:
+    driver: local
+
+  # Traefik
+  traefik_logs:
+    driver: local
+
+  # N8N
+  n8n_data:
+    driver: local
+  n8n_logs:
+    driver: local
+
+# ==============================================
+# NETWORKS
+# ==============================================
+networks:
+  outliers-network:
+    driver: bridge
+    internal: true
+  traefik-network:
+    driver: bridge
+    external: false

@@ -1,0 +1,197 @@
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Exclude } from 'class-transformer';
+// Using string references to avoid circular dependencies
+// Relations will be loaded via repositories when needed
+
+export enum UserRole {
+  STUDENT = 'student',
+  INSTRUCTOR = 'instructor',
+  ADMIN = 'admin',
+}
+
+export enum UserStatus {
+  PENDING = 'pending',
+  ACTIVE = 'active',
+  SUSPENDED = 'suspended',
+  DELETED = 'deleted',
+}
+
+@Entity('users')
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ unique: true })
+  username: string;
+
+  @Column({ nullable: true })
+  @Exclude()
+  password: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column({ nullable: true })
+  avatar: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.STUDENT,
+  })
+  role: UserRole;
+
+  @Column({
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.PENDING,
+  })
+  status: UserStatus;
+
+  @Column({ default: false })
+  emailVerified: boolean;
+
+  @Column({ nullable: true })
+  emailVerificationToken: string;
+
+  @Column({ nullable: true })
+  passwordResetToken: string;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  passwordResetExpires: Date;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  lastLoginAt: Date;
+
+  @Column({ default: 'es' })
+  preferredLanguage: string;
+
+  @Column({ default: 'America/Lima' })
+  timezone: string;
+
+  @Column({ type: 'json', nullable: true })
+  preferences: Record<string, any>;
+
+  @Column({ type: 'json', nullable: true })
+  metadata: Record<string, any>;
+
+  // OAuth fields
+  @Column({ nullable: true })
+  oauthProvider: string;
+
+  @Column({ nullable: true })
+  oauthId: string;
+
+  @Column({ nullable: true })
+  stripeCustomerId: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
+
+  // Relations using string references to avoid circular dependencies
+  @OneToMany('Course', 'instructor')
+  instructorCourses: any[];
+
+  @ManyToMany('Course', 'students')
+  @JoinTable({
+    name: 'course_students',
+    joinColumn: { name: 'userId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'courseId', referencedColumnName: 'id' },
+  })
+  enrolledCourses: any[];
+
+  @OneToMany('Progress', 'user')
+  progress: any[];
+
+  @OneToMany('Subscription', 'user')
+  subscriptions: any[];
+
+  @OneToMany('Purchase', 'user')
+  purchases: any[];
+
+  @OneToMany('Review', 'user')
+  reviews: any[];
+
+  @OneToMany('Comment', 'user')
+  comments: any[];
+
+  @OneToMany('CartItem', 'user')
+  cartItems: any[];
+
+  @OneToMany('UserCourseEnrollment', 'user')
+  courseEnrollments: any[];
+
+  @OneToMany('UserProgress', 'user')
+  userProgress: any[];
+
+  @OneToMany('Order', 'user')
+  orders: any[];
+
+  // Virtual properties
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`.trim() || this.username;
+  }
+
+  get isActive(): boolean {
+    return this.status === UserStatus.ACTIVE;
+  }
+
+  get hasRole(): (roleName: string) => boolean {
+    return (roleName: string) => {
+      return this.role === roleName;
+    };
+  }
+
+  get hasPrivilege(): (privilegeName: string) => boolean {
+    return (_privilegeName: string) => {
+      // For now, simplified privilege system
+      return this.role === UserRole.ADMIN;
+    };
+  }
+
+  get isInstructor(): boolean {
+    return this.role === UserRole.INSTRUCTOR || this.role === UserRole.ADMIN;
+  }
+
+  get isAdmin(): boolean {
+    return this.role === UserRole.ADMIN;
+  }
+
+  get isStudent(): boolean {
+    return this.role === UserRole.STUDENT;
+  }
+
+  get enrolledCoursesCount(): number {
+    return this.enrolledCourses ? this.enrolledCourses.length : 0;
+  }
+
+  get completedCoursesCount(): number {
+    if (!this.progress) return 0;
+    const completedCourses = new Set(
+      this.progress.filter(p => p.status === 'completed').map(p => p.courseId)
+    );
+    return completedCourses.size;
+  }
+
+  get totalProgressCount(): number {
+    return this.progress ? this.progress.length : 0;
+  }
+}
