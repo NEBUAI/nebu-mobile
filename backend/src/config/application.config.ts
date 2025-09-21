@@ -89,7 +89,7 @@ export const applicationConfig = registerAs('app', () => {
         healthChecksEnabled: true 
       },
       automation: { 
-        n8nEnabled: true 
+        enabled: false 
       },
       security: { 
         rateLimitingEnabled: true 
