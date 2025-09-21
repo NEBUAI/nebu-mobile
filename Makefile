@@ -95,7 +95,6 @@ prod: check-deps config ## Start production environment with SSL config generati
 	@echo "$(BLUE)🌐 Available services:$(NC)"
 	@echo "  API:      https://api.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
 	@echo "  Traefik:  https://traefik.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
-	@echo "  N8N:      https://n8n.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
 	@echo ""
 	@echo "$(YELLOW)⚠️  SSL certificates will be generated automatically$(NC)"
 
@@ -125,9 +124,6 @@ db-backup: ## Backup database
 	@echo "$(GREEN)Creating database backup...$(NC)"
 	@docker-compose exec postgres pg_dump -U outliers_academy outliers_academy_db > backup_$(shell date +%Y%m%d_%H%M%S).sql
 
-db-create-n8n: ## Create N8N database manually
-	@echo "$(GREEN)Creating N8N database...$(NC)"
-	@docker exec outliers-academy-postgres psql -U outliers_academy -d outliers_academy_dev -c "CREATE DATABASE n8n_db;" || echo "Database may already exist"
 
 ## Cleanup Commands
 clean: ## Clean up Docker resources
