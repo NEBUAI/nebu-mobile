@@ -2,7 +2,7 @@
 
 Este directorio contiene la configuración de N8N para Outliers Academy, una herramienta de automatización de flujos de trabajo que permite conectar diferentes servicios y automatizar tareas.
 
-## Características
+## 🚀 Características
 
 - **Automatización de flujos**: Crear workflows complejos sin código
 - **Integración con APIs**: Conectar con servicios externos
@@ -11,7 +11,7 @@ Este directorio contiene la configuración de N8N para Outliers Academy, una her
 - **Autenticación**: Acceso seguro con autenticación básica
 - **Métricas**: Monitoreo de rendimiento y uso
 
-## Configuración
+## 📋 Configuración
 
 ### Variables de Entorno
 
@@ -45,7 +45,7 @@ N8N_METRICS=true
 - **Usuario**: admin
 - **Contraseña**: admin123
 
-## Uso
+## 🔧 Uso
 
 ### Iniciar N8N
 
@@ -67,7 +67,7 @@ docker-compose logs n8n
 docker-compose ps n8n
 ```
 
-## Casos de Uso para Outliers Academy
+## 📊 Casos de Uso para Outliers Academy
 
 ### 1. Automatización de Notificaciones
 - Enviar emails cuando un usuario completa un curso
@@ -89,21 +89,21 @@ docker-compose ps n8n
 - Procesar formularios de contacto
 - Integración con servicios de terceros
 
-## Seguridad
+## 🔒 Seguridad
 
 - Autenticación básica habilitada
 - Conexión segura a base de datos
 - Encriptación de datos sensibles
 - Logs de auditoría
 
-## Monitoreo
+## 📈 Monitoreo
 
 - Métricas de rendimiento habilitadas
 - Logs estructurados
 - Health checks automáticos
 - Integración con sistema de monitoreo
 
-## Desarrollo
+## 🛠️ Desarrollo
 
 ### Estructura de archivos
 
@@ -123,7 +123,7 @@ Para personalizar la configuración:
 2. Actualizar `n8n.env` para variables de entorno
 3. Reiniciar el contenedor: `docker-compose restart n8n`
 
-## Enlaces Útiles
+## 🔗 Enlaces Útiles
 
 - [Documentación oficial de N8N](https://docs.n8n.io/)
 - [Nodos disponibles](https://docs.n8n.io/integrations/)
