@@ -104,7 +104,7 @@ export class BlogPost {
   automationType: AutomationType;
 
   @Column({ type: 'simple-array', nullable: true })
-  automationTools: string[]; // ['Zapier', 'Make', 'Power Automate', 'n8n']
+  automationTools: string[]; // ['Zapier', 'Make', 'Power Automate']
 
   @Column({ type: 'timestamptz', nullable: true })
   difficultyLevel: string; // 'Beginner', 'Intermediate', 'Advanced'

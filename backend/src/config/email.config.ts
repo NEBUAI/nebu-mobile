@@ -12,9 +12,9 @@ export const emailConfig = registerAs('email', () => {
         auth: { type: 'login' },
         accounts: {
           default: {
-            email: process.env.SMTP_USER || 'noreply@outliers.academy',
+            email: process.env.SMTP_USER || 'noreply@nebu.com',
             password: process.env.SMTP_PASSWORD || '',
-            fromName: 'Outliers Academy',
+            fromName: 'Nebu Mobile',
             purpose: 'General email communications'
           }
         }

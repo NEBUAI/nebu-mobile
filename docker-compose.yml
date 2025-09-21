@@ -39,10 +39,10 @@ services:
       - traefik_logs:/logs
     environment:
       - DOMAIN=${DOMAIN:-localhost}
-      - ACME_EMAIL=${ACME_EMAIL:-admin@outliers.academy}
+      - ACME_EMAIL=${ACME_EMAIL:-admin@nebu.com}
     networks:
       - traefik-network
-      - outliers-network
+      - nebu-network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:-localhost}`)"
@@ -73,7 +73,7 @@ services:
       - ./backend/scripts/setup-database.sql:/docker-entrypoint-initdb.d/setup-database.sql:ro
       - ./db/init:/docker-entrypoint-initdb.d/custom:ro
     networks:
-      - outliers-network
+      - nebu-network
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}" ]
       interval: 30s
@@ -95,7 +95,7 @@ services:
       - redis_logs:/var/log/redis
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
     networks:
-      - outliers-network
+      - nebu-network
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 30s
@@ -163,7 +163,7 @@ services:
     ports:
       - "3001:3001"
     networks:
-      - outliers-network
+      - nebu-network
       - traefik-network
     depends_on:
       postgres:
@@ -199,7 +199,7 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_INCLUDE_RESTARTING=true
     networks:
-      - outliers-network
+      - nebu-network
     profiles:
       - monitoring
 
@@ -220,7 +220,7 @@ services:
       - "7882:7882/udp" # WebRTC UDP
       - "50000-50200:50000-50200/udp" # WebRTC ICE range
     networks:
-      - outliers-network
+      - nebu-network
       - traefik-network
     labels:
       - "traefik.enable=true"
@@ -234,62 +234,12 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-
   # ==============================================
   # N8N - AUTOMATION WORKFLOWS
   # ==============================================
-  n8n-service:
-    image: n8nio/n8n:latest
-    container_name: nebu-mobile-n8n
-    restart: unless-stopped
-    environment:
-      - N8N_HOST=${N8N_HOST:-localhost}
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=http
-      - NODE_ENV=${NODE_ENV:-development}
-      - WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://localhost:5678}
-      - GENERIC_TIMEZONE=${TZ:-UTC}
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
-      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
-      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=postgres
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${N8N_DATABASE:-n8n_db}
-      - DB_POSTGRESDB_USER=${DATABASE_USERNAME}
-      - DB_POSTGRESDB_PASSWORD=${DATABASE_PASSWORD}
-      - N8N_METRICS=true
-      - N8N_LOG_LEVEL=info
-      - N8N_LOG_OUTPUT=console
-    ports:
-      - "5678:5678"
-    volumes:
-      - n8n_data:/home/node/.n8n
-      - n8n_logs:/var/log/n8n
-    networks:
-      - outliers-network
-      - traefik-network
-    depends_on:
-      postgres:
-        condition: service_healthy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.n8n.rule=Host(`n8n.${DOMAIN:-localhost}`)"
-      - "traefik.http.routers.n8n.entrypoints=websecure"
-      - "traefik.http.routers.n8n.tls.certresolver=letsencrypt"
-      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
-      - "traefik.http.routers.n8n.middlewares=security-headers"
-    healthcheck:
-      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5678/healthz" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-# ==============================================
-# VOLUMES
-# ==============================================
+  # ==============================================
+  # VOLUMES
+  # ==============================================
 volumes:
   # Base de datos
   postgres_data:
@@ -315,12 +265,6 @@ volumes:
   traefik_logs:
     driver: local
 
-  # N8N
-  n8n_data:
-    driver: local
-  n8n_logs:
-    driver: local
-
   # LiveKit
   livekit_logs:
     driver: local
@@ -329,7 +273,7 @@ volumes:
 # NETWORKS
 # ==============================================
 networks:
-  outliers-network:
+  nebu-network:
     driver: bridge
     internal: true
   traefik-network:

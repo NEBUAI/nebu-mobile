@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================================
-# OUTLIERS ACADEMY - STACK CLEANUP SCRIPT
+# NEBU MOBILE - STACK CLEANUP SCRIPT
 # ==============================================
 
 set -e
@@ -18,9 +18,9 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-PROJECT_NAME="outliers-academy"
+PROJECT_NAME="nebu-mobile"
 
-echo -e "${BLUE}🧹 Outliers Academy Stack Cleanup${NC}"
+echo -e "${BLUE}🧹 Nebu Mobile Stack Cleanup${NC}"
 echo "========================================"
 
 # Function to ask for confirmation

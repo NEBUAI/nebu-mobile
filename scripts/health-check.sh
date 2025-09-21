@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================================
-# OUTLIERS ACADEMY - HEALTH CHECK SCRIPT
+# NEBU MOBILE - HEALTH CHECK SCRIPT
 # ==============================================
 
 set -e
@@ -14,7 +14,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configuration
-PROJECT_NAME="outliers-academy"
+PROJECT_NAME="nebu-mobile"
 TIMEOUT=10
 RETRY_COUNT=3
 
@@ -23,8 +23,8 @@ declare -A HEALTH_ENDPOINTS=(
     ["traefik"]="http://localhost:8080/ping"
     ["backend"]="http://localhost:3001/health"
     ["frontend"]="http://localhost:3000/api/health"
-    ["postgres"]="docker exec outliers-academy-postgres pg_isready -U outliers_academy"
-    ["redis"]="docker exec outliers-academy-redis redis-cli ping"
+    ["postgres"]="docker exec nebu-mobile-postgres pg_isready -U $DATABASE_USERNAME"
+    ["redis"]="docker exec nebu-mobile-redis redis-cli ping"
 )
 
 # Service ports
@@ -187,7 +187,7 @@ check_all_services() {
     local total_services=${#services[@]}
     local healthy_services=0
     
-    echo "🏥 OUTLIERS ACADEMY - HEALTH CHECK REPORT"
+    echo "🏥 NEBU MOBILE - HEALTH CHECK REPORT"
     echo "========================================"
     
     for service in "${services[@]}"; do
@@ -243,14 +243,14 @@ test_e2e() {
     fi
     
     # Test backend -> database
-    if docker exec outliers-academy-backend npm run db:health >/dev/null 2>&1; then
+    if docker exec nebu-mobile-backend npm run db:health >/dev/null 2>&1; then
         success "Backend can reach database"
     else
         warning "Backend database connectivity test failed (command may not exist)"
     fi
     
     # Test backend -> redis
-    if docker exec outliers-academy-backend node -e "const redis = require('redis'); const client = redis.createClient({host: 'redis'}); client.ping();" >/dev/null 2>&1; then
+    if docker exec nebu-mobile-backend node -e "const redis = require('redis'); const client = redis.createClient({host: 'redis'}); client.ping();" >/dev/null 2>&1; then
         success "Backend can reach Redis"
     else
         warning "Backend Redis connectivity test failed"
@@ -268,7 +268,7 @@ show_system_info() {
     df -h | grep -E "(Filesystem|/dev/)"
     echo ""
     echo "📦 Container status:"
-    docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep outliers-academy || echo "No containers running"
+    docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep nebu-mobile || echo "No containers running"
 }
 
 # Main function

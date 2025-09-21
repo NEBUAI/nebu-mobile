@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================================
-# OUTLIERS ACADEMY - CONTAINER MANAGEMENT SCRIPT
+# NEBU MOBILE - CONTAINER MANAGEMENT SCRIPT
 # ==============================================
 
 set -e
@@ -59,7 +59,7 @@ check_service_health() {
 
 # Start services
 start_services() {
-    log "Starting Outliers Academy services..."
+    log "Starting Nebu Mobile services..."
     
     cd "$PROJECT_ROOT"
     
@@ -90,7 +90,7 @@ start_services() {
 
 # Stop services
 stop_services() {
-    log "Stopping Outliers Academy services..."
+    log "Stopping Nebu Mobile services..."
     
     cd "$PROJECT_ROOT"
     docker-compose down
@@ -100,7 +100,7 @@ stop_services() {
 
 # Restart services
 restart_services() {
-    log "Restarting Outliers Academy services..."
+    log "Restarting Nebu Mobile services..."
     stop_services
     sleep 5
     start_services
@@ -233,7 +233,7 @@ health_check() {
 
 # Show usage
 usage() {
-    echo "Outliers Academy Container Management"
+    echo "Nebu Mobile Container Management"
     echo ""
     echo "Usage: $0 [COMMAND]"
     echo ""

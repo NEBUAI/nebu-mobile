@@ -22,9 +22,9 @@ export const corsConfig = {
   production: [
     process.env.FRONTEND_URL!,
     process.env.FRONTEND_URL?.replace('https://', 'https://www.'),
-    'https://outliers.academy',
-    'https://www.outliers.academy',
-    'https://api.outliers.academy',
+    'https://nebu.com',
+    'https://www.nebu.com',
+    'https://api.nebu.com',
     ...getLocalhostOrigins(), // Conditionally add localhost origins
   ].filter(Boolean),
   development: [
@@ -36,10 +36,10 @@ export const corsConfig = {
     'http://127.0.0.1:3001',
     'http://127.0.0.1:3002',
     'http://127.0.0.1:3003',
-    'https://outliers.academy',
-    'http://outliers.academy',
-    'https://www.outliers.academy',
-    'http://www.outliers.academy',
+    'https://nebu.com',
+    'http://nebu.com',
+    'https://www.nebu.com',
+    'http://www.nebu.com',
   ]
 };
 
@@ -59,15 +59,15 @@ const getLocalhostRegexPatterns = () => {
 
 export const corsRegexConfig = {
   production: [
-    /^https:\/\/.*\.outliers\.academy$/,
+    /^https:\/\/.*\.nebu\.com$/,
     ...getLocalhostRegexPatterns(), // Conditionally add localhost patterns
   ],
   development: [
     /^https?:\/\/localhost(:[0-9]+)?$/,
     /^https?:\/\/127\.0\.0\.1(:[0-9]+)?$/,
     /^https?:\/\/.*\.localhost(:[0-9]+)?$/,
-    /^https?:\/\/.*\.outliers\.academy$/,
-    /^https?:\/\/outliers\.academy$/,
+    /^https?:\/\/.*\.nebu\.com$/,
+    /^https?:\/\/nebu\.com$/,
   ]
 };
 

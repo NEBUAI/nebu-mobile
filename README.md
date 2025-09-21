@@ -37,7 +37,6 @@ That's it! Your application will be running at:
 - 📚 **API Documentation**: http://localhost:3001/api/docs
 - 🎙️ **LiveKit Server**: http://localhost:7880
 - 📊 **Traefik Dashboard**: http://localhost:8080
-- 🔧 **N8N Automation**: http://localhost:5678
 
 ## 🏗️ Architecture
 
@@ -198,7 +197,6 @@ make ps               # Show running containers
 | **postgres** | postgres:15-alpine | 5432 | Primary database for users, sessions, devices |
 | **redis** | redis:7-alpine | 6379 | Cache, session store, and LiveKit state |
 | **traefik** | traefik:v3.0 | 80/443 | Reverse proxy and load balancer |
-| **n8n** | n8nio/n8n:latest | 5678 | Automation workflows |
 
 ## 🔍 Health Checks
 
@@ -247,7 +245,6 @@ nebu-mobile/
 ├── 📁 db/                     # Database Scripts & Backups
 ├── 📁 gateway/                # Traefik Configuration
 ├── 📁 monitoring/             # Grafana & Prometheus
-├── 📁 n8n/                    # Automation Workflows
 ├── docker-compose.yml         # Main Docker Compose
 ├── Makefile                   # Development Commands
 ├── prerrequisites.sh          # Automated Installer
