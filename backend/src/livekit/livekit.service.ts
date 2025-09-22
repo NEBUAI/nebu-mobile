@@ -20,7 +20,7 @@ export class LiveKitService {
   /**
    * Genera un token JWT para conectarse a una sala de LiveKit
    */
-  generateToken(
+  async generateToken(
     roomName: string, 
     participantName: string, 
     options: {
@@ -29,7 +29,7 @@ export class LiveKitService {
       canPublishData?: boolean;
       metadata?: string;
     } = {}
-  ): string {
+  ): Promise<string> {
     const {
       canPublish = true,
       canSubscribe = true,
@@ -50,7 +50,7 @@ export class LiveKitService {
       canPublishData,
     });
 
-    const token = at.toJwt();
+    const token = await at.toJwt();
     
     this.logger.log(`Token generated for ${participantName} in room ${roomName}`);
     return token;
@@ -148,9 +148,9 @@ export class LiveKitService {
   /**
    * Genera token para Voice Agent (configuración específica)
    */
-  generateVoiceAgentToken(userId: string, sessionId: string): string {
+  async generateVoiceAgentToken(userId: string, sessionId: string): Promise<string> {
     const roomName = `voice-agent-${userId}-${sessionId}`;
-    return this.generateToken(roomName, `user-${userId}`, {
+    return await this.generateToken(roomName, `user-${userId}`, {
       canPublish: true,
       canSubscribe: true,
       canPublishData: true,

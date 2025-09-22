@@ -159,26 +159,33 @@ export class LiveKitController {
     // Aquí puedes procesar los eventos de LiveKit
     // Por ejemplo: participante conectado, desconectado, etc.
     
+    // eslint-disable-next-line no-console
     console.log('LiveKit Webhook received:', webhookData);
     
     // Procesar diferentes tipos de eventos
     switch (webhookData.event) {
       case 'participant_joined':
+        // eslint-disable-next-line no-console
         console.log(`Participant ${webhookData.participant.identity} joined room ${webhookData.room.name}`);
         break;
       case 'participant_left':
+        // eslint-disable-next-line no-console
         console.log(`Participant ${webhookData.participant.identity} left room ${webhookData.room.name}`);
         break;
       case 'track_published':
+        // eslint-disable-next-line no-console
         console.log(`Track published in room ${webhookData.room.name}`);
         break;
       case 'track_unpublished':
+        // eslint-disable-next-line no-console
         console.log(`Track unpublished in room ${webhookData.room.name}`);
         break;
       case 'room_finished':
+        // eslint-disable-next-line no-console
         console.log(`Room ${webhookData.room.name} finished`);
         break;
       default:
+        // eslint-disable-next-line no-console
         console.log(`Unknown event: ${webhookData.event}`);
     }
 

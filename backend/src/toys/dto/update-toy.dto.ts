@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateToyDto } from './create-toy.dto';
-import { IsOptional, IsEnum, IsString, Matches } from 'class-validator';
+import { IsOptional, IsEnum, IsString } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { ToyStatus } from '../entities/toy.entity';
 

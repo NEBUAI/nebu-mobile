@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsObject, IsArray, IsUUID, Matches, Length, IsInt, Min, Max } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsObject, IsUUID, Matches, Length } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ToyStatus } from '../entities/toy.entity';
 

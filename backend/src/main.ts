@@ -21,6 +21,7 @@ async function bootstrap() {
 
   // Log CORS configuration in development
   if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line no-console
     console.log('🌐 CORS Configuration:', {
       NODE_ENV: process.env.NODE_ENV,
       FRONTEND_URL: process.env.FRONTEND_URL,
