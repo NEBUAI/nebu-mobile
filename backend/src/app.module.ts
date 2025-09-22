@@ -43,6 +43,7 @@ import { BlogModule } from './blog/blog.module';
 import { LiveKitModule } from './livekit/livekit.module';
 import { IoTModule } from './iot/iot.module';
 import { VoiceModule } from './voice/voice.module';
+import { ToysModule } from './toys/toys.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
 
 @Module({
@@ -148,6 +149,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     LiveKitModule,
     IoTModule,
     VoiceModule,
+    ToysModule,
 
     // Dynamic Modules (loaded based on feature flags)
     DynamicModulesConfig.forRoot(new ConfigService()),

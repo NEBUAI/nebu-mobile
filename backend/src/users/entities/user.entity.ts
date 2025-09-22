@@ -145,6 +145,9 @@ export class User {
   @OneToMany('Order', 'user')
   orders: any[];
 
+  @OneToMany('Toy', 'user')
+  toys: any[];
+
   // Virtual properties
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`.trim() || this.username;
@@ -193,5 +196,16 @@ export class User {
 
   get totalProgressCount(): number {
     return this.progress ? this.progress.length : 0;
+  }
+
+  get toysCount(): number {
+    return this.toys ? this.toys.length : 0;
+  }
+
+  get activeToysCount(): number {
+    if (!this.toys) return 0;
+    return this.toys.filter(toy => 
+      toy.status === 'active' || toy.status === 'connected'
+    ).length;
   }
 }
