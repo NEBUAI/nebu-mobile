@@ -302,7 +302,7 @@ const RobotSetupScreen: React.FC = () => {
 
     // Cleanup al desmontar el componente
     return () => {
-      if (selectedDevice && connectionStatus === 'connected') {
+      if (selectedDevice && !isConnecting) {
         bluetoothService.disconnect().catch(console.error);
       }
     };

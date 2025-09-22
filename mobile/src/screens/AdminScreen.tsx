@@ -180,12 +180,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
     <View style={[styles.container, getContainerStyle()]}>
       <Header
         title="🔐 Panel de Administración"
-        leftIcon={
-          <TouchableOpacity onPress={onClose}>
-            <Ionicons name="close" size={24} color={theme.colors.text} />
-          </TouchableOpacity>
-        }
-        rightIcon={
+        rightComponent={
           <TouchableOpacity>
             <Ionicons name="shield-checkmark" size={24} color={theme.colors.success} />
           </TouchableOpacity>
