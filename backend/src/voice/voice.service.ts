@@ -1,8 +1,8 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { VoiceSession, SessionStatus } from './entities/voice-session.entity';
-import { AiConversation, MessageType } from './entities/ai-conversation.entity';
+import { VoiceSession } from './entities/voice-session.entity';
+import { AiConversation } from './entities/ai-conversation.entity';
 import { LiveKitService } from '../livekit/livekit.service';
 import {
   CreateVoiceSessionDto,

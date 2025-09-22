@@ -79,7 +79,7 @@ export class VoiceController {
   @ApiResponse({ status: 404, description: 'Session not found' })
   async endSession(
     @Param('id') id: string,
-    @Body() endSessionDto?: EndSessionDto,
+    @Body() _endSessionDto?: EndSessionDto,
   ): Promise<VoiceSession> {
     return this.voiceService.endSession(id);
   }

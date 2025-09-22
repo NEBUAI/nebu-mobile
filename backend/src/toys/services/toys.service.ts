@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindManyOptions, FindOptionsWhere, Not } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { Toy, ToyStatus } from '../entities/toy.entity';
 import { CreateToyDto } from '../dto/create-toy.dto';
 import { UpdateToyDto } from '../dto/update-toy.dto';

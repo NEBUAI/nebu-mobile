@@ -19,7 +19,7 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { UserRole } from '../../users/entities/user.entity';
 import { EmailService } from '../services/email.service';
 import { EmailProviderService } from '../services/email-provider.service';
-import { EmailType, EmailAccountType } from '../entities/email-account.entity';
+import { EmailType } from '../entities/email-account.entity';
 
 @ApiTags('Email Test')
 @Controller('email/test')

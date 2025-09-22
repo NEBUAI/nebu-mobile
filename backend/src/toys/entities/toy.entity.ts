@@ -7,7 +7,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
-  Unique,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
