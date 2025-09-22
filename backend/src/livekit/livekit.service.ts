@@ -166,8 +166,8 @@ export class LiveKitService {
   /**
    * Genera token para IoT Device (configuración específica)
    */
-  generateIoTToken(deviceId: string, roomName: string): string {
-    return this.generateToken(roomName, `device-${deviceId}`, {
+  async generateIoTToken(deviceId: string, roomName: string): Promise<string> {
+    return await this.generateToken(roomName, `device-${deviceId}`, {
       canPublish: true,
       canSubscribe: false,
       canPublishData: true,
