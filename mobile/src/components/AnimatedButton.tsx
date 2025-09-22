@@ -54,7 +54,6 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
     Animated.parallel([
       Animated.spring(scaleAnim, {
         toValue: theme.animations.scale.small,
-        duration: theme.animations.timing.fast,
         useNativeDriver: true,
       }),
       hoverLift && Animated.timing(liftAnim, {
@@ -71,7 +70,6 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
     Animated.parallel([
       Animated.spring(scaleAnim, {
         toValue: theme.animations.scale.normal,
-        duration: theme.animations.timing.normal,
         useNativeDriver: true,
       }),
       hoverLift && Animated.timing(liftAnim, {
@@ -209,8 +207,8 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
 
   const animatedStyle = {
     transform: [
-      { scale: scaleAnim },
-      { translateY: liftAnim },
+      { scale: scaleAnim } as any,
+      { translateY: liftAnim } as any,
     ],
   };
 
@@ -219,7 +217,7 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: glowAnim,
     shadowRadius: 15,
-    elevation: glowAnim._value * 10,
+    elevation: 10,
   } : {};
 
   return (

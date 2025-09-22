@@ -203,9 +203,9 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
   const animatedStyle = {
     opacity: fadeAnim,
     transform: [
-      { translateY: animationType === 'slideIn' ? slideAnim : floatAnim },
-      { scale: animationType === 'scaleIn' ? scaleAnim : pressAnim },
-      { translateY: liftAnim },
+      { translateY: animationType === 'slideIn' ? slideAnim : floatAnim } as any,
+      { scale: animationType === 'scaleIn' ? scaleAnim : pressAnim } as any,
+      { translateY: liftAnim } as any,
     ],
   };
 

@@ -302,7 +302,7 @@ const RobotSetupScreen: React.FC = () => {
 
     // Cleanup al desmontar el componente
     return () => {
-      if (selectedDevice && isConnected) {
+      if (selectedDevice && connectionStatus === 'connected') {
         bluetoothService.disconnect().catch(console.error);
       }
     };
@@ -387,8 +387,6 @@ const RobotSetupScreen: React.FC = () => {
     marginBottom: theme.spacing.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    fontSize: theme.typography.sizes.md,
-    color: theme.colors.text,
   });
 
   const getButtonStyle = (disabled: boolean = false): ViewStyle => ({

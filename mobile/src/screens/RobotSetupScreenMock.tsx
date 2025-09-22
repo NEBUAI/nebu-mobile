@@ -414,7 +414,7 @@ const RobotSetupScreenMock: React.FC = () => {
           animationType="slideIn"
           delay={400}
           hoverLift={false}
-          style={[styles.contentCard, { backgroundColor: theme.colors.card }]}
+          style={[styles.contentCard, { backgroundColor: theme.colors.card }] as any}
         >
           {renderCurrentStepContent()}
         </AnimatedCard>

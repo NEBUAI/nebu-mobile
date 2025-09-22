@@ -230,4 +230,5 @@ export class LiveKitIoTService {
 }
 
 // Singleton instance
-export const liveKitIoTService = new LiveKitIoTService();
+const livekitService = new LiveKitIoTService();
+export default livekitService;

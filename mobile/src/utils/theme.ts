@@ -12,6 +12,7 @@ export const colors = {
   gold: '#CE965E',
   accent: '#433BFF',
   yellow: '#f59e0b',
+  disabled: '#9ca3af', // Disabled state color
   
   // Light theme colors - Warm Neutral Theme from reference
   light: {

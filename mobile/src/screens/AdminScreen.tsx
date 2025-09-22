@@ -180,12 +180,12 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
     <View style={[styles.container, getContainerStyle()]}>
       <Header
         title="🔐 Panel de Administración"
-        leftComponent={
+        leftIcon={
           <TouchableOpacity onPress={onClose}>
             <Ionicons name="close" size={24} color={theme.colors.text} />
           </TouchableOpacity>
         }
-        rightComponent={
+        rightIcon={
           <TouchableOpacity>
             <Ionicons name="shield-checkmark" size={24} color={theme.colors.success} />
           </TouchableOpacity>
@@ -203,7 +203,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
           hoverLift={false}
           style={getCardStyle()}
         >
-          <GradientText variant="danger" style={getTitleStyle()}>
+          <GradientText variant="custom" style={getTitleStyle()}>
             Panel de Administración
           </GradientText>
           <Text style={getSubtitleStyle()}>
