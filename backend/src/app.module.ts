@@ -33,13 +33,8 @@ import { EmailModule } from './email/email.module';
 import { SecurityModule } from './security/security.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { QueueModule } from './queue/queue.module';
-import { QuizzesModule } from './quizzes/quizzes.module';
-import { AssignmentsModule } from './assignments/assignments.module';
 import { SearchModule } from './search/search.module';
-import { DiscountsModule } from './discounts/discounts.module';
 import { CompanyModule } from './company/company.module';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import { BlogModule } from './blog/blog.module';
 import { LiveKitModule } from './livekit/livekit.module';
 import { IoTModule } from './iot/iot.module';
 import { VoiceModule } from './voice/voice.module';
@@ -139,13 +134,8 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     SecurityModule,
     SchedulerModule,
     QueueModule,
-    QuizzesModule,
-    AssignmentsModule,
     SearchModule,
-    DiscountsModule,
     CompanyModule,
-    CloudinaryModule,
-    BlogModule,
     LiveKitModule,
     IoTModule,
     VoiceModule,
