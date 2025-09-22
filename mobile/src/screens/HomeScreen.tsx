@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ViewStyle,
   TextStyle,
+  Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +16,8 @@ import { Header, AnimatedCard, GradientText, ParticleBackground } from '@/compon
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { toggleTheme } from '@/store/themeSlice';
 import { getTheme } from '@/utils/theme';
+import useAdminAccess from '@/hooks/useAdminAccess';
+import AdminScreen from './AdminScreen';
 
 const HomeScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -23,9 +26,29 @@ const HomeScreen: React.FC = () => {
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const { user } = useAppSelector((state) => state.auth);
   const theme = getTheme(isDarkMode);
+  
+  // Admin access functionality
+  const { isAdminMode, handleTap, disableAdminMode } = useAdminAccess({
+    tapCount: 3,
+    resetTimeout: 2000,
+  });
+  
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   const handleToggleTheme = () => {
     dispatch(toggleTheme());
+  };
+
+  // Handle admin mode activation
+  React.useEffect(() => {
+    if (isAdminMode) {
+      setShowAdminModal(true);
+    }
+  }, [isAdminMode]);
+
+  const handleCloseAdminModal = () => {
+    setShowAdminModal(false);
+    disableAdminMode();
   };
 
   const getContainerStyle = (): ViewStyle => ({
@@ -160,53 +183,73 @@ const HomeScreen: React.FC = () => {
   );
 
   return (
-    <ParticleBackground particleCount={6}>
-      <View style={[styles.container, getContainerStyle()]}>
-        <Header
-          title={t('navigation.home')}
-          rightComponent={
-            <TouchableOpacity onPress={handleToggleTheme}>
-              <Ionicons
-                name={isDarkMode ? 'sunny' : 'moon'}
-                size={24}
-                color={theme.colors.text}
-              />
-            </TouchableOpacity>
-          }
-        />
-        
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={[styles.content, getContentStyle()]}
-          showsVerticalScrollIndicator={false}
-        >
-        <AnimatedCard
-          animationType="fadeIn"
-          delay={0}
-          hoverLift={false}
-          style={getWelcomeCardStyle()}
-        >
-          <GradientText
-            variant="primary"
-            style={getWelcomeTextStyle()}
+    <>
+      <ParticleBackground particleCount={6}>
+        <View style={[styles.container, getContainerStyle()]}>
+          <Header
+            title={t('navigation.home')}
+            rightComponent={
+              <TouchableOpacity onPress={handleToggleTheme}>
+                <Ionicons
+                  name={isDarkMode ? 'sunny' : 'moon'}
+                  size={24}
+                  color={theme.colors.text}
+                />
+              </TouchableOpacity>
+            }
+          />
+          
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={[styles.content, getContentStyle()]}
+            showsVerticalScrollIndicator={false}
           >
-            {t('home.welcome', { name: user?.name || 'Usuario' })}
-          </GradientText>
-          <Text style={[styles.subtitleText, getSubtitleTextStyle()]}>
-            {t('home.welcomeSubtitle')}
-          </Text>
-        </AnimatedCard>
+          <AnimatedCard
+            animationType="fadeIn"
+            delay={0}
+            hoverLift={false}
+            style={getWelcomeCardStyle()}
+          >
+            <GradientText
+              variant="primary"
+              style={getWelcomeTextStyle()}
+            >
+              {t('home.welcome', { name: user?.name || 'Usuario' })}
+            </GradientText>
+            <Text style={[styles.subtitleText, getSubtitleTextStyle()]}>
+              {t('home.welcomeSubtitle')}
+            </Text>
+          </AnimatedCard>
 
-        <View style={[styles.quickActions, getQuickActionsStyle()]}>
-          <Text style={[styles.sectionTitle, getSectionTitleStyle()]}>
-            {t('home.quickActions')}
-          </Text>
-          {quickActions.map((action, index) => renderQuickAction(action, index))}
+          <View style={[styles.quickActions, getQuickActionsStyle()]}>
+            <Text style={[styles.sectionTitle, getSectionTitleStyle()]}>
+              {t('home.quickActions')}
+            </Text>
+            {quickActions.map((action, index) => renderQuickAction(action, index))}
+          </View>
+
+          </ScrollView>
         </View>
+      </ParticleBackground>
 
-        </ScrollView>
-      </View>
-    </ParticleBackground>
+      {/* Admin Access - Hidden tap area */}
+      <TouchableOpacity
+        style={styles.adminTapArea}
+        onPress={handleTap}
+        activeOpacity={1}
+      >
+        <View style={styles.adminTapAreaInner} />
+      </TouchableOpacity>
+
+      {/* Admin Modal */}
+      <Modal
+        visible={showAdminModal}
+        animationType="slide"
+        presentationStyle="pageSheet"
+      >
+        <AdminScreen onClose={handleCloseAdminModal} />
+      </Modal>
+    </>
   );
 };
 
@@ -270,6 +313,19 @@ const styles = StyleSheet.create({
   },
   themeToggleContent: {
     flex: 1,
+  },
+  adminTapArea: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    width: 60,
+    height: 60,
+    zIndex: 1000,
+    backgroundColor: 'transparent',
+  },
+  adminTapAreaInner: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
 });
 

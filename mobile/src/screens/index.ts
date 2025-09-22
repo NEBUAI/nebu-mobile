@@ -5,3 +5,4 @@ export { default as ProfileScreen } from './ProfileScreen';
 export { default as IoTDashboardScreen } from './IoTDashboardScreen';
 export { default as VoiceAgentScreen } from './VoiceAgentScreen';
 export { default as RobotSetupScreen } from './RobotSetupScreen';
+export { default as AdminScreen } from './AdminScreen';
