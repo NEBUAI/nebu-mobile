@@ -1,8 +1,11 @@
 const IS_DEV = process.env.APP_VARIANT === 'development';
 
 export default {
+  name: IS_DEV ? 'Nebu Mobile (Dev)' : 'Nebu Mobile',
+  cli: {
+    appVersionSource: 'local'
+  },
   expo: {
-    name: IS_DEV ? 'Nebu Mobile (Dev)' : 'Nebu Mobile',
     slug: 'nebu-mobile',
     version: '1.0.0',
     orientation: 'portrait',
@@ -72,9 +75,7 @@ export default {
         projectId: 'bd86ccea-c4fa-46f2-bcae-0c310774b80e'
       }
     },
-    runtimeVersion: {
-      policy: 'appVersion'
-    },
+    runtimeVersion: '1.0.0',
     updates: {
       url: 'https://u.expo.dev/bd86ccea-c4fa-46f2-bcae-0c310774b80e'
     }
