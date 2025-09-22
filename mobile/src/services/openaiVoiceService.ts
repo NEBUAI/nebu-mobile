@@ -335,3 +335,7 @@ export class OpenAIVoiceAgent {
     }
   }
 }
+
+// Singleton instance
+const openaiVoiceService = new OpenAIVoiceAgent();
+export default openaiVoiceService;
