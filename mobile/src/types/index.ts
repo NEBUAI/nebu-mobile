@@ -51,6 +51,11 @@ export type MainTabParamList = {
   Profile: undefined;
 };
 
+export type HomeStackParamList = {
+  Home: undefined;
+  RobotSetup: undefined;
+};
+
 export interface ButtonProps {
   title: string;
   onPress: () => void;

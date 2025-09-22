@@ -42,6 +42,7 @@
         "welcomeSubtitle": "Control your smart home and talk to your voice assistant",
         "quickActions": "Quick Actions",
         "voiceAgent": "Voice Assistant",
+        "robotSetup": "Setup Robot",
         "iotDevices": "IoT Devices",
         "dashboard": "Dashboard",
         "settings": "Settings",
@@ -97,5 +98,66 @@
         "online": "Online",
         "offline": "Offline",
         "lastSeen": "Last seen"
+    },
+    "robotSetup": {
+        "title": "Setup Nebu Robot",
+        "welcome": "Welcome to Nebu!",
+        "welcomeDescription": "Set up your Nebu robot to connect it to your WiFi network and start using it",
+        "step1": {
+            "title": "Detect Robot",
+            "description": "Scan and connect with your Nebu robot via Bluetooth"
+        },
+        "step2": {
+            "title": "Validate Robot",
+            "description": "Verify that the robot exists in our system"
+        },
+        "step3": {
+            "title": "Configure WiFi",
+            "description": "Connect the robot to your WiFi network"
+        },
+        "step4": {
+            "title": "Ready!",
+            "description": "Your Nebu robot is configured and ready to use"
+        },
+        "bluetoothDevices": "Bluetooth Devices",
+        "noDevicesFound": "No Nebu devices found",
+        "validatingRobot": "Validating Robot",
+        "validatingInBackend": "Verifying robot in server...",
+        "continueToWiFi": "Continue to WiFi",
+        "wifiConfiguration": "WiFi Configuration",
+        "wifiSSID": "WiFi Network Name (SSID)",
+        "wifiPassword": "WiFi Password",
+        "configureWiFi": "Configure WiFi",
+        "setupComplete": "Setup Complete!",
+        "setupCompleteMessage": "Your Nebu robot is now connected and ready to use. You can start controlling it from the app.",
+        "success": {
+            "title": "Success!",
+            "connected": "Successfully connected to {{name}}",
+            "wifiConfigured": "WiFi configured successfully. The robot is connected to internet."
+        },
+        "error": {
+            "title": "Error",
+            "connection": "Could not connect to robot. Make sure it's powered on and nearby.",
+            "wifiScan": "Error scanning WiFi networks",
+            "missingCredentials": "Please fill in all WiFi fields",
+            "wifiConfiguration": "Error configuring WiFi. Please check credentials."
+        }
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "save": "Save",
+        "edit": "Edit",
+        "delete": "Delete",
+        "search": "Search",
+        "close": "Close",
+        "yes": "Yes",
+        "no": "No",
+        "finish": "Finish",
+        "continue": "Continue",
+        "retry": "Retry"
     }
 }

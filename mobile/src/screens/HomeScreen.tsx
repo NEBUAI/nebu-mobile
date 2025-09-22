@@ -113,6 +113,9 @@ const HomeScreen: React.FC = () => {
       case 'iotDevices':
         navigation.navigate('IoTDashboard' as never);
         break;
+      case 'robotSetup':
+        navigation.navigate('RobotSetup' as never);
+        break;
       case 'profile':
         navigation.navigate('Profile' as never);
         break;
@@ -123,9 +126,10 @@ const HomeScreen: React.FC = () => {
 
   const quickActions = [
     { id: 1, title: t('home.voiceAgent'), icon: 'mic-outline', color: theme.colors.primary, screen: 'voiceAgent' },
-    { id: 2, title: t('home.iotDevices'), icon: 'hardware-chip-outline', color: theme.colors.tertiary, screen: 'iotDevices' },
-    { id: 3, title: t('home.dashboard'), icon: 'analytics-outline', color: theme.colors.secondary, screen: 'iotDevices' },
-    { id: 4, title: t('home.settings'), icon: 'settings-outline', color: theme.colors.textSecondary, screen: 'profile' },
+    { id: 2, title: t('home.robotSetup'), icon: 'bluetooth-outline', color: theme.colors.success, screen: 'robotSetup' },
+    { id: 3, title: t('home.iotDevices'), icon: 'hardware-chip-outline', color: theme.colors.tertiary, screen: 'iotDevices' },
+    { id: 4, title: t('home.dashboard'), icon: 'analytics-outline', color: theme.colors.secondary, screen: 'iotDevices' },
+    { id: 5, title: t('home.settings'), icon: 'settings-outline', color: theme.colors.textSecondary, screen: 'profile' },
   ];
 
   const renderQuickAction = (action: typeof quickActions[0], index: number) => (

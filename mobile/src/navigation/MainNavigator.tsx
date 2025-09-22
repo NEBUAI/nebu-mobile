@@ -6,7 +6,7 @@ import { MainTabParamList } from '@/types';
 import { useAppSelector } from '@/store/hooks';
 import { getTheme } from '@/utils/theme';
 
-import HomeScreen from '@/screens/HomeScreen';
+import HomeStackNavigator from './HomeStackNavigator';
 import ProfileScreen from '@/screens/ProfileScreen';
 import IoTDashboardScreen from '@/screens/IoTDashboardScreen';
 import VoiceAgentScreen from '@/screens/VoiceAgentScreen';
@@ -58,7 +58,7 @@ const MainNavigator: React.FC = () => {
     >
       <Tab.Screen 
         name="Home" 
-        component={HomeScreen}
+        component={HomeStackNavigator}
         options={{
           tabBarLabel: t('navigation.home'),
         }}
