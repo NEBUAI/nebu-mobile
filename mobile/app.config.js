@@ -2,12 +2,13 @@ const IS_DEV = process.env.APP_VARIANT === 'development';
 
 export default {
   name: IS_DEV ? 'Nebu Mobile (Dev)' : 'Nebu Mobile',
-  cli: {
-    appVersionSource: 'local'
-  },
+
   expo: {
     slug: 'nebu-mobile',
     version: '1.0.0',
+    cli: {
+      appVersionSource: 'local'
+    },
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
@@ -62,6 +63,7 @@ export default {
       favicon: './assets/favicon.png'
     },
     plugins: [
+      "expo-font", // ← Agrega esto
       [
         'react-native-permissions',
         {
