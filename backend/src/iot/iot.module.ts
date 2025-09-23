@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { IoTService } from './iot.service';
 import { IoTController } from './iot.controller';
+import { DeviceTokenController } from './device-token.controller';
 import { IoTDevice } from './entities/iot-device.entity';
 import { LiveKitModule } from '../livekit/livekit.module';
 
@@ -13,7 +14,7 @@ import { LiveKitModule } from '../livekit/livekit.module';
     JwtModule.register({}), // JwtModule global ya está configurado en app.module.ts
   ],
   providers: [IoTService],
-  controllers: [IoTController],
+  controllers: [IoTController, DeviceTokenController],
   exports: [IoTService],
 })
 export class IoTModule {}

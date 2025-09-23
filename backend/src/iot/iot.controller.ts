@@ -20,7 +20,6 @@ import {
   UpdateSensorDataDto,
   UpdateDeviceStatusDto,
 } from './dto/iot-device.dto';
-import { DeviceTokenRequestDto, DeviceTokenResponseDto } from './dto/device-token.dto';
 import { IoTDevice } from './entities/iot-device.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -137,17 +136,4 @@ export class IoTController {
     return { message: 'Inactive devices have been marked as offline' };
   }
 
-  @Post('device/token')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Get access token for IoT device' })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Device token generated successfully', 
-    type: DeviceTokenResponseDto 
-  })
-  @ApiResponse({ status: 400, description: 'Invalid device ID' })
-  @ApiResponse({ status: 404, description: 'Device not found' })
-  async getDeviceToken(@Body() deviceTokenRequest: DeviceTokenRequestDto): Promise<DeviceTokenResponseDto> {
-    return this.iotService.generateDeviceToken(deviceTokenRequest.device_id);
-  }
 }
