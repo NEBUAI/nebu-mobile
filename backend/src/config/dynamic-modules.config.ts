@@ -5,7 +5,6 @@ import { FeaturesConfig } from './features.config';
 // Import all modules that can be conditionally loaded
 import { WebSocketModule } from '../websocket/websocket.module';
 import { NotificationsModule } from '../notifications/notifications.module';
-import { PaymentsModule } from '../payments/payments.module';
 
 /**
  * Dynamic module loader that respects feature flags
@@ -24,10 +23,6 @@ export class DynamicModulesConfig {
 
     if (featuresConfig.isNotificationsEnabled) {
       imports.push(NotificationsModule);
-    }
-
-    if (featuresConfig.isStripeEnabled) {
-      imports.push(PaymentsModule);
     }
 
     return {

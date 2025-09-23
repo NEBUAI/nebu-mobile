@@ -18,14 +18,11 @@ import cloudinaryConfig from './config/cloudinary.config';
 // Modules
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { PaymentsModule } from './payments/payments.module';
 import { AdminModule } from './admin/admin.module';
 import { HealthModule } from './common/health.module';
 import { NotificationsModule } from './notifications/notifications.module';
-import { WebSocketModule } from './websocket/websocket.module';
 import { EmailModule } from './email/email.module';
 import { SecurityModule } from './security/security.module';
-import { SchedulerModule } from './scheduler/scheduler.module';
 import { QueueModule } from './queue/queue.module';
 import { SearchModule } from './search/search.module';
 import { CompanyModule } from './company/company.module';
@@ -121,7 +118,6 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     HealthModule,
     EmailModule,
     SecurityModule,
-    SchedulerModule,
     QueueModule,
     SearchModule,
     CompanyModule,
@@ -129,9 +125,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     IoTModule,
     VoiceModule,
     ToysModule,
-    PaymentsModule,
     NotificationsModule,
-    WebSocketModule,
 
     // Dynamic Modules (loaded based on feature flags)
     DynamicModulesConfig.forRoot(new ConfigService()),
