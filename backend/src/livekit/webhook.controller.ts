@@ -1,11 +1,12 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-
+import { Public } from '../auth/decorators/public.decorator';
+//TODO PROTEGER CON JWT POR EL MOMENTO ESTA PUBLICO PARA LAS PRUEBAS
 @ApiTags('livekit-webhook')
-@Controller('livekit/webhook')
+@Controller('livekit')
 export class LiveKitWebhookController {
   
-  @Post()
+  @Post('webhook')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Webhook público para eventos de LiveKit Cloud' })
   @ApiResponse({ status: 200, description: 'Webhook procesado exitosamente' })

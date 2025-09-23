@@ -129,7 +129,30 @@ export class IoTService {
     participantName: string;
     livekitUrl: string;
   }> {
-    const device = await this.findOne(deviceId);
+    this.logger.log(`Generating LiveKit token for device: ${deviceId}`);
+
+    // Buscar o crear el dispositivo por macAddress
+    let device = await this.iotDeviceRepository.findOne({
+      where: { macAddress: deviceId }
+    });
+
+    // Si no existe, crear un dispositivo básico
+    if (!device) {
+      this.logger.log(`Device not found, creating new device: ${deviceId}`);
+      device = this.iotDeviceRepository.create({
+        name: `Device ${deviceId}`,
+        macAddress: deviceId,
+        deviceType: 'sensor',
+        status: 'online',
+        lastSeen: new Date(),
+      });
+      device = await this.iotDeviceRepository.save(device);
+    } else {
+      // Actualizar lastSeen
+      device.lastSeen = new Date();
+      device.status = 'online';
+      await this.iotDeviceRepository.save(device);
+    }
     
     // Generate or use existing room name
     const roomName = device.roomName || `iot-device-${device.id}`;
@@ -138,7 +161,11 @@ export class IoTService {
       await this.iotDeviceRepository.save(device);
     }
 
+    // Always generate a new token with fresh timestamp
     const token = await this.livekitService.generateIoTToken(deviceId, roomName);
+    
+    this.logger.log(`LiveKit token generated successfully for device: ${deviceId}`);
+    this.logger.log(`🔄 NEW TOKEN GENERATED - Fresh timestamp: ${new Date().toISOString()}`);
     
     return {
       token,
