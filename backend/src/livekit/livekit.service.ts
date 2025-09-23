@@ -10,9 +10,13 @@ export class LiveKitService {
   private roomService: RoomServiceClient;
 
   constructor() {
-    this.apiKey = process.env.LIVEKIT_API_KEY || 'nebu-dev';
-    this.apiSecret = process.env.LIVEKIT_SECRET_KEY || 'nebu-dev-secret-key-2024';
-    this.livekitUrl = process.env.LIVEKIT_URL || 'http://livekit:7880';
+    this.apiKey = process.env.LIVEKIT_API_KEY!;
+    this.apiSecret = process.env.LIVEKIT_API_SECRET!;
+    this.livekitUrl = process.env.LIVEKIT_URL!;
+    
+    if (!this.apiKey || !this.apiSecret || !this.livekitUrl) {
+      throw new Error('LiveKit configuration is missing. Please check LIVEKIT_API_KEY, LIVEKIT_API_SECRET, and LIVEKIT_URL environment variables.');
+    }
     
     this.roomService = new RoomServiceClient(this.livekitUrl, this.apiKey, this.apiSecret);
   }

@@ -143,10 +143,9 @@ services:
       - SMTP_PASSWORD=${SMTP_PASSWORD}
       - SMTP_FROM=${SMTP_FROM}
       # LiveKit Configuration
-      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY:-nebu-dev}
-      - LIVEKIT_SECRET_KEY=${LIVEKIT_SECRET_KEY:-nebu-dev-secret-key-2024}
-      - LIVEKIT_URL=${LIVEKIT_URL:-http://livekit:7880}
-      - LIVEKIT_WS_URL=${LIVEKIT_WS_URL:-ws://localhost:7880}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+      - LIVEKIT_URL=${LIVEKIT_URL}
       # Feature Flags
       - ENABLE_ANALYTICS=${ENABLE_ANALYTICS}
       - ENABLE_WEBSOCKET=${ENABLE_WEBSOCKET}

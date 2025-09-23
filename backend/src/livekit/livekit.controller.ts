@@ -58,7 +58,7 @@ export class LiveKitController {
       token,
       roomName,
       participantName,
-      livekitUrl: process.env.LIVEKIT_WS_URL || 'ws://localhost:7880',
+      livekitUrl: process.env.LIVEKIT_URL!,
     };
   }
 
@@ -76,7 +76,7 @@ export class LiveKitController {
       token,
       roomName,
       participantName: `user-${userId}`,
-      livekitUrl: process.env.LIVEKIT_WS_URL || 'ws://localhost:7880',
+      livekitUrl: process.env.LIVEKIT_URL!,
       type: 'voice-agent'
     };
   }
@@ -94,7 +94,7 @@ export class LiveKitController {
       token,
       roomName,
       participantName: `device-${deviceId}`,
-      livekitUrl: process.env.LIVEKIT_WS_URL || 'ws://localhost:7880',
+      livekitUrl: process.env.LIVEKIT_URL!,
       type: 'iot-device'
     };
   }

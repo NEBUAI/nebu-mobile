@@ -144,7 +144,7 @@ export class IoTService {
       token,
       roomName,
       participantName: `device-${deviceId}`,
-      livekitUrl: process.env.LIVEKIT_WS_URL || 'ws://localhost:7880',
+      livekitUrl: process.env.LIVEKIT_URL!,
     };
   }
 
