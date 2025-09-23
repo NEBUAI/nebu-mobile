@@ -185,8 +185,8 @@ export class TemplateEngineService {
       description: 'Nombre del sitio',
       type: 'string',
       required: true,
-      defaultValue: 'Outliers Academy',
-      example: 'Outliers Academy',
+      defaultValue: 'Nebu',
+      example: 'Nebu',
       category: 'system',
     },
     {

@@ -1,9 +1,11 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { IoTDevice, DeviceStatus, DeviceType } from './entities/iot-device.entity';
 import { LiveKitService } from '../livekit/livekit.service';
 import { CreateIoTDeviceDto, UpdateIoTDeviceDto, IoTDeviceFilters } from './dto/iot-device.dto';
+import { DeviceTokenResponseDto } from './dto/device-token.dto';
 
 @Injectable()
 export class IoTService {
@@ -13,6 +15,7 @@ export class IoTService {
     @InjectRepository(IoTDevice)
     private iotDeviceRepository: Repository<IoTDevice>,
     private livekitService: LiveKitService,
+    private jwtService: JwtService,
   ) {}
 
   async create(createIoTDeviceDto: CreateIoTDeviceDto): Promise<IoTDevice> {
@@ -190,5 +193,51 @@ export class IoTService {
     if (result.affected && result.affected > 0) {
       this.logger.log(`Marked ${result.affected} devices as offline due to inactivity`);
     }
+  }
+
+  async generateDeviceToken(deviceId: string): Promise<DeviceTokenResponseDto> {
+    this.logger.log(`Generating token for device: ${deviceId}`);
+
+    // Buscar o crear el dispositivo
+    let device = await this.iotDeviceRepository.findOne({
+      where: { macAddress: deviceId }
+    });
+
+    // Si no existe, crear un dispositivo básico
+    if (!device) {
+      this.logger.log(`Device not found, creating new device: ${deviceId}`);
+      device = this.iotDeviceRepository.create({
+        name: `Device ${deviceId}`,
+        macAddress: deviceId,
+        deviceType: 'sensor',
+        status: 'online',
+        lastSeen: new Date(),
+      });
+      device = await this.iotDeviceRepository.save(device);
+    } else {
+      // Actualizar lastSeen
+      device.lastSeen = new Date();
+      device.status = 'online';
+      await this.iotDeviceRepository.save(device);
+    }
+
+    // Generar JWT token para el dispositivo
+    const payload = {
+      sub: device.id,
+      deviceId: deviceId,
+      type: 'device',
+      iat: Math.floor(Date.now() / 1000),
+    };
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '24h', // Token válido por 24 horas
+    });
+
+    this.logger.log(`Token generated successfully for device: ${deviceId}`);
+
+    return {
+      access_token: accessToken,
+      token_type: 'Bearer',
+    };
   }
 }

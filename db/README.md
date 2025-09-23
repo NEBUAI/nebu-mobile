@@ -1,6 +1,6 @@
 # 🗄️ Database Initialization
 
-Este directorio contiene los scripts de inicialización de bases de datos para el proyecto Outliers Academy.
+Este directorio contiene los scripts de inicialización de bases de datos para el proyecto Nebu.
 
 ## 📁 Estructura
 

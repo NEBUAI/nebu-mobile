@@ -34,9 +34,9 @@ export class EmailService {
     await this.transporter.sendMail({
       from: this.configService.get<string>('smtp.from'),
       to: email,
-      subject: 'Verifica tu cuenta - Outliers Academy',
+      subject: 'Verifica tu cuenta - Nebu',
       html: `
-        <h2>Bienvenido a Outliers Academy</h2>
+        <h2>Bienvenido a Nebu</h2>
         <p>Haz clic en el siguiente enlace para verificar tu cuenta:</p>
         <a href="${verificationUrl}">Verificar Cuenta</a>
         <p>Si no creaste esta cuenta, puedes ignorar este email.</p>
@@ -51,7 +51,7 @@ export class EmailService {
     await this.transporter.sendMail({
       from: this.configService.get<string>('smtp.from'),
       to: email,
-      subject: 'Restablecer contraseña - Outliers Academy',
+      subject: 'Restablecer contraseña - Nebu',
       html: `
         <h2>Restablecer Contraseña</h2>
         <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>

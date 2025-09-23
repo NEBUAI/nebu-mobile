@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # validate-env.sh
-# Environment variables validation script for Outliers Academy
+# Environment variables validation script for Nebu
 # Usage: ./scripts/validate-env.sh [docker.env|.env|template.env]
 
 set -e
@@ -376,7 +376,7 @@ main() {
 show_help() {
     echo "Usage: $0 [ENV_FILE]"
     echo ""
-    echo "Validates environment variables for Outliers Academy deployment"
+    echo "Validates environment variables for Nebu deployment"
     echo ""
     echo "Arguments:"
     echo "  ENV_FILE    Environment file to validate (default: docker.env)"

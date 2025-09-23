@@ -82,7 +82,7 @@ export class EmailNotificationsService {
             </div>
             <div class="footer">
               <p>Este es un mensaje automático, por favor no responda a este correo.</p>
-              <p>© ${new Date().getFullYear()} Outliers Academy</p>
+              <p>© ${new Date().getFullYear()} Nebu</p>
             </div>
           </div>
         </body>

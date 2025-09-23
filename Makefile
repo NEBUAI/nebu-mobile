@@ -214,15 +214,3 @@ images: ## Show Docker images
 security-scan: ## Run security scan on images
 	@echo "$(GREEN)Running security scan...$(NC)"
 	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image nebu-mobile-backend:latest
-
-## Documentation
-docs: ## Generate documentation
-	@echo "$(GREEN)Generating documentation...$(NC)"
-	@echo "# Outliers Academy Services" > docs/services.md
-	@echo "" >> docs/services.md
-	@docker-compose config --services | while read service; do \
-		echo "## $$service" >> docs/services.md; \
-		echo "" >> docs/services.md; \
-		docker-compose config | grep -A 20 "$$service:" >> docs/services.md; \
-		echo "" >> docs/services.md; \
-	done

@@ -7,10 +7,10 @@ export async function seedEmailTemplates(dataSource: DataSource) {
   const templates = [
     {
       name: 'welcome',
-      subject: '¡Bienvenido a Outliers Academy!',
+      subject: '¡Bienvenido a Nebu!',
       content: `Hola {{firstName}},
 
-¡Bienvenido a Outliers Academy! Estamos emocionados de tenerte como parte de nuestra comunidad.
+¡Bienvenido a Nebu! Estamos emocionados de tenerte como parte de nuestra comunidad.
 
 Tu cuenta ha sido creada exitosamente:
 - Email: {{email}}
@@ -25,13 +25,13 @@ Si tienes alguna pregunta, no dudes en contactarnos.
 
 ¡Bienvenido a bordo!
 
-El equipo de Outliers Academy`,
+El equipo de Nebu`,
       htmlContent: `
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>¡Bienvenido a Outliers Academy!</title>
+    <title>¡Bienvenido a Nebu!</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -44,11 +44,11 @@ El equipo de Outliers Academy`,
 <body>
     <div class="container">
         <div class="header">
-            <h1>¡Bienvenido a Outliers Academy!</h1>
+            <h1>¡Bienvenido a Nebu!</h1>
         </div>
         <div class="content">
             <p>Hola <strong>{{firstName}}</strong>,</p>
-            <p>¡Bienvenido a Outliers Academy! Estamos emocionados de tenerte como parte de nuestra comunidad.</p>
+            <p>¡Bienvenido a Nebu! Estamos emocionados de tenerte como parte de nuestra comunidad.</p>
             
             <p>Tu cuenta ha sido creada exitosamente:</p>
             <ul>
@@ -71,7 +71,7 @@ El equipo de Outliers Academy`,
             <p>¡Bienvenido a bordo!</p>
         </div>
         <div class="footer">
-            <p>El equipo de Outliers Academy</p>
+            <p>El equipo de Nebu</p>
         </div>
     </div>
 </body>
@@ -80,11 +80,11 @@ El equipo de Outliers Academy`,
       status: EmailTemplateStatus.ACTIVE,
       description: 'Plantilla de bienvenida para nuevos usuarios',
       variables: '["firstName", "email", "username", "loginUrl"]',
-      previewText: '¡Bienvenido a Outliers Academy! Tu cuenta ha sido creada exitosamente.',
+      previewText: '¡Bienvenido a Nebu! Tu cuenta ha sido creada exitosamente.',
     },
     {
       name: 'password_reset',
-      subject: 'Restablecer contraseña - Outliers Academy',
+      subject: 'Restablecer contraseña - Nebu',
       content: `Hola {{firstName}},
 
 Hemos recibido una solicitud para restablecer tu contraseña.
@@ -96,7 +96,7 @@ Este enlace expirará en {{expirationTime}} horas.
 
 Si no solicitaste este cambio, puedes ignorar este email.
 
-El equipo de Outliers Academy`,
+El equipo de Nebu`,
       htmlContent: `
 <!DOCTYPE html>
 <html>
@@ -134,7 +134,7 @@ El equipo de Outliers Academy`,
             <p>Si no solicitaste este cambio, puedes ignorar este email.</p>
         </div>
         <div class="footer">
-            <p>El equipo de Outliers Academy</p>
+            <p>El equipo de Nebu</p>
         </div>
     </div>
 </body>
@@ -143,7 +143,7 @@ El equipo de Outliers Academy`,
       status: EmailTemplateStatus.ACTIVE,
       description: 'Plantilla para restablecer contraseña',
       variables: '["firstName", "resetUrl", "expirationTime"]',
-      previewText: 'Restablece tu contraseña de Outliers Academy',
+      previewText: 'Restablece tu contraseña de Nebu',
     },
     {
       name: 'course_enrollment',
@@ -162,7 +162,7 @@ Puedes acceder al curso en cualquier momento desde tu panel de usuario.
 
 ¡Que tengas un excelente aprendizaje!
 
-El equipo de Outliers Academy`,
+El equipo de Nebu`,
       htmlContent: `
 <!DOCTYPE html>
 <html>
@@ -206,7 +206,7 @@ El equipo de Outliers Academy`,
             <p>¡Que tengas un excelente aprendizaje!</p>
         </div>
         <div class="footer">
-            <p>El equipo de Outliers Academy</p>
+            <p>El equipo de Nebu</p>
         </div>
     </div>
 </body>

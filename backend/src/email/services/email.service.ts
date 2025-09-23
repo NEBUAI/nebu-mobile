@@ -86,16 +86,16 @@ export class EmailService {
 
   async sendWelcomeEmail(userEmail: string, userName: string): Promise<EmailLog> {
     const content = `
-      <h1>¡Bienvenido a Outliers Academy!</h1>
+      <h1>¡Bienvenido a Nebu!</h1>
       <p>Hola ${userName},</p>
       <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte como parte de nuestra comunidad.</p>
       <p>¡Comienza tu viaje de aprendizaje hoy!</p>
-      <p>Saludos,<br>El equipo de Outliers Academy</p>
+      <p>Saludos,<br>El equipo de Nebu</p>
     `;
 
     return this.sendEmail({
       to: userEmail,
-      subject: '¡Bienvenido a Outliers Academy!',
+      subject: '¡Bienvenido a Nebu!',
       content,
       type: EmailType.WELCOME,
       accountType: EmailAccountType.TEAM,
@@ -118,7 +118,7 @@ export class EmailService {
 
     return this.sendEmail({
       to: userEmail,
-      subject: 'Restablecer contraseña - Outliers Academy',
+      subject: 'Restablecer contraseña - Nebu',
       content,
       type: EmailType.PASSWORD_RESET,
       accountType: EmailAccountType.NOREPLY,
@@ -157,7 +157,7 @@ export class EmailService {
 
     return this.sendEmail({
       to: userEmail,
-      subject: 'Pago confirmado - Outliers Academy',
+      subject: 'Pago confirmado - Nebu',
       content,
       type: EmailType.PAYMENT_CONFIRMATION,
       accountType: EmailAccountType.TEAM,

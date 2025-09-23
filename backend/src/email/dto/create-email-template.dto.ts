@@ -13,7 +13,7 @@ export class CreateEmailTemplateDto {
 
   @ApiProperty({
     description: 'Asunto del email',
-    example: 'Bienvenido a Outliers Academy'
+    example: 'Bienvenido a Nebu'
   })
   @IsString()
   @IsNotEmpty()

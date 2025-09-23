@@ -53,7 +53,7 @@ create_directory() {
 
 # Main setup function
 setup_directories() {
-    log_info "Setting up directories and permissions for Outliers Academy..."
+    log_info "Setting up directories and permissions for Nebu..."
     
     # Logs directories (Docker will mount these per service)
     create_directory "$PROJECT_ROOT/logs" "755" "Main logs directory"

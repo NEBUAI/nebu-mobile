@@ -80,7 +80,7 @@ export class EmailQueueService {
 
   async sendWelcomeEmail(userId: string, userEmail: string, userName: string): Promise<void> {
     try {
-      await this.sendEmail(userEmail, '¡Bienvenido a Outliers Academy!', 'welcome', {
+      await this.sendEmail(userEmail, '¡Bienvenido a Nebu!', 'welcome', {
         userName,
         userId,
         loginUrl: `${process.env.FRONTEND_URL}/login`,
@@ -155,7 +155,7 @@ export class EmailQueueService {
     try {
       await this.sendEmail(
         userEmail,
-        'Restablecer contraseña - Outliers Academy',
+        'Restablecer contraseña - Nebu',
         'password-reset',
         {
           userName,
