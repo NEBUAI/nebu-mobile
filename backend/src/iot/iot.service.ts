@@ -135,7 +135,7 @@ export class IoTService {
       await this.iotDeviceRepository.save(device);
     }
 
-    const token = this.livekitService.generateIoTToken(deviceId, roomName);
+    const token = await this.livekitService.generateIoTToken(deviceId, roomName);
     
     return {
       token,

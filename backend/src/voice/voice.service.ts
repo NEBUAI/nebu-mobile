@@ -137,15 +137,18 @@ export class VoiceService {
 
     // Generate LiveKit token
     const sessionId = session.id;
-    const response = await this.livekitService.generateVoiceAgentToken(userId, sessionId);
+    const token = await this.livekitService.generateVoiceAgentToken(userId, sessionId);
 
     // Update session with room info
-    session.roomName = response.roomName;
-    session.sessionToken = response.token;
+    session.roomName = `voice-session-${sessionId}`;
+    session.sessionToken = token;
     await this.voiceSessionRepository.save(session);
 
     return {
-      ...response,
+      token,
+      roomName: session.roomName,
+      participantName: `user-${userId}`,
+      livekitUrl: process.env.LIVEKIT_WS_URL || 'ws://localhost:7880',
       sessionId: session.id,
     };
   }

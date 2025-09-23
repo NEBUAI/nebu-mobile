@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Course } from '../../courses/entities/course.entity';
+import { Toy } from '../../toys/entities/toy.entity';
 
 @Injectable()
 export class SearchService {
   constructor(
-    @InjectRepository(Course)
-    private courseRepository: Repository<Course>
+    @InjectRepository(Toy)
+    private toyRepository: Repository<Toy>
   ) {}
 
   async search(query: string) {
@@ -20,31 +20,33 @@ export class SearchService {
     }
 
     try {
-      // Search in courses
-      const courses = await this.courseRepository
-        .createQueryBuilder('course')
-        .where('course.title ILIKE :query OR course.description ILIKE :query', {
+      // Search in toys
+      const toys = await this.toyRepository
+        .createQueryBuilder('toy')
+        .where('toy.name ILIKE :query OR toy.model ILIKE :query OR toy.manufacturer ILIKE :query', {
           query: `%${query}%`,
         })
-        .andWhere('course.isPublished = :published', { published: true })
+        .andWhere('toy.status IN (:...statuses)', { 
+          statuses: ['active', 'connected'] 
+        })
         .select([
-          'course.id',
-          'course.title',
-          'course.description',
-          'course.slug',
-          'course.level',
-          'course.duration',
+          'toy.id',
+          'toy.name',
+          'toy.model',
+          'toy.manufacturer',
+          'toy.status',
+          'toy.macAddress',
         ])
         .limit(10)
         .getMany();
 
-      const results = courses.map(course => ({
-        id: course.id.toString(),
-        type: 'course' as const,
-        title: course.title,
-        description: course.description,
-        url: `/course/${course.slug}`,
-        icon: '📚',
+      const results = toys.map(toy => ({
+        id: toy.id.toString(),
+        type: 'toy' as const,
+        title: toy.name,
+        description: toy.model || toy.manufacturer || 'Juguete inteligente',
+        url: `/toy/${toy.macAddress}`,
+        icon: '🤖',
       }));
 
       return {

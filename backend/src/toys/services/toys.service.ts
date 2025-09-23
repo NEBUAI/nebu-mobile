@@ -193,10 +193,10 @@ export class ToysService {
 
     // Convertir strings de fecha a Date objects
     if (updateToyDto.lastSeenAt) {
-      updateToyDto.lastSeenAt = new Date(updateToyDto.lastSeenAt);
+      updateToyDto.lastSeenAt = new Date(updateToyDto.lastSeenAt).toISOString();
     }
     if (updateToyDto.activatedAt) {
-      updateToyDto.activatedAt = new Date(updateToyDto.activatedAt);
+      updateToyDto.activatedAt = new Date(updateToyDto.activatedAt).toISOString();
     }
 
     await this.toyRepository.update(id, updateToyDto);
