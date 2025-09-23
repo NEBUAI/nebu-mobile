@@ -54,6 +54,9 @@ export type MainTabParamList = {
 export type HomeStackParamList = {
   Home: undefined;
   RobotSetup: undefined;
+  DeviceManagement: undefined;
+  QRScanner: undefined;
+  DeviceSetup: { device: any };
 };
 
 export interface ButtonProps {

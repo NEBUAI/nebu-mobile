@@ -42,6 +42,7 @@
         "welcomeSubtitle": "Controla tu hogar inteligente y habla con tu asistente de voz",
         "quickActions": "Acciones Rápidas",
         "voiceAgent": "Asistente de Voz",
+        "manageDevices": "Gestionar Dispositivos",
         "robotSetup": "Configurar Robot",
         "iotDevices": "Dispositivos IoT",
         "dashboard": "Panel de Control",
@@ -141,6 +142,110 @@
             "wifiScan": "Error al escanear redes WiFi",
             "missingCredentials": "Por favor completa todos los campos de WiFi",
             "wifiConfiguration": "Error al configurar WiFi. Verifica las credenciales."
+        }
+    },
+    "deviceManagement": {
+        "title": "Gestionar Dispositivos",
+        "myDevices": "Mis Dispositivos",
+        "loading": "Cargando dispositivos...",
+        "empty": {
+            "title": "No hay dispositivos",
+            "message": "Aún no has agregado ningún dispositivo. Escanea un código QR para agregar tu primer dispositivo.",
+            "addDevice": "Agregar Dispositivo"
+        },
+        "status": {
+            "online": "En línea",
+            "offline": "Desconectado",
+            "setup": "Configuración",
+            "error": "Error",
+            "unknown": "Desconocido"
+        },
+        "actions": {
+            "connect": "Conectar"
+        },
+        "success": {
+            "title": "Éxito",
+            "connected": "Conectado a {{name}}",
+            "deleted": "Dispositivo {{name}} eliminado"
+        },
+        "error": {
+            "title": "Error",
+            "loadDevices": "Error al cargar dispositivos",
+            "bluetoothNotAvailable": "Bluetooth no está disponible",
+            "deviceNotFound": "Dispositivo no encontrado cerca",
+            "connectionFailed": "Error al conectar al dispositivo",
+            "deleteFailed": "Error al eliminar dispositivo"
+        },
+        "delete": {
+            "title": "Eliminar Dispositivo",
+            "message": "¿Estás seguro de que quieres eliminar {{name}}? Esta acción no se puede deshacer."
+        }
+    },
+    "qrScanner": {
+        "title": "Escanear Código QR",
+        "processing": "Procesando código QR...",
+        "instructions": {
+            "scanQR": "Apunta tu cámara al código QR en tu dispositivo",
+            "scanned": "Código QR escaneado exitosamente"
+        },
+        "success": {
+            "title": "Éxito",
+            "deviceRegistered": "Dispositivo {{name}} registrado exitosamente"
+        },
+        "error": {
+            "title": "Error",
+            "invalidQR": "Formato de código QR inválido",
+            "deviceNotFound": "Dispositivo no encontrado en nuestro sistema",
+            "processingFailed": "Error al procesar código QR"
+        },
+        "noPermission": {
+            "title": "Permiso de Cámara Requerido",
+            "message": "Necesitamos acceso a la cámara para escanear códigos QR. Por favor, otorga el permiso en la configuración de tu dispositivo.",
+            "grantAccess": "Otorgar Acceso"
+        },
+        "requestingPermission": "Solicitando permiso de cámara..."
+    },
+    "deviceSetup": {
+        "title": "Configuración de Dispositivo",
+        "step1": {
+            "title": "Conectar Bluetooth",
+            "description": "Conecta a tu dispositivo via Bluetooth"
+        },
+        "step2": {
+            "title": "Verificar Conexión",
+            "description": "Verifica que la conexión esté establecida"
+        },
+        "step3": {
+            "title": "Configurar WiFi",
+            "description": "Configura la conexión WiFi para tu dispositivo"
+        },
+        "step4": {
+            "title": "Completar Configuración",
+            "description": "Tu dispositivo está listo para usar"
+        },
+        "bluetoothDevices": "Dispositivos Bluetooth",
+        "wifiNetworks": "Redes WiFi",
+        "wifiPassword": "Contraseña WiFi",
+        "wifiPasswordPlaceholder": "Ingresa la contraseña WiFi",
+        "configureWiFi": "Configurar WiFi",
+        "connecting": "Conectando...",
+        "connectingToDevice": "Conectando a {{name}}...",
+        "noDevicesFound": "No se encontraron dispositivos cerca",
+        "success": {
+            "title": "Éxito",
+            "connected": "Conectado a {{name}}",
+            "wifiConfigured": "WiFi configurado exitosamente",
+            "setupComplete": "Configuración completada exitosamente"
+        },
+        "error": {
+            "title": "Error",
+            "permissionsRequired": "Se requieren permisos de Bluetooth",
+            "bluetoothNotAvailable": "Bluetooth no está disponible",
+            "scanFailed": "Error al escanear dispositivos",
+            "connectionFailed": "Error al conectar al dispositivo",
+            "wifiScanFailed": "Error al escanear redes WiFi",
+            "wifiCredentialsRequired": "Se requieren credenciales WiFi",
+            "wifiConfigurationFailed": "Error al configurar WiFi"
         }
     },
     "common": {

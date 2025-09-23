@@ -28,6 +28,7 @@ export default {
         NSBluetoothPeripheralUsageDescription: 'Esta aplicación necesita acceso a Bluetooth para configurar tu robot Nebu.',
         NSLocationWhenInUseUsageDescription: 'Esta aplicación necesita acceso a la ubicación para escanear dispositivos Bluetooth cercanos.',
         NSLocationAlwaysAndWhenInUseUsageDescription: 'Esta aplicación necesita acceso a la ubicación para escanear dispositivos Bluetooth cercanos.',
+        NSCameraUsageDescription: 'Esta aplicación necesita acceso a la cámara para escanear códigos QR de dispositivos.',
         UIBackgroundModes: ['bluetooth-central', 'bluetooth-peripheral'],
         UIRequiredDeviceCapabilities: ['armv7', 'bluetooth-le']
       }
@@ -46,7 +47,8 @@ export default {
         'android.permission.ACCESS_FINE_LOCATION',
         'android.permission.ACCESS_COARSE_LOCATION',
         'android.permission.INTERNET',
-        'android.permission.ACCESS_NETWORK_STATE'
+        'android.permission.ACCESS_NETWORK_STATE',
+        'android.permission.CAMERA'
       ],
       usesFeatures: [
         {
@@ -63,12 +65,15 @@ export default {
       favicon: './assets/favicon.png'
     },
     plugins: [
-      "expo-font", // ← Agrega esto
+      "expo-font",
+      "expo-camera",
+      "expo-barcode-scanner",
       [
         'react-native-permissions',
         {
           bluetooth: 'when-in-use',
-          location: 'when-in-use'
+          location: 'when-in-use',
+          camera: 'when-in-use'
         }
       ]
     ],
