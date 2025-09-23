@@ -164,50 +164,6 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async getUserStats(id: string): Promise<{
-    enrolledCoursesCount: number;
-    completedCoursesCount: number;
-    totalWatchTime: number;
-    certificatesEarned: number;
-  }> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: ['enrolledCourses', 'progress'],
-    });
-
-    if (!user) {
-      throw new NotFoundException('Usuario no encontrado');
-    }
-
-    // Calculate enrolled courses count
-    const enrolledCoursesCount = user.enrolledCourses ? user.enrolledCourses.length : 0;
-
-    // Calculate completed courses and watch time from progress
-    let completedCoursesCount = 0;
-    let totalWatchTime = 0;
-
-    if (user.progress && user.progress.length > 0) {
-      // Count unique completed courses
-      const completedCourseIds = new Set(
-        user.progress.filter(p => p.status === 'completed').map(p => p.courseId)
-      );
-      completedCoursesCount = completedCourseIds.size;
-
-      // Calculate total watch time
-      totalWatchTime = user.progress.reduce((total, p) => total + (p.watchTime || 0), 0);
-    }
-
-    // For now, certificates earned equals completed courses
-    const certificatesEarned = completedCoursesCount;
-
-    return {
-      enrolledCoursesCount,
-      completedCoursesCount,
-      totalWatchTime,
-      certificatesEarned,
-    };
-  }
-
   async promoteToInstructor(id: string): Promise<User> {
     const user = await this.findOne(id);
 

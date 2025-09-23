@@ -144,30 +144,6 @@ export interface WebSocketMessage<T = unknown> {
 }
 
 /**
- * Course enrollment data interface
- */
-export interface CourseEnrollmentData {
-  courseId: string;
-  userId: string;
-  enrolledAt: Date;
-  progress: number;
-  completed: boolean;
-}
-
-/**
- * Progress tracking data interface
- */
-export interface ProgressTrackingData {
-  courseId: string;
-  lessonId: string;
-  userId: string;
-  progress: number;
-  timeSpent: number;
-  completed: boolean;
-  lastPosition?: number;
-}
-
-/**
  * Analytics event data interface
  */
 export interface AnalyticsEventData {

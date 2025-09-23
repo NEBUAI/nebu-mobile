@@ -106,17 +106,7 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  // Relations using string references to avoid circular dependencies
-  @OneToMany('Course', 'instructor')
-  instructorCourses: any[];
-
-  @ManyToMany('Course', 'students')
-  @JoinTable({
-    name: 'course_students',
-    joinColumn: { name: 'userId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'courseId', referencedColumnName: 'id' },
-  })
-  enrolledCourses: any[];
+  // Relaciones a Course eliminadas por no existir entidad Course
 
   @OneToMany('Progress', 'user')
   progress: any[];
@@ -182,9 +172,6 @@ export class User {
     return this.role === UserRole.STUDENT;
   }
 
-  get enrolledCoursesCount(): number {
-    return this.enrolledCourses ? this.enrolledCourses.length : 0;
-  }
 
   get completedCoursesCount(): number {
     if (!this.progress) return 0;

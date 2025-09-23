@@ -47,12 +47,6 @@ export class ApiResponseInterceptor<T>
     if (url.includes('/auth/verify')) {
       return 'Verificación de autenticación completada';
     }
-    if (url.includes('/courses')) {
-      if (method === 'GET') return 'Cursos obtenidos exitosamente';
-      if (method === 'POST') return 'Curso creado exitosamente';
-      if (method === 'PUT' || method === 'PATCH') return 'Curso actualizado exitosamente';
-      if (method === 'DELETE') return 'Curso eliminado exitosamente';
-    }
     if (url.includes('/users')) {
       if (method === 'GET') return 'Usuarios obtenidos exitosamente';
       if (method === 'POST') return 'Usuario creado exitosamente';
