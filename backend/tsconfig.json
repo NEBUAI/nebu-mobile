@@ -26,7 +26,6 @@
       "@/*": ["src/*"],
       "@/auth/*": ["src/auth/*"],
       "@/users/*": ["src/users/*"],
-      "@/progress/*": ["src/progress/*"],
       "@/community/*": ["src/community/*"],
       "@/payments/*": ["src/payments/*"],
       "@/common/*": ["src/common/*"],

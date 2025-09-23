@@ -107,13 +107,6 @@ export class User {
   updatedAt: Date;
 
   // Relaciones a Course eliminadas por no existir entidad Course
-
-  @OneToMany('Progress', 'user')
-  progress: any[];
-
-  @OneToMany('Subscription', 'user')
-  subscriptions: any[];
-
   // Relaciones eliminadas: Progress, Subscription, Purchase, Review, UserCourseEnrollment, UserProgress, Order (no existen entidades)
 
   @OneToMany('Toy', 'user')
@@ -155,15 +148,13 @@ export class User {
 
 
   get completedCoursesCount(): number {
-    if (!this.progress) return 0;
-    const completedCourses = new Set(
-      this.progress.filter(p => p.status === 'completed').map(p => p.courseId)
-    );
-    return completedCourses.size;
+    // TODO: Implement when course system is added
+    return 0;
   }
 
   get totalProgressCount(): number {
-    return this.progress ? this.progress.length : 0;
+    // TODO: Implement when course system is added
+    return 0;
   }
 
   get toysCount(): number {
