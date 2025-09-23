@@ -24,7 +24,7 @@ export class IoTDevice {
   })
   deviceType: DeviceType;
 
-  @Column({ length: 17, unique: true, nullable: true })
+  @Column({ length: 50, unique: true, nullable: true })
   macAddress?: string;
 
   @Column({ type: 'inet', nullable: true })

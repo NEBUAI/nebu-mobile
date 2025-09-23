@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { JwtModule } from '@nestjs/jwt';
 import { redisStore } from 'cache-manager-redis-yet';
 
 // Configuration
@@ -110,6 +111,19 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
         limit: 1000, // 1000 requests per hour
       },
     ]),
+
+    // JWT Module (Global)
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('auth.jwtSecret'),
+        signOptions: {
+          expiresIn: configService.get<string>('auth.jwtExpiresIn'),
+        },
+      }),
+      inject: [ConfigService],
+      global: true,
+    }),
 
     // Core Modules (always loaded)
     AuthModule,
