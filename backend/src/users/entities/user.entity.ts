@@ -114,26 +114,7 @@ export class User {
   @OneToMany('Subscription', 'user')
   subscriptions: any[];
 
-  @OneToMany('Purchase', 'user')
-  purchases: any[];
-
-  @OneToMany('Review', 'user')
-  reviews: any[];
-
-  @OneToMany('Comment', 'user')
-  comments: any[];
-
-  @OneToMany('CartItem', 'user')
-  cartItems: any[];
-
-  @OneToMany('UserCourseEnrollment', 'user')
-  courseEnrollments: any[];
-
-  @OneToMany('UserProgress', 'user')
-  userProgress: any[];
-
-  @OneToMany('Order', 'user')
-  orders: any[];
+  // Relaciones eliminadas: Progress, Subscription, Purchase, Review, UserCourseEnrollment, UserProgress, Order (no existen entidades)
 
   @OneToMany('Toy', 'user')
   toys: any[];
