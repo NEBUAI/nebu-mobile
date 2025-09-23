@@ -67,33 +67,15 @@ class RobotService {
     try {
       console.log('Validating robot in backend:', request);
 
-      // Simular llamada al backend
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Simular respuesta del backend
-      const mockResponse: RobotValidationResponse = {
-        isValid: true,
-        device: {
-          id: request.deviceId,
-          name: request.deviceName,
-          model: 'NEBU-Robot-v1.0',
-          serialNumber: 'NEBU-001-2024',
-          firmwareVersion: '1.2.3',
-          bluetoothId: request.bluetoothId,
-          status: 'setup',
-          lastSeen: new Date().toISOString(),
-          createdAt: new Date(Date.now() - 86400000).toISOString(), // 1 día atrás
-          updatedAt: new Date().toISOString(),
-        },
-        message: 'Robot validated successfully',
-        requiresUpdate: false,
+      // Llamada real al backend
+      const response = await apiService.post(`${this.baseEndpoint}/validate`, request);
+      
+      return {
+        isValid: response.data.isValid,
+        device: response.data.device,
+        message: response.data.message,
+        requiresUpdate: response.data.requiresUpdate || false,
       };
-
-      // En una implementación real, harías esto:
-      // const response = await apiService.post(`${this.baseEndpoint}/validate`, request);
-      // return response.data;
-
-      return mockResponse;
     } catch (error) {
       console.error('Error validating robot:', error);
       
@@ -185,28 +167,21 @@ class RobotService {
     try {
       console.log('Registering new robot:', robotData);
 
-      // Simular llamada al backend
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Simular respuesta del backend
-      const mockRobot: RobotDevice = {
-        id: robotData.id || `robot-${Date.now()}`,
-        name: robotData.name || 'NEBU Robot',
-        model: robotData.model || 'NEBU-Robot-v1.0',
-        serialNumber: robotData.serialNumber || `NEBU-${Math.floor(Math.random() * 1000)}-2024`,
-        firmwareVersion: robotData.firmwareVersion || '1.2.3',
-        bluetoothId: robotData.bluetoothId || '',
-        status: 'setup',
-        lastSeen: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+      // Llamada real al backend
+      const response = await apiService.post(`${this.baseEndpoint}`, robotData);
+      
+      return {
+        id: response.data.id,
+        name: response.data.name,
+        model: response.data.model,
+        serialNumber: response.data.serialNumber,
+        firmwareVersion: response.data.firmwareVersion,
+        bluetoothId: response.data.bluetoothId,
+        status: response.data.status,
+        lastSeen: response.data.lastSeen,
+        createdAt: response.data.createdAt,
+        updatedAt: response.data.updatedAt,
       };
-
-      // En una implementación real, harías esto:
-      // const response = await apiService.post(`${this.baseEndpoint}/register`, robotData);
-      // return response.data;
-
-      return mockRobot;
     } catch (error) {
       console.error('Error registering robot:', error);
       throw error;
@@ -283,30 +258,21 @@ class RobotService {
     try {
       console.log('Getting user robots');
 
-      // Simular llamada al backend
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Simular respuesta del backend
-      const mockRobots: RobotDevice[] = [
-        {
-          id: 'robot-001',
-          name: 'NEBU-Robot-001',
-          model: 'NEBU-Robot-v1.0',
-          serialNumber: 'NEBU-001-2024',
-          firmwareVersion: '1.2.3',
-          bluetoothId: 'nebu-robot-001',
-          status: 'online',
-          lastSeen: new Date().toISOString(),
-          createdAt: new Date(Date.now() - 86400000).toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ];
-
-      // En una implementación real, harías esto:
-      // const response = await apiService.get(`${this.baseEndpoint}/user`);
-      // return response.data;
-
-      return mockRobots;
+      // Llamada real al backend
+      const response = await apiService.get(`${this.baseEndpoint}/user`);
+      
+      return response.data.map((device: any) => ({
+        id: device.id,
+        name: device.name,
+        model: device.model,
+        serialNumber: device.serialNumber,
+        firmwareVersion: device.firmwareVersion,
+        bluetoothId: device.bluetoothId,
+        status: device.status,
+        lastSeen: device.lastSeen,
+        createdAt: device.createdAt,
+        updatedAt: device.updatedAt,
+      }));
     } catch (error) {
       console.error('Error getting user robots:', error);
       return [];

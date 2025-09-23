@@ -133,6 +133,9 @@ const HomeScreen: React.FC = () => {
       case 'voiceAgent':
         navigation.navigate('VoiceAgent' as never);
         break;
+      case 'deviceManagement':
+        navigation.navigate('DeviceManagement' as never);
+        break;
       case 'iotDevices':
         navigation.navigate('IoTDashboard' as never);
         break;
@@ -149,9 +152,9 @@ const HomeScreen: React.FC = () => {
 
   const quickActions = [
     { id: 1, title: t('home.voiceAgent'), icon: 'mic-outline', color: theme.colors.primary, screen: 'voiceAgent' },
-    { id: 2, title: t('home.robotSetup'), icon: 'bluetooth-outline', color: theme.colors.success, screen: 'robotSetup' },
-    { id: 3, title: t('home.iotDevices'), icon: 'hardware-chip-outline', color: theme.colors.tertiary, screen: 'iotDevices' },
-    { id: 4, title: t('home.dashboard'), icon: 'analytics-outline', color: theme.colors.secondary, screen: 'iotDevices' },
+    { id: 2, title: t('home.manageDevices'), icon: 'hardware-chip-outline', color: theme.colors.success, screen: 'deviceManagement' },
+    { id: 3, title: t('home.robotSetup'), icon: 'bluetooth-outline', color: theme.colors.tertiary, screen: 'robotSetup' },
+    { id: 4, title: t('home.iotDevices'), icon: 'analytics-outline', color: theme.colors.secondary, screen: 'iotDevices' },
     { id: 5, title: t('home.settings'), icon: 'settings-outline', color: theme.colors.textSecondary, screen: 'profile' },
   ];
 

@@ -6,10 +6,16 @@ import { getTheme } from '@/utils/theme';
 
 import HomeScreen from '@/screens/HomeScreen';
 import RobotSetupScreen from '@/screens/RobotSetupScreen';
+import DeviceManagementScreen from '@/screens/DeviceManagementScreen';
+import QRScannerScreen from '@/screens/QRScannerScreen';
+import DeviceSetupScreen from '@/screens/DeviceSetupScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
   RobotSetup: undefined;
+  DeviceManagement: undefined;
+  QRScanner: undefined;
+  DeviceSetup: { device: any };
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -32,6 +38,43 @@ const HomeStackNavigator: React.FC = () => {
         options={{
           headerShown: true,
           title: t('robotSetup.title'),
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: '600',
+          },
+        }}
+      />
+      <Stack.Screen 
+        name="DeviceManagement" 
+        component={DeviceManagementScreen}
+        options={{
+          headerShown: true,
+          title: t('deviceManagement.title'),
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: '600',
+          },
+        }}
+      />
+      <Stack.Screen 
+        name="QRScanner" 
+        component={QRScannerScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen 
+        name="DeviceSetup" 
+        component={DeviceSetupScreen}
+        options={{
+          headerShown: true,
+          title: t('deviceSetup.title'),
           headerStyle: {
             backgroundColor: theme.colors.background,
           },

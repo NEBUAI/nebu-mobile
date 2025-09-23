@@ -5,6 +5,7 @@ export { default as wifiService } from './wifiService';
 export { default as robotService } from './robotService';
 export { default as livekitService } from './livekitService';
 export { default as openaiVoiceService } from './openaiVoiceService';
+export { default as deviceTokenService } from './deviceTokenService';
 
 // Export types
 export type { BluetoothDevice, BluetoothServiceConfig } from './bluetoothService';
@@ -17,3 +18,8 @@ export type {
   WiFiConfigurationResponse,
   RobotStatus 
 } from './robotService';
+export type { 
+  DeviceTokenRequest, 
+  DeviceTokenResponse, 
+  DeviceTokenError 
+} from './deviceTokenService';
