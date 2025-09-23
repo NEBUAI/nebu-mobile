@@ -21,7 +21,7 @@ services:
       - '--web.enable-lifecycle'
       - '--web.enable-admin-api'
     networks:
-      - outliers-network
+      - nebu-network
 
   # ==============================================
   # GRAFANA - VISUALIZATION & DASHBOARDS
@@ -41,7 +41,7 @@ services:
       - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
       - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
     networks:
-      - outliers-network
+      - nebu-network
     depends_on:
       - prometheus
 
@@ -59,7 +59,7 @@ services:
       - loki_data:/loki
     command: -config.file=/etc/loki/local-config.yaml
     networks:
-      - outliers-network
+      - nebu-network
 
   # ==============================================
   # PROMTAIL - LOG SHIPPER
@@ -75,7 +75,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: -config.file=/etc/promtail/config.yml
     networks:
-      - outliers-network
+      - nebu-network
     depends_on:
       - loki
 
@@ -93,7 +93,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
-      - outliers-network
+      - nebu-network
 
 volumes:
   prometheus_data:
@@ -103,5 +103,5 @@ volumes:
 
 
 networks:
-  outliers-network:
+  nebu-network:
     external: true

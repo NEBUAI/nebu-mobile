@@ -70,7 +70,6 @@ services:
           memory: 512M
           cpus: '0.25'
 
-
   # ==============================================
   # MONITORING - PRODUCTION ONLY
   # ==============================================
@@ -89,7 +88,7 @@ services:
       - '--storage.tsdb.retention.time=30d'
       - '--web.enable-lifecycle'
     networks:
-      - outliers-network
+      - nebu-network
       - traefik-network
     labels:
       - "traefik.enable=true"
@@ -111,7 +110,7 @@ services:
       - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
       - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
     networks:
-      - outliers-network
+      - nebu-network
       - traefik-network
     depends_on:
       - prometheus
@@ -134,7 +133,7 @@ services:
       - ./monitoring/loki.yml:/etc/loki/local-config.yaml:ro
       - loki_data:/loki
     networks:
-      - outliers-network
+      - nebu-network
     profiles:
       - monitoring
 
@@ -147,7 +146,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./monitoring/promtail.yml:/etc/promtail/config.yml:ro
     networks:
-      - outliers-network
+      - nebu-network
     depends_on:
       - loki
     profiles:
