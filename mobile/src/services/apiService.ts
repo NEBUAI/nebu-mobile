@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { DeviceTokenRequest } from './deviceTokenService';
 
 // Configuración base de la API
-const API_BASE_URL = 'http://localhost:3001/api/v1';
+const API_BASE_URL = 'http://62.169.30.44:3000/api';
 
 // Crear instancia de axios
 const apiClient: AxiosInstance = axios.create({
@@ -130,8 +130,48 @@ export interface UpdateToyStatusRequest {
 
 // Servicio principal de API
 class ApiService {
-  post(baseEndpoint: string, request: DeviceTokenRequest) {
-    throw new Error('Method not implemented.');
+  // Método genérico para hacer peticiones POST
+  async post(endpoint: string, data: any): Promise<any> {
+    try {
+      const response = await apiClient.post(endpoint, data);
+      return response;
+    } catch (error) {
+      console.error('API POST error:', error);
+      throw error;
+    }
+  }
+
+  // Método genérico para hacer peticiones GET
+  async get(endpoint: string): Promise<any> {
+    try {
+      const response = await apiClient.get(endpoint);
+      return response;
+    } catch (error) {
+      console.error('API GET error:', error);
+      throw error;
+    }
+  }
+
+  // Método genérico para hacer peticiones PUT
+  async put(endpoint: string, data: any): Promise<any> {
+    try {
+      const response = await apiClient.put(endpoint, data);
+      return response;
+    } catch (error) {
+      console.error('API PUT error:', error);
+      throw error;
+    }
+  }
+
+  // Método genérico para hacer peticiones DELETE
+  async delete(endpoint: string): Promise<any> {
+    try {
+      const response = await apiClient.delete(endpoint);
+      return response;
+    } catch (error) {
+      console.error('API DELETE error:', error);
+      throw error;
+    }
   }
   // Autenticación
   async login(email: string, password: string): Promise<AuthResponse> {
