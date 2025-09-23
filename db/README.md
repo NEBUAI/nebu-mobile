@@ -37,10 +37,10 @@ make status
 
 ```bash
 # Crear base de datos N8N manualmente
-docker exec outliers-academy-postgres psql -U outliers_academy -d outliers_academy_dev -c "CREATE DATABASE n8n_db;"
+docker exec nebu-academy-postgres psql -U nebu_academy -d nebu_academy_dev -c "CREATE DATABASE n8n_db;"
 
 # Verificar que existe
-docker exec outliers-academy-postgres psql -U outliers_academy -d outliers_academy_dev -c "\l" | grep n8n
+docker exec nebu-academy-postgres psql -U nebu_academy -d nebu_academy_dev -c "\l" | grep n8n
 ```
 
 ## 🐛 Solución de Problemas
@@ -61,24 +61,24 @@ Si N8N muestra el error `database "n8n_db" does not exist`:
 
 3. **Reiniciar N8N:**
    ```bash
-   docker restart outliers-academy-n8n
+   docker restart nebu-academy-n8n
    ```
 
 ### Verificar estado de las bases de datos
 
 ```bash
 # Listar todas las bases de datos
-docker exec outliers-academy-postgres psql -U outliers_academy -d outliers_academy_dev -c "\l"
+docker exec nebu-academy-postgres psql -U nebu_academy -d nebu_academy_dev -c "\l"
 
 # Verificar conexión a N8N
-docker exec outliers-academy-postgres psql -U outliers_academy -d n8n_db -c "SELECT 1;"
+docker exec nebu-academy-postgres psql -U nebu_academy -d n8n_db -c "SELECT 1;"
 ```
 
 ## 📝 Notas Importantes
 
 - Los scripts de inicialización solo se ejecutan cuando se crea un nuevo volumen de PostgreSQL
 - Si ya existe un volumen con datos, los scripts no se ejecutarán automáticamente
-- Para forzar la re-inicialización, elimina el volumen: `docker volume rm theme-outliers-academy_postgres_data`
+- Para forzar la re-inicialización, elimina el volumen: `docker volume rm theme-nebu-academy_postgres_data`
 - La base de datos de N8N se crea con las extensiones `uuid-ossp` y `pgcrypto`
 
 ## 🔄 Flujo de Inicialización
@@ -93,6 +93,6 @@ docker exec outliers-academy-postgres psql -U outliers_academy -d n8n_db -c "SEL
 
 Si tienes problemas con la inicialización:
 
-1. Revisa los logs: `docker logs outliers-academy-postgres`
+1. Revisa los logs: `docker logs nebu-academy-postgres`
 2. Verifica la configuración: `docker-compose config`
 3. Ejecuta el script manualmente: `make db-init`

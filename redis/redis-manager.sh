@@ -41,7 +41,7 @@ elif [ -f "$PROJECT_ROOT/docker.env" ]; then
 fi
 
 REDIS_PASSWORD=${REDIS_PASSWORD:-""}
-CONTAINER_NAME="outliers-redis"
+CONTAINER_NAME="nebu-redis"
 
 # Helper function to execute Redis commands
 redis_cmd() {
@@ -253,7 +253,7 @@ case "${1:-help}" in
         echo ""
         echo "Ejemplos:"
         echo "  $0 info"
-        echo "  $0 keys 'outliers:*'"
+        echo "  $0 keys 'nebu:*'"
         echo "  $0 benchmark SET,GET 5000 25"
         echo "  $0 flush 0"
         ;;

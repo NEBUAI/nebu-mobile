@@ -6,7 +6,7 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    monitor: 'outliers-academy'
+    monitor: 'nebu-academy'
     environment: 'production'
 
 rule_files:

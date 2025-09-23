@@ -175,7 +175,7 @@ export class TemplateEngineService {
       description: 'URL del curso',
       type: 'string',
       required: false,
-      example: 'https://outliers.academy/courses/javascript',
+      example: 'https://nebu.academy/courses/javascript',
       category: 'course',
     },
 
@@ -194,8 +194,8 @@ export class TemplateEngineService {
       description: 'URL del sitio',
       type: 'string',
       required: true,
-      defaultValue: 'https://outliers.academy',
-      example: 'https://outliers.academy',
+      defaultValue: 'https://nebu.academy',
+      example: 'https://nebu.academy',
       category: 'system',
     },
     {
@@ -203,8 +203,8 @@ export class TemplateEngineService {
       description: 'Email de soporte',
       type: 'string',
       required: true,
-      defaultValue: 'support@outliers.academy',
-      example: 'support@outliers.academy',
+      defaultValue: 'support@nebu.academy',
+      example: 'support@nebu.academy',
       category: 'system',
     },
     {

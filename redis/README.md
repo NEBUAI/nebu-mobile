@@ -59,7 +59,7 @@ REDIS_EVICTION_POLICY=allkeys-lru
 REDIS_DATABASES=16
 
 # Configuración de cache
-REDIS_KEY_PREFIX=outliers:
+REDIS_KEY_PREFIX=nebu:
 REDIS_TTL=300
 
 # Configuración de conexión (backend)
@@ -90,7 +90,7 @@ cd redis/
 #### **Gestión de Datos**
 ```bash
 ./redis-manager.sh keys                # Lista todas las claves
-./redis-manager.sh keys "outliers:*"   # Lista claves con patrón
+./redis-manager.sh keys "nebu:*"   # Lista claves con patrón
 ./redis-manager.sh flush 0             # Limpia base de datos 0
 ```
 

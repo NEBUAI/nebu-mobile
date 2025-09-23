@@ -36,13 +36,13 @@ scrape_configs:
           __path__: /var/log/syslog
 
   # Application logs
-  - job_name: outliers-academy
+  - job_name: nebu-academy
     static_configs:
       - targets:
           - localhost
         labels:
-          job: outliers-academy
-          __path__: /var/log/outliers-academy/*.log
+          job: nebu-academy
+          __path__: /var/log/nebu-academy/*.log
     pipeline_stages:
       - multiline:
           firstline: '^\d{4}-\d{2}-\d{2}'

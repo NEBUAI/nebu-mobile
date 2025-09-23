@@ -43,8 +43,8 @@ http:
         accessControlAllowOriginListRegex:
           - "https?://localhost(:[0-9]+)?"
           - "https?://.*\\.localhost(:[0-9]+)?"
-          - "https?://(www\\.)?outliers\\.academy"
-          - "https?://.*\\.outliers\\.academy"
+          - "https?://(www\\.)?nebu\\.academy"
+          - "https?://.*\\.nebu\\.academy"
         accessControlAllowHeaders:
           - "Content-Type"
           - "Authorization"
@@ -67,7 +67,7 @@ http:
   routers:
     # Backend API manual routing
     backend-api:
-      rule: "Host(`api.outliers.academy`) || (Host(`outliers.academy`) && PathPrefix(`/api`))"
+      rule: "Host(`api.nebu.academy`) || (Host(`nebu.academy`) && PathPrefix(`/api`))"
       service: backend-api
       middlewares:
         - cors-api

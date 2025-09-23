@@ -8,7 +8,7 @@ export const redisConfig = registerAs('redis', () => ({
   db: parseInt(process.env.REDIS_DB || '0', 10),
 
   // Cache configuration
-  keyPrefix: process.env.REDIS_KEY_PREFIX || 'outliers:',
+  keyPrefix: process.env.REDIS_KEY_PREFIX || 'nebu:',
   ttl: parseInt(process.env.REDIS_TTL || '300', 10), // 5 minutes default
 
   // Performance settings

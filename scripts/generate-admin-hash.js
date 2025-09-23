@@ -14,9 +14,9 @@ async function generateAdminHash() {
     console.log('📝 Agrega esta línea a tu archivo .env:\n');
     console.log(`ADMIN_PASSWORD_HASH=${hash}`);
     console.log('\n🔑 Credenciales de acceso:');
-    console.log(`Email: admin@outliers.academy`);
+    console.log(`Email: admin@nebu.academy`);
     console.log(`Password: ${password}`);
-    console.log('\n🌐 URL del panel: https://admin.outliers.academy/admin');
+    console.log('\n🌐 URL del panel: https://admin.nebu.academy/admin');
     
   } catch (error) {
     console.error('❌ Error generando hash:', error);

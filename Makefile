@@ -122,7 +122,7 @@ db-reset: ## Reset database
 
 db-backup: ## Backup database
 	@echo "$(GREEN)Creating database backup...$(NC)"
-	@docker-compose exec postgres pg_dump -U outliers_academy outliers_academy_db > backup_$(shell date +%Y%m%d_%H%M%S).sql
+	@docker-compose exec postgres pg_dump -U nebu_academy nebu_academy_db > backup_$(shell date +%Y%m%d_%H%M%S).sql
 
 
 ## Cleanup Commands
@@ -165,16 +165,16 @@ update: ## Update all services
 backup: ## Create full system backup
 	@echo "$(GREEN)Creating system backup...$(NC)"
 	@mkdir -p backups/$(shell date +%Y%m%d)
-	@docker-compose exec postgres pg_dump -U outliers_academy outliers_academy_db > backups/$(shell date +%Y%m%d)/database.sql
-	@docker run --rm -v outliers-academy_redis_data:/data -v $(PWD)/backups/$(shell date +%Y%m%d):/backup alpine tar czf /backup/redis.tar.gz -C /data .
+	@docker-compose exec postgres pg_dump -U nebu_academy nebu_academy_db > backups/$(shell date +%Y%m%d)/database.sql
+	@docker run --rm -v nebu-academy_redis_data:/data -v $(PWD)/backups/$(shell date +%Y%m%d):/backup alpine tar czf /backup/redis.tar.gz -C /data .
 	@tar czf backups/$(shell date +%Y%m%d)/uploads.tar.gz backend/uploads/ 2>/dev/null || true
 	@echo "$(GREEN)Backup created in backups/$(shell date +%Y%m%d)/$(NC)"
 
 restore: ## Restore from backup (make restore DATE=20240101)
 	@echo "$(YELLOW)Restoring from backup $(DATE)...$(NC)"
 	@test -d backups/$(DATE) || (echo "$(RED)Backup directory not found!$(NC)" && exit 1)
-	@docker-compose exec postgres psql -U outliers_academy -d outliers_academy_db < backups/$(DATE)/database.sql
-	@docker run --rm -v outliers-academy_redis_data:/data -v $(PWD)/backups/$(DATE):/backup alpine tar xzf /backup/redis.tar.gz -C /data
+	@docker-compose exec postgres psql -U nebu_academy -d nebu_academy_db < backups/$(DATE)/database.sql
+	@docker run --rm -v nebu-academy_redis_data:/data -v $(PWD)/backups/$(DATE):/backup alpine tar xzf /backup/redis.tar.gz -C /data
 	@echo "$(GREEN)Restore completed!$(NC)"
 
 ## Utility Commands
@@ -189,7 +189,7 @@ shell-livekit: ## Access LiveKit container shell
 	@docker-compose exec livekit sh
 
 shell-postgres: ## Access PostgreSQL shell
-	@docker-compose exec postgres psql -U outliers_academy -d outliers_academy_db
+	@docker-compose exec postgres psql -U nebu_academy -d nebu_academy_db
 
 shell-redis: ## Access Redis shell
 	@docker-compose exec redis redis-cli
@@ -202,13 +202,13 @@ top: ## Show container resource usage
 	@docker stats $(shell docker-compose ps -q)
 
 networks: ## Show Docker networks
-	@docker network ls | grep outliers
+	@docker network ls | grep nebu
 
 volumes: ## Show Docker volumes
-	@docker volume ls | grep outliers
+	@docker volume ls | grep nebu
 
 images: ## Show Docker images
-	@docker images | grep outliers
+	@docker images | grep nebu
 
 ## Security Commands
 security-scan: ## Run security scan on images

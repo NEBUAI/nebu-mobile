@@ -13,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       provide: 'ADMIN_CONFIG',
       useFactory: (configService: ConfigService) => ({
         enabled: configService.get<string>('ADMIN_ENABLED') === 'true',
-        email: configService.get<string>('ADMIN_EMAIL') || 'admin@outliers.academy',
+        email: configService.get<string>('ADMIN_EMAIL') || 'admin@nebu.academy',
         password: configService.get<string>('ADMIN_PASSWORD') || 'admin123',
       }),
       inject: [ConfigService],

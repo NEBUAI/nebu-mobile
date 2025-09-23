@@ -8,22 +8,22 @@ export default registerAs('cloudinary', () => ({
 
   // Upload presets for different media types
   presets: {
-    courses: process.env.CLOUDINARY_PRESET_COURSES || 'outliers_courses',
-    videos: process.env.CLOUDINARY_PRESET_VIDEOS || 'outliers_videos',
-    thumbnails: process.env.CLOUDINARY_PRESET_THUMBNAILS || 'outliers_thumbnails',
-    materials: process.env.CLOUDINARY_PRESET_MATERIALS || 'outliers_materials',
-    avatars: process.env.CLOUDINARY_PRESET_AVATARS || 'outliers_avatars',
-    certificates: process.env.CLOUDINARY_PRESET_CERTIFICATES || 'outliers_certificates',
+    courses: process.env.CLOUDINARY_PRESET_COURSES || 'nebu_courses',
+    videos: process.env.CLOUDINARY_PRESET_VIDEOS || 'nebu_videos',
+    thumbnails: process.env.CLOUDINARY_PRESET_THUMBNAILS || 'nebu_thumbnails',
+    materials: process.env.CLOUDINARY_PRESET_MATERIALS || 'nebu_materials',
+    avatars: process.env.CLOUDINARY_PRESET_AVATARS || 'nebu_avatars',
+    certificates: process.env.CLOUDINARY_PRESET_CERTIFICATES || 'nebu_certificates',
   },
 
   // Folder structure
   folders: {
-    courses: 'outliers-academy/courses',
-    videos: 'outliers-academy/videos',
-    thumbnails: 'outliers-academy/thumbnails',
-    materials: 'outliers-academy/materials',
-    avatars: 'outliers-academy/avatars',
-    certificates: 'outliers-academy/certificates',
+    courses: 'nebu-academy/courses',
+    videos: 'nebu-academy/videos',
+    thumbnails: 'nebu-academy/thumbnails',
+    materials: 'nebu-academy/materials',
+    avatars: 'nebu-academy/avatars',
+    certificates: 'nebu-academy/certificates',
   },
 
   // Transformation settings

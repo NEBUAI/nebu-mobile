@@ -75,7 +75,7 @@ services:
   # ==============================================
   prometheus:
     image: prom/prometheus:latest
-    container_name: outliers-academy-prometheus
+    container_name: nebu-academy-prometheus
     restart: unless-stopped
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
@@ -100,7 +100,7 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: outliers-academy-grafana
+    container_name: nebu-academy-grafana
     restart: unless-stopped
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
@@ -127,7 +127,7 @@ services:
   # ==============================================
   loki:
     image: grafana/loki:latest
-    container_name: outliers-academy-loki
+    container_name: nebu-academy-loki
     restart: unless-stopped
     volumes:
       - ./monitoring/loki.yml:/etc/loki/local-config.yaml:ro
@@ -139,7 +139,7 @@ services:
 
   promtail:
     image: grafana/promtail:latest
-    container_name: outliers-academy-promtail
+    container_name: nebu-academy-promtail
     restart: unless-stopped
     volumes:
       - /var/log:/var/log:ro

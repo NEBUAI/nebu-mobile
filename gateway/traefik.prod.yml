@@ -44,7 +44,7 @@ providers:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: admin@outliers.academy
+      email: admin@nebu.academy
       storage: /letsencrypt/acme.json
       keyType: EC256
       httpChallenge:

@@ -82,8 +82,8 @@ gateway/
 
 ```bash
 # En .env o docker.env
-DOMAIN=outliers.academy
-ACME_EMAIL=admin@outliers.academy
+DOMAIN=nebu.academy
+ACME_EMAIL=admin@nebu.academy
 ```
 
 ## 🚨 Notas Importantes
@@ -97,7 +97,7 @@ ACME_EMAIL=admin@outliers.academy
 
 ### Verificar certificados
 ```bash
-docker logs outliers-traefik | grep -i acme
+docker logs nebu-traefik | grep -i acme
 ```
 
 ### Ver configuración cargada
@@ -106,6 +106,6 @@ docker logs outliers-traefik | grep -i acme
 
 ### Logs en tiempo real
 ```bash
-docker logs -f outliers-traefik
+docker logs -f nebu-traefik
 tail -f gateway/logs/access.log | jq
 ```

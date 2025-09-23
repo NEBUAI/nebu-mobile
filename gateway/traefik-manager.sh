@@ -93,9 +93,9 @@ show_logs() {
 show_status() {
     log_info "Estado de Traefik..."
     
-    if docker ps | grep -q "outliers-traefik"; then
+    if docker ps | grep -q "nebu-traefik"; then
         log_success "Traefik está ejecutándose"
-        docker ps --filter "name=outliers-traefik" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+        docker ps --filter "name=nebu-traefik" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
     else
         log_warning "Traefik no está ejecutándose"
     fi
