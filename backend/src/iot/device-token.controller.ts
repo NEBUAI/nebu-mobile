@@ -30,13 +30,18 @@ export class DeviceTokenController {
           type: 'string',
           description: 'LiveKit access token for real-time communication',
           example: 'eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcInR5cGVcI...'
+        },
+        roomName: {
+          type: 'string',
+          description: 'LiveKit room name where the device will connect',
+          example: 'iot-device-a4538271-c9a3-43c8-8754-76fdd9a90520'
         }
       }
     }
   })
   @ApiResponse({ status: 400, description: 'Invalid device ID' })
   @ApiResponse({ status: 404, description: 'Device not found' })
-  async getDeviceToken(@Body() deviceTokenRequest: DeviceTokenRequestDto): Promise<{ access_token: string }> {
+  async getDeviceToken(@Body() deviceTokenRequest: DeviceTokenRequestDto): Promise<{ access_token: string; roomName: string }> {
     this.logger.log('🔐 IoT Device Token Request Received');
     this.logger.log(`📱 Device ID: ${deviceTokenRequest.device_id}`);
     this.logger.log(`⏰ Request Time: ${new Date().toISOString()}`);
@@ -53,7 +58,8 @@ export class DeviceTokenController {
       this.logger.log(`📊 LiveKit Token Length: ${livekitResult.token.length} characters`);
       
       return {
-        access_token: livekitResult.token
+        access_token: livekitResult.token,
+        roomName: livekitResult.roomName
       };
     } catch (error) {
       this.logger.error('❌ Failed to create LiveKit session for IoT Device');

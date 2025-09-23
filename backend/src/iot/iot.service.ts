@@ -154,7 +154,6 @@ export class IoTService {
       await this.iotDeviceRepository.save(device);
     }
     
-    // Generate or use existing room name
     const roomName = device.roomName || `iot-device-${device.id}`;
     if (!device.roomName) {
       device.roomName = roomName;
