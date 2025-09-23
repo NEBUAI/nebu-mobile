@@ -123,3 +123,4 @@ class DeviceTokenService {
 // Instancia singleton del servicio
 export const deviceTokenService = new DeviceTokenService();
 export default deviceTokenService;
+
