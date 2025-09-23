@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { NotificationsModule } from '../notifications/notifications.module';
-import { AnalyticsModule } from '../analytics/analytics.module';
-import { ProgressModule } from '../progress/progress.module';
 import { NotificationsGateway } from './gateway/notifications.gateway';
 import { ProgressGateway } from './gateway/progress.gateway';
 import { AnalyticsGateway } from './gateway/analytics.gateway';
@@ -14,8 +12,6 @@ import { FeaturesConfig } from '../config/features.config';
   imports: [
     ConfigModule,
     NotificationsModule,
-    AnalyticsModule,
-    ProgressModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'default-secret',
       signOptions: { expiresIn: '7d' },

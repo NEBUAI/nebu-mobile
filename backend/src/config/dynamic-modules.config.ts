@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { FeaturesConfig } from './features.config';
 
 // Import all modules that can be conditionally loaded
-import { AnalyticsModule } from '../analytics/analytics.module';
 import { WebSocketModule } from '../websocket/websocket.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { PaymentsModule } from '../payments/payments.module';
@@ -19,10 +18,6 @@ export class DynamicModulesConfig {
     const imports = [];
 
     // Conditionally load modules based on feature flags
-    if (featuresConfig.isAnalyticsEnabled) {
-      imports.push(AnalyticsModule);
-    }
-
     if (featuresConfig.isWebSocketEnabled) {
       imports.push(WebSocketModule);
     }

@@ -18,14 +18,10 @@ import cloudinaryConfig from './config/cloudinary.config';
 // Modules
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { CoursesModule } from './courses/courses.module';
-import { CommunityModule } from './community/community.module';
 import { PaymentsModule } from './payments/payments.module';
 import { AdminModule } from './admin/admin.module';
-import { UploadsModule } from './uploads/uploads.module';
 import { HealthModule } from './common/health.module';
 import { NotificationsModule } from './notifications/notifications.module';
-import { CertificatesModule } from './certificates/certificates.module';
 import { WebSocketModule } from './websocket/websocket.module';
 import { EmailModule } from './email/email.module';
 import { SecurityModule } from './security/security.module';
@@ -121,12 +117,8 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     // Core Modules (always loaded)
     AuthModule,
     UsersModule,
-    CoursesModule,
-    CommunityModule,
     AdminModule,
-    UploadsModule,
     HealthModule,
-    CertificatesModule,
     EmailModule,
     SecurityModule,
     SchedulerModule,

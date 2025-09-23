@@ -2,7 +2,6 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ClassSerializerInterceptor } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { UploadsService } from './uploads/uploads.service';
 import { ErrorHandlingInterceptor } from './common/interceptors/error-handling.interceptor';
 import { QueryOptimizationInterceptor } from './common/interceptors/query-optimization.interceptor';
 import { ValidationSanitizationPipe } from './common/pipes/validation-sanitization.pipe';
@@ -77,10 +76,6 @@ async function bootstrap() {
     prefix: '/uploads/',
     maxAge: '1d', // Cache por 1 día
   });
-
-  // Crear directorios de uploads
-  const uploadsService = app.get(UploadsService);
-  await uploadsService.createUploadDirectories();
 
   const port = process.env.PORT || 3001;
   await app.listen(port);

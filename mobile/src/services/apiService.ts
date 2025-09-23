@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { DeviceTokenRequest } from './deviceTokenService';
 
 // Configuración base de la API
 const API_BASE_URL = 'http://localhost:3001/api/v1';
@@ -129,6 +130,9 @@ export interface UpdateToyStatusRequest {
 
 // Servicio principal de API
 class ApiService {
+  post(baseEndpoint: string, request: DeviceTokenRequest) {
+    throw new Error('Method not implemented.');
+  }
   // Autenticación
   async login(email: string, password: string): Promise<AuthResponse> {
     const response = await apiClient.post('/auth/login', { email, password });
