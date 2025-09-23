@@ -58,12 +58,6 @@ export class UsersController {
     return user;
   }
 
-  @Get('me/stats')
-  @ApiOperation({ summary: 'Obtener estadísticas del usuario actual' })
-  getMyStats(@CurrentUser() user: User) {
-    return this.usersService.getUserStats(user.id);
-  }
-
   @Get(':id')
   @ApiOperation({ summary: 'Obtener usuario por ID' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
