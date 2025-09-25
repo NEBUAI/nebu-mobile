@@ -8,3 +8,8 @@ export { default as GradientText } from './GradientText';
 export { default as FloatingActionButton } from './FloatingActionButton';
 export { default as StatusBadge } from './StatusBadge';
 export { default as ParticleBackground } from './ParticleBackground';
+
+// Auth Components
+export { default as ModernInput } from './auth/ModernInput';
+export { default as PrimaryButton } from './auth/PrimaryButton';
+export { default as SocialLoginButton } from './auth/SocialLoginButton';

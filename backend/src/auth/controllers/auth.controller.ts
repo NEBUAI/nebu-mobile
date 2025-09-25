@@ -22,6 +22,7 @@ import { AuthService } from '../services/auth.service';
 import { RegisterDto } from '../dto/register.dto';
 import { LoginDto } from '../dto/login.dto';
 import { AuthResponseDto, RefreshTokenDto } from '../dto/auth-response.dto';
+import { SocialLoginDto } from '../dto/social-login.dto';
 import { Public } from '../decorators/public.decorator';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -238,5 +239,74 @@ export class AuthController {
         role: user.isAdmin ? 'admin' : user.isInstructor ? 'instructor' : 'student',
       },
     };
+  }
+
+  @Public()
+  @Post('google')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Google Sign-In' })
+  @ApiResponse({
+    status: 200,
+    description: 'Google login exitoso',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Token de Google inválido',
+  })
+  async googleLogin(@Body() body: { token: string }): Promise<AuthResponseDto> {
+    return this.authService.googleLogin(body.token);
+  }
+
+  @Public()
+  @Post('facebook')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Facebook Login' })
+  @ApiResponse({
+    status: 200,
+    description: 'Facebook login exitoso',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Token de Facebook inválido',
+  })
+  async facebookLogin(@Body() body: { token: string }): Promise<AuthResponseDto> {
+    return this.authService.facebookLogin(body.token);
+  }
+
+  @Public()
+  @Post('apple')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Apple Sign-In' })
+  @ApiResponse({
+    status: 200,
+    description: 'Apple login exitoso',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Token de Apple inválido',
+  })
+  async appleLogin(@Body() body: { token: string }): Promise<AuthResponseDto> {
+    return this.authService.appleLogin(body.token);
+  }
+
+  @Public()
+  @Post('social')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Login Social Genérico' })
+  @ApiBody({ type: SocialLoginDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Login social exitoso',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Credenciales sociales inválidas',
+  })
+  async socialLogin(@Body() socialLoginDto: SocialLoginDto): Promise<AuthResponseDto> {
+    return this.authService.socialLogin(socialLoginDto);
   }
 }

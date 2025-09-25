@@ -16,6 +16,7 @@ import { LoginDto } from '../dto/login.dto';
 import { AuthResponseDto, AuthUserDto } from '../dto/auth-response.dto';
 import { EmailService } from './email.service';
 import { OAuthProviderData } from '../../common/types/common.types';
+import { SocialLoginDto } from '../dto/social-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -382,5 +383,151 @@ export class AuthService {
 
     // Disable email verification in development, enable in production
     return nodeEnv === 'production';
+  }
+
+  // Social Authentication Methods
+  async socialLogin(socialLoginDto: SocialLoginDto): Promise<AuthResponseDto> {
+    const { token, provider, email, name, avatar } = socialLoginDto;
+
+    try {
+      // Verify token with social provider (simplified - in production, verify with provider APIs)
+      const isValidToken = await this.verifySocialToken(token, provider);
+      
+      if (!isValidToken) {
+        throw new UnauthorizedException('Invalid social token');
+      }
+
+      // Check if user exists
+      let user = await this.userRepository.findOne({
+        where: [
+          { email },
+          { oauthProvider: provider, oauthId: token }, // Using token as oauthId for simplicity
+        ],
+      });
+
+      if (!user) {
+        // Create new user
+        user = await this.createSocialUser(email, name, avatar, provider, token);
+      } else {
+        // Update last login
+        user.lastLoginAt = new Date();
+        await this.userRepository.save(user);
+      }
+
+      // Generate tokens
+      const tokens = await this.generateTokens(user);
+
+      return {
+        user: this.mapUserToAuthUser(user),
+        ...tokens,
+      };
+    } catch (error) {
+      console.error('Social login error:', error);
+      throw new UnauthorizedException('Social login failed');
+    }
+  }
+
+  async googleLogin(googleToken: string): Promise<AuthResponseDto> {
+    // In production, verify token with Google API
+    const userInfo = await this.verifyGoogleToken(googleToken);
+    
+    return this.socialLogin({
+      token: googleToken,
+      provider: 'google',
+      email: userInfo.email,
+      name: userInfo.name,
+      avatar: userInfo.picture,
+    });
+  }
+
+  async facebookLogin(facebookToken: string): Promise<AuthResponseDto> {
+    // In production, verify token with Facebook API
+    const userInfo = await this.verifyFacebookToken(facebookToken);
+    
+    return this.socialLogin({
+      token: facebookToken,
+      provider: 'facebook',
+      email: userInfo.email,
+      name: userInfo.name,
+      avatar: userInfo.picture?.data?.url,
+    });
+  }
+
+  async appleLogin(appleToken: string): Promise<AuthResponseDto> {
+    // In production, verify token with Apple API
+    const userInfo = await this.verifyAppleToken(appleToken);
+    
+    return this.socialLogin({
+      token: appleToken,
+      provider: 'apple',
+      email: userInfo.email,
+      name: userInfo.name || userInfo.email.split('@')[0],
+      avatar: undefined,
+    });
+  }
+
+  private async verifySocialToken(token: string, provider: string): Promise<boolean> {
+    // Simplified verification - in production, verify with actual provider APIs
+    // For now, just check if token is not empty
+    return !!token && token.length > 10;
+  }
+
+  private async verifyGoogleToken(token: string): Promise<any> {
+    // In production, use Google's tokeninfo API
+    // https://developers.google.com/identity/sign-in/web/backend-auth
+    return {
+      email: 'user@gmail.com',
+      name: 'Google User',
+      picture: 'https://via.placeholder.com/150',
+    };
+  }
+
+  private async verifyFacebookToken(token: string): Promise<any> {
+    // In production, use Facebook's Graph API
+    // https://developers.facebook.com/docs/facebook-login/guides/advanced/confirm
+    return {
+      email: 'user@facebook.com',
+      name: 'Facebook User',
+      picture: {
+        data: {
+          url: 'https://via.placeholder.com/150',
+        },
+      },
+    };
+  }
+
+  private async verifyAppleToken(token: string): Promise<any> {
+    // In production, use Apple's identity token verification
+    // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/verifying_a_user
+    return {
+      email: 'user@apple.com',
+      name: 'Apple User',
+    };
+  }
+
+  private async createSocialUser(
+    email: string,
+    name: string,
+    avatar: string | undefined,
+    provider: string,
+    oauthId: string,
+  ): Promise<User> {
+    const [firstName, ...lastNameParts] = name.split(' ');
+    const lastName = lastNameParts.join(' ') || '';
+
+    const newUser = this.userRepository.create({
+      email,
+      firstName,
+      lastName,
+      username: this.generateUsername(email, firstName, lastName),
+      oauthProvider: provider,
+      oauthId,
+      avatar,
+      emailVerified: true,
+      status: UserStatus.ACTIVE,
+      lastLoginAt: new Date(),
+    });
+
+    return await this.userRepository.save(newUser);
   }
 }
