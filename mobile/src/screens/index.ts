@@ -7,3 +7,6 @@ export { default as IoTDashboardScreen } from './IoTDashboardScreen';
 export { default as VoiceAgentScreen } from './VoiceAgentScreen';
 export { default as RobotSetupScreen } from './RobotSetupScreen';
 export { default as AdminScreen } from './AdminScreen';
+
+// Setup Flow Screens
+export * from './setup';

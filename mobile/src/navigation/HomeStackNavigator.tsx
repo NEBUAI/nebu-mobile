@@ -10,6 +10,15 @@ import RobotSetupScreen from '@/screens/RobotSetupScreen';
 import DeviceManagementScreen from '@/screens/DeviceManagementScreen';
 import QRScannerScreen from '@/screens/QRScannerScreen';
 import DeviceSetupScreen from '@/screens/DeviceSetupScreen';
+import {
+  PersonalitySetupScreen,
+  FavoritesSetupScreen,
+  ToyNameSetupScreen,
+  AgeSetupScreen,
+  WorldInfoSetupScreen,
+  VoiceSetupScreen,
+  ConnectionSetupScreen,
+} from '@/screens/setup';
 
 export type HomeStackParamList = {
   Welcome: undefined;
@@ -18,6 +27,14 @@ export type HomeStackParamList = {
   DeviceManagement: undefined;
   QRScanner: undefined;
   DeviceSetup: { device: any };
+  // Setup Flow Screens
+  PersonalitySetup: undefined;
+  FavoritesSetup: undefined;
+  ToyNameSetup: undefined;
+  AgeSetup: undefined;
+  WorldInfoSetup: undefined;
+  VoiceSetup: undefined;
+  ConnectionSetup: undefined;
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -85,6 +102,57 @@ const HomeStackNavigator: React.FC = () => {
           headerTitleStyle: {
             fontWeight: '600',
           },
+        }}
+      />
+      
+      {/* Setup Flow Screens */}
+      <Stack.Screen 
+        name="PersonalitySetup" 
+        component={PersonalitySetupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen 
+        name="FavoritesSetup" 
+        component={FavoritesSetupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen 
+        name="ToyNameSetup" 
+        component={ToyNameSetupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen 
+        name="AgeSetup" 
+        component={AgeSetupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen 
+        name="WorldInfoSetup" 
+        component={WorldInfoSetupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen 
+        name="VoiceSetup" 
+        component={VoiceSetupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen 
+        name="ConnectionSetup" 
+        component={ConnectionSetupScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

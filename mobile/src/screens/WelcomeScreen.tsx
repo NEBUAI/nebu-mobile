@@ -49,7 +49,7 @@ const WelcomeScreen: React.FC = () => {
 
   const handleSetupNewNebu = () => {
     // Navigate to new Nebu setup flow
-    navigation.navigate('RobotSetup' as never);
+    navigation.navigate('PersonalitySetup' as never);
   };
 
   const handleJoinExistingNebu = () => {

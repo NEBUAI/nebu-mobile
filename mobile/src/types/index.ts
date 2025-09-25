@@ -58,6 +58,14 @@ export type HomeStackParamList = {
   DeviceManagement: undefined;
   QRScanner: undefined;
   DeviceSetup: { device: any };
+  // Setup Flow Screens
+  PersonalitySetup: undefined;
+  FavoritesSetup: undefined;
+  ToyNameSetup: undefined;
+  AgeSetup: undefined;
+  WorldInfoSetup: undefined;
+  VoiceSetup: undefined;
+  ConnectionSetup: undefined;
 };
 
 export interface ButtonProps {
