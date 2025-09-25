@@ -418,7 +418,7 @@ export class AuthService {
       const tokens = await this.generateTokens(user);
 
       return {
-        user: this.mapUserToAuthUser(user),
+        user: this.mapToAuthUser(user),
         ...tokens,
       };
     } catch (error) {

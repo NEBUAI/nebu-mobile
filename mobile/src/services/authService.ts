@@ -1,7 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const API_BASE_URL = 'http://localhost:3000'; // Update with your backend URL
+import { ENV_CONFIG } from '@/config/env';
 
 interface LoginCredentials {
   email: string;
@@ -44,7 +43,7 @@ class AuthService {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = API_BASE_URL;
+    this.baseURL = ENV_CONFIG.API_BASE_URL;
   }
 
   // Email/Password Authentication
