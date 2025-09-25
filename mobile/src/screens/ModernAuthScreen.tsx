@@ -20,6 +20,7 @@ import SocialLoginButton from '@/components/auth/SocialLoginButton';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginSuccess, setLoading } from '@/store/authSlice';
 import authService from '@/services/authService';
+import socialAuthService from '@/services/socialAuthService';
 
 const { width } = Dimensions.get('window');
 
@@ -108,17 +109,19 @@ const ModernAuthScreen: React.FC = () => {
     dispatch(setLoading(true));
     
     try {
-      // TODO: Implement actual Google Sign-In SDK
-      // For now, simulate with a mock token
-      const mockToken = 'google_mock_token_' + Date.now();
-      const response = await authService.googleLogin(mockToken);
+      const result = await socialAuthService.googleLogin();
       
-      dispatch(loginSuccess({
-        id: response.user.id,
-        email: response.user.email,
-        name: response.user.name,
-        avatar: response.user.avatar,
-      }));
+      if (result.success) {
+        dispatch(loginSuccess({
+          id: result.user.id,
+          email: result.user.email,
+          name: result.user.name,
+          avatar: result.user.avatar,
+        }));
+        Alert.alert(t('common.success'), t('auth.loginSuccess'));
+      } else {
+        Alert.alert(t('common.error'), result.error || t('auth.loginError'));
+      }
     } catch (error) {
       Alert.alert('Error', error.message || 'Google Sign-In failed. Please try again.');
     } finally {
@@ -130,17 +133,19 @@ const ModernAuthScreen: React.FC = () => {
     dispatch(setLoading(true));
     
     try {
-      // TODO: Implement actual Facebook Login SDK
-      // For now, simulate with a mock token
-      const mockToken = 'facebook_mock_token_' + Date.now();
-      const response = await authService.facebookLogin(mockToken);
+      const result = await socialAuthService.facebookLogin();
       
-      dispatch(loginSuccess({
-        id: response.user.id,
-        email: response.user.email,
-        name: response.user.name,
-        avatar: response.user.avatar,
-      }));
+      if (result.success) {
+        dispatch(loginSuccess({
+          id: result.user.id,
+          email: result.user.email,
+          name: result.user.name,
+          avatar: result.user.avatar,
+        }));
+        Alert.alert(t('common.success'), t('auth.loginSuccess'));
+      } else {
+        Alert.alert(t('common.error'), result.error || t('auth.loginError'));
+      }
     } catch (error) {
       Alert.alert('Error', error.message || 'Facebook Login failed. Please try again.');
     } finally {
@@ -152,17 +157,19 @@ const ModernAuthScreen: React.FC = () => {
     dispatch(setLoading(true));
     
     try {
-      // TODO: Implement actual Apple Sign-In SDK
-      // For now, simulate with a mock token
-      const mockToken = 'apple_mock_token_' + Date.now();
-      const response = await authService.appleLogin(mockToken);
+      const result = await socialAuthService.appleLogin();
       
-      dispatch(loginSuccess({
-        id: response.user.id,
-        email: response.user.email,
-        name: response.user.name,
-        avatar: response.user.avatar,
-      }));
+      if (result.success) {
+        dispatch(loginSuccess({
+          id: result.user.id,
+          email: result.user.email,
+          name: result.user.name,
+          avatar: result.user.avatar,
+        }));
+        Alert.alert(t('common.success'), t('auth.loginSuccess'));
+      } else {
+        Alert.alert(t('common.error'), result.error || t('auth.loginError'));
+      }
     } catch (error) {
       Alert.alert('Error', error.message || 'Apple Sign-In failed. Please try again.');
     } finally {
