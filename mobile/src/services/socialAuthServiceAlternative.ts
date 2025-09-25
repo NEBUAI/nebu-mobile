@@ -178,3 +178,4 @@ class SocialAuthService {
 }
 
 export default new SocialAuthService();
+
