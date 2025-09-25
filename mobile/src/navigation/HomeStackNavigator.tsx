@@ -10,15 +10,13 @@ import RobotSetupScreen from '@/screens/RobotSetupScreen';
 import DeviceManagementScreen from '@/screens/DeviceManagementScreen';
 import QRScannerScreen from '@/screens/QRScannerScreen';
 import DeviceSetupScreen from '@/screens/DeviceSetupScreen';
-import {
-  PersonalitySetupScreen,
-  FavoritesSetupScreen,
-  ToyNameSetupScreen,
-  AgeSetupScreen,
-  WorldInfoSetupScreen,
-  VoiceSetupScreen,
-  ConnectionSetupScreen,
-} from '@/screens/setup';
+import PersonalitySetupScreen from '@/screens/setup/PersonalitySetupScreen';
+import FavoritesSetupScreen from '@/screens/setup/FavoritesSetupScreen';
+import ToyNameSetupScreen from '@/screens/setup/ToyNameSetupScreen';
+import AgeSetupScreen from '@/screens/setup/AgeSetupScreen';
+import WorldInfoSetupScreen from '@/screens/setup/WorldInfoSetupScreen';
+import VoiceSetupScreen from '@/screens/setup/VoiceSetupScreen';
+import ConnectionSetupScreen from '@/screens/setup/ConnectionSetupScreen';
 
 export type HomeStackParamList = {
   Welcome: undefined;
