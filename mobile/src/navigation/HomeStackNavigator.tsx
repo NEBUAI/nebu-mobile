@@ -5,12 +5,14 @@ import { useAppSelector } from '@/store/hooks';
 import { getTheme } from '@/utils/theme';
 
 import HomeScreen from '@/screens/HomeScreen';
+import WelcomeScreen from '@/screens/WelcomeScreen';
 import RobotSetupScreen from '@/screens/RobotSetupScreen';
 import DeviceManagementScreen from '@/screens/DeviceManagementScreen';
 import QRScannerScreen from '@/screens/QRScannerScreen';
 import DeviceSetupScreen from '@/screens/DeviceSetupScreen';
 
 export type HomeStackParamList = {
+  Welcome: undefined;
   Home: undefined;
   RobotSetup: undefined;
   DeviceManagement: undefined;
@@ -31,6 +33,7 @@ const HomeStackNavigator: React.FC = () => {
         headerShown: false,
       }}
     >
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen 
         name="RobotSetup" 

@@ -53,6 +53,7 @@ export type MainTabParamList = {
 
 export type HomeStackParamList = {
   Home: undefined;
+  Welcome: undefined;
   RobotSetup: undefined;
   DeviceManagement: undefined;
   QRScanner: undefined;

@@ -192,13 +192,22 @@ const HomeScreen: React.FC = () => {
           <Header
             title={t('navigation.home')}
             rightComponent={
-              <TouchableOpacity onPress={handleToggleTheme}>
-                <Ionicons
-                  name={isDarkMode ? 'sunny' : 'moon'}
-                  size={24}
-                  color={theme.colors.text}
-                />
-              </TouchableOpacity>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <TouchableOpacity onPress={() => navigation.navigate('Welcome' as never)}>
+                  <Ionicons
+                    name="settings-outline"
+                    size={24}
+                    color={theme.colors.text}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleToggleTheme}>
+                  <Ionicons
+                    name={isDarkMode ? 'sunny' : 'moon'}
+                    size={24}
+                    color={theme.colors.text}
+                  />
+                </TouchableOpacity>
+              </View>
             }
           />
           
