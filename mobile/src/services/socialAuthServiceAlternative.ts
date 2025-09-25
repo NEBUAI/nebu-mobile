@@ -1,6 +1,5 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
-// import { AppleAuthentication } from 'expo-apple-authentication';
 import { Platform, Alert } from 'react-native';
 import { ENV_CONFIG } from '@/config/env';
 import authService from './authService';
@@ -103,7 +102,7 @@ class SocialAuthService {
         return { success: false, error: 'Apple Sign-In solo está disponible en iOS' };
       }
 
-      // TODO: Implementar Apple Sign-In real cuando el módulo esté disponible
+      // TODO: Implementar Apple Sign-In real
       // Por ahora, simulamos con un token mock
       const mockToken = 'apple_mock_token_' + Date.now();
       const response = await authService.appleLogin(mockToken);
@@ -115,7 +114,6 @@ class SocialAuthService {
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
         },
-        appleCredential: null, // Mock credential
       };
     } catch (error: any) {
       console.error('Apple Sign-In Error:', error);
