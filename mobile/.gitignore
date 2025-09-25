@@ -32,6 +32,16 @@ local.properties
 *.hprof
 .cxx/
 
+# Expo managed workflow (generated code - don't commit)
+# android/
+# ios/
+
+# Development build (custom native code - DO commit)
+# But ignore build outputs
+android/app/build/
+android/build/
+ios/build/
+
 # node.js
 #
 node_modules/
