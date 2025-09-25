@@ -127,7 +127,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
 
   const handleViewLogs = () => {
     Alert.alert(
-      '📋 Logs del Sistema',
+      ' Logs del Sistema',
       'Funcionalidad de logs disponible en modo debug',
       [{ text: 'OK' }]
     );
@@ -152,7 +152,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
 
   const handleSystemInfo = () => {
     Alert.alert(
-      '📱 Información del Sistema',
+      ' Información del Sistema',
       `Versión de la app: 1.0.0\nVersión de React Native: 0.79.5\nPlataforma: ${Platform.OS}\nArquitectura: ${Platform.OS === 'ios' ? 'ARM64' : 'x86_64'}`,
       [{ text: 'OK' }]
     );
@@ -179,7 +179,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
   return (
     <View style={[styles.container, getContainerStyle()]}>
       <Header
-        title="🔐 Panel de Administración"
+        title=" Panel de Administración"
         rightComponent={
           <TouchableOpacity>
             <Ionicons name="shield-checkmark" size={24} color={theme.colors.success} />

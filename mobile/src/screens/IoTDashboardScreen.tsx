@@ -268,7 +268,7 @@ const IoTDashboardScreen: React.FC = () => {
           {roomInfo && (
             <View style={styles.roomInfo}>
               <Text style={[styles.roomInfoText, { color: theme.colors.textSecondary }]}>
-                📡 Sala: {roomInfo.name}
+                Sala: {roomInfo.name}
               </Text>
               <Text style={[styles.roomInfoText, { color: theme.colors.textSecondary }]}>
                 👥 Participantes: {roomInfo.participants}
@@ -336,7 +336,7 @@ const IoTDashboardScreen: React.FC = () => {
           
           {sensorInterval && (
             <Text style={[styles.streamingText, { color: '#ff9800' }]}>
-              📡 Enviando datos cada 2 segundos...
+              Enviando datos cada 2 segundos...
             </Text>
           )}
         </View>
@@ -388,7 +388,7 @@ const IoTDashboardScreen: React.FC = () => {
             3. 📈 Envía datos de sensores simulados{'\n'}
             4. ▶️ Inicia stream automático de datos{'\n'}
             5. 💬 Envía mensajes personalizados{'\n'}
-            6. 📱 Abre otra app LiveKit para ver la interacción
+            6.  Abre otra app LiveKit para ver la interacción
           </Text>
         </View>
       </ScrollView>

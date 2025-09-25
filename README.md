@@ -42,7 +42,7 @@ That's it! Your application will be running at:
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   📱 Mobile App │    │    IoT Robot  │    │  🎙️ Voice Agent│
+│    Mobile App │    │    IoT Robot  │    │  🎙️ Voice Agent│
 │  (React Native) │    │   (Any Device)  │    │   (AI Powered)  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
@@ -54,7 +54,7 @@ That's it! Your application will be running at:
          └─────────────────┐     │     ┌─────────────────┘
                            │     │     │
                     ┌─────────────────────────┐
-                    │    🔧 NestJS Backend    │
+                    │    NestJS Backend    │
                     │   (API & Coordination)  │
                     │      Port: 3001         │
                     └─────────────────────────┘
@@ -74,7 +74,7 @@ That's it! Your application will be running at:
 
 ##  Features & Capabilities
 
-### 📱 Mobile App (React Native)
+###  Mobile App (React Native)
 -  **Voice Control**: AI-powered voice commands for robot control
 -  **Real-time Communication**: Direct audio/video with IoT devices
 -  **Device Management**: Register, monitor, and control IoT devices
@@ -82,7 +82,7 @@ That's it! Your application will be running at:
 -  **Sensor Monitoring**: Real-time telemetry and sensor data
 -  **Cross-platform**: iOS and Android support via Expo
 
-### 🔧 Backend API (NestJS)
+### Backend API (NestJS)
 -  **230+ Endpoints**: Comprehensive REST API with Swagger documentation
 -  **IoT Device Registry**: Manage and coordinate multiple robots/devices
 -  **Voice Session Management**: AI conversation tracking and analytics
@@ -251,7 +251,7 @@ nebu-mobile/
 └── template.env               # Environment Template
 ```
 
-## 🎯 Use Cases
+## Use Cases
 
 ###  Home Automation
 - Control smart home devices via voice commands
@@ -305,7 +305,7 @@ nebu-mobile/
    # Change localhost to your machine's IP
    ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 

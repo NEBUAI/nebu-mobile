@@ -236,11 +236,11 @@ class WiFiService {
       case 'WEP':
         return '🔒';
       case 'WPA':
-        return '🔐';
+        return '';
       case 'WPA2':
-        return '🔐';
+        return '';
       case 'WPA3':
-        return '🔐';
+        return '';
       default:
         return '❓';
     }

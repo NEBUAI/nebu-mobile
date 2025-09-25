@@ -13,7 +13,7 @@ Una aplicación móvil moderna construida con React Native y Expo, diseñada con
 - **Internacionalización (i18n)** - Soporte para múltiples idiomas (ES/EN)
 - **Arquitectura Escalable** - Estructura organizada de carpetas
 
-## 📱 Pantallas Principales
+##  Pantallas Principales
 
 - **Splash Screen** - Pantalla de bienvenida con branding
 - **Login** - Autenticación de usuario con validación
@@ -30,7 +30,7 @@ Una aplicación móvil moderna construida con React Native y Expo, diseñada con
 - React i18next 13.5.0
 - Expo Vector Icons
 
-## 📋 Requisitos Previos
+##  Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalado:
 
@@ -97,7 +97,7 @@ npm run web
 expo start --web
 ```
 
-## 📱 Ejecutar en Dispositivo Físico
+##  Ejecutar en Dispositivo Físico
 
 ### Android
 
@@ -220,7 +220,7 @@ const MyComponent = () => {
 };
 ```
 
-## 🔧 Scripts Disponibles
+## Scripts Disponibles
 
 - `npm start` - Inicia el servidor de desarrollo
 - `npm run android` - Ejecuta en emulador/dispositivo Android

@@ -90,10 +90,10 @@ async function bootstrap() {
  Readiness: http://localhost:${port}/health/readiness
 ❤️ Liveness: http://localhost:${port}/health/liveness
 �📁 Uploads: http://localhost:${port}/uploads/
-🔧 Admin Panel: http://localhost:${port}/admin
+Admin Panel: http://localhost:${port}/admin
 🎙️ LiveKit: http://localhost:7880
  Voice Agent: Ready for AI integration
-📱 Mobile API: Ready for React Native
+ Mobile API: Ready for React Native
   `);
 }
 

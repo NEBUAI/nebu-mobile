@@ -36,7 +36,7 @@ install_eas_cli() {
 
 # Función para verificar configuración
 check_config() {
-    echo -e "\n${BLUE}🔧 Verificando configuración...${NC}"
+    echo -e "\n${BLUE}Verificando configuración...${NC}"
     
     if [ -f "package.json" ]; then
         echo -e "${GREEN} package.json encontrado${NC}"
@@ -128,7 +128,7 @@ build_apk() {
 
 # Función para mostrar instrucciones
 show_instructions() {
-    echo -e "\n${BLUE}📋 INSTRUCCIONES DE COMPILACIÓN${NC}"
+    echo -e "\n${BLUE} INSTRUCCIONES DE COMPILACIÓN${NC}"
     echo "=================================="
     echo -e "${YELLOW}1. Instalar EAS CLI:${NC}"
     echo "   npm install -g @expo/eas-cli"
@@ -216,10 +216,10 @@ main() {
         exit 1
     }
     
-    echo -e "\n${GREEN}🎉 ¡COMPILACIÓN COMPLETADA!${NC}"
+    echo -e "\n${GREEN} ¡COMPILACIÓN COMPLETADA!${NC}"
     echo "=============================="
     echo -e "${GREEN} APK generado exitosamente${NC}"
-    echo -e "${BLUE}📱 La aplicación está lista para Google Play Store${NC}"
+    echo -e "${BLUE} La aplicación está lista para Google Play Store${NC}"
 }
 
 # Ejecutar función principal

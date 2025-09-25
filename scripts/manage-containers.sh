@@ -119,7 +119,7 @@ show_status() {
     echo ""
     log "Service URLs:"
     echo "   Frontend:  https://localhost"
-    echo "  🔧 API:       https://api.localhost"
+    echo "  API:       https://api.localhost"
     echo "   Traefik:   http://localhost:8080"
     echo "  🔍 Health:    https://health.localhost"
     

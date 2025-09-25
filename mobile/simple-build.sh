@@ -11,13 +11,13 @@ echo "📦 Dependencias:"
 ls -la node_modules/ | head -5
 
 echo ""
-echo "🔧 Comandos disponibles:"
+echo "Comandos disponibles:"
 which npm
 which npx
 which expo
 
 echo ""
-echo "📱 Intentando compilar APK..."
+echo " Intentando compilar APK..."
 
 # Intentar con expo build
 echo "Método 1: Expo build"
@@ -32,7 +32,7 @@ echo "Método 3: EAS build cloud"
 npx eas build --platform android --profile preview --non-interactive || echo " EAS build cloud falló"
 
 echo ""
-echo "📋 Estado final:"
+echo " Estado final:"
 echo "Si todos los métodos fallaron, necesitas:"
 echo "1. npm install -g @expo/eas-cli"
 echo "2. eas login"

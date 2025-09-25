@@ -184,7 +184,7 @@ export const runBLETest = async (): Promise<void> => {
  */
 export const BLE_DEBUG = {
   logDeviceInfo: (device: BluetoothDevice) => {
-    console.log('📱 Device Info:', {
+    console.log(' Device Info:', {
       id: device.id,
       name: device.name,
       rssi: device.rssi,
@@ -201,7 +201,7 @@ export const BLE_DEBUG = {
   logNebuServices: () => {
     const services = bluetoothService.getNebuServices();
     const characteristics = bluetoothService.getNebuCharacteristics();
-    console.log('🔧 Nebu Services:', services);
+    console.log('Nebu Services:', services);
     console.log('⚙️ Nebu Characteristics:', characteristics);
   },
   

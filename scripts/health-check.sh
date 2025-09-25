@@ -200,7 +200,7 @@ check_all_services() {
     
     echo ""
     echo "========================================"
-    echo "📋 HEALTH CHECK SUMMARY"
+    echo " HEALTH CHECK SUMMARY"
     echo "========================================"
     echo " Healthy services: $healthy_services/$total_services"
     
@@ -211,7 +211,7 @@ check_all_services() {
         return 1
     else
         echo ""
-        success "All services are healthy! 🎉"
+        success "All services are healthy! "
         return 0
     fi
 }

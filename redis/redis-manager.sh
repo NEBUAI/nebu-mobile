@@ -81,7 +81,7 @@ show_info() {
     redis_cmd INFO stats | grep -E "(total_commands_processed|instantaneous_ops_per_sec|total_connections_received)"
     
     echo ""
-    echo "🔧 Configuración clave:"
+    echo "Configuración clave:"
     redis_cmd CONFIG GET maxmemory
     redis_cmd CONFIG GET maxmemory-policy
     redis_cmd CONFIG GET databases
@@ -182,7 +182,7 @@ show_config() {
         return 1
     fi
     
-    echo "🔧 Configuración de memoria:"
+    echo "Configuración de memoria:"
     redis_cmd CONFIG GET maxmemory*
     
     echo ""

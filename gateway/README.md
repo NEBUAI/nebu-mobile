@@ -15,7 +15,7 @@ gateway/
 
 ## ⚙️ Configuración
 
-### 🔧 traefik.yml (Configuración Principal)
+### traefik.yml (Configuración Principal)
 - **Entrypoints**: HTTP (80) y HTTPS (443) con redirección automática
 - **Providers**: Docker con network isolation y file provider para dynamic.yml
 - **SSL**: Let's Encrypt con HTTP Challenge automático
@@ -78,7 +78,7 @@ gateway/
 -  Labels por entrypoint y servicio
 -  Endpoint `/metrics` expuesto de forma segura
 
-## 🔧 Variables de Entorno Requeridas
+## Variables de Entorno Requeridas
 
 ```bash
 # En .env o docker.env

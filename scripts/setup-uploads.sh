@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script para configurar directorios de uploads
-echo "🔧 Configurando sistema de uploads..."
+echo "Configurando sistema de uploads..."
 
 # Crear directorio base
 mkdir -p uploads

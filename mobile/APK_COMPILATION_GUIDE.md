@@ -1,6 +1,6 @@
-# 📱 Guía para Compilar APK - Nebu Mobile
+#  Guía para Compilar APK - Nebu Mobile
 
-## 🎯 **PROBLEMA IDENTIFICADO**
+## **PROBLEMA IDENTIFICADO**
 EAS CLI está funcionando pero necesita configuración adicional para compilar el APK.
 
 ##  **ESTADO ACTUAL**
@@ -39,7 +39,7 @@ npx eas build -p android --profile preview
 npx eas build -p android --profile preview --local
 ```
 
-## 📋 **CONFIGURACIÓN ACTUAL**
+##  **CONFIGURACIÓN ACTUAL**
 
 ### ** Archivos Listos**
 - `app.json` - Configuración básica
@@ -55,7 +55,7 @@ npx eas build -p android --profile preview --local
 - **Theming**: Modo claro/oscuro
 - **i18n**: Traducciones ES/EN
 
-## 📱 **UBICACIÓN DEL APK**
+##  **UBICACIÓN DEL APK**
 
 ### **Compilación en la Nube**
 - **Dashboard**: https://expo.dev/accounts/[tu-usuario]/projects/nebu-mobile/builds
@@ -70,7 +70,7 @@ npx eas build -p android --profile preview --local
 - **Compilación Nube**: 15-30 minutos
 - **Compilación Local**: 10-20 minutos
 
-## 🎯 **RESULTADO ESPERADO**
+## **RESULTADO ESPERADO**
 - **APK funcional** con todas las características
 - **BLE completamente funcional**
 - **Acceso administrativo funcionando**

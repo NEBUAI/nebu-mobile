@@ -220,7 +220,7 @@ export class PushNotificationsService {
 
   async sendCourseCompletionNotification(userId: string, courseName: string): Promise<boolean> {
     return this.sendNotificationToUser(userId, {
-      title: '🎉 ¡Curso completado!',
+      title: ' ¡Curso completado!',
       body: `¡Felicidades! Has completado "${courseName}"`,
       data: { type: 'course_complete', courseName },
       actionUrl: '/certificates',

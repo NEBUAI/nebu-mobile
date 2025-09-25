@@ -100,7 +100,7 @@ else
 fi
 
 echo
-echo -e "${GREEN}🎉 Cleanup completed!${NC}"
+echo -e "${GREEN} Cleanup completed!${NC}"
 echo
 echo -e "${BLUE}Summary:${NC}"
 echo "- Containers: Stopped and removed"

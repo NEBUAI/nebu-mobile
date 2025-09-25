@@ -233,5 +233,5 @@ El equipo de Nebu`,
     }
   }
 
-  console.log('🎉 Plantillas de email sembradas exitosamente');
+  console.log(' Plantillas de email sembradas exitosamente');
 }

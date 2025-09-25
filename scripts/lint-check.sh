@@ -5,7 +5,7 @@ echo ""
 
 cd backend
 
-echo "📋 1. Verificando linting con ESLint..."
+echo " 1. Verificando linting con ESLint..."
 npm run lint:check
 LINT_EXIT_CODE=$?
 
@@ -43,7 +43,7 @@ fi
 
 echo ""
 if [ $LINT_EXIT_CODE -eq 0 ] && [ $PRETTIER_EXIT_CODE -eq 0 ] && [ $TYPE_EXIT_CODE -eq 0 ]; then
-    echo "🎉 ¡Todo perfecto! El código está listo."
+    echo " ¡Todo perfecto! El código está listo."
     exit 0
 else
     echo "⚠️  Hay problemas que necesitan atención."

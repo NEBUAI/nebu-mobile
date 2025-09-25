@@ -69,7 +69,7 @@ export const useAdminAccess = (config: AdminAccessConfig = DEFAULT_CONFIG) => {
         // Success! Enable admin mode
         setIsAdminMode(true);
         Alert.alert(
-          '🔐 Modo Administrador',
+          ' Modo Administrador',
           'Acceso administrativo activado',
           [
             {

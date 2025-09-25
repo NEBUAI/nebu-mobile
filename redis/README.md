@@ -173,7 +173,7 @@ redis-cli CONFIG GET "*memory*"
 redis-cli SLOWLOG GET 10
 ```
 
-## 🔧 **Troubleshooting**
+## **Troubleshooting**
 
 ### **Memoria Alta**
 1. Verificar `used_memory_human`
