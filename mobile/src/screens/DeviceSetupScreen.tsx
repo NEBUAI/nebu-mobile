@@ -175,10 +175,10 @@ const DeviceSetupScreen: React.FC = () => {
       // Simular escaneo de redes WiFi
       // En una implementación real, esto se haría via Bluetooth
       const mockNetworks: WiFiNetwork[] = [
-        { ssid: 'Mi_WiFi_5G', signal: -45, security: 'WPA2' },
-        { ssid: 'Mi_WiFi', signal: -60, security: 'WPA2' },
-        { ssid: 'Vecino_WiFi', signal: -75, security: 'WPA2' },
-        { ssid: 'Cafe_Libre', signal: -80, security: 'Open' },
+        { ssid: 'Mi_WiFi_5G', security: 'WPA2', rssi: -45, frequency: 5000 },
+        { ssid: 'Mi_WiFi', security: 'WPA2', rssi: -60, frequency: 2400 },
+        { ssid: 'Vecino_WiFi', security: 'WPA2', rssi: -75, frequency: 2400 },
+        { ssid: 'Cafe_Libre', security: 'Open', rssi: -80, frequency: 2400 },
       ];
 
       setWifiNetworks(mockNetworks);
@@ -319,7 +319,7 @@ const DeviceSetupScreen: React.FC = () => {
             },
           ]}
         >
-          <View style={styles.deviceInfo}>
+          <View style={styles.deviceDetails}>
             <Ionicons
               name="bluetooth"
               size={24}
@@ -329,7 +329,7 @@ const DeviceSetupScreen: React.FC = () => {
               <Text style={[styles.deviceName, { color: theme.colors.text }]}>
                 {bluetoothDevice.name}
               </Text>
-              <Text style={[styles.deviceInfo, { color: theme.colors.textSecondary }]}>
+              <Text style={[styles.deviceInfoText, { color: theme.colors.textSecondary }]}>
                 RSSI: {bluetoothDevice.rssi} dBm
               </Text>
             </View>
@@ -386,7 +386,7 @@ const DeviceSetupScreen: React.FC = () => {
                 {network.ssid}
               </Text>
               <Text style={[styles.wifiSecurity, { color: theme.colors.textSecondary }]}>
-                {network.security} • {network.signal} dBm
+                {network.security}
               </Text>
             </View>
           </View>
@@ -461,8 +461,7 @@ const DeviceSetupScreen: React.FC = () => {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Header 
-        title={t('deviceSetup.title')} 
-        onBack={() => navigation.goBack()}
+        title={t('deviceSetup.title')}
       />
       
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
@@ -567,7 +566,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 4,
   },
-  deviceInfo: {
+  deviceInfoText: {
     fontSize: 14,
   },
   emptyState: {

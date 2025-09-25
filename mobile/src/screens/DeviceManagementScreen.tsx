@@ -57,13 +57,13 @@ const DeviceManagementScreen: React.FC = () => {
 
   const handleAddDevice = () => {
     // Navegar al escáner QR
-    navigation.navigate('QRScanner' as never);
+    (navigation as any).navigate('QRScanner');
   };
 
   const handleDevicePress = (device: RobotDevice) => {
     setSelectedDevice(device);
     // Navegar a configuración del dispositivo
-    navigation.navigate('DeviceSetup' as never, { device } as never);
+    (navigation as any).navigate('DeviceSetup', { device });
   };
 
   const handleConnectDevice = async (device: RobotDevice) => {
@@ -181,7 +181,7 @@ const DeviceManagementScreen: React.FC = () => {
       animationType="slideIn"
       delay={devices.indexOf(device) * 100}
       hoverLift={true}
-      style={[styles.deviceCard, { backgroundColor: theme.colors.surface }]}
+      style={StyleSheet.flatten([styles.deviceCard, { backgroundColor: theme.colors.surface }])}
     >
       <TouchableOpacity
         onPress={() => handleDevicePress(device)}

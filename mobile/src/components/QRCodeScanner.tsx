@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   Dimensions,
 } from 'react-native';
-import { Camera } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/store/hooks';
@@ -26,18 +26,9 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onQRScanned, onClose }) =
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const theme = getTheme(isDarkMode);
 
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [isScanning, setIsScanning] = useState(true);
-
-  useEffect(() => {
-    getCameraPermissions();
-  }, []);
-
-  const getCameraPermissions = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    setHasPermission(status === 'granted');
-  };
 
   const handleBarCodeScanned = ({ type, data }: { type: string; data: string }) => {
     if (scanned) return;
@@ -79,7 +70,7 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onQRScanned, onClose }) =
     setIsScanning(true);
   };
 
-  if (hasPermission === null) {
+  if (!permission) {
     return (
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -90,7 +81,7 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onQRScanned, onClose }) =
     );
   }
 
-  if (hasPermission === false) {
+  if (!permission.granted) {
     return (
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <Ionicons name="camera-outline" size={64} color={theme.colors.error} />
@@ -102,7 +93,7 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onQRScanned, onClose }) =
         </Text>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: theme.colors.primary }]}
-          onPress={getCameraPermissions}
+          onPress={requestPermission}
         >
           <Text style={styles.buttonText}>{t('qrScanner.noPermission.grantAccess')}</Text>
         </TouchableOpacity>
@@ -120,9 +111,9 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onQRScanned, onClose }) =
 
   return (
     <View style={styles.container}>
-      <Camera
+      <CameraView
         style={styles.camera}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
         barcodeScannerSettings={{
           barcodeTypes: ['qr'],
         }}
@@ -173,7 +164,7 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onQRScanned, onClose }) =
             }
           </Text>
         </View>
-      </Camera>
+      </CameraView>
     </View>
   );
 };

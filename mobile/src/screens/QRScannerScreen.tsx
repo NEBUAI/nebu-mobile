@@ -79,7 +79,7 @@ const QRScannerScreen: React.FC = () => {
             text: t('common.continue'),
             onPress: () => {
               // Navegar a configuración del dispositivo
-              navigation.navigate('DeviceSetup' as never, { device: registeredDevice } as never);
+              (navigation as any).navigate('DeviceSetup', { device: registeredDevice });
             },
           },
         ]
@@ -118,7 +118,7 @@ const QRScannerScreen: React.FC = () => {
   if (isProcessing) {
     return (
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <Header title={t('qrScanner.title')} onBack={handleClose} />
+        <Header title={t('qrScanner.title')} />
         <View style={styles.processingContainer}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
           <Text style={[styles.processingText, { color: theme.colors.text }]}>

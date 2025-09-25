@@ -12,8 +12,9 @@ import { useAppSelector } from '@/store/hooks';
 import { getTheme } from '@/utils/theme';
 
 interface StatusBadgeProps {
-  status: 'online' | 'offline' | 'connecting' | 'error' | 'success' | 'warning';
+  status: 'online' | 'offline' | 'connecting' | 'error' | 'success' | 'warning' | 'setup';
   text?: string;
+  color?: string;
   showIcon?: boolean;
   size?: 'sm' | 'md' | 'lg';
   pulseEffect?: boolean;
@@ -24,6 +25,7 @@ interface StatusBadgeProps {
 const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
   text,
+  color,
   showIcon = true,
   size = 'md',
   pulseEffect = false,
@@ -69,34 +71,39 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
   const getStatusConfig = () => {
     const configs = {
       online: {
-        color: theme.colors.success,
+        color: color || theme.colors.success,
         icon: 'checkmark-circle' as keyof typeof Ionicons.glyphMap,
         text: text || 'En línea',
       },
       offline: {
-        color: theme.colors.error,
+        color: color || theme.colors.error,
         icon: 'close-circle' as keyof typeof Ionicons.glyphMap,
         text: text || 'Desconectado',
       },
       connecting: {
-        color: theme.colors.warning,
+        color: color || theme.colors.warning,
         icon: 'time' as keyof typeof Ionicons.glyphMap,
         text: text || 'Conectando...',
       },
       error: {
-        color: theme.colors.error,
+        color: color || theme.colors.error,
         icon: 'alert-circle' as keyof typeof Ionicons.glyphMap,
         text: text || 'Error',
       },
       success: {
-        color: theme.colors.success,
+        color: color || theme.colors.success,
         icon: 'checkmark-circle' as keyof typeof Ionicons.glyphMap,
         text: text || 'Éxito',
       },
       warning: {
-        color: theme.colors.warning,
+        color: color || theme.colors.warning,
         icon: 'warning' as keyof typeof Ionicons.glyphMap,
         text: text || 'Advertencia',
+      },
+      setup: {
+        color: color || theme.colors.warning,
+        icon: 'settings' as keyof typeof Ionicons.glyphMap,
+        text: text || 'Configuración',
       },
     };
     
