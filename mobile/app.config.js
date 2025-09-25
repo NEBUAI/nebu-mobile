@@ -1,10 +1,10 @@
 const IS_DEV = process.env.APP_VARIANT === 'development';
 
 export default {
-  name: IS_DEV ? 'Nebu Mobile (Dev)' : 'Nebu Mobile',
+  name: IS_DEV ? 'Nebu (Dev)' : 'Nebu',
 
   expo: {
-    slug: 'nebu-mobile',
+    slug: 'Nebu',
     version: '1.0.0',
     cli: {
       appVersionSource: 'local'
