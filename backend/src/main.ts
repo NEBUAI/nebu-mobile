@@ -21,7 +21,7 @@ async function bootstrap() {
   // Log CORS configuration in development
   if (process.env.NODE_ENV !== 'production') {
     // eslint-disable-next-line no-console
-    console.log('🌐 CORS Configuration:', {
+    console.log(' CORS Configuration:', {
       NODE_ENV: process.env.NODE_ENV,
       FRONTEND_URL: process.env.FRONTEND_URL,
       DOMAIN: process.env.DOMAIN,
@@ -82,17 +82,17 @@ async function bootstrap() {
 
   // eslint-disable-next-line no-console
   console.log(`
-🚀 Nebu Mobile Backend iniciado!
+ Nebu Mobile Backend iniciado!
 📍 URL: http://localhost:${port}
 📚 API Docs: http://localhost:${port}/api/docs
 🔍 Health Check: http://localhost:${port}/health
 � Health Detailed: http://localhost:${port}/health/detailed
-🚀 Readiness: http://localhost:${port}/health/readiness
+ Readiness: http://localhost:${port}/health/readiness
 ❤️ Liveness: http://localhost:${port}/health/liveness
 �📁 Uploads: http://localhost:${port}/uploads/
 🔧 Admin Panel: http://localhost:${port}/admin
 🎙️ LiveKit: http://localhost:7880
-🤖 Voice Agent: Ready for AI integration
+ Voice Agent: Ready for AI integration
 📱 Mobile API: Ready for React Native
   `);
 }

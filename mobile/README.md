@@ -2,7 +2,7 @@
 
 Una aplicación móvil moderna construida con React Native y Expo, diseñada con una interfaz limpia y funcionalidades esenciales.
 
-## 🚀 Características
+##  Características
 
 - **React Native + Expo** - Framework moderno para desarrollo móvil multiplataforma
 - **TypeScript** - Tipado estático para mejor desarrollo y mantenimiento
@@ -46,7 +46,7 @@ Antes de comenzar, asegúrate de tener instalado:
 npm install -g @expo/cli
 ```
 
-## 🚀 Instalación y Configuración
+##  Instalación y Configuración
 
 ### 1. Clonar el repositorio
 
@@ -326,4 +326,4 @@ Para soporte técnico o preguntas:
 
 ---
 
-**Nebu** - Conectando el futuro 🚀
+**Nebu** - Conectando el futuro 

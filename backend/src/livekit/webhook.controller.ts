@@ -17,10 +17,10 @@ export class LiveKitWebhookController {
     // Procesar diferentes tipos de eventos
     switch (webhookData.event) {
       case 'participant_joined':
-        console.log(`✅ Participant ${webhookData.participant?.identity} joined room ${webhookData.room?.name}`);
+        console.log(` Participant ${webhookData.participant?.identity} joined room ${webhookData.room?.name}`);
         break;
       case 'participant_left':
-        console.log(`❌ Participant ${webhookData.participant?.identity} left room ${webhookData.room?.name}`);
+        console.log(` Participant ${webhookData.participant?.identity} left room ${webhookData.room?.name}`);
         break;
       case 'track_published':
         console.log(`📹 Track published in room ${webhookData.room?.name}`);
@@ -32,7 +32,7 @@ export class LiveKitWebhookController {
         console.log(`🏁 Room ${webhookData.room?.name} finished`);
         break;
       case 'room_started':
-        console.log(`🚀 Room ${webhookData.room?.name} started`);
+        console.log(` Room ${webhookData.room?.name} started`);
         break;
       default:
         console.log(`❓ Unknown event: ${webhookData.event}`);

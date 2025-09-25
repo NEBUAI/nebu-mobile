@@ -36,7 +36,7 @@ gateway/
   - Solo TLS 1.2 y 1.3
   - Cipher suites seguros
 
-## 🚀 Servicios Expuestos
+##  Servicios Expuestos
 
 | Servicio          | URL                           | Descripción                  |
 | ----------------- | ----------------------------- | ---------------------------- |
@@ -50,33 +50,33 @@ gateway/
 ## 🔒 Seguridad Implementada
 
 ### SSL/TLS
-- ✅ Certificados SSL automáticos con Let's Encrypt
-- ✅ Redirección HTTP → HTTPS automática
-- ✅ HSTS headers con max-age de 1 año
-- ✅ Solo TLS 1.2+ y cipher suites seguros
+-  Certificados SSL automáticos con Let's Encrypt
+-  Redirección HTTP → HTTPS automática
+-  HSTS headers con max-age de 1 año
+-  Solo TLS 1.2+ y cipher suites seguros
 
 ### Headers de Seguridad
-- ✅ `X-Frame-Options: DENY`
-- ✅ `X-Content-Type-Options: nosniff`
-- ✅ `X-XSS-Protection: 1; mode=block`
-- ✅ `Strict-Transport-Security`
-- ✅ `Referrer-Policy: strict-origin-when-cross-origin`
+-  `X-Frame-Options: DENY`
+-  `X-Content-Type-Options: nosniff`
+-  `X-XSS-Protection: 1; mode=block`
+-  `Strict-Transport-Security`
+-  `Referrer-Policy: strict-origin-when-cross-origin`
 
 ### Rate Limiting
-- ✅ 100 requests/minuto promedio
-- ✅ Burst de hasta 200 requests
-- ✅ Ventana deslizante de 1 minuto
+-  100 requests/minuto promedio
+-  Burst de hasta 200 requests
+-  Ventana deslizante de 1 minuto
 
-## 📊 Monitoreo
+##  Monitoreo
 
 ### Logs
 - **traefik.log**: Logs del sistema en formato estructurado
 - **access.log**: Logs de acceso en JSON para análisis
 
 ### Métricas
-- ✅ Métricas de Prometheus habilitadas
-- ✅ Labels por entrypoint y servicio
-- ✅ Endpoint `/metrics` expuesto de forma segura
+-  Métricas de Prometheus habilitadas
+-  Labels por entrypoint y servicio
+-  Endpoint `/metrics` expuesto de forma segura
 
 ## 🔧 Variables de Entorno Requeridas
 
@@ -86,7 +86,7 @@ DOMAIN=nebu.academy
 ACME_EMAIL=admin@nebu.academy
 ```
 
-## 🚨 Notas Importantes
+##  Notas Importantes
 
 1. **acme.json**: Permisos 600 (solo lectura/escritura propietario)
 2. **Primer arranque**: Los certificados SSL se generan automáticamente

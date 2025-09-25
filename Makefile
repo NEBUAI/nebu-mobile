@@ -84,15 +84,15 @@ dev: check-deps ## Start development environment
 config: ## Generate Traefik config with interpolated variables
 	@echo "$(BLUE)⚙️  Generating Traefik configuration...$(NC)"
 	@docker-compose --profile config run --rm traefik-config
-	@echo "$(GREEN)✅ Configuration generated successfully$(NC)"
+	@echo "$(GREEN) Configuration generated successfully$(NC)"
 
 prod: check-deps config ## Start production environment with SSL config generation
-	@echo "$(GREEN)🚀 Starting production environment...$(NC)"
+	@echo "$(GREEN) Starting production environment...$(NC)"
 	@echo "$(BLUE)⚙️  Generating SSL configuration...$(NC)"
 	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-	@echo "$(GREEN)✅ Production environment started!$(NC)"
+	@echo "$(GREEN) Production environment started!$(NC)"
 	@echo ""
-	@echo "$(BLUE)🌐 Available services:$(NC)"
+	@echo "$(BLUE) Available services:$(NC)"
 	@echo "  API:      https://api.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
 	@echo "  Traefik:  https://traefik.$(shell grep DOMAIN .env | cut -d= -f2 2>/dev/null || echo 'your-domain.com')"
 	@echo ""

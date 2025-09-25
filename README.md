@@ -1,4 +1,4 @@
-# 🤖 Nebu Mobile - AI-Powered IoT & Voice Control Platform
+#  Nebu Mobile - AI-Powered IoT & Voice Control Platform
 
 [![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](https://docker.com)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org)
@@ -9,7 +9,7 @@
 
 A cutting-edge platform combining **React Native mobile app**, **NestJS backend**, **LiveKit real-time communication**, and **IoT device control** for seamless voice-powered robot and device management.
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 
@@ -33,16 +33,16 @@ make dev
 ```
 
 That's it! Your application will be running at:
-- 🤖 **Backend API**: http://localhost:3001
+-  **Backend API**: http://localhost:3001
 - 📚 **API Documentation**: http://localhost:3001/api/docs
 - 🎙️ **LiveKit Server**: http://localhost:7880
-- 📊 **Traefik Dashboard**: http://localhost:8080
+-  **Traefik Dashboard**: http://localhost:8080
 
 ## 🏗️ Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   📱 Mobile App │    │   🤖 IoT Robot  │    │  🎙️ Voice Agent│
+│   📱 Mobile App │    │    IoT Robot  │    │  🎙️ Voice Agent│
 │  (React Native) │    │   (Any Device)  │    │   (AI Powered)  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
@@ -66,45 +66,45 @@ That's it! Your application will be running at:
                     └─────────────────────────┘
                               │
                     ┌─────────────────────────┐
-                    │      🚀 Redis Cache     │
+                    │       Redis Cache     │
                     │   (Sessions & Queue)    │
                     │      Port: 6379         │
                     └─────────────────────────┘
 ```
 
-## 🤖 Features & Capabilities
+##  Features & Capabilities
 
 ### 📱 Mobile App (React Native)
-- ✅ **Voice Control**: AI-powered voice commands for robot control
-- ✅ **Real-time Communication**: Direct audio/video with IoT devices
-- ✅ **Device Management**: Register, monitor, and control IoT devices
-- ✅ **Live Streaming**: View camera feeds from robots in real-time
-- ✅ **Sensor Monitoring**: Real-time telemetry and sensor data
-- ✅ **Cross-platform**: iOS and Android support via Expo
+-  **Voice Control**: AI-powered voice commands for robot control
+-  **Real-time Communication**: Direct audio/video with IoT devices
+-  **Device Management**: Register, monitor, and control IoT devices
+-  **Live Streaming**: View camera feeds from robots in real-time
+-  **Sensor Monitoring**: Real-time telemetry and sensor data
+-  **Cross-platform**: iOS and Android support via Expo
 
 ### 🔧 Backend API (NestJS)
-- ✅ **230+ Endpoints**: Comprehensive REST API with Swagger documentation
-- ✅ **IoT Device Registry**: Manage and coordinate multiple robots/devices
-- ✅ **Voice Session Management**: AI conversation tracking and analytics
-- ✅ **Real-time Coordination**: LiveKit integration for instant communication
-- ✅ **Analytics & Insights**: Device performance and usage analytics
-- ✅ **Authentication**: JWT-based secure access with refresh tokens
+-  **230+ Endpoints**: Comprehensive REST API with Swagger documentation
+-  **IoT Device Registry**: Manage and coordinate multiple robots/devices
+-  **Voice Session Management**: AI conversation tracking and analytics
+-  **Real-time Coordination**: LiveKit integration for instant communication
+-  **Analytics & Insights**: Device performance and usage analytics
+-  **Authentication**: JWT-based secure access with refresh tokens
 
 ### 🎙️ LiveKit Integration
-- ✅ **Real-time Audio/Video**: Ultra-low latency communication
-- ✅ **Data Channels**: Send commands and receive sensor data
-- ✅ **Multi-participant**: Support for multiple users and devices
-- ✅ **Automatic Reconnection**: Robust connection handling
-- ✅ **Room Management**: Dynamic room creation and participant management
+-  **Real-time Audio/Video**: Ultra-low latency communication
+-  **Data Channels**: Send commands and receive sensor data
+-  **Multi-participant**: Support for multiple users and devices
+-  **Automatic Reconnection**: Robust connection handling
+-  **Room Management**: Dynamic room creation and participant management
 
-### 🤖 IoT & Robot Support
-- ✅ **Device Types**: Sensors, actuators, cameras, microphones, speakers
-- ✅ **Network Flexibility**: WiFi, Ethernet, 4G/5G connectivity options
-- ✅ **Auto-discovery**: Automatic backend and LiveKit server discovery
-- ✅ **Command Processing**: Voice-to-action command translation
-- ✅ **Telemetry**: Battery, temperature, humidity, position tracking
+###  IoT & Robot Support
+-  **Device Types**: Sensors, actuators, cameras, microphones, speakers
+-  **Network Flexibility**: WiFi, Ethernet, 4G/5G connectivity options
+-  **Auto-discovery**: Automatic backend and LiveKit server discovery
+-  **Command Processing**: Voice-to-action command translation
+-  **Telemetry**: Battery, temperature, humidity, position tracking
 
-## 🚀 Mobile App Deployment
+##  Mobile App Deployment
 
 ### Quick Deploy with Expo
 ```bash
@@ -126,7 +126,7 @@ The mobile app can connect to the backend in multiple ways:
 - **Remote Server**: Backend deployed on cloud server
 - **Hotspot**: Using mobile hotspot for portable setup
 
-## 🤖 Robot Integration
+##  Robot Integration
 
 ### Supported Connection Methods
 1. **Same WiFi Network**: Robot and backend on same local network
@@ -253,7 +253,7 @@ nebu-mobile/
 
 ## 🎯 Use Cases
 
-### 🏠 Home Automation
+###  Home Automation
 - Control smart home devices via voice commands
 - Monitor environmental sensors (temperature, humidity)
 - Security camera streaming and control
@@ -273,7 +273,7 @@ nebu-mobile/
 - Real-time telemetry and GPS tracking
 - Emergency intervention capabilities
 
-## 🚨 Troubleshooting
+##  Troubleshooting
 
 ### Common Issues
 
@@ -355,4 +355,4 @@ If you encounter any issues:
 
 ---
 
-**Made with 🤖 for the Future of IoT & Robotics**
+**Made with  for the Future of IoT & Robotics**

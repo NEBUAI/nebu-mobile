@@ -235,7 +235,7 @@ const IoTDashboardScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, getContainerStyle()]}>
-      <Header title="🚀 LiveKit IoT Test" />
+      <Header title=" LiveKit IoT Test" />
       
       <ScrollView
         style={styles.scrollView}
@@ -306,7 +306,7 @@ const IoTDashboardScreen: React.FC = () => {
 
         {/* Data Streaming */}
         <View style={getMetricCardStyle()}>
-          <Text style={[styles.sectionTitle, getTitleStyle()]}>📊 Streaming de Datos</Text>
+          <Text style={[styles.sectionTitle, getTitleStyle()]}> Streaming de Datos</Text>
           
           <View style={styles.buttonGrid}>
             <Button
@@ -381,7 +381,7 @@ const IoTDashboardScreen: React.FC = () => {
 
         {/* Instructions */}
         <View style={[getMetricCardStyle(), { borderColor: theme.colors.primary, borderWidth: 1 }]}>
-          <Text style={[styles.sectionTitle, getTitleStyle()]}>🚀 Instrucciones</Text>
+          <Text style={[styles.sectionTitle, getTitleStyle()]}> Instrucciones</Text>
           <Text style={[styles.instructionText, { color: theme.colors.textSecondary }]}>
             1. 🔗 Conecta a LiveKit para comenzar{'\n'}
             2. 🎤 Activa el micrófono para transmitir audio{'\n'}

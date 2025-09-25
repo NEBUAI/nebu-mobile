@@ -100,7 +100,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
           style: 'destructive',
           onPress: () => {
             // Implementar limpieza de cache
-            Alert.alert('✅ Éxito', 'Cache limpiada correctamente');
+            Alert.alert(' Éxito', 'Cache limpiada correctamente');
           },
         },
       ]
@@ -118,7 +118,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
           style: 'destructive',
           onPress: () => {
             // Implementar reset de configuración
-            Alert.alert('✅ Éxito', 'Configuración reseteada correctamente');
+            Alert.alert(' Éxito', 'Configuración reseteada correctamente');
           },
         },
       ]
@@ -270,7 +270,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
           hoverLift={false}
           style={getCardStyle()}
         >
-          <Text style={getSectionTitleStyle()}>📊 Información del Sistema</Text>
+          <Text style={getSectionTitleStyle()}> Información del Sistema</Text>
           
           <TouchableOpacity
             style={getButtonStyle()}
@@ -295,7 +295,7 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
           hoverLift={false}
           style={getCardStyle()}
         >
-          <Text style={getSectionTitleStyle()}>🚀 Acciones Rápidas</Text>
+          <Text style={getSectionTitleStyle()}> Acciones Rápidas</Text>
           
           <TouchableOpacity
             style={getButtonStyle()}

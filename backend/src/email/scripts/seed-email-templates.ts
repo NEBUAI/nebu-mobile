@@ -227,7 +227,7 @@ El equipo de Nebu`,
     if (!existingTemplate) {
       const template = emailTemplateRepository.create(templateData);
       await emailTemplateRepository.save(template);
-      console.log(`✅ Plantilla "${templateData.name}" creada exitosamente`);
+      console.log(` Plantilla "${templateData.name}" creada exitosamente`);
     } else {
       console.log(`⚠️ Plantilla "${templateData.name}" ya existe`);
     }

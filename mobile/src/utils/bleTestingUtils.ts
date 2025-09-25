@@ -80,9 +80,9 @@ export const simulateWiFiConfiguration = async (ssid: string, password: string):
   const success = Math.random() > 0.1;
   
   if (success) {
-    console.log('✅ WiFi configuration successful');
+    console.log(' WiFi configuration successful');
   } else {
-    console.log('❌ WiFi configuration failed');
+    console.log(' WiFi configuration failed');
   }
   
   return success;
@@ -127,7 +127,7 @@ export const simulateNebuCapabilities = async (deviceId: string): Promise<boolea
  * Test completo del flujo BLE
  */
 export const runBLETest = async (): Promise<void> => {
-  console.log('🚀 Starting complete BLE test...');
+  console.log(' Starting complete BLE test...');
   
   try {
     // 1. Escanear dispositivos
@@ -136,7 +136,7 @@ export const runBLETest = async (): Promise<void> => {
     console.log(`Found ${devices.length} Nebu devices`);
     
     if (devices.length === 0) {
-      console.log('❌ No devices found');
+      console.log(' No devices found');
       return;
     }
     
@@ -145,7 +145,7 @@ export const runBLETest = async (): Promise<void> => {
     const connected = await simulateBLEConnection(devices[0]);
     
     if (!connected) {
-      console.log('❌ Connection failed');
+      console.log(' Connection failed');
       return;
     }
     
@@ -154,7 +154,7 @@ export const runBLETest = async (): Promise<void> => {
     const hasCapabilities = await simulateNebuCapabilities(devices[0].id);
     
     if (!hasCapabilities) {
-      console.log('❌ Device does not have required capabilities');
+      console.log(' Device does not have required capabilities');
       return;
     }
     
@@ -163,7 +163,7 @@ export const runBLETest = async (): Promise<void> => {
     const wifiConfigured = await simulateWiFiConfiguration('Mi_WiFi', 'mi_contraseña');
     
     if (!wifiConfigured) {
-      console.log('❌ WiFi configuration failed');
+      console.log(' WiFi configuration failed');
       return;
     }
     
@@ -172,10 +172,10 @@ export const runBLETest = async (): Promise<void> => {
     const status = await simulateRobotStatus();
     console.log('Robot status:', status);
     
-    console.log('\n✅ BLE test completed successfully!');
+    console.log('\n BLE test completed successfully!');
     
   } catch (error) {
-    console.error('❌ BLE test failed:', error);
+    console.error(' BLE test failed:', error);
   }
 };
 

@@ -21,15 +21,15 @@ echo "📱 Intentando compilar APK..."
 
 # Intentar con expo build
 echo "Método 1: Expo build"
-npx expo build:android --type apk --non-interactive || echo "❌ Expo build falló"
+npx expo build:android --type apk --non-interactive || echo " Expo build falló"
 
 echo ""
 echo "Método 2: EAS build local"
-npx eas build --platform android --profile preview --local --non-interactive || echo "❌ EAS build local falló"
+npx eas build --platform android --profile preview --local --non-interactive || echo " EAS build local falló"
 
 echo ""
 echo "Método 3: EAS build cloud"
-npx eas build --platform android --profile preview --non-interactive || echo "❌ EAS build cloud falló"
+npx eas build --platform android --profile preview --non-interactive || echo " EAS build cloud falló"
 
 echo ""
 echo "📋 Estado final:"

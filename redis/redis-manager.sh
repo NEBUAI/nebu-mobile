@@ -69,7 +69,7 @@ show_info() {
     fi
     
     echo ""
-    echo "📊 Estado del servidor:"
+    echo " Estado del servidor:"
     redis_cmd INFO server | grep -E "(redis_version|uptime_in_seconds|process_id)"
     
     echo ""
@@ -195,7 +195,7 @@ show_config() {
     redis_cmd CONFIG GET requirepass | sed 's/your_password_here/***HIDDEN***/'
     
     echo ""
-    echo "🌐 Configuración de red:"
+    echo " Configuración de red:"
     redis_cmd CONFIG GET bind
     redis_cmd CONFIG GET port
     redis_cmd CONFIG GET timeout

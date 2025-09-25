@@ -46,7 +46,7 @@ export class SearchService {
         title: toy.name,
         description: toy.model || toy.manufacturer || 'Juguete inteligente',
         url: `/toy/${toy.macAddress}`,
-        icon: '🤖',
+        icon: '',
       }));
 
       return {

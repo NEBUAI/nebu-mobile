@@ -14,7 +14,7 @@ db/
 └── README.md                     # Este archivo
 ```
 
-## 🚀 Inicialización Automática
+##  Inicialización Automática
 
 Los scripts se ejecutan automáticamente cuando se inicia PostgreSQL por primera vez. Los archivos en `db/init/` se montan en `/docker-entrypoint-initdb.d/custom/` y se ejecutan en orden alfabético.
 

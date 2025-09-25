@@ -50,20 +50,20 @@ export class DeviceTokenController {
       // Generate LiveKit session and token for the device
       const livekitResult = await this.iotService.generateLiveKitTokenForDevice(deviceTokenRequest.device_id);
       
-      this.logger.log('✅ LiveKit Session Created Successfully');
-      this.logger.log(`🏠 Room Name: ${livekitResult.roomName}`);
-      this.logger.log(`👤 Participant: ${livekitResult.participantName}`);
-      this.logger.log(`🌐 LiveKit URL: ${livekitResult.livekitUrl}`);
+      this.logger.log(' LiveKit Session Created Successfully');
+      this.logger.log(` Room Name: ${livekitResult.roomName}`);
+      this.logger.log(` Participant: ${livekitResult.participantName}`);
+      this.logger.log(` LiveKit URL: ${livekitResult.livekitUrl}`);
       this.logger.log(`🔑 LiveKit Token Preview: ${livekitResult.token.substring(0, 30)}...`);
-      this.logger.log(`📊 LiveKit Token Length: ${livekitResult.token.length} characters`);
+      this.logger.log(` LiveKit Token Length: ${livekitResult.token.length} characters`);
       
       return {
         access_token: livekitResult.token,
         roomName: livekitResult.roomName
       };
     } catch (error) {
-      this.logger.error('❌ Failed to create LiveKit session for IoT Device');
-      this.logger.error(`🚨 Error: ${error.message}`);
+      this.logger.error(' Failed to create LiveKit session for IoT Device');
+      this.logger.error(` Error: ${error.message}`);
       this.logger.error(`📱 Device ID: ${deviceTokenRequest.device_id}`);
       throw error;
     }

@@ -34,7 +34,7 @@ cat > uploads/.gitignore << EOF
 # !examples/
 EOF
 
-echo "✅ Directorios de uploads configurados:"
+echo " Directorios de uploads configurados:"
 echo "  📁 uploads/images/ - Imágenes (JPG, PNG, WebP, GIF, SVG)"
 echo "  📁 uploads/videos/ - Videos (MP4, WebM, OGG, AVI, MOV)"
 echo "  📁 uploads/audio/ - Audio (MP3, WAV, OGG)"
@@ -50,4 +50,4 @@ echo "💾 Espacio en disco disponible:"
 df -h . | tail -1 | awk '{print "   Disponible: " $4 " de " $2 " (" $5 " usado)"}'
 
 echo ""
-echo "🚀 Sistema de uploads listo para usar!"
+echo " Sistema de uploads listo para usar!"

@@ -69,7 +69,7 @@ const VoiceAgentScreen: React.FC = () => {
       setIsConnected(true);
       setShowApiKeyInput(false);
       setConversation(voiceAgent.current.getConversation());
-      Alert.alert('¡Conectado!', '🤖 Agente de voz de OpenAI listo. ¡Mantén presionado el botón para hablar!');
+      Alert.alert('¡Conectado!', ' Agente de voz de OpenAI listo. ¡Mantén presionado el botón para hablar!');
     } catch (error) {
       Alert.alert('Error', 'No se pudo conectar con OpenAI. Verifica tu API Key.');
       console.error('Connection error:', error);
@@ -128,8 +128,8 @@ const VoiceAgentScreen: React.FC = () => {
       case 'listening': return '🎤';
       case 'processing': return '🧠';
       case 'speaking': return '🔊';
-      case 'error': return '❌';
-      default: return '🤖';
+      case 'error': return '';
+      default: return '';
     }
   };
 
@@ -178,7 +178,7 @@ const VoiceAgentScreen: React.FC = () => {
     ]}>
       <View style={styles.messageHeader}>
         <Text style={[styles.messageRole, { color: theme.colors.primary }]}>
-          {message.role === 'user' ? '👤 Tú' : '🤖 Asistente'}
+          {message.role === 'user' ? ' Tú' : ' Asistente'}
         </Text>
         <Text style={[styles.messageTime, { color: theme.colors.textSecondary }]}>
           {new Date(message.timestamp).toLocaleTimeString()}
@@ -201,7 +201,7 @@ const VoiceAgentScreen: React.FC = () => {
   if (showApiKeyInput) {
     return (
       <View style={[styles.container, getContainerStyle()]}>
-        <Header title="🤖 Agente de Voz OpenAI" />
+        <Header title=" Agente de Voz OpenAI" />
         
         <View style={styles.setupContainer}>
           <View style={[styles.setupCard, getCardStyle()]}>
@@ -258,7 +258,7 @@ const VoiceAgentScreen: React.FC = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Header 
-        title="🤖 Agente de Voz" 
+        title=" Agente de Voz" 
         rightComponent={
           <TouchableOpacity onPress={handleClearConversation}>
             <Ionicons name="trash-outline" size={24} color={theme.colors.text} />

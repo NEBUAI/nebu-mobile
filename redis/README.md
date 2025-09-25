@@ -34,17 +34,17 @@ REDIS_EVICTION_POLICY=allkeys-lru         # Política de expulsión
 - **Híbrido**: RDB + AOF para mejor performance y durabilidad
 
 ### 🔒 **Seguridad**
-- ✅ Autenticación con password
-- ✅ Configuración de network binding
-- ✅ Protección contra comandos peligrosos
+-  Autenticación con password
+-  Configuración de network binding
+-  Protección contra comandos peligrosos
 
-### 📊 **Monitoreo**
-- ✅ Health checks con timeout personalizado
-- ✅ Slow query log habilitado
-- ✅ Latency monitoring
-- ✅ Métricas de memoria y performance
+###  **Monitoreo**
+-  Health checks con timeout personalizado
+-  Slow query log habilitado
+-  Latency monitoring
+-  Métricas de memoria y performance
 
-## 🚀 **Variables de Entorno Completas**
+##  **Variables de Entorno Completas**
 
 ```bash
 # Configuración básica
@@ -150,7 +150,7 @@ REDIS_EVICTION_POLICY=noeviction
 # Sin TTL automático
 ```
 
-## 🚨 **Alertas y Monitoreo**
+##  **Alertas y Monitoreo**
 
 ### **Métricas Importantes**
 - `used_memory_peak`: Pico de memoria usado

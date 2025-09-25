@@ -211,7 +211,7 @@ export class PushNotificationsService {
     courseName: string
   ): Promise<boolean> {
     return this.sendNotificationToUser(userId, {
-      title: '✅ ¡Lección completada!',
+      title: ' ¡Lección completada!',
       body: `Has completado "${lessonName}" en ${courseName}`,
       data: { type: 'lesson_complete', lessonName, courseName },
       actionUrl: '/my-courses',

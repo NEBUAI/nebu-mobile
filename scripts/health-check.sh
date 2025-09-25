@@ -41,11 +41,11 @@ log() {
 }
 
 success() {
-    echo -e "${GREEN}✅ $1${NC}"
+    echo -e "${GREEN} $1${NC}"
 }
 
 error() {
-    echo -e "${RED}❌ $1${NC}"
+    echo -e "${RED} $1${NC}"
 }
 
 warning() {
@@ -169,7 +169,7 @@ check_service() {
     
     # Show resource usage
     local stats=$(get_container_stats "$service")
-    echo "📊 Resource usage: $stats"
+    echo " Resource usage: $stats"
     
     if [ "$overall_status" = true ]; then
         success "Service $service is healthy"
@@ -202,10 +202,10 @@ check_all_services() {
     echo "========================================"
     echo "📋 HEALTH CHECK SUMMARY"
     echo "========================================"
-    echo "✅ Healthy services: $healthy_services/$total_services"
+    echo " Healthy services: $healthy_services/$total_services"
     
     if [ ${#failed_services[@]} -gt 0 ]; then
-        echo "❌ Failed services: ${failed_services[*]}"
+        echo " Failed services: ${failed_services[*]}"
         echo ""
         warning "Some services are not healthy!"
         return 1

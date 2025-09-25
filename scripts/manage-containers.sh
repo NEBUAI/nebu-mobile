@@ -118,9 +118,9 @@ show_status() {
     
     echo ""
     log "Service URLs:"
-    echo "  🌐 Frontend:  https://localhost"
+    echo "   Frontend:  https://localhost"
     echo "  🔧 API:       https://api.localhost"
-    echo "  📊 Traefik:   http://localhost:8080"
+    echo "   Traefik:   http://localhost:8080"
     echo "  🔍 Health:    https://health.localhost"
     
     echo ""
@@ -131,11 +131,11 @@ show_status() {
     
     for service in "${services[@]}"; do
         if docker-compose ps "$service" | grep -q "Up.*healthy\|Up.*starting"; then
-            echo -e "  ✅ $service: ${GREEN}Healthy${NC}"
+            echo -e "   $service: ${GREEN}Healthy${NC}"
         elif docker-compose ps "$service" | grep -q "Up"; then
             echo -e "  ⚠️  $service: ${YELLOW}Running (no health check)${NC}"
         else
-            echo -e "  ❌ $service: ${RED}Not running${NC}"
+            echo -e "   $service: ${RED}Not running${NC}"
         fi
     done
 }
@@ -200,25 +200,25 @@ health_check() {
     
     # Test Traefik dashboard
     if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/dashboard/ | grep -q "200\|302"; then
-        echo -e "  ✅ Traefik Dashboard: ${GREEN}Accessible${NC}"
+        echo -e "   Traefik Dashboard: ${GREEN}Accessible${NC}"
     else
-        echo -e "  ❌ Traefik Dashboard: ${RED}Not accessible${NC}"
+        echo -e "   Traefik Dashboard: ${RED}Not accessible${NC}"
         all_healthy=false
     fi
     
     # Test backend health endpoint
     if curl -s -o /dev/null -w "%{http_code}" http://localhost:3001/health | grep -q "200"; then
-        echo -e "  ✅ Backend Health: ${GREEN}OK${NC}"
+        echo -e "   Backend Health: ${GREEN}OK${NC}"
     else
-        echo -e "  ❌ Backend Health: ${RED}Failed${NC}"
+        echo -e "   Backend Health: ${RED}Failed${NC}"
         all_healthy=false
     fi
     
     # Test frontend
     if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 | grep -q "200"; then
-        echo -e "  ✅ Frontend: ${GREEN}Accessible${NC}"
+        echo -e "   Frontend: ${GREEN}Accessible${NC}"
     else
-        echo -e "  ❌ Frontend: ${RED}Not accessible${NC}"
+        echo -e "   Frontend: ${RED}Not accessible${NC}"
         all_healthy=false
     fi
     

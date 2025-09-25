@@ -41,7 +41,7 @@ async function generateToken() {
 
   const token = await at.toJwt();
   
-  console.log(`✅ Token generado exitosamente`);
+  console.log(` Token generado exitosamente`);
   console.log(`📋 Detalles del token:`);
   console.log(`   - Room: ${roomName}`);
   console.log(`   - Participant: ${participantName}`);
@@ -52,7 +52,7 @@ async function generateToken() {
 }
 
 // PASO 3: Cliente se conecta a LiveKit con el token
-console.log('🌐 PASO 3: Cliente se conecta a LiveKit con el token');
+console.log(' PASO 3: Cliente se conecta a LiveKit con el token');
 
 async function testLiveKitConnection() {
   try {
@@ -63,11 +63,11 @@ async function testLiveKitConnection() {
     // Verificar que LiveKit está disponible
     const response = await fetch(livekitUrl);
     if (response.ok) {
-      console.log('✅ LiveKit server está disponible');
+      console.log(' LiveKit server está disponible');
       console.log(`   - URL: ${livekitUrl}`);
       console.log(`   - Status: ${response.status}\n`);
     } else {
-      console.log('❌ LiveKit server no disponible');
+      console.log(' LiveKit server no disponible');
       return;
     }
     
@@ -79,7 +79,7 @@ async function testLiveKitConnection() {
     
     return { token, roomName, participantName };
   } catch (error) {
-    console.error('❌ Error generando token:', error.message);
+    console.error(' Error generando token:', error.message);
   }
 }
 
@@ -101,8 +101,8 @@ console.log('   - room_finished\n');
 testLiveKitConnection().then(() => {
   console.log('🎉 DEMO COMPLETADO');
   console.log('==================');
-  console.log('✅ Flujo completo Backend-LiveKit funcionando');
-  console.log('✅ Token JWT generado correctamente');
-  console.log('✅ LiveKit server disponible');
-  console.log('✅ Listo para conexión en tiempo real');
+  console.log(' Flujo completo Backend-LiveKit funcionando');
+  console.log(' Token JWT generado correctamente');
+  console.log(' LiveKit server disponible');
+  console.log(' Listo para conexión en tiempo real');
 });

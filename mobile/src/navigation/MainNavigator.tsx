@@ -74,7 +74,7 @@ const MainNavigator: React.FC = () => {
         name="VoiceAgent" 
         component={VoiceAgentScreen}
         options={{
-          tabBarLabel: '🤖 AI Voice',
+          tabBarLabel: ' AI Voice',
         }}
       />
       <Tab.Screen 

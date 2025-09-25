@@ -4,13 +4,13 @@ Este módulo maneja la gestión completa de juguetes IoT con MAC address, estado
 
 ## Características
 
-- ✅ **Gestión de MAC Address**: Validación y normalización automática
-- ✅ **Estados de Juguetes**: inactive, active, connected, disconnected, maintenance, error, blocked
-- ✅ **Relaciones con Usuarios**: Asignación opcional de juguetes a usuarios
-- ✅ **Monitoreo en Tiempo Real**: Actualización de estado de conexión, batería y señal
-- ✅ **API REST Completa**: CRUD completo con filtros y paginación
-- ✅ **Seguridad**: Autenticación JWT y control de roles
-- ✅ **Validación**: DTOs con validación completa de datos
+-  **Gestión de MAC Address**: Validación y normalización automática
+-  **Estados de Juguetes**: inactive, active, connected, disconnected, maintenance, error, blocked
+-  **Relaciones con Usuarios**: Asignación opcional de juguetes a usuarios
+-  **Monitoreo en Tiempo Real**: Actualización de estado de conexión, batería y señal
+-  **API REST Completa**: CRUD completo con filtros y paginación
+-  **Seguridad**: Autenticación JWT y control de roles
+-  **Validación**: DTOs con validación completa de datos
 
 ## Entidad Toy
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script para compilar APK de Nebu Mobile
-echo "🚀 Iniciando compilación de APK - Nebu Mobile"
+echo " Iniciando compilación de APK - Nebu Mobile"
 echo "=============================================="
 
 # Colores para output
@@ -14,10 +14,10 @@ NC='\033[0m' # No Color
 # Función para verificar comandos
 check_command() {
     if command -v "$1" &> /dev/null; then
-        echo -e "${GREEN}✅ $1 está instalado${NC}"
+        echo -e "${GREEN} $1 está instalado${NC}"
         return 0
     else
-        echo -e "${RED}❌ $1 no está instalado${NC}"
+        echo -e "${RED} $1 no está instalado${NC}"
         return 1
     fi
 }
@@ -27,9 +27,9 @@ install_eas_cli() {
     echo -e "\n${BLUE}📦 Instalando EAS CLI...${NC}"
     npm install -g @expo/eas-cli
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✅ EAS CLI instalado correctamente${NC}"
+        echo -e "${GREEN} EAS CLI instalado correctamente${NC}"
     else
-        echo -e "${RED}❌ Error instalando EAS CLI${NC}"
+        echo -e "${RED} Error instalando EAS CLI${NC}"
         return 1
     fi
 }
@@ -39,30 +39,30 @@ check_config() {
     echo -e "\n${BLUE}🔧 Verificando configuración...${NC}"
     
     if [ -f "package.json" ]; then
-        echo -e "${GREEN}✅ package.json encontrado${NC}"
+        echo -e "${GREEN} package.json encontrado${NC}"
     else
-        echo -e "${RED}❌ package.json no encontrado${NC}"
+        echo -e "${RED} package.json no encontrado${NC}"
         return 1
     fi
     
     if [ -f "app.json" ]; then
-        echo -e "${GREEN}✅ app.json encontrado${NC}"
+        echo -e "${GREEN} app.json encontrado${NC}"
     else
-        echo -e "${RED}❌ app.json no encontrado${NC}"
+        echo -e "${RED} app.json no encontrado${NC}"
         return 1
     fi
     
     if [ -f "eas.json" ]; then
-        echo -e "${GREEN}✅ eas.json encontrado${NC}"
+        echo -e "${GREEN} eas.json encontrado${NC}"
     else
-        echo -e "${RED}❌ eas.json no encontrado${NC}"
+        echo -e "${RED} eas.json no encontrado${NC}"
         return 1
     fi
     
     if [ -f "app.config.js" ]; then
-        echo -e "${GREEN}✅ app.config.js encontrado${NC}"
+        echo -e "${GREEN} app.config.js encontrado${NC}"
     else
-        echo -e "${RED}❌ app.config.js no encontrado${NC}"
+        echo -e "${RED} app.config.js no encontrado${NC}"
         return 1
     fi
 }
@@ -72,9 +72,9 @@ install_dependencies() {
     echo -e "\n${BLUE}📦 Instalando dependencias...${NC}"
     npm install
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✅ Dependencias instaladas correctamente${NC}"
+        echo -e "${GREEN} Dependencias instaladas correctamente${NC}"
     else
-        echo -e "${RED}❌ Error instalando dependencias${NC}"
+        echo -e "${RED} Error instalando dependencias${NC}"
         return 1
     fi
 }
@@ -85,7 +85,7 @@ setup_eas() {
     
     # Verificar si ya está logueado
     if eas whoami &> /dev/null; then
-        echo -e "${GREEN}✅ Ya estás logueado en EAS${NC}"
+        echo -e "${GREEN} Ya estás logueado en EAS${NC}"
     else
         echo -e "${YELLOW}⚠️ Necesitas loguearte en EAS${NC}"
         echo -e "${BLUE}Ejecuta: eas login${NC}"
@@ -94,7 +94,7 @@ setup_eas() {
     
     # Verificar configuración del proyecto
     if [ -f ".easrc" ] || grep -q "projectId" app.config.js; then
-        echo -e "${GREEN}✅ Proyecto EAS configurado${NC}"
+        echo -e "${GREEN} Proyecto EAS configurado${NC}"
     else
         echo -e "${YELLOW}⚠️ Configurando proyecto EAS...${NC}"
         eas build:configure
@@ -109,18 +109,18 @@ build_apk() {
     # Intentar compilación local primero
     echo -e "\n${BLUE}Intentando compilación local...${NC}"
     if eas build --platform android --profile preview --local --non-interactive; then
-        echo -e "${GREEN}✅ APK compilado localmente${NC}"
+        echo -e "${GREEN} APK compilado localmente${NC}"
         return 0
     else
         echo -e "${YELLOW}⚠️ Compilación local falló, intentando en la nube...${NC}"
         
         # Intentar compilación en la nube
         if eas build --platform android --profile preview --non-interactive; then
-            echo -e "${GREEN}✅ APK compilado en la nube${NC}"
+            echo -e "${GREEN} APK compilado en la nube${NC}"
             echo -e "${BLUE}El APK estará disponible en tu dashboard de Expo${NC}"
             return 0
         else
-            echo -e "${RED}❌ Error en la compilación${NC}"
+            echo -e "${RED} Error en la compilación${NC}"
             return 1
         fi
     fi
@@ -148,10 +148,10 @@ show_instructions() {
 
 # Función para mostrar estado del proyecto
 show_project_status() {
-    echo -e "\n${BLUE}📊 ESTADO DEL PROYECTO${NC}"
+    echo -e "\n${BLUE} ESTADO DEL PROYECTO${NC}"
     echo "======================="
     
-    echo -e "${GREEN}✅ Funcionalidades implementadas:${NC}"
+    echo -e "${GREEN} Funcionalidades implementadas:${NC}"
     echo "• Bluetooth Low Energy (BLE) completo"
     echo "• Configuración de robot Nebu"
     echo "• Acceso administrativo (3 toques)"
@@ -162,7 +162,7 @@ show_project_status() {
     echo "• Permisos Android/iOS configurados"
     echo "• Servicios de backend integrados"
     
-    echo -e "\n${GREEN}✅ Configuración lista:${NC}"
+    echo -e "\n${GREEN} Configuración lista:${NC}"
     echo "• app.json configurado"
     echo "• app.config.js con permisos BLE"
     echo "• eas.json con perfiles de build"
@@ -170,7 +170,7 @@ show_project_status() {
     echo "• Info.plist con permisos iOS"
     echo "• package.json con dependencias"
     
-    echo -e "\n${GREEN}✅ Listo para compilación:${NC}"
+    echo -e "\n${GREEN} Listo para compilación:${NC}"
     echo "• Todas las dependencias instaladas"
     echo "• Configuración de build completa"
     echo "• Permisos configurados correctamente"
@@ -192,7 +192,7 @@ main() {
     # Mostrar estado del proyecto
     show_project_status
     
-    echo -e "\n${BLUE}🚀 Iniciando proceso de compilación...${NC}"
+    echo -e "\n${BLUE} Iniciando proceso de compilación...${NC}"
     
     # Instalar dependencias
     install_dependencies || exit 1
@@ -211,14 +211,14 @@ main() {
     
     # Compilar APK
     build_apk || {
-        echo -e "${RED}❌ Error en la compilación${NC}"
+        echo -e "${RED} Error en la compilación${NC}"
         show_instructions
         exit 1
     }
     
     echo -e "\n${GREEN}🎉 ¡COMPILACIÓN COMPLETADA!${NC}"
     echo "=============================="
-    echo -e "${GREEN}✅ APK generado exitosamente${NC}"
+    echo -e "${GREEN} APK generado exitosamente${NC}"
     echo -e "${BLUE}📱 La aplicación está lista para Google Play Store${NC}"
 }
 

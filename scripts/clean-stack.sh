@@ -42,7 +42,7 @@ echo
 echo -e "${BLUE}Step 1: Stopping containers...${NC}"
 if docker-compose -f docker-compose.yml -f docker-compose.prod.yml ps -q | grep -q .; then
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml down --remove-orphans
-    echo -e "${GREEN}✅ Containers stopped${NC}"
+    echo -e "${GREEN} Containers stopped${NC}"
 else
     echo -e "${YELLOW}ℹ️  No running containers found${NC}"
 fi
@@ -52,7 +52,7 @@ echo -e "${BLUE}Step 2: Removing project images...${NC}"
 PROJECT_IMAGES=$(docker images --format "table {{.Repository}}:{{.Tag}}\t{{.ID}}" | grep $PROJECT_NAME | awk '{print $2}' || true)
 if [ ! -z "$PROJECT_IMAGES" ]; then
     echo "$PROJECT_IMAGES" | xargs docker rmi -f
-    echo -e "${GREEN}✅ Project images removed${NC}"
+    echo -e "${GREEN} Project images removed${NC}"
 else
     echo -e "${YELLOW}ℹ️  No project images found${NC}"
 fi
@@ -63,7 +63,7 @@ if confirm "Do you want to remove volumes (THIS WILL DELETE ALL DATA)?"; then
     PROJECT_VOLUMES=$(docker volume ls --format "table {{.Name}}" | grep $PROJECT_NAME || true)
     if [ ! -z "$PROJECT_VOLUMES" ]; then
         echo "$PROJECT_VOLUMES" | xargs docker volume rm -f
-        echo -e "${GREEN}✅ Volumes removed${NC}"
+        echo -e "${GREEN} Volumes removed${NC}"
     else
         echo -e "${YELLOW}ℹ️  No project volumes found${NC}"
     fi
@@ -75,7 +75,7 @@ fi
 if confirm "Do you want to clean Docker system cache?"; then
     echo -e "${BLUE}Step 4: Cleaning Docker system...${NC}"
     docker system prune -af
-    echo -e "${GREEN}✅ Docker system cleaned${NC}"
+    echo -e "${GREEN} Docker system cleaned${NC}"
 else
     echo -e "${YELLOW}ℹ️  Docker system cache preserved${NC}"
 fi
@@ -84,7 +84,7 @@ fi
 if confirm "Do you want to clean Docker build cache?"; then
     echo -e "${BLUE}Step 5: Cleaning build cache...${NC}"
     docker builder prune -af
-    echo -e "${GREEN}✅ Build cache cleaned${NC}"
+    echo -e "${GREEN} Build cache cleaned${NC}"
 else
     echo -e "${YELLOW}ℹ️  Build cache preserved${NC}"
 fi
@@ -94,7 +94,7 @@ if confirm "Do you want to rebuild the stack now?"; then
     echo -e "${BLUE}Step 6: Rebuilding stack...${NC}"
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-    echo -e "${GREEN}✅ Stack rebuilt and started${NC}"
+    echo -e "${GREEN} Stack rebuilt and started${NC}"
 else
     echo -e "${YELLOW}ℹ️  Stack not rebuilt. Run 'make prod' when ready${NC}"
 fi

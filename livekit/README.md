@@ -2,7 +2,7 @@
 
 LiveKit es un servidor de tiempo real para audio/video que se ejecuta localmente en tu stack de desarrollo.
 
-## 🚀 Configuración Actual
+##  Configuración Actual
 
 ### Puertos Expuestos
 - **7880**: API HTTP de LiveKit
@@ -140,7 +140,7 @@ webhook:
   api_key: nebu-dev
 ```
 
-## 🌐 Producción
+##  Producción
 
 Para producción, necesitarás:
 
