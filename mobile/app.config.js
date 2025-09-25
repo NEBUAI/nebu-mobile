@@ -67,7 +67,6 @@ export default {
     plugins: [
       "expo-font",
       "expo-camera",
-      "expo-barcode-scanner",
       [
         'react-native-permissions',
         {

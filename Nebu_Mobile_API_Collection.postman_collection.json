@@ -526,6 +526,35 @@
                             ]
                         }
                     }
+                },
+                {
+                    "name": "Get Device Token",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"device_id\": \"ESP32_AA:BB:CC:DD:EE:FF\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/{{apiVersion}}/iot/device/token",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{apiVersion}}",
+                                "iot",
+                                "device",
+                                "token"
+                            ]
+                        }
+                    }
                 }
             ]
         },

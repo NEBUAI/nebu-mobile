@@ -9,7 +9,6 @@ import {
   Dimensions,
 } from 'react-native';
 import { Camera } from 'expo-camera';
-import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/store/hooks';
@@ -124,8 +123,8 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onQRScanned, onClose }) =
       <Camera
         style={styles.camera}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        barCodeScannerSettings={{
-          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+        barcodeScannerSettings={{
+          barcodeTypes: ['qr'],
         }}
       >
         {/* Overlay con marco de escaneo */}
