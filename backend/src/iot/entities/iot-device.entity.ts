@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
+  OneToOne,
 } from 'typeorm';
 
 export type DeviceStatus = 'online' | 'offline' | 'error' | 'maintenance';
@@ -24,8 +25,9 @@ export class IoTDevice {
   })
   deviceType: DeviceType;
 
-  @Column({ length: 50, unique: true, nullable: true })
-  macAddress?: string;
+  @Column({ length: 17, unique: true })
+  @Index()
+  macAddress: string;
 
   @Column({ type: 'inet', nullable: true })
   ipAddress?: string;
@@ -78,9 +80,21 @@ export class IoTDevice {
   @Column({ type: 'timestamp', nullable: true })
   lastDataReceived?: Date;
 
+  // Relación opcional con Toy (1:0 o 1:1)
+  @OneToOne('Toy', 'iotDevice', { nullable: true })
+  toy?: any;
+
   // Helper methods
   isOnline(): boolean {
     return this.status === 'online';
+  }
+
+  isRegistered(): boolean {
+    return !!this.toy;
+  }
+
+  getOwnerUserId(): string | null {
+    return this.toy?.userId || null;
   }
 
   updateLastSeen(): void {

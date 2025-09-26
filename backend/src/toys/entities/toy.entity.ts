@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToOne,
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -21,15 +22,12 @@ export enum ToyStatus {
 }
 
 @Entity('toys')
-@Index(['macAddress'], { unique: true }) // MAC address debe ser único
 @Index(['status']) // Índice para búsquedas por estado
 @Index(['userId']) // Índice para búsquedas por usuario
+@Index(['iotDeviceId']) // Índice para búsquedas por dispositivo IoT
 export class Toy {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ type: 'varchar', length: 17, unique: true })
-  macAddress: string; // Formato: XX:XX:XX:XX:XX:XX
 
   @Column({ type: 'varchar', length: 100 })
   name: string; // Nombre del juguete (ej: "Mi Robot Azul")
@@ -85,12 +83,20 @@ export class Toy {
   @Column({ type: 'text', nullable: true })
   notes: string; // Notas adicionales del usuario
 
-  // Relación con User - Un juguete puede pertenecer a un usuario (opcional)
-  @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
+  // Relación obligatoria con IoTDevice (1:1)
+  @OneToOne('IoTDevice', 'toy')
+  @JoinColumn({ name: 'iotDeviceId' })
+  iotDevice: any;
+
+  @Column({ type: 'uuid' })
+  iotDeviceId: string;
+
+  // Relación obligatoria con User - Un juguete siempre pertenece a un usuario
+  @ManyToOne(() => User, user => user.toys, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'uuid' })
   userId: string;
 
   // Metadatos de auditoría
@@ -115,6 +121,10 @@ export class Toy {
       ToyStatus.MAINTENANCE,
       ToyStatus.BLOCKED,
     ].includes(this.status);
+  }
+
+  getMacAddress(): string {
+    return this.iotDevice?.macAddress;
   }
 
   getStatusColor(): string {

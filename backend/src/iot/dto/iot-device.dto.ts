@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsNumber, IsUUID, IsObject, Min, Max } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsNumber, IsUUID, IsObject, IsNotEmpty, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { DeviceType, DeviceStatus } from '../entities/iot-device.entity';
 
@@ -15,10 +15,10 @@ export class CreateIoTDeviceDto {
   @IsEnum(['sensor', 'actuator', 'camera', 'microphone', 'speaker', 'controller'])
   deviceType: DeviceType;
 
-  @ApiPropertyOptional({ description: 'MAC address', example: '00:1B:44:11:3A:B7' })
-  @IsOptional()
+  @ApiProperty({ description: 'MAC address', example: '00:1B:44:11:3A:B7' })
+  @IsNotEmpty()
   @IsString()
-  macAddress?: string;
+  macAddress: string;
 
   @ApiPropertyOptional({ description: 'IP address', example: '192.168.1.100' })
   @IsOptional()

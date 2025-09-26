@@ -1,18 +1,15 @@
-import { IsString, IsOptional, IsEnum, IsObject, IsUUID, Matches, Length } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsObject, IsUUID, IsNotEmpty, Length } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ToyStatus } from '../entities/toy.entity';
 
 export class CreateToyDto {
   @ApiProperty({
-    description: 'MAC address del juguete en formato XX:XX:XX:XX:XX:XX',
-    example: '00:1B:44:11:3A:B7',
-    pattern: '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$',
+    description: 'ID del dispositivo IoT al que pertenece este juguete',
+    example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @IsString()
-  @Matches(/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/, {
-    message: 'MAC address debe estar en formato XX:XX:XX:XX:XX:XX o XX-XX-XX-XX-XX-XX',
-  })
-  macAddress: string;
+  @IsNotEmpty()
+  @IsUUID()
+  iotDeviceId: string;
 
   @ApiProperty({
     description: 'Nombre del juguete',
@@ -111,11 +108,11 @@ export class CreateToyDto {
   @IsString()
   notes?: string;
 
-  @ApiPropertyOptional({
-    description: 'ID del usuario propietario (opcional)',
+  @ApiProperty({
+    description: 'ID del usuario propietario',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsUUID()
-  userId?: string;
+  userId: string;
 }

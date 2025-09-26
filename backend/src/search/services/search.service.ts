@@ -23,11 +23,12 @@ export class SearchService {
       // Search in toys
       const toys = await this.toyRepository
         .createQueryBuilder('toy')
+        .leftJoinAndSelect('toy.iotDevice', 'iotDevice')
         .where('toy.name ILIKE :query OR toy.model ILIKE :query OR toy.manufacturer ILIKE :query', {
           query: `%${query}%`,
         })
-        .andWhere('toy.status IN (:...statuses)', { 
-          statuses: ['active', 'connected'] 
+        .andWhere('toy.status IN (:...statuses)', {
+          statuses: ['active', 'connected']
         })
         .select([
           'toy.id',
@@ -35,7 +36,7 @@ export class SearchService {
           'toy.model',
           'toy.manufacturer',
           'toy.status',
-          'toy.macAddress',
+          'iotDevice.macAddress',
         ])
         .limit(10)
         .getMany();
@@ -45,7 +46,7 @@ export class SearchService {
         type: 'toy' as const,
         title: toy.name,
         description: toy.model || toy.manufacturer || 'Juguete inteligente',
-        url: `/toy/${toy.macAddress}`,
+        url: `/toy/${toy.iotDevice?.macAddress || toy.id}`,
         icon: '',
       }));
 

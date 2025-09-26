@@ -7,6 +7,7 @@ import { UpdateToyDto } from '../dto/update-toy.dto';
 import { AssignToyDto, AssignToyResponseDto } from '../dto/assign-toy.dto';
 import { ToyResponseDto, ToyListResponseDto } from '../dto/toy-response.dto';
 import { User } from '../../users/entities/user.entity';
+import { IoTDevice } from '../../iot/entities/iot-device.entity';
 
 @Injectable()
 export class ToysService {
@@ -15,39 +16,46 @@ export class ToysService {
     private readonly toyRepository: Repository<Toy>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(IoTDevice)
+    private readonly iotDeviceRepository: Repository<IoTDevice>,
   ) {}
 
   /**
    * Crear un nuevo juguete
    */
   async create(createToyDto: CreateToyDto): Promise<ToyResponseDto> {
-    // Normalizar MAC address (convertir a formato estándar)
-    const normalizedMacAddress = this.normalizeMacAddress(createToyDto.macAddress);
+    // Verificar que el dispositivo IoT existe
+    const iotDevice = await this.iotDeviceRepository.findOne({
+      where: { id: createToyDto.iotDeviceId },
+    });
 
-    // Verificar si ya existe un juguete con este MAC address
+    if (!iotDevice) {
+      throw new NotFoundException('Dispositivo IoT no encontrado');
+    }
+
+    // Verificar si ya existe un juguete con este dispositivo IoT
     const existingToy = await this.toyRepository.findOne({
-      where: { macAddress: normalizedMacAddress },
+      where: { iotDeviceId: createToyDto.iotDeviceId },
     });
 
     if (existingToy) {
-      throw new ConflictException(`Ya existe un juguete con el MAC address: ${normalizedMacAddress}`);
+      throw new ConflictException(
+        `Ya existe un juguete registrado para el dispositivo IoT ${createToyDto.iotDeviceId}`
+      );
     }
 
-    // Verificar si el usuario existe (si se proporciona)
-    if (createToyDto.userId) {
-      const user = await this.userRepository.findOne({
-        where: { id: createToyDto.userId },
-      });
+    // Verificar que el usuario existe
+    const user = await this.userRepository.findOne({
+      where: { id: createToyDto.userId },
+    });
 
-      if (!user) {
-        throw new NotFoundException(`Usuario con ID ${createToyDto.userId} no encontrado`);
-      }
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${createToyDto.userId} no encontrado`);
     }
 
     // Crear el juguete
     const toy = this.toyRepository.create({
       ...createToyDto,
-      macAddress: normalizedMacAddress,
       status: createToyDto.status || ToyStatus.INACTIVE,
       activatedAt: createToyDto.status === ToyStatus.ACTIVE ? new Date() : null,
     });
@@ -69,6 +77,7 @@ export class ToysService {
     const queryBuilder = this.toyRepository
       .createQueryBuilder('toy')
       .leftJoinAndSelect('toy.user', 'user')
+      .leftJoinAndSelect('toy.iotDevice', 'iotDevice')
       .orderBy('toy.createdAt', 'DESC');
 
     // Aplicar filtros
@@ -82,7 +91,7 @@ export class ToysService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(toy.name ILIKE :search OR toy.model ILIKE :search OR toy.manufacturer ILIKE :search OR toy.macAddress ILIKE :search)',
+        '(toy.name ILIKE :search OR toy.model ILIKE :search OR toy.manufacturer ILIKE :search OR iotDevice.macAddress ILIKE :search)',
         { search: `%${search}%` },
       );
     }
@@ -108,7 +117,7 @@ export class ToysService {
   async findOne(id: string): Promise<ToyResponseDto> {
     const toy = await this.toyRepository.findOne({
       where: { id },
-      relations: ['user'],
+      relations: ['user', 'iotDevice'],
     });
 
     if (!toy) {
@@ -123,10 +132,12 @@ export class ToysService {
    */
   async findByMacAddress(macAddress: string): Promise<ToyResponseDto> {
     const normalizedMacAddress = this.normalizeMacAddress(macAddress);
-    
+
     const toy = await this.toyRepository.findOne({
-      where: { macAddress: normalizedMacAddress },
-      relations: ['user'],
+      where: {
+        iotDevice: { macAddress: normalizedMacAddress }
+      },
+      relations: ['user', 'iotDevice'],
     });
 
     if (!toy) {
@@ -142,7 +153,7 @@ export class ToysService {
   async findByUserId(userId: string): Promise<ToyResponseDto[]> {
     const toys = await this.toyRepository.find({
       where: { userId },
-      relations: ['user'],
+      relations: ['user', 'iotDevice'],
       order: { createdAt: 'DESC' },
     });
 
@@ -153,25 +164,16 @@ export class ToysService {
    * Actualizar un juguete
    */
   async update(id: string, updateToyDto: UpdateToyDto): Promise<ToyResponseDto> {
-    const toy = await this.toyRepository.findOne({ where: { id } });
+    const toy = await this.toyRepository.findOne({
+      where: { id },
+      relations: ['iotDevice', 'user']
+    });
 
     if (!toy) {
       throw new NotFoundException(`Juguete con ID ${id} no encontrado`);
     }
 
-    // Verificar MAC address único si se está actualizando
-    if (updateToyDto.macAddress) {
-      const normalizedMacAddress = this.normalizeMacAddress(updateToyDto.macAddress);
-      const existingToy = await this.toyRepository.findOne({
-        where: { macAddress: normalizedMacAddress },
-      });
-
-      if (existingToy && existingToy.id !== id) {
-        throw new ConflictException(`Ya existe un juguete con el MAC address: ${normalizedMacAddress}`);
-      }
-
-      updateToyDto.macAddress = normalizedMacAddress;
-    }
+    // MAC address no se puede actualizar directamente, se maneja via IoTDevice
 
     // Verificar usuario si se está actualizando
     if (updateToyDto.userId) {
@@ -259,7 +261,7 @@ export class ToysService {
       toy: {
         id: toy.id,
         name: toy.name,
-        macAddress: toy.macAddress,
+        macAddress: toy.iotDevice?.macAddress || null,
         userId: toy.userId,
       },
     };
@@ -275,10 +277,12 @@ export class ToysService {
     signalStrength?: string,
   ): Promise<ToyResponseDto> {
     const normalizedMacAddress = this.normalizeMacAddress(macAddress);
-    
+
     const toy = await this.toyRepository.findOne({
-      where: { macAddress: normalizedMacAddress },
-      relations: ['user'],
+      where: {
+        iotDevice: { macAddress: normalizedMacAddress }
+      },
+      relations: ['user', 'iotDevice'],
     });
 
     if (!toy) {
@@ -360,6 +364,7 @@ export class ToysService {
   private mapToyToResponseDto(toy: Toy): ToyResponseDto {
     return {
       ...toy,
+      macAddress: toy.iotDevice?.macAddress || toy.getMacAddress(),
       statusText: toy.getStatusText(),
       statusColor: toy.getStatusColor(),
       isActive: toy.isActive(),

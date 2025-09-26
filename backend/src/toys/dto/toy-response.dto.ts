@@ -9,7 +9,13 @@ export class ToyResponseDto {
   id: string;
 
   @ApiProperty({
-    description: 'MAC address del juguete',
+    description: 'ID del dispositivo IoT asociado',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  iotDeviceId: string;
+
+  @ApiProperty({
+    description: 'MAC address del dispositivo IoT (obtenido de la relación)',
     example: '00:1B:44:11:3A:B7',
   })
   macAddress: string;
@@ -123,11 +129,11 @@ export class ToyResponseDto {
   })
   notes?: string;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: 'ID del usuario propietario',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  userId?: string;
+  userId: string;
 
   @ApiProperty({
     description: 'Fecha de creación',
