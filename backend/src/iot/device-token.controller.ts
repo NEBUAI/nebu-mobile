@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { IoTService } from './iot.service';
-import { DeviceTokenRequestDto, DeviceTokenResponseDto } from './dto/device-token.dto';
+import { DeviceTokenRequestDto } from './dto/device-token.dto';
 
 @ApiTags('iot')
 @Controller('iot')
