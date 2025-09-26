@@ -171,15 +171,23 @@ export class LiveKitService {
    * Genera token para IoT Device (configuración específica)
    */
   async generateIoTToken(deviceId: string, roomName: string): Promise<string> {
-    return await this.generateToken(roomName, `device-${deviceId}`, {
-      canPublish: true,
-      canSubscribe: false,
-      canPublishData: true,
-      metadata: JSON.stringify({
-        type: 'iot-device',
-        deviceId,
-        timestamp: Date.now()
-      })
+    const at = new AccessToken(this.apiKey, this.apiSecret, {
+      identity: deviceId, // Use device_id directly as identity like your friend's implementation
+      ttl: 900, // 900 seconds = 15 minutes (exactly like your friend's implementation)
     });
+
+    at.addGrant({
+      room: roomName,
+      roomJoin: true,
+      canPublish: true,      // ✅ Can publish tracks
+      canSubscribe: true,    // ✅ Can subscribe to tracks
+      canPublishData: true,  // ✅ Can publish to data channel
+      hidden: false          // ❌ Hidden/invisible participant
+    });
+
+    const token = await at.toJwt();
+
+    this.logger.log(`IoT Token generated for ${deviceId} in room ${roomName} (TTL: 900s)`);
+    return token;
   }
 }

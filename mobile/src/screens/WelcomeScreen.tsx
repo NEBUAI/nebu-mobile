@@ -22,7 +22,7 @@ const mockExistingToys = [
     id: '1',
     name: "pedro's Nebu",
     status: 'Ready to connect',
-    avatar: require('@/assets/icon.png'), // Using the squirrel icon as placeholder
+    avatar: require('../../assets/icon.png'), // Using the squirrel icon as placeholder
   },
 ];
 

@@ -1,5 +1,5 @@
 // Export all services
-export { default as apiService } from './apiService';
+export { apiService } from './api';
 export { default as bluetoothService } from './bluetoothService';
 export { default as wifiService } from './wifiService';
 export { default as robotService } from './robotService';

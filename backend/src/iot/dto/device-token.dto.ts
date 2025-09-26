@@ -13,14 +13,32 @@ export class DeviceTokenRequestDto {
 
 export class DeviceTokenResponseDto {
   @ApiProperty({
-    description: 'JWT access token for device authentication',
-    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    description: 'LiveKit access token for real-time communication',
+    example: 'eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcInR5cGVcI...',
   })
   access_token: string;
 
   @ApiProperty({
-    description: 'Token type',
-    example: 'Bearer',
+    description: 'LiveKit room name where the device will connect',
+    example: 'iot-device-a4538271-c9a3-43c8-8754-76fdd9a90520',
   })
-  token_type: string;
+  room_name: string;
+
+  @ApiProperty({
+    description: 'Token expiration time in seconds',
+    example: 900,
+  })
+  expires_in: number;
+
+  @ApiProperty({
+    description: 'LiveKit server URL',
+    example: 'wss://brody-v541z1he.livekit.cloud',
+  })
+  server_url: string;
+
+  @ApiProperty({
+    description: 'Participant identity for LiveKit',
+    example: 'ESP32_AA:BB:CC:DD:EE:FF',
+  })
+  participant_identity: string;
 }

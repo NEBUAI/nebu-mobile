@@ -40,16 +40,90 @@ export interface VoiceAgentTokenRequest {
 export interface IoTDevice {
   id: string;
   name: string;
-  deviceType: string;
-  macAddress?: string;
+  deviceType: 'sensor' | 'actuator' | 'camera' | 'microphone' | 'speaker' | 'controller';
+  macAddress: string; // Obligatorio ahora
   ipAddress?: string;
-  status: 'online' | 'offline' | 'error';
+  status: 'online' | 'offline' | 'error' | 'maintenance';
   location?: string;
   metadata?: Record<string, any>;
-  userId: string;
+  userId?: string; // Opcional - dispositivos pueden no tener usuario
+  roomName?: string; // Para LiveKit
+  temperature?: number;
+  humidity?: number;
+  pressure?: number;
+  batteryLevel?: number;
+  signalStrength?: number;
   createdAt: string;
   updatedAt: string;
   lastSeen?: string;
+  lastDataReceived?: string;
+  // Helper methods results
+  isOnline?: boolean;
+  isRegistered?: boolean;
+}
+
+export interface Toy {
+  id: string;
+  iotDeviceId: string; // Relación obligatoria con IoTDevice
+  userId: string; // Relación obligatoria con User
+  name: string;
+  model?: string;
+  manufacturer?: string;
+  status: 'inactive' | 'active' | 'connected' | 'disconnected' | 'maintenance' | 'error' | 'blocked';
+  statusText: string;
+  statusColor: string;
+  firmwareVersion?: string;
+  batteryLevel?: string;
+  signalStrength?: string;
+  lastSeenAt?: string;
+  activatedAt?: string;
+  capabilities?: {
+    voice?: boolean;
+    movement?: boolean;
+    lights?: boolean;
+    sensors?: string[];
+    aiFeatures?: string[];
+  };
+  settings?: {
+    volume?: number;
+    brightness?: number;
+    language?: string;
+    timezone?: string;
+    autoUpdate?: boolean;
+  };
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+  // Computed from relation
+  macAddress: string; // Viene de iotDevice.macAddress
+  // Helper methods results
+  isActive: boolean;
+  isConnected: boolean;
+  needsAttention: boolean;
+}
+
+export interface CreateToyRequest {
+  iotDeviceId: string; // ID del dispositivo IoT existente
+  userId: string; // ID del usuario
+  name: string;
+  model?: string;
+  manufacturer?: string;
+  status?: 'inactive' | 'active' | 'connected' | 'disconnected' | 'maintenance' | 'error' | 'blocked';
+  capabilities?: {
+    voice?: boolean;
+    movement?: boolean;
+    lights?: boolean;
+    sensors?: string[];
+    aiFeatures?: string[];
+  };
+  settings?: {
+    volume?: number;
+    brightness?: number;
+    language?: string;
+    timezone?: string;
+    autoUpdate?: boolean;
+  };
+  notes?: string;
 }
 
 class ApiService {
@@ -276,9 +350,81 @@ class ApiService {
     });
   }
 
+  // Toys
+  async getToys(): Promise<ApiResponse<Toy[]>> {
+    return this.request<Toy[]>('/toys');
+  }
+
+  async getMyToys(): Promise<ApiResponse<Toy[]>> {
+    return this.request<Toy[]>('/toys/my-toys');
+  }
+
+  async createToy(toyData: CreateToyRequest): Promise<ApiResponse<Toy>> {
+    return this.request<Toy>('/toys', {
+      method: 'POST',
+      body: JSON.stringify(toyData),
+    });
+  }
+
+  async updateToy(toyId: string, toyData: Partial<Toy>): Promise<ApiResponse<Toy>> {
+    return this.request<Toy>(`/toys/${toyId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(toyData),
+    });
+  }
+
+  async deleteToy(toyId: string): Promise<ApiResponse> {
+    return this.request(`/toys/${toyId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async assignToy(assignData: { toyId: string; userId?: string }): Promise<ApiResponse<{ success: boolean; message: string }>> {
+    return this.request('/toys/assign', {
+      method: 'POST',
+      body: JSON.stringify(assignData),
+    });
+  }
+
+  async updateToyStatus(toyId: string, statusData: { status?: string; batteryLevel?: string; signalStrength?: string }): Promise<ApiResponse<Toy>> {
+    return this.request<Toy>(`/toys/${toyId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify(statusData),
+    });
+  }
+
   // Health Check
   async healthCheck(): Promise<ApiResponse<{ status: string; timestamp: string }>> {
     return this.request('/health');
+  }
+
+  // Generic HTTP methods for backward compatibility
+  async get(endpoint: string): Promise<any> {
+    const response = await this.request(endpoint);
+    return { data: response.data };
+  }
+
+  async post(endpoint: string, data: any): Promise<any> {
+    const response = await this.request(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    return { data: response.data };
+  }
+
+  async put(endpoint: string, data: any): Promise<any> {
+    const response = await this.request(endpoint, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+    return { data: response.data };
+  }
+
+  async delete(endpoint: string): Promise<any> {
+    const response = await this.request(endpoint, {
+      method: 'DELETE',
+    });
+    return { data: response.data };
   }
 
   // Utility methods

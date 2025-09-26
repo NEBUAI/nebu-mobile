@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Header, AnimatedCard, GradientText } from '@/components';
 import { useAppSelector } from '@/store/hooks';
 import { getTheme } from '@/utils/theme';
-import { apiService } from '@/services/apiService';
+import { apiService } from '@/services/api';
 import { bluetoothService, BluetoothDevice } from '@/services/bluetoothService';
 
 // Tipos para el estado del setup (ya importado desde bluetoothService)

@@ -1,4 +1,4 @@
-import { apiService } from './apiService';
+import { apiService } from './api';
 
 // Tipos para el servicio del robot
 export interface RobotDevice {
