@@ -7,7 +7,7 @@ export const ENV_CONFIG = {
   LIVEKIT_API_KEY: Constants.expoConfig?.extra?.LIVEKIT_API_KEY || '',
   LIVEKIT_SECRET_KEY: Constants.expoConfig?.extra?.LIVEKIT_SECRET_KEY || '',
   
-  // Backend API Configuration
+  // Backend API Configuration  
   API_BASE_URL: Constants.expoConfig?.extra?.API_BASE_URL || 'http://localhost:3000',
   
   // Social Auth Configuration
@@ -19,3 +19,10 @@ export const ENV_CONFIG = {
   APPLE_TEAM_ID: Constants.expoConfig?.extra?.APPLE_TEAM_ID || '',
   APPLE_KEY_ID: Constants.expoConfig?.extra?.APPLE_KEY_ID || '',
 };
+
+// Debug function to check env config
+if (__DEV__) {
+  console.log('🔧 Environment Config Debug:', ENV_CONFIG);
+  console.log('🔧 ExpoConfig extra:', Constants.expoConfig?.extra);
+  console.log('🔧 API_BASE_URL:', Constants.expoConfig?.extra?.API_BASE_URL);
+}

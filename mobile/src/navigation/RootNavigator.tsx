@@ -7,6 +7,7 @@ import { RootStackParamList } from '@/types';
 import SplashScreen from '@/screens/SplashScreen';
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
+import HomeStackNavigator from './HomeStackNavigator'; // Import HomeStack directly for setup flow
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,10 +22,11 @@ const RootNavigator: React.FC = () => {
         }}
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
-        {isAuthenticated ? (
+        {/* Temporary bypass: Skip auth for setup flow */}
+        {false && isAuthenticated ? (
           <Stack.Screen name="Main" component={MainNavigator} />
         ) : (
-          <Stack.Screen name="Auth" component={AuthNavigator} />
+          <Stack.Screen name="Home" component={HomeStackNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

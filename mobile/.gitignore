@@ -31,7 +31,7 @@ local.properties
 *.iml
 *.hprof
 .cxx/
-
+.apk
 # Expo managed workflow (generated code - don't commit)
 # android/
 # ios/

@@ -1,5 +1,20 @@
 const IS_DEV = process.env.APP_VARIANT === 'development';
 
+// Load environment variables
+require('dotenv').config();
+
+// Validate required environment variables
+const validateEnv = () => {
+  const requiredVars = ['API_BASE_URL'];
+  const missing = requiredVars.filter(varName => !process.env[varName]);
+  
+  if (missing.length > 0 && IS_DEV) {
+    console.warn('⚠️ Missing environment variables:', missing.join(', '));
+  }
+};
+
+validateEnv();
+
 export default {
   name: IS_DEV ? 'Nebu (Dev)' : 'Nebu',
 

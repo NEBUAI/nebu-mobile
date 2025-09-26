@@ -11,6 +11,7 @@ import {
   TextStyle,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Constants from 'expo-constants';
 import { Button, Input } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginSuccess, setLoading } from '@/store/authSlice';
@@ -76,6 +77,8 @@ const LoginScreen: React.FC = () => {
     paddingHorizontal: theme.spacing.lg,
     paddingTop: theme.spacing.xxl * 2,
   });
+
+  const styles = getStyles(theme);
 
   const getLogoContainerStyle = (): ViewStyle => ({
     alignItems: 'center',
@@ -153,12 +156,19 @@ const LoginScreen: React.FC = () => {
             />
           </View>
         </View>
+
+        {/* Version display at the bottom */}
+        <View style={styles.versionContainer}>
+          <Text style={[styles.versionText, { color: theme.colors.textSecondary }]}>
+            v{Constants.expoConfig?.version || '1.0.0'}
+          </Text>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -198,6 +208,16 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 24,
+  },
+  versionContainer: {
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
+  versionText: {
+    fontSize: 12,
+    fontWeight: '400',
+    opacity: 0.7,
   },
 });
 

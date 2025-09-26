@@ -30,15 +30,12 @@ const SplashScreen: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (isAuthenticated) {
-        navigation.replace('Main');
-      } else {
-        navigation.replace('Auth');
-      }
+      // TEMPORAL BYPASS: Go directly to Home/Setup flow instead of Auth
+      navigation.replace('Home');
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [navigation, isAuthenticated]);
+  }, [navigation]);
 
   const getContainerStyle = (): ViewStyle => ({
     backgroundColor: theme.colors.primary,
