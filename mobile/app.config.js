@@ -79,7 +79,19 @@ export default {
     extra: {
       eas: {
         projectId: 'bd86ccea-c4fa-46f2-bcae-0c310774b80e'
-      }
+      },
+      // Environment variables
+      API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:3000',
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
+      GOOGLE_WEB_CLIENT_ID: process.env.GOOGLE_WEB_CLIENT_ID || '',
+      FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID || '',
+      FACEBOOK_CLIENT_TOKEN: process.env.FACEBOOK_CLIENT_TOKEN || '',
+      APPLE_CLIENT_ID: process.env.APPLE_CLIENT_ID || '',
+      APPLE_TEAM_ID: process.env.APPLE_TEAM_ID || '',
+      APPLE_KEY_ID: process.env.APPLE_KEY_ID || '',
+      LIVEKIT_URL: process.env.LIVEKIT_URL || '',
+      LIVEKIT_API_KEY: process.env.LIVEKIT_API_KEY || '',
+      LIVEKIT_SECRET_KEY: process.env.LIVEKIT_SECRET_KEY || '',
     },
     runtimeVersion: '1.0.0',
     updates: {
