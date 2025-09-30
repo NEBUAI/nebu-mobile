@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Room, RoomEvent, RemoteParticipant, DataPacket_Kind } from 'livekit-client';
 import { ENV_CONFIG } from '@/config/env';
 import { apiService } from './api';
