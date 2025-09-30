@@ -38,6 +38,7 @@ export type RootStackParamList = {
   Splash: undefined;
   Auth: undefined;
   Main: undefined;
+  Home: undefined;
 };
 
 export type AuthStackParamList = {

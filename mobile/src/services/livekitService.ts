@@ -135,11 +135,13 @@ export class LiveKitIoTService {
 
   async sendData(data: any): Promise<void> {
     if (!this.room) throw new Error('Not connected to room');
-    
+
     try {
       const encoder = new TextEncoder();
       const dataBytes = encoder.encode(JSON.stringify(data));
-      await this.room.localParticipant.publishData(dataBytes, DataPacket_Kind.RELIABLE);
+      await this.room.localParticipant.publishData(dataBytes, {
+        reliable: true,
+      });
     } catch (error) {
       console.error('Failed to send data:', error);
       throw error;
@@ -164,15 +166,15 @@ export class LiveKitIoTService {
   }
 
   getConnectedParticipants(): number {
-    return this.room ? this.room.participants.size : 0;
+    return this.room ? this.room.numParticipants : 0;
   }
 
   getRoomInfo(): { name: string; participants: number; isConnected: boolean } | null {
     if (!this.room) return null;
-    
+
     return {
       name: this.room.name || 'Unknown Room',
-      participants: this.room.participants.size + 1, // +1 for local participant
+      participants: this.room.numParticipants,
       isConnected: this.room.state === 'connected'
     };
   }
