@@ -1,6 +1,24 @@
 <resources>
+  <!-- Nebu Brand Colors -->
+  <color name="colorPrimary">#2F27CE</color>
+  <color name="colorPrimaryDark">#433BFF</color>
+  <color name="colorAccent">#433BFF</color>
+  <color name="colorSecondary">#CE965E</color>
+
+  <!-- Background Colors (Light Theme) -->
+  <color name="background">#fafafa</color>
+  <color name="surface">#fefefe</color>
+  <color name="card">#FFFFF1</color>
+
+  <!-- Text Colors (Light Theme) -->
+  <color name="textPrimary">#374151</color>
+  <color name="textSecondary">#4b5563</color>
+
+  <!-- System Colors -->
+  <color name="statusBarColor">@android:color/transparent</color>
+  <color name="navigationBarColor">@android:color/transparent</color>
+
+  <!-- Splash Screen -->
   <color name="splashscreen_background">#ffffff</color>
   <color name="iconBackground">#ffffff</color>
-  <color name="colorPrimary">#023c69</color>
-  <color name="colorPrimaryDark">#ffffff</color>
 </resources>

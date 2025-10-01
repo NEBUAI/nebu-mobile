@@ -1,0 +1,29 @@
+<resources>
+  <!-- Spacing Scale (matching theme.ts) -->
+  <dimen name="spacing_xs">4dp</dimen>
+  <dimen name="spacing_sm">8dp</dimen>
+  <dimen name="spacing_md">16dp</dimen>
+  <dimen name="spacing_lg">24dp</dimen>
+  <dimen name="spacing_xl">32dp</dimen>
+  <dimen name="spacing_xxl">48dp</dimen>
+
+  <!-- Border Radius -->
+  <dimen name="radius_sm">4dp</dimen>
+  <dimen name="radius_md">8dp</dimen>
+  <dimen name="radius_lg">12dp</dimen>
+  <dimen name="radius_xl">16dp</dimen>
+
+  <!-- Typography Sizes -->
+  <dimen name="text_xs">12sp</dimen>
+  <dimen name="text_sm">14sp</dimen>
+  <dimen name="text_md">16sp</dimen>
+  <dimen name="text_lg">18sp</dimen>
+  <dimen name="text_xl">20sp</dimen>
+  <dimen name="text_xxl">24sp</dimen>
+  <dimen name="text_xxxl">32sp</dimen>
+
+  <!-- Elevation -->
+  <dimen name="elevation_sm">1dp</dimen>
+  <dimen name="elevation_md">4dp</dimen>
+  <dimen name="elevation_lg">8dp</dimen>
+</resources>
