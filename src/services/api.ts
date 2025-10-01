@@ -6,7 +6,7 @@ const API_BASE_URL = __DEV__
   : 'https://api.nebu.com/api/v1';  // Production
 
 // Types
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -45,7 +45,7 @@ export interface IoTDevice {
   ipAddress?: string;
   status: 'online' | 'offline' | 'error' | 'maintenance';
   location?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   userId?: string; // Opcional - dispositivos pueden no tener usuario
   roomName?: string; // Para LiveKit
   temperature?: number;

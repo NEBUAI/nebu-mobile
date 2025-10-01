@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import { logger } from '@/utils/logger';
 
 // Environment configuration from Expo Constants
 export const ENV_CONFIG = {
@@ -22,7 +23,7 @@ export const ENV_CONFIG = {
 
 // Debug function to check env config
 if (__DEV__) {
-  console.log('🔧 Environment Config Debug:', ENV_CONFIG);
-  console.log('🔧 ExpoConfig extra:', Constants.expoConfig?.extra);
-  console.log('🔧 URL_BACKEND:', Constants.expoConfig?.extra?.URL_BACKEND);
+  logger.debug('🔧 Environment Config Debug:', ENV_CONFIG);
+  logger.debug('🔧 ExpoConfig extra:', Constants.expoConfig?.extra);
+  logger.debug('🔧 URL_BACKEND:', Constants.expoConfig?.extra?.URL_BACKEND);
 }
