@@ -26,7 +26,8 @@ const RootNavigator: React.FC = () => {
         {false && isAuthenticated ? (
           <Stack.Screen name="Main" component={MainNavigator} />
         ) : (
-          <Stack.Screen name="Home" component={HomeStackNavigator} />
+          // Use a distinct name for the nested Home stack to avoid name collisions
+          <Stack.Screen name="HomeStack" component={HomeStackNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

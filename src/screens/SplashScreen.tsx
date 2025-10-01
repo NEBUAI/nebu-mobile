@@ -30,8 +30,8 @@ const SplashScreen: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // TEMPORAL BYPASS: Go directly to Home/Setup flow instead of Auth
-      navigation.replace('Home');
+      // TEMPORARY BYPASS: Navigate to the Home stack (renamed from 'Home')
+      navigation.replace('HomeStack');
     }, 2000);
 
     return () => clearTimeout(timer);

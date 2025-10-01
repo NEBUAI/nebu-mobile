@@ -10,6 +10,7 @@ i18n
     fallbackLng,
     defaultNS,
     ns: [defaultNS],
+    compatibilityJSON: 'v3',
     
     interpolation: {
       escapeValue: false,

@@ -79,7 +79,7 @@ export type RootStackParamList = {
   Splash: undefined;
   Auth: undefined;
   Main: undefined;
-  Home: undefined;
+  HomeStack: undefined;
 };
 
 export type AuthStackParamList = {
