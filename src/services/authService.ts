@@ -43,7 +43,7 @@ class AuthService {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = ENV_CONFIG.API_BASE_URL;
+    this.baseURL = ENV_CONFIG.URL_BACKEND;
   }
 
   // Email/Password Authentication
