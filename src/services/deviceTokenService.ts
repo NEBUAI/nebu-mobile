@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 import { apiService } from './api';
 
 // Tipos para el servicio de token de dispositivo
@@ -23,7 +24,7 @@ class DeviceTokenService {
    */
   async requestDeviceToken(deviceId: string): Promise<DeviceTokenResponse> {
     try {
-      console.log('Requesting device token for:', deviceId);
+      logger.debug('Requesting device token for:', deviceId);
 
       // Validar formato del device_id
       if (!this.isValidDeviceId(deviceId)) {
@@ -43,7 +44,7 @@ class DeviceTokenService {
         expires_in: 7200, // Default 2 hours
       };
     } catch (error: any) {
-      console.error('Error requesting device token:', error);
+      logger.error('Error requesting device token:', error);
       
       // Si el dispositivo no está vinculado (404)
       if (error.response?.status === 404) {
@@ -90,7 +91,7 @@ class DeviceTokenService {
         expiresIn: payload.exp ? (payload.exp * 1000 - Date.now()) : 0,
       };
     } catch (error) {
-      console.error('Error parsing token:', error);
+      logger.error('Error parsing token:', error);
       return null;
     }
   }
@@ -140,7 +141,7 @@ class DeviceTokenService {
    */
   async getDeviceInfo(deviceId: string): Promise<any> {
     try {
-      console.log('Getting device info for:', deviceId);
+      logger.debug('Getting device info for:', deviceId);
 
       if (!this.isValidDeviceId(deviceId)) {
         throw new Error('Invalid device ID format');
@@ -154,7 +155,7 @@ class DeviceTokenService {
 
       return response.data;
     } catch (error: any) {
-      console.error('Error getting device info:', error);
+      logger.error('Error getting device info:', error);
       
       if (error.response?.status === 404) {
         throw new Error('Device not found');
@@ -169,7 +170,7 @@ class DeviceTokenService {
    */
   async linkDeviceToUser(deviceId: string, userId: string, toyName: string = 'My Toy'): Promise<boolean> {
     try {
-      console.log('Linking device to user:', deviceId, userId);
+      logger.debug('Linking device to user:', deviceId, userId);
 
       if (!this.isValidDeviceId(deviceId)) {
         throw new Error('Invalid device ID format');
@@ -185,7 +186,7 @@ class DeviceTokenService {
 
       return response.success;
     } catch (error: any) {
-      console.error('Error linking device to user:', error);
+      logger.error('Error linking device to user:', error);
       throw new Error('Failed to link device to user');
     }
   }

@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 // @ts-nocheck
 import OpenAI from 'openai';
 import { Audio } from 'expo-av';
@@ -42,7 +43,7 @@ export class OpenAIVoiceAgent {
         playThroughEarpieceAndroid: false,
       });
     } catch (error) {
-      console.error('Error initializing audio:', error);
+      logger.error('Error initializing audio:', error);
     }
   }
 
@@ -57,7 +58,7 @@ export class OpenAIVoiceAgent {
       
       this.onStatusCallback?.('idle');
     } catch (error) {
-      console.error('Error initializing OpenAI:', error);
+      logger.error('Error initializing OpenAI:', error);
       this.onStatusCallback?.('error');
       throw error;
     }
@@ -70,7 +71,7 @@ export class OpenAIVoiceAgent {
         this.conversation = JSON.parse(history);
       }
     } catch (error) {
-      console.error('Error loading conversation history:', error);
+      logger.error('Error loading conversation history:', error);
     }
   }
 
@@ -78,7 +79,7 @@ export class OpenAIVoiceAgent {
     try {
       await AsyncStorage.setItem('voice_conversation_history', JSON.stringify(this.conversation));
     } catch (error) {
-      console.error('Error saving conversation history:', error);
+      logger.error('Error saving conversation history:', error);
     }
   }
 
@@ -122,7 +123,7 @@ export class OpenAIVoiceAgent {
 
       await this.recording.startAsync();
     } catch (error) {
-      console.error('Error starting recording:', error);
+      logger.error('Error starting recording:', error);
       this.onStatusCallback?.('error');
       this.isListening = false;
     }
@@ -142,7 +143,7 @@ export class OpenAIVoiceAgent {
         await this.processAudioInput(uri);
       }
     } catch (error) {
-      console.error('Error stopping recording:', error);
+      logger.error('Error stopping recording:', error);
       this.onStatusCallback?.('error');
     } finally {
       this.recording = null;
@@ -183,7 +184,7 @@ export class OpenAIVoiceAgent {
       // Get AI response
       await this.getAIResponse(transcription.text);
     } catch (error) {
-      console.error('Error processing audio:', error);
+      logger.error('Error processing audio:', error);
       this.onStatusCallback?.('error');
     }
   }
@@ -239,7 +240,7 @@ export class OpenAIVoiceAgent {
       await this.speakResponse(aiResponse);
       await this.saveConversationHistory();
     } catch (error) {
-      console.error('Error getting AI response:', error);
+      logger.error('Error getting AI response:', error);
       this.onStatusCallback?.('error');
     }
   }
@@ -280,7 +281,7 @@ export class OpenAIVoiceAgent {
         }
       });
     } catch (error) {
-      console.error('Error generating speech:', error);
+      logger.error('Error generating speech:', error);
       this.onStatusCallback?.('idle');
     }
   }
@@ -331,7 +332,7 @@ export class OpenAIVoiceAgent {
       this.sound = null;
       this.onStatusCallback?.('idle');
     } catch (error) {
-      console.error('Error disconnecting:', error);
+      logger.error('Error disconnecting:', error);
     }
   }
 }

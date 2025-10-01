@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 import { Room, RoomEvent, RemoteParticipant, DataPacket_Kind } from 'livekit-client';
 import { ENV_CONFIG } from '@/config/env';
 import { apiService } from './api';
@@ -45,7 +46,7 @@ export class LiveKitIoTService {
       await this.room.connect(serverUrl, token);
       this.onConnectionStatusCallback?.('connected');
     } catch (error) {
-      console.error('Failed to connect to LiveKit:', error);
+      logger.error('Failed to connect to LiveKit:', error);
       this.onConnectionStatusCallback?.('error');
       throw error;
     }
@@ -63,7 +64,7 @@ export class LiveKitIoTService {
         return response.data.token;
       }
     } catch (error) {
-      console.warn('Failed to get token from backend, using demo token:', error);
+      logger.warn('Failed to get token from backend, using demo token:', error);
     }
 
     // Fallback to demo token for development
@@ -79,7 +80,7 @@ export class LiveKitIoTService {
       }
       this.onConnectionStatusCallback?.('disconnected');
     } catch (error) {
-      console.error('Failed to disconnect from LiveKit:', error);
+      logger.error('Failed to disconnect from LiveKit:', error);
       throw error;
     }
   }
@@ -98,7 +99,7 @@ export class LiveKitIoTService {
         reliable: true,
       });
     } catch (error) {
-      console.error('Failed to send IoT data:', error);
+      logger.error('Failed to send IoT data:', error);
       throw error;
     }
   }
@@ -117,7 +118,7 @@ export class LiveKitIoTService {
     try {
       await this.room.localParticipant.setMicrophoneEnabled(true);
     } catch (error) {
-      console.error('Failed to enable microphone:', error);
+      logger.error('Failed to enable microphone:', error);
       throw error;
     }
   }
@@ -128,7 +129,7 @@ export class LiveKitIoTService {
     try {
       await this.room.localParticipant.setMicrophoneEnabled(false);
     } catch (error) {
-      console.error('Failed to disable microphone:', error);
+      logger.error('Failed to disable microphone:', error);
       throw error;
     }
   }
@@ -143,7 +144,7 @@ export class LiveKitIoTService {
         reliable: true,
       });
     } catch (error) {
-      console.error('Failed to send data:', error);
+      logger.error('Failed to send data:', error);
       throw error;
     }
   }
@@ -194,21 +195,21 @@ export class LiveKitIoTService {
     if (!this.room) return;
 
     this.room.on(RoomEvent.Connected, () => {
-      console.log('Connected to LiveKit room');
+      logger.debug('Connected to LiveKit room');
       this.onConnectionStatusCallback?.('connected');
     });
 
     this.room.on(RoomEvent.Disconnected, () => {
-      console.log('Disconnected from LiveKit room');
+      logger.debug('Disconnected from LiveKit room');
       this.onConnectionStatusCallback?.('disconnected');
     });
 
     this.room.on(RoomEvent.ParticipantConnected, (participant: RemoteParticipant) => {
-      console.log('IoT Device connected:', participant.identity);
+      logger.debug('IoT Device connected:', participant.identity);
     });
 
     this.room.on(RoomEvent.ParticipantDisconnected, (participant: RemoteParticipant) => {
-      console.log('IoT Device disconnected:', participant.identity);
+      logger.debug('IoT Device disconnected:', participant.identity);
     });
 
     this.room.on(RoomEvent.DataReceived, (payload: Uint8Array, participant?: RemoteParticipant) => {
@@ -217,15 +218,15 @@ export class LiveKitIoTService {
         const message = decoder.decode(payload);
         const data: IoTDeviceData = JSON.parse(message);
         
-        console.log('Received IoT data from:', participant?.identity || 'unknown', data);
+        logger.debug('Received IoT data from:', participant?.identity || 'unknown', data);
         this.onDeviceDataCallback?.(data);
       } catch (error) {
-        console.error('Failed to parse received data:', error);
+        logger.error('Failed to parse received data:', error);
       }
     });
 
     this.room.on(RoomEvent.RoomMetadataChanged, (metadata: string) => {
-      console.log('Room metadata changed:', metadata);
+      logger.debug('Room metadata changed:', metadata);
     });
   }
 }

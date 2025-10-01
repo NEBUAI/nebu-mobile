@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 // Tipos para el servicio WiFi
 export interface WiFiNetwork {
   ssid: string;
@@ -27,7 +28,7 @@ class WiFiService {
    */
   async scanNetworks(): Promise<WiFiNetwork[]> {
     if (this.isScanning) {
-      console.warn('WiFi scan already in progress');
+      logger.warn('WiFi scan already in progress');
       return [];
     }
 
@@ -77,7 +78,7 @@ class WiFiService {
       return mockNetworks.sort((a, b) => b.rssi - a.rssi);
     } catch (error) {
       this.isScanning = false;
-      console.error('Error scanning WiFi networks:', error);
+      logger.error('Error scanning WiFi networks:', error);
       throw error;
     }
   }
@@ -87,7 +88,7 @@ class WiFiService {
    */
   async connectToNetwork(credentials: WiFiCredentials): Promise<WiFiConnectionResult> {
     try {
-      console.log(`Attempting to connect to WiFi: ${credentials.ssid}`);
+      logger.debug(`Attempting to connect to WiFi: ${credentials.ssid}`);
 
       // Simular proceso de conexión
       await new Promise(resolve => setTimeout(resolve, 3000));
@@ -118,7 +119,7 @@ class WiFiService {
         };
       }
     } catch (error) {
-      console.error('Error connecting to WiFi:', error);
+      logger.error('Error connecting to WiFi:', error);
       return {
         success: false,
         message: 'An error occurred while connecting to WiFi',
@@ -137,7 +138,7 @@ class WiFiService {
       // Simular 90% de éxito en la conexión
       return Math.random() > 0.1;
     } catch (error) {
-      console.error('Error checking internet connection:', error);
+      logger.error('Error checking internet connection:', error);
       return false;
     }
   }
@@ -154,15 +155,15 @@ class WiFiService {
    */
   async disconnect(): Promise<void> {
     try {
-      console.log('Disconnecting from current WiFi network');
+      logger.debug('Disconnecting from current WiFi network');
       
       // Simular desconexión
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       this.currentNetwork = null;
-      console.log('Disconnected from WiFi network');
+      logger.debug('Disconnected from WiFi network');
     } catch (error) {
-      console.error('Error disconnecting from WiFi:', error);
+      logger.error('Error disconnecting from WiFi:', error);
       throw error;
     }
   }

@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 import { apiService } from './api';
 
 // Tipos para el servicio del robot
@@ -65,7 +66,7 @@ class RobotService {
    */
   async validateRobot(request: RobotValidationRequest): Promise<RobotValidationResponse> {
     try {
-      console.log('Validating robot in backend:', request);
+      logger.debug('Validating robot in backend:', request);
 
       // Llamada real al backend
       const response = await apiService.post(`${this.baseEndpoint}/validate`, request);
@@ -77,7 +78,7 @@ class RobotService {
         requiresUpdate: response.data.requiresUpdate || false,
       };
     } catch (error) {
-      console.error('Error validating robot:', error);
+      logger.error('Error validating robot:', error);
       
       return {
         isValid: false,
@@ -91,7 +92,7 @@ class RobotService {
    */
   async configureWiFi(request: WiFiConfigurationRequest): Promise<WiFiConfigurationResponse> {
     try {
-      console.log('Configuring WiFi for robot:', request.deviceId);
+      logger.debug('Configuring WiFi for robot:', request.deviceId);
 
       // Simular llamada al backend
       await new Promise(resolve => setTimeout(resolve, 3000));
@@ -114,7 +115,7 @@ class RobotService {
 
       return mockResponse;
     } catch (error) {
-      console.error('Error configuring WiFi:', error);
+      logger.error('Error configuring WiFi:', error);
       
       return {
         success: false,
@@ -128,7 +129,7 @@ class RobotService {
    */
   async getRobotStatus(deviceId: string): Promise<RobotStatus> {
     try {
-      console.log('Getting robot status:', deviceId);
+      logger.debug('Getting robot status:', deviceId);
 
       // Simular llamada al backend
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -150,7 +151,7 @@ class RobotService {
 
       return mockStatus;
     } catch (error) {
-      console.error('Error getting robot status:', error);
+      logger.error('Error getting robot status:', error);
       
       return {
         deviceId,
@@ -165,7 +166,7 @@ class RobotService {
    */
   async registerRobot(robotData: Partial<RobotDevice>): Promise<RobotDevice> {
     try {
-      console.log('Registering new robot:', robotData);
+      logger.debug('Registering new robot:', robotData);
 
       // Llamada real al backend
       const response = await apiService.post(`${this.baseEndpoint}`, robotData);
@@ -183,7 +184,7 @@ class RobotService {
         updatedAt: response.data.updatedAt,
       };
     } catch (error) {
-      console.error('Error registering robot:', error);
+      logger.error('Error registering robot:', error);
       throw error;
     }
   }
@@ -193,7 +194,7 @@ class RobotService {
    */
   async updateRobot(deviceId: string, updateData: Partial<RobotDevice>): Promise<RobotDevice> {
     try {
-      console.log('Updating robot:', deviceId, updateData);
+      logger.debug('Updating robot:', deviceId, updateData);
 
       // Simular llamada al backend
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -218,7 +219,7 @@ class RobotService {
 
       return mockUpdatedRobot;
     } catch (error) {
-      console.error('Error updating robot:', error);
+      logger.error('Error updating robot:', error);
       throw error;
     }
   }
@@ -228,7 +229,7 @@ class RobotService {
    */
   async sendCommand(deviceId: string, command: string, parameters?: any): Promise<boolean> {
     try {
-      console.log('Sending command to robot:', deviceId, command, parameters);
+      logger.debug('Sending command to robot:', deviceId, command, parameters);
 
       // Simular llamada al backend
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -246,7 +247,7 @@ class RobotService {
 
       return success;
     } catch (error) {
-      console.error('Error sending command to robot:', error);
+      logger.error('Error sending command to robot:', error);
       return false;
     }
   }
@@ -256,7 +257,7 @@ class RobotService {
    */
   async getUserRobots(): Promise<RobotDevice[]> {
     try {
-      console.log('Getting user robots');
+      logger.debug('Getting user robots');
 
       // Llamada real al backend
       const response = await apiService.get(`${this.baseEndpoint}/user`);
@@ -274,7 +275,7 @@ class RobotService {
         updatedAt: device.updatedAt,
       }));
     } catch (error) {
-      console.error('Error getting user robots:', error);
+      logger.error('Error getting user robots:', error);
       return [];
     }
   }
@@ -284,7 +285,7 @@ class RobotService {
    */
   async deleteRobot(deviceId: string): Promise<boolean> {
     try {
-      console.log('Deleting robot:', deviceId);
+      logger.debug('Deleting robot:', deviceId);
 
       // Simular llamada al backend
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -295,7 +296,7 @@ class RobotService {
 
       return true;
     } catch (error) {
-      console.error('Error deleting robot:', error);
+      logger.error('Error deleting robot:', error);
       return false;
     }
   }

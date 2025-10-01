@@ -1,11 +1,29 @@
 import { Platform, PermissionsAndroid } from 'react-native';
+import { logger } from '@/utils/logger';
 
 // Tipos mock para evitar dependencias problemáticas
+interface ScanOptions {
+  allowDuplicates?: boolean;
+}
+
+interface ConnectionOptions {
+  timeout?: number;
+  autoConnect?: boolean;
+}
+
+interface Subscription {
+  remove(): void;
+}
+
+interface Characteristic {
+  value: string;
+}
+
 interface BleManager {
   state(): Promise<string>;
-  startDeviceScan(serviceUUIDs: any, options: any, callback: (error: any, device: any) => void): any;
+  startDeviceScan(serviceUUIDs: string[] | null, options: ScanOptions, callback: (error: Error | null, device: Device | null) => void): Subscription;
   stopDeviceScan(): void;
-  connectToDevice(deviceId: string, options: any): Promise<any>;
+  connectToDevice(deviceId: string, options: ConnectionOptions): Promise<Device>;
   cancelDeviceConnection(deviceId: string): Promise<void>;
   onStateChange(callback: (state: string) => void, emitCurrentValue: boolean): void;
   destroy(): void;
@@ -17,11 +35,11 @@ interface Device {
   rssi: number | null;
   isConnectable: boolean | null;
   localName: string | null;
-  discoverAllServicesAndCharacteristics(): Promise<any>;
-  onDisconnected(callback: (error: any, device: any) => void): void;
-  monitorCharacteristicForService(serviceUUID: string, characteristicUUID: string, callback: (error: any, characteristic: any) => void): void;
-  readCharacteristicForService(serviceUUID: string, characteristicUUID: string): Promise<any>;
-  writeCharacteristicWithResponseForService(serviceUUID: string, characteristicUUID: string, value: string): Promise<any>;
+  discoverAllServicesAndCharacteristics(): Promise<Device>;
+  onDisconnected(callback: (error: Error | null, device: Device | null) => void): void;
+  monitorCharacteristicForService(serviceUUID: string, characteristicUUID: string, callback: (error: Error | null, characteristic: Characteristic | null) => void): void;
+  readCharacteristicForService(serviceUUID: string, characteristicUUID: string): Promise<Characteristic>;
+  writeCharacteristicWithResponseForService(serviceUUID: string, characteristicUUID: string, value: string): Promise<Characteristic>;
 }
 
 type State = 'PoweredOn' | 'PoweredOff' | 'Unknown';
@@ -43,29 +61,40 @@ const request = async (permission: string) => RESULTS.GRANTED;
 const check = async (permission: string) => RESULTS.GRANTED;
 
 // Mock de react-native-ble-plx
-const BleManagerMock = class {
+const BleManagerMock = class implements BleManager {
   async state(): Promise<string> { return 'PoweredOn'; }
-  startDeviceScan(serviceUUIDs: any, options: any, callback: (error: any, device: any) => void) {
+  startDeviceScan(serviceUUIDs: string[] | null, options: ScanOptions, callback: (error: Error | null, device: Device | null) => void): Subscription {
     return { remove: () => {} };
   }
   stopDeviceScan(): void {}
-  async connectToDevice(deviceId: string, options: any): Promise<any> {
-    return { 
-      discoverAllServicesAndCharacteristics: async () => ({}),
-      onDisconnected: (callback: any) => {},
-      monitorCharacteristicForService: (serviceUUID: string, characteristicUUID: string, callback: any) => {},
-      readCharacteristicForService: async (serviceUUID: string, characteristicUUID: string) => ({ value: 'mock' }),
-      writeCharacteristicWithResponseForService: async (serviceUUID: string, characteristicUUID: string, value: string) => {}
+  async connectToDevice(deviceId: string, options: ConnectionOptions): Promise<Device> {
+    return {
+      id: deviceId,
+      name: 'Mock Device',
+      rssi: -50,
+      isConnectable: true,
+      localName: 'Mock',
+      discoverAllServicesAndCharacteristics: async () => this.connectToDevice(deviceId, options),
+      onDisconnected: () => {},
+      monitorCharacteristicForService: () => {},
+      readCharacteristicForService: async () => ({ value: 'mock' }),
+      writeCharacteristicWithResponseForService: async () => ({ value: 'mock' })
     };
   }
-  async cancelDeviceConnection(deviceId: string): Promise<void> {}
-  onStateChange(callback: (state: string) => void, emitCurrentValue: boolean): void {}
+  async cancelDeviceConnection(): Promise<void> {}
+  onStateChange(): void {}
   destroy(): void {}
 };
 
-const BleManager = BleManagerMock as any;
+const BleManager = BleManagerMock;
 
 // Tipos para el servicio Bluetooth
+export interface DeviceInfo {
+  serialNumber?: string;
+  firmwareVersion?: string;
+  manufacturer?: string;
+}
+
 export interface BluetoothDevice {
   id: string;
   name: string;
@@ -73,7 +102,7 @@ export interface BluetoothDevice {
   isConnectable: boolean;
   address?: string;
   services?: string[];
-  deviceInfo?: any;
+  deviceInfo?: DeviceInfo;
   isConnected?: boolean;
   batteryLevel?: number;
 }
@@ -149,9 +178,9 @@ class BluetoothService {
   private setupBLEListeners(): void {
     // Listener para cambios de estado del Bluetooth
     this.bleManager.onStateChange((state: State) => {
-      console.log('BLE State changed:', state);
+      logger.info('BLE State changed:', state);
       if (state === 'PoweredOff') {
-        console.warn('Bluetooth is powered off');
+        logger.warn('Bluetooth is powered off');
         this.handleDisconnection();
       }
     }, true);
@@ -185,7 +214,7 @@ class BluetoothService {
         return true;
       }
     } catch (error) {
-      console.error('Error requesting Bluetooth permissions:', error);
+      logger.error('Error requesting Bluetooth permissions:', error);
       return false;
     }
   }
@@ -198,7 +227,7 @@ class BluetoothService {
       const state = await this.bleManager.state();
       return state === 'PoweredOn';
     } catch (error) {
-      console.error('Error checking Bluetooth availability:', error);
+      logger.error('Error checking Bluetooth availability:', error);
       return false;
     }
   }
@@ -241,7 +270,7 @@ class BluetoothService {
     onScanComplete?: (devices: BluetoothDevice[]) => void
   ): Promise<BluetoothDevice[]> {
     if (this.isScanning) {
-      console.warn('Bluetooth scan already in progress');
+      logger.warn('Bluetooth scan already in progress');
       return [];
     }
 
@@ -255,7 +284,7 @@ class BluetoothService {
       this.isScanning = true;
       const discoveredDevices: Map<string, BluetoothDevice> = new Map();
 
-      console.log('Starting BLE scan for Nebu devices...');
+      logger.debug('Starting BLE scan for Nebu devices...');
 
       // Iniciar escaneo BLE
       const subscription = this.bleManager.startDeviceScan(
@@ -263,7 +292,7 @@ class BluetoothService {
         { allowDuplicates: false },
         (error, device) => {
           if (error) {
-            console.error('BLE scan error:', error);
+            logger.error('BLE scan error:', error);
             return;
           }
 
@@ -273,7 +302,7 @@ class BluetoothService {
             // Evitar duplicados
             if (!discoveredDevices.has(device.id)) {
               discoveredDevices.set(device.id, bluetoothDevice);
-              console.log('Found Nebu device:', bluetoothDevice.name, 'RSSI:', bluetoothDevice.rssi);
+              logger.debug('Found Nebu device:', bluetoothDevice.name, 'RSSI:', bluetoothDevice.rssi);
               onDeviceFound?.(bluetoothDevice);
             }
           }
@@ -289,13 +318,13 @@ class BluetoothService {
       this.isScanning = false;
       
       const devices = Array.from(discoveredDevices.values());
-      console.log(`BLE scan completed. Found ${devices.length} Nebu devices`);
+      logger.debug(`BLE scan completed. Found ${devices.length} Nebu devices`);
       
       onScanComplete?.(devices);
       return devices;
     } catch (error) {
       this.isScanning = false;
-      console.error('Error during Bluetooth scan:', error);
+      logger.error('Error during Bluetooth scan:', error);
       throw error;
     }
   }
@@ -311,9 +340,9 @@ class BluetoothService {
     try {
       this.bleManager.stopDeviceScan();
       this.isScanning = false;
-      console.log('Bluetooth scan stopped');
+      logger.debug('Bluetooth scan stopped');
     } catch (error) {
-      console.error('Error stopping Bluetooth scan:', error);
+      logger.error('Error stopping Bluetooth scan:', error);
       throw error;
     }
   }
@@ -323,12 +352,12 @@ class BluetoothService {
    */
   async connectToDevice(device: BluetoothDevice): Promise<boolean> {
     if (this.isConnected) {
-      console.warn('Already connected to a device');
+      logger.warn('Already connected to a device');
       return false;
     }
 
     try {
-      console.log(`Connecting to device: ${device.name} (${device.id})`);
+      logger.debug(`Connecting to device: ${device.name} (${device.id})`);
 
       // Conectar al dispositivo BLE
       const connectedDevice = await this.bleManager.connectToDevice(device.id, {
@@ -347,14 +376,14 @@ class BluetoothService {
       this.connectedDevice.isConnected = true;
       this.reconnectAttempts = 0;
 
-      console.log(`Successfully connected to device: ${device.name}`);
+      logger.debug(`Successfully connected to device: ${device.name}`);
       
       // Obtener información del dispositivo
       await this.readDeviceInfo(deviceWithServices);
       
       return true;
     } catch (error) {
-      console.error('Error connecting to device:', error);
+      logger.error('Error connecting to device:', error);
       this.handleConnectionError(error);
       throw error;
     }
@@ -366,7 +395,7 @@ class BluetoothService {
   private setupDeviceListeners(device: Device): void {
     // Listener para cambios de estado de conexión
     device.onDisconnected((error, device) => {
-      console.log('Device disconnected:', device?.name);
+      logger.debug('Device disconnected:', device?.name);
       this.handleDisconnection();
     });
 
@@ -382,7 +411,7 @@ class BluetoothService {
           if (this.connectedDevice) {
             this.connectedDevice.batteryLevel = batteryLevel;
           }
-          console.log('Battery level:', batteryLevel + '%');
+          logger.debug('Battery level:', batteryLevel + '%');
         }
       }
     );
@@ -405,12 +434,12 @@ class BluetoothService {
         this.nebuCharacteristics.firmwareVersion
       );
 
-      console.log('Device Info:', {
+      logger.debug('Device Info:', {
         serialNumber: serialNumber.value,
         firmwareVersion: firmwareVersion.value,
       });
     } catch (error) {
-      console.error('Error reading device info:', error);
+      logger.error('Error reading device info:', error);
     }
   }
 
@@ -418,12 +447,12 @@ class BluetoothService {
    * Manejar errores de conexión
    */
   private handleConnectionError(error: any): void {
-    console.error('Connection error:', error);
+    logger.error('Connection error:', error);
     
     if (this.config.enableAutoReconnect && 
         this.reconnectAttempts < this.config.maxReconnectAttempts) {
       this.reconnectAttempts++;
-      console.log(`Attempting to reconnect (${this.reconnectAttempts}/${this.config.maxReconnectAttempts})`);
+      logger.debug(`Attempting to reconnect (${this.reconnectAttempts}/${this.config.maxReconnectAttempts})`);
       
       setTimeout(() => {
         if (this.connectedDevice) {
@@ -453,15 +482,15 @@ class BluetoothService {
     }
 
     try {
-      console.log('Disconnecting from device:', this.connectedDevice.name);
+      logger.debug('Disconnecting from device:', this.connectedDevice.name);
       
       // Cancelar conexión BLE
       await this.bleManager.cancelDeviceConnection(this.connectedDevice.id);
       
       this.handleDisconnection();
-      console.log('Disconnected from device');
+      logger.debug('Disconnected from device');
     } catch (error) {
-      console.error('Error disconnecting from device:', error);
+      logger.error('Error disconnecting from device:', error);
       throw error;
     }
   }
@@ -475,7 +504,7 @@ class BluetoothService {
     }
 
     try {
-      console.log(`Sending data to ${this.connectedDevice.name}:`, data);
+      logger.debug(`Sending data to ${this.connectedDevice.name}:`, data);
       
       // En una implementación real, aquí enviarías los datos via BLE
       // Por ahora simulamos el envío exitoso
@@ -483,7 +512,7 @@ class BluetoothService {
       
       return true;
     } catch (error) {
-      console.error('Error sending data:', error);
+      logger.error('Error sending data:', error);
       throw error;
     }
   }
@@ -497,7 +526,7 @@ class BluetoothService {
     }
 
     try {
-      console.log('Configuring WiFi on robot:', ssid);
+      logger.debug('Configuring WiFi on robot:', ssid);
 
       // Crear comando de configuración WiFi
       const wifiConfig = JSON.stringify({
@@ -510,10 +539,10 @@ class BluetoothService {
       // Por ahora simulamos el envío exitoso
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      console.log('WiFi configuration sent successfully');
+      logger.debug('WiFi configuration sent successfully');
       return true;
     } catch (error) {
-      console.error('Error configuring WiFi:', error);
+      logger.error('Error configuring WiFi:', error);
       throw error;
     }
   }
@@ -537,10 +566,10 @@ class BluetoothService {
         timestamp: Date.now(),
       };
 
-      console.log('Robot status:', mockStatus);
+      logger.debug('Robot status:', mockStatus);
       return mockStatus;
     } catch (error) {
-      console.error('Error getting robot status:', error);
+      logger.error('Error getting robot status:', error);
       throw error;
     }
   }
@@ -578,9 +607,9 @@ class BluetoothService {
       // Destruir el manager BLE
       this.bleManager.destroy();
       
-      console.log('BluetoothService cleanup completed');
+      logger.debug('BluetoothService cleanup completed');
     } catch (error) {
-      console.error('Error during cleanup:', error);
+      logger.error('Error during cleanup:', error);
     }
   }
 
@@ -602,12 +631,12 @@ class BluetoothService {
     try {
       // En una implementación real, aquí verificarías los servicios BLE del dispositivo
       // Por ahora simulamos que todos los dispositivos Nebu tienen las capacidades requeridas
-      console.log('Verifying Nebu capabilities for device:', deviceId);
+      logger.debug('Verifying Nebu capabilities for device:', deviceId);
       
       // Simular verificación exitosa
       return true;
     } catch (error) {
-      console.error('Error verifying Nebu capabilities:', error);
+      logger.error('Error verifying Nebu capabilities:', error);
       return false;
     }
   }
