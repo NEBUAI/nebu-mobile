@@ -36,7 +36,9 @@ const WelcomeScreen: React.FC = () => {
 
   const handleBack = () => {
     // Navigate back or handle back action
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
   const handleHelp = () => {
