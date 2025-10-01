@@ -1,9 +1,9 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
-// import { AppleAuthentication } from 'expo-apple-authentication';
-import { Platform, Alert } from 'react-native';
+import { Platform } from 'react-native';
 import { ENV_CONFIG } from '@/config/env';
 import authService from './authService';
+import type { SocialAuthResult, SocialAuthStatus } from '@/types';
 
 class SocialAuthService {
   private isConfigured = false;
@@ -29,7 +29,7 @@ class SocialAuthService {
     this.isConfigured = true;
   }
 
-  async googleLogin(): Promise<any> {
+  async googleLogin(): Promise<SocialAuthResult> {
     try {
       // Verificar que Google Play Services esté disponible
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
@@ -52,18 +52,18 @@ class SocialAuthService {
           refreshToken: response.refreshToken,
         },
       };
-    } catch (error: any) {
-      console.error('Google Sign-In Error:', error);
-      
-      if (error.code === 'SIGN_IN_CANCELLED') {
+    } catch (error) {
+      const err = error as { code?: string; message?: string };
+
+      if (err.code === 'SIGN_IN_CANCELLED') {
         return { success: false, error: 'Login cancelado por el usuario' };
       }
-      
-      return { success: false, error: 'Error en Google Sign-In: ' + error.message };
+
+      return { success: false, error: `Error en Google Sign-In: ${err.message || 'Unknown error'}` };
     }
   }
 
-  async facebookLogin(): Promise<any> {
+  async facebookLogin(): Promise<SocialAuthResult> {
     try {
       // Iniciar sesión con Facebook
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
@@ -90,13 +90,13 @@ class SocialAuthService {
           refreshToken: response.refreshToken,
         },
       };
-    } catch (error: any) {
-      console.error('Facebook Login Error:', error);
-      return { success: false, error: 'Error en Facebook Login: ' + error.message };
+    } catch (error) {
+      const err = error as { message?: string };
+      return { success: false, error: `Error en Facebook Login: ${err.message || 'Unknown error'}` };
     }
   }
 
-  async appleLogin(): Promise<any> {
+  async appleLogin(): Promise<SocialAuthResult> {
     try {
       // Verificar si estamos en iOS
       if (Platform.OS !== 'ios') {
@@ -117,14 +117,14 @@ class SocialAuthService {
         },
         appleCredential: null, // Mock credential
       };
-    } catch (error: any) {
-      console.error('Apple Sign-In Error:', error);
-      
-      if (error.code === 'ERR_CANCELED') {
+    } catch (error) {
+      const err = error as { code?: string; message?: string };
+
+      if (err.code === 'ERR_CANCELED') {
         return { success: false, error: 'Login cancelado por el usuario' };
       }
-      
-      return { success: false, error: 'Error en Apple Sign-In: ' + error.message };
+
+      return { success: false, error: `Error en Apple Sign-In: ${err.message || 'Unknown error'}` };
     }
   }
 
@@ -138,12 +138,11 @@ class SocialAuthService {
 
       // Apple Sign-In no requiere logout explícito
     } catch (error) {
-      console.error('Error al cerrar sesión social:', error);
+      // Silently fail logout
     }
   }
 
-  // Método para verificar si el usuario está autenticado con algún proveedor social
-  async isSignedIn(): Promise<{ google: boolean; facebook: boolean }> {
+  async isSignedIn(): Promise<SocialAuthStatus> {
     try {
       const [googleUser, facebookToken] = await Promise.all([
         GoogleSignin.getCurrentUser(),
@@ -154,14 +153,12 @@ class SocialAuthService {
         google: !!googleUser,
         facebook: !!facebookToken,
       };
-    } catch (error) {
-      console.error('Error verificando estado de autenticación social:', error);
+    } catch {
       return { google: false, facebook: false };
     }
   }
 
-  // Método para obtener información del usuario autenticado
-  async getCurrentUser(): Promise<any> {
+  async getCurrentUser(): Promise<{ google: unknown; facebook: unknown } | null> {
     try {
       const [googleUser, facebookToken] = await Promise.all([
         GoogleSignin.getCurrentUser(),
@@ -172,8 +169,7 @@ class SocialAuthService {
         google: googleUser,
         facebook: facebookToken,
       };
-    } catch (error) {
-      console.error('Error obteniendo usuario actual:', error);
+    } catch {
       return null;
     }
   }

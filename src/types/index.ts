@@ -1,8 +1,34 @@
+// User and Auth Types
 export interface User {
   id: string;
   email: string;
   name: string;
   avatar?: string;
+}
+
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  user?: User;
+  tokens?: AuthTokens;
+  error?: string;
+}
+
+export interface SocialAuthResult {
+  success: boolean;
+  user?: User;
+  tokens?: AuthTokens;
+  error?: string;
+  appleCredential?: unknown;
+}
+
+export interface SocialAuthStatus {
+  google: boolean;
+  facebook: boolean;
 }
 
 export interface AuthState {
@@ -11,6 +37,7 @@ export interface AuthState {
   isLoading: boolean;
 }
 
+// Theme and Language Types
 export interface ThemeState {
   isDarkMode: boolean;
 }
@@ -19,12 +46,26 @@ export interface LanguageState {
   currentLanguage: 'es' | 'en';
 }
 
+// IoT Types
+export interface IoTDevice {
+  id: string;
+  name: string;
+  type: string;
+  status: 'online' | 'offline';
+  lastSeen?: string;
+  [key: string]: unknown;
+}
+
+export interface IoTMetrics {
+  [key: string]: unknown;
+}
+
 export interface IoTState {
-  devices: any[];
-  metrics: any;
+  devices: IoTDevice[];
+  metrics: IoTMetrics;
   isLoading: boolean;
   error: string | null;
-  selectedDevice: any;
+  selectedDevice: IoTDevice | null;
 }
 
 export interface RootState {
