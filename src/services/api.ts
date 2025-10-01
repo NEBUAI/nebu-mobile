@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logger } from '@/utils/logger';
 
 // Configuration
 const API_BASE_URL = __DEV__ 
@@ -142,7 +143,7 @@ class ApiService {
         this.accessToken = token;
       }
     } catch (error) {
-      console.error('Error loading token from storage:', error);
+      logger.error('Error loading token from storage:', error);
     }
   }
 
@@ -151,7 +152,7 @@ class ApiService {
       await AsyncStorage.setItem('accessToken', token);
       this.accessToken = token;
     } catch (error) {
-      console.error('Error saving token to storage:', error);
+      logger.error('Error saving token to storage:', error);
     }
   }
 
@@ -161,7 +162,7 @@ class ApiService {
       await AsyncStorage.removeItem('refreshToken');
       this.accessToken = null;
     } catch (error) {
-      console.error('Error removing token from storage:', error);
+      logger.error('Error removing token from storage:', error);
     }
   }
 
@@ -205,7 +206,7 @@ class ApiService {
         data,
       };
     } catch (error) {
-      console.error('API request error:', error);
+      logger.error('API request error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Network error',

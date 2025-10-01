@@ -1,5 +1,6 @@
 // Versión mock del BluetoothService para testing de compilación
 import { Platform } from 'react-native';
+import { logger } from '@/utils/logger';
 
 // Tipos para el servicio Bluetooth
 export interface BluetoothDevice {
@@ -77,11 +78,11 @@ class BluetoothServiceMock {
    */
   async requestPermissions(): Promise<boolean> {
     try {
-      console.log('Mock: Requesting Bluetooth permissions');
+      logger.debug('Mock: Requesting Bluetooth permissions');
       // Simular solicitud de permisos exitosa
       return true;
     } catch (error) {
-      console.error('Error requesting Bluetooth permissions:', error);
+      logger.error('Error requesting Bluetooth permissions:', error);
       return false;
     }
   }
@@ -91,11 +92,11 @@ class BluetoothServiceMock {
    */
   async isBluetoothAvailable(): Promise<boolean> {
     try {
-      console.log('Mock: Checking Bluetooth availability');
+      logger.debug('Mock: Checking Bluetooth availability');
       // Simular que Bluetooth está disponible
       return true;
     } catch (error) {
-      console.error('Error checking Bluetooth availability:', error);
+      logger.error('Error checking Bluetooth availability:', error);
       return false;
     }
   }
@@ -108,13 +109,13 @@ class BluetoothServiceMock {
     onScanComplete?: (devices: BluetoothDevice[]) => void
   ): Promise<BluetoothDevice[]> {
     if (this.isScanning) {
-      console.warn('Bluetooth scan already in progress');
+      logger.warn('Bluetooth scan already in progress');
       return [];
     }
 
     try {
       this.isScanning = true;
-      console.log('Mock: Starting BLE scan for Nebu devices...');
+      logger.debug('Mock: Starting BLE scan for Nebu devices...');
 
       // Simular dispositivos encontrados
       const mockDevices: BluetoothDevice[] = [
@@ -151,12 +152,12 @@ class BluetoothServiceMock {
 
       this.isScanning = false;
       onScanComplete?.(mockDevices);
-      
-      console.log(`Mock: BLE scan completed. Found ${mockDevices.length} Nebu devices`);
+
+      logger.debug(`Mock: BLE scan completed. Found ${mockDevices.length} Nebu devices`);
       return mockDevices;
     } catch (error) {
       this.isScanning = false;
-      console.error('Error during Bluetooth scan:', error);
+      logger.error('Error during Bluetooth scan:', error);
       throw error;
     }
   }
@@ -171,9 +172,9 @@ class BluetoothServiceMock {
 
     try {
       this.isScanning = false;
-      console.log('Mock: Bluetooth scan stopped');
+      logger.debug('Mock: Bluetooth scan stopped');
     } catch (error) {
-      console.error('Error stopping Bluetooth scan:', error);
+      logger.error('Error stopping Bluetooth scan:', error);
       throw error;
     }
   }
@@ -183,25 +184,25 @@ class BluetoothServiceMock {
    */
   async connectToDevice(device: BluetoothDevice): Promise<boolean> {
     if (this.isConnected) {
-      console.warn('Already connected to a device');
+      logger.warn('Already connected to a device');
       return false;
     }
 
     try {
-      console.log(`Mock: Connecting to device: ${device.name} (${device.id})`);
+      logger.debug(`Mock: Connecting to device: ${device.name} (${device.id})`);
 
       // Simular conexión
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       this.isConnected = true;
       this.connectedDevice = device;
       this.connectedDevice.isConnected = true;
       this.reconnectAttempts = 0;
 
-      console.log(`Mock: Successfully connected to device: ${device.name}`);
+      logger.debug(`Mock: Successfully connected to device: ${device.name}`);
       return true;
     } catch (error) {
-      console.error('Error connecting to device:', error);
+      logger.error('Error connecting to device:', error);
       throw error;
     }
   }
@@ -215,15 +216,15 @@ class BluetoothServiceMock {
     }
 
     try {
-      console.log('Mock: Disconnecting from device:', this.connectedDevice.name);
-      
+      logger.debug('Mock: Disconnecting from device:', this.connectedDevice.name);
+
       this.isConnected = false;
       this.connectedDevice.isConnected = false;
       this.connectedDevice = null;
-      
-      console.log('Mock: Disconnected from device');
+
+      logger.debug('Mock: Disconnected from device');
     } catch (error) {
-      console.error('Error disconnecting from device:', error);
+      logger.error('Error disconnecting from device:', error);
       throw error;
     }
   }
@@ -237,7 +238,7 @@ class BluetoothServiceMock {
     }
 
     try {
-      console.log('Mock: Configuring WiFi on robot:', ssid);
+      logger.debug('Mock: Configuring WiFi on robot:', ssid);
 
       // Crear comando de configuración WiFi
       const wifiConfig = JSON.stringify({
@@ -249,10 +250,10 @@ class BluetoothServiceMock {
       // Simular envío de configuración
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      console.log('Mock: WiFi configuration sent successfully');
+      logger.debug('Mock: WiFi configuration sent successfully');
       return true;
     } catch (error) {
-      console.error('Error configuring WiFi:', error);
+      logger.error('Error configuring WiFi:', error);
       throw error;
     }
   }
@@ -275,10 +276,10 @@ class BluetoothServiceMock {
         timestamp: Date.now(),
       };
 
-      console.log('Mock: Robot status:', mockStatus);
+      logger.debug('Mock: Robot status:', mockStatus);
       return mockStatus;
     } catch (error) {
-      console.error('Error getting robot status:', error);
+      logger.error('Error getting robot status:', error);
       throw error;
     }
   }
@@ -312,9 +313,9 @@ class BluetoothServiceMock {
     try {
       await this.stopScan();
       await this.disconnect();
-      console.log('Mock: BluetoothService cleanup completed');
+      logger.debug('Mock: BluetoothService cleanup completed');
     } catch (error) {
-      console.error('Error during cleanup:', error);
+      logger.error('Error during cleanup:', error);
     }
   }
 
@@ -334,11 +335,11 @@ class BluetoothServiceMock {
    */
   async verifyNebuCapabilities(deviceId: string): Promise<boolean> {
     try {
-      console.log('Mock: Verifying Nebu capabilities for device:', deviceId);
+      logger.debug('Mock: Verifying Nebu capabilities for device:', deviceId);
       // Simular verificación exitosa para dispositivos Nebu
       return deviceId.startsWith('mock-nebu-') || deviceId.startsWith('NEBU-');
     } catch (error) {
-      console.error('Error verifying Nebu capabilities:', error);
+      logger.error('Error verifying Nebu capabilities:', error);
       return false;
     }
   }
