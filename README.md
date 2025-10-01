@@ -1,358 +1,329 @@
-#  Nebu Mobile - AI-Powered IoT & Voice Control Platform
+# Nebu Mobile App
 
-[![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](https://docker.com)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://postgresql.org)
-[![Redis](https://img.shields.io/badge/Redis-7+-red.svg)](https://redis.io)
-[![LiveKit](https://img.shields.io/badge/LiveKit-Real--time-purple.svg)](https://livekit.io)
-[![React Native](https://img.shields.io/badge/React%20Native-Mobile-blue.svg)](https://reactnative.dev)
+Una aplicación móvil moderna construida con React Native y Expo, diseñada con una interfaz limpia y funcionalidades esenciales.
 
-A cutting-edge platform combining **React Native mobile app**, **NestJS backend**, **LiveKit real-time communication**, and **IoT device control** for seamless voice-powered robot and device management.
+##  Características
 
-##  Quick Start
+- **React Native + Expo** - Framework moderno para desarrollo móvil multiplataforma
+- **TypeScript** - Tipado estático para mejor desarrollo y mantenimiento
+- **Redux Toolkit** - Gestión de estado global eficiente
+- **React Navigation** - Navegación nativa fluida
+- **Tema Dinámico** - Soporte para modo claro y oscuro
+- **Componentes Reutilizables** - UI consistente y modular
+- **Internacionalización (i18n)** - Soporte para múltiples idiomas (ES/EN)
+- **Arquitectura Escalable** - Estructura organizada de carpetas
 
-### Prerequisites
+##  Pantallas Principales
 
-- **Ubuntu/Debian** system with `apt` package manager
-- **Internet connection** for downloading dependencies
-- **sudo privileges** for package installation
+- **Splash Screen** - Pantalla de bienvenida con branding
+- **Login** - Autenticación de usuario con validación
+- **Home** - Dashboard principal con acciones rápidas
+- **Profile** - Perfil de usuario y configuraciones
 
-### One-Command Installation
+## 🛠️ Tecnologías Utilizadas
+
+- React Native 0.73.4
+- Expo SDK 50
+- TypeScript 5.3.3
+- Redux Toolkit 2.0.1
+- React Navigation 6.x
+- React i18next 13.5.0
+- Expo Vector Icons
+
+##  Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+- **Node.js** (versión 18 o superior)
+- **npm** o **yarn**
+- **Expo CLI** (opcional pero recomendado)
+- **Android Studio** (para desarrollo Android)
+- **Xcode** (para desarrollo iOS - solo macOS)
+
+### Instalación de Expo CLI
 
 ```bash
-# Clone the repository
-git clone <your-repository-url>
+npm install -g @expo/cli
+```
+
+##  Instalación y Configuración
+
+### 1. Clonar el repositorio
+
+```bash
+git clone <repository-url>
 cd nebu-mobile
-
-# Run the automated installer
-./prerrequisites.sh
-
-# Log out and log back in (or run: newgrp docker)
-# Then start the application
-make dev
 ```
 
-That's it! Your application will be running at:
--  **Backend API**: http://localhost:3001
-- 📚 **API Documentation**: http://localhost:3001/api/docs
-- 🎙️ **LiveKit Server**: http://localhost:7880
--  **Traefik Dashboard**: http://localhost:8080
-
-## 🏗️ Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│    Mobile App │    │    IoT Robot  │    │  🎙️ Voice Agent│
-│  (React Native) │    │   (Any Device)  │    │   (AI Powered)  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │ ┌─────────────────────┼───────────────────────┼─────┐
-         │ │              🎬 LiveKit Server              │     │
-         │ │         (Real-time Communication)           │     │
-         │ └─────────────────────┼───────────────────────┼─────┘
-         │                       │                       │
-         └─────────────────┐     │     ┌─────────────────┘
-                           │     │     │
-                    ┌─────────────────────────┐
-                    │    NestJS Backend    │
-                    │   (API & Coordination)  │
-                    │      Port: 3001         │
-                    └─────────────────────────┘
-                              │
-                    ┌─────────────────────────┐
-                    │     🗄️ PostgreSQL      │
-                    │   (Data & Sessions)     │
-                    │      Port: 5432         │
-                    └─────────────────────────┘
-                              │
-                    ┌─────────────────────────┐
-                    │       Redis Cache     │
-                    │   (Sessions & Queue)    │
-                    │      Port: 6379         │
-                    └─────────────────────────┘
-```
-
-##  Features & Capabilities
-
-###  Mobile App (React Native)
--  **Voice Control**: AI-powered voice commands for robot control
--  **Real-time Communication**: Direct audio/video with IoT devices
--  **Device Management**: Register, monitor, and control IoT devices
--  **Live Streaming**: View camera feeds from robots in real-time
--  **Sensor Monitoring**: Real-time telemetry and sensor data
--  **Cross-platform**: iOS and Android support via Expo
-
-### Backend API (NestJS)
--  **230+ Endpoints**: Comprehensive REST API with Swagger documentation
--  **IoT Device Registry**: Manage and coordinate multiple robots/devices
--  **Voice Session Management**: AI conversation tracking and analytics
--  **Real-time Coordination**: LiveKit integration for instant communication
--  **Analytics & Insights**: Device performance and usage analytics
--  **Authentication**: JWT-based secure access with refresh tokens
-
-### 🎙️ LiveKit Integration
--  **Real-time Audio/Video**: Ultra-low latency communication
--  **Data Channels**: Send commands and receive sensor data
--  **Multi-participant**: Support for multiple users and devices
--  **Automatic Reconnection**: Robust connection handling
--  **Room Management**: Dynamic room creation and participant management
-
-###  IoT & Robot Support
--  **Device Types**: Sensors, actuators, cameras, microphones, speakers
--  **Network Flexibility**: WiFi, Ethernet, 4G/5G connectivity options
--  **Auto-discovery**: Automatic backend and LiveKit server discovery
--  **Command Processing**: Voice-to-action command translation
--  **Telemetry**: Battery, temperature, humidity, position tracking
-
-##  Mobile App Deployment
-
-### Quick Deploy with Expo
-```bash
-cd mobile
-
-# Development build (recommended)
-npx eas build --profile development --platform android
-
-# Preview build for testing
-npx eas build --profile preview --platform android
-
-# Production build
-npx eas build --profile production --platform android
-```
-
-### Network Configuration
-The mobile app can connect to the backend in multiple ways:
-- **Local Network**: Same WiFi as backend (localhost:3001)
-- **Remote Server**: Backend deployed on cloud server
-- **Hotspot**: Using mobile hotspot for portable setup
-
-##  Robot Integration
-
-### Supported Connection Methods
-1. **Same WiFi Network**: Robot and backend on same local network
-2. **Ethernet + WiFi**: Robot wired, backend on WiFi
-3. **Internet Connection**: Robot with 4G/5G, backend on cloud
-4. **Mobile Hotspot**: Portable setup using phone's hotspot
-
-### Robot Setup Example (Python)
-```python
-import requests
-import livekit_client
-
-# 1. Register with backend
-device_response = requests.post(
-    "http://192.168.1.100:3001/api/v1/iot/devices",
-    json={
-        "name": "My Robot",
-        "deviceType": "controller",
-        "location": "Living Room"
-    }
-)
-
-# 2. Get LiveKit connection info
-token_response = requests.get(
-    f"http://192.168.1.100:3001/api/v1/iot/devices/{device_id}/livekit-token"
-)
-
-# 3. Connect to LiveKit for real-time communication
-room = livekit_client.Room()
-await room.connect(
-    token_response["livekitUrl"],
-    token_response["token"]
-)
-```
-
-## 🛠️ Available Commands
-
-### Development Commands
-```bash
-make dev              # Start development environment
-make start            # Start all services
-make stop             # Stop all services
-make restart          # Restart all services
-make status           # Show service status
-```
-
-### Database Commands
-```bash
-make db-init          # Initialize databases
-make db-migrate       # Run database migrations
-make db-seed          # Seed database with initial data
-make db-backup        # Create database backup
-```
-
-### Monitoring & Debugging
-```bash
-make logs             # Show logs for all services
-make health           # Run health checks
-make ps               # Show running containers
-```
-
-## 🐳 Docker Services
-
-| Service | Image | Port | Description |
-|---------|-------|------|-------------|
-| **backend** | Custom NestJS | 3001 | REST API, IoT coordination, and business logic |
-| **livekit** | livekit/livekit-server | 7880, 7881, 7882 | Real-time communication server |
-| **postgres** | postgres:15-alpine | 5432 | Primary database for users, sessions, devices |
-| **redis** | redis:7-alpine | 6379 | Cache, session store, and LiveKit state |
-| **traefik** | traefik:v3.0 | 80/443 | Reverse proxy and load balancer |
-
-## 🔍 Health Checks
-
-All services include health checks. Monitor status with:
+### 2. Instalar dependencias
 
 ```bash
-make health
+npm install
+# o
+yarn install
 ```
 
-Individual service health:
-- Backend: http://localhost:3001/api/v1/health
-- LiveKit: http://localhost:7880/
-- Traefik: http://localhost:8080/ping
+### 3. Ejecutar la aplicación
 
-API Documentation:
-- Swagger UI: http://localhost:3001/api/docs
-- OpenAPI Spec: http://localhost:3001/api/docs-json
+#### Modo de desarrollo
 
-## 📁 Project Structure
+```bash
+npm start
+# o
+expo start
+```
+
+#### Ejecutar en Android
+
+```bash
+npm run android
+# o
+expo start --android
+```
+
+#### Ejecutar en iOS
+
+```bash
+npm run ios
+# o
+expo start --ios
+```
+
+#### Ejecutar en Web
+
+```bash
+npm run web
+# o
+expo start --web
+```
+
+##  Ejecutar en Dispositivo Físico
+
+### Android
+
+1. Habilita la **Depuración USB** en tu dispositivo Android
+2. Conecta tu dispositivo via USB
+3. Ejecuta `npm run android`
+
+### iOS
+
+1. Instala **Expo Go** desde la App Store
+2. Ejecuta `npm start`
+3. Escanea el código QR con la cámara de tu iPhone
+
+## 🏗️ Estructura del Proyecto
 
 ```
 nebu-mobile/
-├── 📁 backend/                 # NestJS Backend API
-│   ├── src/
-│   │   ├── auth/              # Authentication & Authorization
-│   │   ├── iot/               # IoT Device Management
-│   │   ├── livekit/           # LiveKit Integration
-│   │   ├── voice/             # Voice Agent & AI Sessions
-│   │   ├── users/             # User Management
-│   │   ├── analytics/         # Analytics & Insights
-│   │   ├── notifications/     # Push Notifications
-│   │   └── ...                # 20+ feature modules
-│   └── Dockerfile
-├── 📁 mobile/                 # React Native Mobile App
-│   ├── src/
-│   │   ├── components/        # Reusable UI Components
-│   │   ├── screens/           # App Screens
-│   │   ├── services/          # API & LiveKit Services
-│   │   ├── navigation/        # Navigation Setup
-│   │   └── store/             # State Management
-│   ├── app.json              # Expo Configuration
-│   └── eas.json              # EAS Build Configuration
-├── 📁 livekit/                # LiveKit Server Configuration
-│   └── livekit.yaml          # LiveKit Config
-├── 📁 scripts/                # Automation Scripts
-├── 📁 db/                     # Database Scripts & Backups
-├── 📁 gateway/                # Traefik Configuration
-├── 📁 monitoring/             # Grafana & Prometheus
-├── docker-compose.yml         # Main Docker Compose
-├── Makefile                   # Development Commands
-├── prerrequisites.sh          # Automated Installer
-└── template.env               # Environment Template
+├── src/
+│   ├── components/          # Componentes reutilizables
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   ├── Header.tsx
+│   │   ├── LanguageSelector.tsx
+│   │   └── index.ts
+│   ├── screens/             # Pantallas principales
+│   │   ├── SplashScreen.tsx
+│   │   ├── LoginScreen.tsx
+│   │   ├── HomeScreen.tsx
+│   │   ├── ProfileScreen.tsx
+│   │   └── index.ts
+│   ├── navigation/          # Configuración de navegación
+│   │   ├── RootNavigator.tsx
+│   │   ├── AuthNavigator.tsx
+│   │   ├── MainNavigator.tsx
+│   │   └── index.ts
+│   ├── store/              # Estado global (Redux)
+│   │   ├── index.ts
+│   │   ├── authSlice.ts
+│   │   ├── themeSlice.ts
+│   │   ├── languageSlice.ts
+│   │   └── hooks.ts
+│   ├── locales/            # Archivos de traducción
+│   │   ├── es/
+│   │   │   └── common.json
+│   │   ├── en/
+│   │   │   └── common.json
+│   │   └── index.ts
+│   ├── types/              # Definiciones de TypeScript
+│   │   └── index.ts
+│   └── utils/              # Utilidades y temas
+│       ├── theme.ts
+│       └── i18n.ts
+├── assets/                 # Recursos estáticos
+│   ├── icon.png
+│   ├── splash.png
+│   ├── adaptive-icon.png
+│   └── favicon.png
+├── App.tsx                 # Componente principal
+├── app.json               # Configuración de Expo
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-## Use Cases
+## 🎨 Sistema de Temas
 
-###  Home Automation
-- Control smart home devices via voice commands
-- Monitor environmental sensors (temperature, humidity)
-- Security camera streaming and control
+La aplicación incluye un sistema de temas robusto con soporte para modo claro y oscuro:
 
-### 🏭 Industrial IoT
-- Remote robot operation and monitoring
-- Real-time sensor data collection
-- Equipment status and maintenance alerts
+### Colores Principales
 
-### 🎓 Educational Robotics
-- Programming and controlling educational robots
-- Real-time sensor data visualization
-- Multi-user collaborative robot control
+- **Primary**: #007AFF (Azul iOS)
+- **Success**: #34C759
+- **Warning**: #FF9500
+- **Error**: #FF3B30
 
-### 🚗 Autonomous Vehicles
-- Remote vehicle monitoring and control
-- Real-time telemetry and GPS tracking
-- Emergency intervention capabilities
+### Uso del Tema
 
-##  Troubleshooting
+```typescript
+import { useAppSelector } from '@/store/hooks';
+import { getTheme } from '@/utils/theme';
 
-### Common Issues
+const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
+const theme = getTheme(isDarkMode);
+```
 
-1. **Docker permission denied**
-   ```bash
-   sudo usermod -aG docker $USER
-   # Log out and log back in
-   ```
+## 🌍 Internacionalización (i18n)
 
-2. **Port already in use**
-   ```bash
-   make stop
-   # Check what's using the port
-   sudo netstat -tulpn | grep :3001
-   ```
+La aplicación incluye soporte completo para múltiples idiomas usando react-i18next:
 
-3. **LiveKit connection failed**
-   ```bash
-   # Check LiveKit status
-   docker logs nebu-mobile-livekit
-   # Restart if needed
-   docker-compose restart livekit
-   ```
+### Idiomas Soportados
 
-4. **Mobile app can't connect**
-   ```bash
-   # Update IP in mobile app config
-   # mobile/src/services/api.ts
-   # Change localhost to your machine's IP
-   ```
+- **Español (es)** - Idioma por defecto
+- **Inglés (en)** - Idioma secundario
 
-## Configuration
+### Cambiar Idioma
 
-### Environment Variables
+Los usuarios pueden cambiar el idioma desde:
+1. **Pantalla de Perfil** → **Idioma** → Selector de idioma
+2. El idioma seleccionado se persiste en el estado global
 
-Copy and edit the environment file:
+### Agregar Nuevos Idiomas
+
+1. Crear nueva carpeta en `src/locales/[código-idioma]/`
+2. Agregar archivo `common.json` con las traducciones
+3. Actualizar `src/locales/index.ts` para incluir el nuevo idioma
+4. Agregar el idioma al array `languages` en el mismo archivo
+
+### Usar Traducciones en Componentes
+
+```typescript
+import { useTranslation } from 'react-i18next';
+
+const MyComponent = () => {
+  const { t } = useTranslation();
+  
+  return (
+    <Text>{t('auth.welcome')}</Text>
+    <Text>{t('home.welcome', { name: 'Usuario' })}</Text>
+  );
+};
+```
+
+## Scripts Disponibles
+
+- `npm start` - Inicia el servidor de desarrollo
+- `npm run android` - Ejecuta en emulador/dispositivo Android
+- `npm run ios` - Ejecuta en simulador/dispositivo iOS
+- `npm run web` - Ejecuta en navegador web
+- `npm run lint` - Ejecuta ESLint para verificar código
+- `npm run type-check` - Verifica tipos de TypeScript
+- `npm run build:android` - Construye APK para Android
+- `npm run build:ios` - Construye IPA para iOS
+
+## 📦 Construcción para Producción
+
+### Android (APK)
+
 ```bash
-cp template.env .env
-nano .env
+npm run build:android
 ```
 
-Key variables:
+### iOS (IPA)
+
 ```bash
-# LiveKit Configuration
-LIVEKIT_URL=http://livekit:7880
-LIVEKIT_WS_URL=ws://localhost:7880  # Change to your IP for mobile access
-
-# Database
-DATABASE_PASSWORD=your_secure_password
-
-# Authentication
-JWT_SECRET=your_jwt_secret
+npm run build:ios
 ```
 
-## 🔒 Security
+## 🧪 Testing
 
-- All services run in isolated Docker networks
-- JWT authentication with refresh tokens
-- Environment variables for sensitive data
-- CORS protection for mobile app access
-- Rate limiting and security headers
+Para ejecutar pruebas (cuando estén configuradas):
 
-## 🤝 Contributing
+```bash
+npm test
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test with `make dev`
-5. Submit a pull request
+## 📝 Configuración de Desarrollo
 
-## 🆘 Support
+### ESLint
 
-If you encounter any issues:
+El proyecto incluye configuración de ESLint para mantener calidad de código:
 
-1. Check the troubleshooting section above
-2. Review logs with `make logs`
-3. Run health checks with `make health`
-4. Create an issue in the repository
+```bash
+npm run lint
+```
+
+### TypeScript
+
+Verificar tipos sin compilar:
+
+```bash
+npm run type-check
+```
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 🆘 Solución de Problemas
+
+### Error: Metro bundler no inicia
+
+```bash
+npx expo start --clear
+```
+
+### Error: Dependencias no encontradas
+
+```bash
+rm -rf node_modules
+npm install
+```
+
+### Error: Cache de Expo
+
+```bash
+npx expo start --clear
+```
+
+### Problemas con Android
+
+1. Verifica que Android SDK esté instalado
+2. Configura las variables de entorno ANDROID_HOME
+3. Acepta las licencias de Android SDK
+
+### Problemas con iOS
+
+1. Verifica que Xcode esté instalado (solo macOS)
+2. Instala Xcode Command Line Tools
+3. Acepta las licencias de Xcode
+
+## 📞 Soporte
+
+Para soporte técnico o preguntas:
+
+- Crea un issue en el repositorio
+- Revisa la documentación de [Expo](https://docs.expo.dev/)
+- Consulta la documentación de [React Native](https://reactnative.dev/)
 
 ---
 
-**Made with  for the Future of IoT & Robotics**
+**Nebu** - Conectando el futuro 
