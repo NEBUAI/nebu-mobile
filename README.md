@@ -1,329 +1,218 @@
-# Nebu Mobile App
+# Nebu Mobile App - Flutter
 
-Una aplicación móvil moderna construida con React Native y Expo, diseñada con una interfaz limpia y funcionalidades esenciales.
+Una aplicación móvil moderna construida con Flutter, diseñada con una interfaz limpia y funcionalidades esenciales de IA y IoT.
 
-##  Características
+## 🚀 Características
 
-- **React Native + Expo** - Framework moderno para desarrollo móvil multiplataforma
-- **TypeScript** - Tipado estático para mejor desarrollo y mantenimiento
-- **Redux Toolkit** - Gestión de estado global eficiente
-- **React Navigation** - Navegación nativa fluida
-- **Tema Dinámico** - Soporte para modo claro y oscuro
+- **Flutter** - Framework moderno para desarrollo móvil multiplataforma
+- **Dart** - Lenguaje de programación eficiente y tipado
+- **Riverpod** - Gestión de estado reactiva y moderna
+- **Go Router** - Navegación declarativa y type-safe
+- **Tema Dinámico** - Soporte completo para modo claro y oscuro
 - **Componentes Reutilizables** - UI consistente y modular
-- **Internacionalización (i18n)** - Soporte para múltiples idiomas (ES/EN)
-- **Arquitectura Escalable** - Estructura organizada de carpetas
+- **Internacionalización** - Soporte para múltiples idiomas
+- **Arquitectura Limpia** - Estructura organizada con separación de responsabilidades
 
-##  Pantallas Principales
+## 📱 Pantallas Principales
 
 - **Splash Screen** - Pantalla de bienvenida con branding
-- **Login** - Autenticación de usuario con validación
+- **Setup Wizard** - Configuración inicial de 7 pasos
 - **Home** - Dashboard principal con acciones rápidas
-- **Profile** - Perfil de usuario y configuraciones
+- **IoT Dashboard** - Gestión de dispositivos IoT
+- **Voice Agent** - Asistente de voz con IA
+- **Profile** - Configuración de usuario
+- **QR Scanner** - Escáner para dispositivos
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Tecnologías
 
-- React Native 0.73.4
-- Expo SDK 50
-- TypeScript 5.3.3
-- Redux Toolkit 2.0.1
-- React Navigation 6.x
-- React i18next 13.5.0
-- Expo Vector Icons
+### Core
+- **Flutter 3.27.3** - Framework principal
+- **Dart 3.6.1** - Lenguaje de programación
 
-##  Requisitos Previos
+### State Management
+- **Riverpod 2.5.1** - Gestión de estado reactiva
+- **Get 4.6.6** - Navegación y dependencias
 
-Antes de comenzar, asegúrate de tener instalado:
+### Networking & API
+- **Dio 5.4.3** - Cliente HTTP
+- **Retrofit 4.1.0** - Generación de APIs
 
-- **Node.js** (versión 18 o superior)
-- **npm** o **yarn**
-- **Expo CLI** (opcional pero recomendado)
-- **Android Studio** (para desarrollo Android)
-- **Xcode** (para desarrollo iOS - solo macOS)
+### Storage
+- **SharedPreferences 2.2.3** - Almacenamiento local
+- **Flutter Secure Storage 9.0.0** - Almacenamiento seguro
 
-### Instalación de Expo CLI
+### Authentication
+- **Google Sign In 6.2.1** - Autenticación con Google
+- **Sign in with Apple 6.1.0** - Autenticación con Apple
+- **Flutter Facebook Auth 7.0.1** - Autenticación con Facebook
 
-```bash
-npm install -g @expo/cli
+### Hardware & Permissions
+- **Flutter Blue Plus 1.32.11** - Bluetooth Low Energy
+- **Permission Handler 11.3.1** - Manejo de permisos
+- **Camera 0.11.0+1** - Acceso a cámara
+
+### Audio & Voice
+- **AudioPlayers 6.0.0** - Reproducción de audio
+- **Just Audio 0.9.37** - Audio streaming
+- **Record 5.1.0** - Grabación de audio
+
+### AI & Communication
+- **LiveKit Client 2.1.2** - WebRTC y comunicación en tiempo real
+- **Dart OpenAI 5.1.0** - Integración con OpenAI
+
+### UI & UX
+- **Cached Network Image 3.3.1** - Carga optimizada de imágenes
+- **Shimmer 3.0.0** - Efectos de carga
+- **Flutter SVG 2.0.10+1** - Soporte para SVG
+
+## 📁 Estructura del Proyecto
+
+```
+lib/
+├── core/
+│   ├── constants/          # Constantes de la aplicación
+│   ├── router/            # Configuración de rutas
+│   ├── theme/             # Temas y estilos
+│   └── utils/             # Utilidades generales
+├── data/
+│   ├── models/            # Modelos de datos (Freezed)
+│   ├── repositories/      # Repositorios de datos
+│   └── services/          # Servicios de API y hardware
+├── domain/
+│   └── entities/          # Entidades del dominio
+├── presentation/
+│   ├── providers/         # Providers de estado
+│   ├── screens/           # Pantallas de la aplicación
+│   ├── setup/             # Setup Wizard completo
+│   └── widgets/           # Componentes reutilizables
+└── l10n/                  # Archivos de localización
 ```
 
-##  Instalación y Configuración
+## 🚀 Instalación y Configuración
 
-### 1. Clonar el repositorio
+### Prerrequisitos
+- Flutter SDK 3.27.3 o superior
+- Dart SDK 3.6.1 o superior
+- Android Studio / Xcode
+- Git
 
+### Pasos de instalación
+
+1. **Clonar el repositorio**
 ```bash
 git clone <repository-url>
 cd nebu-mobile
 ```
 
-### 2. Instalar dependencias
-
+2. **Instalar dependencias**
 ```bash
-npm install
-# o
-yarn install
+flutter pub get
 ```
 
-### 3. Ejecutar la aplicación
-
-#### Modo de desarrollo
-
+3. **Generar código**
 ```bash
-npm start
-# o
-expo start
+flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
-#### Ejecutar en Android
-
+4. **Configurar variables de entorno**
 ```bash
-npm run android
-# o
-expo start --android
+# Crear archivo .env en la raíz del proyecto
+cp .env.example .env
+# Editar con tus configuraciones
 ```
 
-#### Ejecutar en iOS
-
+5. **Ejecutar la aplicación**
 ```bash
-npm run ios
-# o
-expo start --ios
+# Para desarrollo
+flutter run
+
+# Para release
+flutter run --release
 ```
 
-#### Ejecutar en Web
+## 🔧 Configuración de Desarrollo
 
-```bash
-npm run web
-# o
-expo start --web
+### Variables de Entorno
+Crear archivo `.env` con:
+```env
+OPENAI_API_KEY=your_openai_api_key
+LIVEKIT_API_KEY=your_livekit_api_key
+LIVEKIT_API_SECRET=your_livekit_secret
+API_BASE_URL=https://your-api-url.com
 ```
 
-##  Ejecutar en Dispositivo Físico
-
-### Android
-
-1. Habilita la **Depuración USB** en tu dispositivo Android
-2. Conecta tu dispositivo via USB
-3. Ejecuta `npm run android`
-
-### iOS
-
-1. Instala **Expo Go** desde la App Store
-2. Ejecuta `npm start`
-3. Escanea el código QR con la cámara de tu iPhone
-
-## 🏗️ Estructura del Proyecto
-
-```
-nebu-mobile/
-├── src/
-│   ├── components/          # Componentes reutilizables
-│   │   ├── Button.tsx
-│   │   ├── Input.tsx
-│   │   ├── Header.tsx
-│   │   ├── LanguageSelector.tsx
-│   │   └── index.ts
-│   ├── screens/             # Pantallas principales
-│   │   ├── SplashScreen.tsx
-│   │   ├── LoginScreen.tsx
-│   │   ├── HomeScreen.tsx
-│   │   ├── ProfileScreen.tsx
-│   │   └── index.ts
-│   ├── navigation/          # Configuración de navegación
-│   │   ├── RootNavigator.tsx
-│   │   ├── AuthNavigator.tsx
-│   │   ├── MainNavigator.tsx
-│   │   └── index.ts
-│   ├── store/              # Estado global (Redux)
-│   │   ├── index.ts
-│   │   ├── authSlice.ts
-│   │   ├── themeSlice.ts
-│   │   ├── languageSlice.ts
-│   │   └── hooks.ts
-│   ├── locales/            # Archivos de traducción
-│   │   ├── es/
-│   │   │   └── common.json
-│   │   ├── en/
-│   │   │   └── common.json
-│   │   └── index.ts
-│   ├── types/              # Definiciones de TypeScript
-│   │   └── index.ts
-│   └── utils/              # Utilidades y temas
-│       ├── theme.ts
-│       └── i18n.ts
-├── assets/                 # Recursos estáticos
-│   ├── icon.png
-│   ├── splash.png
-│   ├── adaptive-icon.png
-│   └── favicon.png
-├── App.tsx                 # Componente principal
-├── app.json               # Configuración de Expo
-├── package.json
-├── tsconfig.json
-└── README.md
+### Permisos Android
+Agregar en `android/app/src/main/AndroidManifest.xml`:
+```xml
+<uses-permission android:name="android.permission.BLUETOOTH" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 ```
 
-## 🎨 Sistema de Temas
-
-La aplicación incluye un sistema de temas robusto con soporte para modo claro y oscuro:
-
-### Colores Principales
-
-- **Primary**: #007AFF (Azul iOS)
-- **Success**: #34C759
-- **Warning**: #FF9500
-- **Error**: #FF3B30
-
-### Uso del Tema
-
-```typescript
-import { useAppSelector } from '@/store/hooks';
-import { getTheme } from '@/utils/theme';
-
-const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
-const theme = getTheme(isDarkMode);
-```
-
-## 🌍 Internacionalización (i18n)
-
-La aplicación incluye soporte completo para múltiples idiomas usando react-i18next:
-
-### Idiomas Soportados
-
-- **Español (es)** - Idioma por defecto
-- **Inglés (en)** - Idioma secundario
-
-### Cambiar Idioma
-
-Los usuarios pueden cambiar el idioma desde:
-1. **Pantalla de Perfil** → **Idioma** → Selector de idioma
-2. El idioma seleccionado se persiste en el estado global
-
-### Agregar Nuevos Idiomas
-
-1. Crear nueva carpeta en `src/locales/[código-idioma]/`
-2. Agregar archivo `common.json` con las traducciones
-3. Actualizar `src/locales/index.ts` para incluir el nuevo idioma
-4. Agregar el idioma al array `languages` en el mismo archivo
-
-### Usar Traducciones en Componentes
-
-```typescript
-import { useTranslation } from 'react-i18next';
-
-const MyComponent = () => {
-  const { t } = useTranslation();
-  
-  return (
-    <Text>{t('auth.welcome')}</Text>
-    <Text>{t('home.welcome', { name: 'Usuario' })}</Text>
-  );
-};
-```
-
-## Scripts Disponibles
-
-- `npm start` - Inicia el servidor de desarrollo
-- `npm run android` - Ejecuta en emulador/dispositivo Android
-- `npm run ios` - Ejecuta en simulador/dispositivo iOS
-- `npm run web` - Ejecuta en navegador web
-- `npm run lint` - Ejecuta ESLint para verificar código
-- `npm run type-check` - Verifica tipos de TypeScript
-- `npm run build:android` - Construye APK para Android
-- `npm run build:ios` - Construye IPA para iOS
-
-## 📦 Construcción para Producción
-
-### Android (APK)
-
-```bash
-npm run build:android
-```
-
-### iOS (IPA)
-
-```bash
-npm run build:ios
+### Permisos iOS
+Agregar en `ios/Runner/Info.plist`:
+```xml
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>This app needs Bluetooth for device connection</string>
+<key>NSCameraUsageDescription</key>
+<string>This app needs camera access for QR scanning</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>This app needs microphone for voice commands</string>
 ```
 
 ## 🧪 Testing
 
-Para ejecutar pruebas (cuando estén configuradas):
-
 ```bash
-npm test
+# Unit tests
+flutter test
+
+# Integration tests
+flutter test integration_test/
+
+# Widget tests
+flutter test test/
 ```
 
-## 📝 Configuración de Desarrollo
+## 📦 Build
 
-### ESLint
-
-El proyecto incluye configuración de ESLint para mantener calidad de código:
-
+### Android
 ```bash
-npm run lint
+# Debug APK
+flutter build apk --debug
+
+# Release APK
+flutter build apk --release
+
+# App Bundle (recomendado para Play Store)
+flutter build appbundle --release
 ```
 
-### TypeScript
-
-Verificar tipos sin compilar:
-
+### iOS
 ```bash
-npm run type-check
+# Build para iOS
+flutter build ios --release
 ```
 
 ## 🤝 Contribución
 
 1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+2. Crear una rama para tu feature (`git checkout -b feature/AmazingFeature`)
 3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
 4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+5. Abrir un Pull Request
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
-## 🆘 Solución de Problemas
-
-### Error: Metro bundler no inicia
-
-```bash
-npx expo start --clear
-```
-
-### Error: Dependencias no encontradas
-
-```bash
-rm -rf node_modules
-npm install
-```
-
-### Error: Cache de Expo
-
-```bash
-npx expo start --clear
-```
-
-### Problemas con Android
-
-1. Verifica que Android SDK esté instalado
-2. Configura las variables de entorno ANDROID_HOME
-3. Acepta las licencias de Android SDK
-
-### Problemas con iOS
-
-1. Verifica que Xcode esté instalado (solo macOS)
-2. Instala Xcode Command Line Tools
-3. Acepta las licencias de Xcode
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
 
 ## 📞 Soporte
 
-Para soporte técnico o preguntas:
-
-- Crea un issue en el repositorio
-- Revisa la documentación de [Expo](https://docs.expo.dev/)
-- Consulta la documentación de [React Native](https://reactnative.dev/)
+Para soporte y preguntas:
+- Crear un issue en GitHub
+- Contactar al equipo de desarrollo
 
 ---
 
-**Nebu** - Conectando el futuro 
+**Desarrollado con ❤️ usando Flutter**
