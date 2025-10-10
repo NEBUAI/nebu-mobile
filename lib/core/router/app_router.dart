@@ -1,0 +1,161 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../presentation/providers/auth_provider.dart';
+import '../../presentation/screens/splash_screen.dart';
+import '../../presentation/screens/welcome_screen.dart';
+import '../../presentation/screens/home_screen.dart';
+import '../../presentation/screens/profile_screen.dart';
+import '../../presentation/screens/voice_agent_screen.dart';
+import '../../presentation/screens/iot_dashboard_screen.dart';
+import '../../presentation/screens/device_management_screen.dart';
+import '../../presentation/screens/qr_scanner_screen.dart';
+import '../../presentation/screens/main_screen.dart';
+import '../../core/constants/app_constants.dart';
+
+// Router provider
+final routerProvider = Provider<GoRouter>((ref) {
+  final authState = ref.watch(authProvider);
+
+  return GoRouter(
+    initialLocation: AppConstants.routeSplash,
+    debugLogDiagnostics: true,
+    redirect: (context, state) {
+      final isAuthenticated = authState.isAuthenticated;
+      final isSplash = state.matchedLocation == AppConstants.routeSplash;
+      final isWelcome = state.matchedLocation == AppConstants.routeWelcome;
+
+      // If not authenticated and not on welcome/splash, redirect to welcome
+      if (!isAuthenticated && !isWelcome && !isSplash) {
+        return AppConstants.routeWelcome;
+      }
+
+      // If authenticated and on welcome, redirect to home
+      if (isAuthenticated && isWelcome) {
+        return AppConstants.routeHome;
+      }
+
+      // No redirect needed
+      return null;
+    },
+    routes: [
+      // Splash Screen
+      GoRoute(
+        path: AppConstants.routeSplash,
+        name: 'splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
+
+      // Welcome Screen (unauthenticated)
+      GoRoute(
+        path: AppConstants.routeWelcome,
+        name: 'welcome',
+        builder: (context, state) => const WelcomeScreen(),
+      ),
+
+      // Main Screen with Bottom Navigation
+      ShellRoute(
+        builder: (context, state, child) => MainScreen(child: child),
+        routes: [
+          // Home
+          GoRoute(
+            path: AppConstants.routeHome,
+            name: 'home',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const HomeScreen(),
+            ),
+          ),
+
+          // Voice Agent
+          GoRoute(
+            path: AppConstants.routeVoiceAgent,
+            name: 'voice-agent',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const VoiceAgentScreen(),
+            ),
+          ),
+
+          // IoT Dashboard
+          GoRoute(
+            path: AppConstants.routeIoTDashboard,
+            name: 'iot-dashboard',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const IoTDashboardScreen(),
+            ),
+          ),
+
+          // Profile
+          GoRoute(
+            path: AppConstants.routeProfile,
+            name: 'profile',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const ProfileScreen(),
+            ),
+          ),
+        ],
+      ),
+
+      // Device Management (full screen)
+      GoRoute(
+        path: AppConstants.routeDeviceManagement,
+        name: 'device-management',
+        builder: (context, state) => const DeviceManagementScreen(),
+      ),
+
+      // QR Scanner (full screen)
+      GoRoute(
+        path: AppConstants.routeQRScanner,
+        name: 'qr-scanner',
+        builder: (context, state) => const QRScannerScreen(),
+      ),
+
+      // Setup Flow Routes
+      GoRoute(
+        path: AppConstants.routeConnectionSetup,
+        name: 'connection-setup',
+        builder: (context, state) => const Placeholder(), // TODO: Create screen
+      ),
+
+      GoRoute(
+        path: AppConstants.routeToyNameSetup,
+        name: 'toy-name-setup',
+        builder: (context, state) => const Placeholder(), // TODO: Create screen
+      ),
+
+      GoRoute(
+        path: AppConstants.routeAgeSetup,
+        name: 'age-setup',
+        builder: (context, state) => const Placeholder(), // TODO: Create screen
+      ),
+
+      GoRoute(
+        path: AppConstants.routePersonalitySetup,
+        name: 'personality-setup',
+        builder: (context, state) => const Placeholder(), // TODO: Create screen
+      ),
+
+      GoRoute(
+        path: AppConstants.routeVoiceSetup,
+        name: 'voice-setup',
+        builder: (context, state) => const Placeholder(), // TODO: Create screen
+      ),
+
+      GoRoute(
+        path: AppConstants.routeFavoritesSetup,
+        name: 'favorites-setup',
+        builder: (context, state) => const Placeholder(), // TODO: Create screen
+      ),
+
+      GoRoute(
+        path: AppConstants.routeWorldInfoSetup,
+        name: 'world-info-setup',
+        builder: (context, state) => const Placeholder(), // TODO: Create screen
+      ),
+    ],
+    errorBuilder: (context, state) => Scaffold(
+      body: Center(
+        child: Text('Page not found: ${state.matchedLocation}'),
+      ),
+    ),
+  );
+});

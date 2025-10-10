@@ -1,5 +1,4 @@
 import { logger } from '@/utils/logger';
-// @ts-nocheck
 import OpenAI from 'openai';
 import { Audio } from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -99,27 +98,10 @@ export class OpenAIVoiceAgent {
 
       // Start recording
       this.recording = new Audio.Recording();
-      await this.recording.prepareToRecordAsync({
-        android: {
-          extension: '.m4a',
-          outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
-          audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
-          sampleRate: 44100,
-          numberOfChannels: 2,
-          bitRate: 128000,
-        },
-        ios: {
-          extension: '.m4a',
-          outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
-          audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH,
-          sampleRate: 44100,
-          numberOfChannels: 2,
-          bitRate: 128000,
-          linearPCMBitDepth: 16,
-          linearPCMIsBigEndian: false,
-          linearPCMIsFloat: false,
-        },
-      });
+      // Use Expo's built-in, cross-platform preset to satisfy RecordingOptions (includes required web config)
+      await this.recording.prepareToRecordAsync(
+        Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
 
       await this.recording.startAsync();
     } catch (error) {
@@ -261,7 +243,8 @@ export class OpenAIVoiceAgent {
 
       // Convert response to playable format
       const buffer = Buffer.from(await mp3.arrayBuffer());
-      const audioUri = `${Audio.getAudioDirectory()}response_${Date.now()}.mp3`;
+      // For demo purposes, stream the mp3 directly from memory via data URI
+      const audioUri = `data:audio/mp3;base64,${buffer.toString('base64')}`;
       
       // Save audio file (simplified for demo)
       // In production, you'd save the buffer to file system
