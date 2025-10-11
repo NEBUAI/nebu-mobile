@@ -104,7 +104,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     'v${AppConstants.appVersion}',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                     ),
                   ),
                 ],

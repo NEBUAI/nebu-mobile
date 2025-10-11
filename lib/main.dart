@@ -9,7 +9,6 @@ import 'package:logger/logger.dart';
 import 'core/theme/app_theme.dart';
 import 'core/constants/app_constants.dart';
 import 'core/router/app_router.dart';
-import 'core/utils/performance_optimizer.dart';
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/theme_provider.dart';
 import 'presentation/providers/language_provider.dart';
@@ -18,9 +17,6 @@ import 'data/services/api_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Configurar optimizaciones de rendimiento
-  PerformanceOptimizer.configurePerformanceOptimizations();
 
   // Load environment variables
   try {

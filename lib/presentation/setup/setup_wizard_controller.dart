@@ -85,13 +85,13 @@ class SetupWizardController extends GetxController {
   void _saveSetupData() {
     // Save all setup preferences
     // This would typically use SharedPreferences or a local database
-    print('Saving setup data:');
-    print('User: ${userName.value}');
-    print('Email: ${userEmail.value}');
-    print('Language: ${selectedLanguage.value}');
-    print('Theme: ${selectedTheme.value}');
-    print('Notifications: ${notificationsEnabled.value}');
-    print('Voice: ${voiceEnabled.value}');
+    debugPrint('Saving setup data:');
+    debugPrint('User: ${userName.value}');
+    debugPrint('Email: ${userEmail.value}');
+    debugPrint('Language: ${selectedLanguage.value}');
+    debugPrint('Theme: ${selectedTheme.value}');
+    debugPrint('Notifications: ${notificationsEnabled.value}');
+    debugPrint('Voice: ${voiceEnabled.value}');
   }
 
   void skipSetup() {

@@ -315,9 +315,8 @@ class WiFiService {
   Future<bool> checkPermissions() async {
     try {
       final locationPermission = await Permission.location.status;
-      final wifiPermission = await Permission.accessWifiState.status;
-      
-      return locationPermission.isGranted && wifiPermission.isGranted;
+
+      return locationPermission.isGranted;
     } catch (e) {
       _logger.e('Error checking permissions: $e');
       return false;
@@ -327,18 +326,13 @@ class WiFiService {
   /// Solicitar permisos necesarios
   Future<bool> requestPermissions() async {
     try {
-      final permissions = await [
-        Permission.location,
-        Permission.accessWifiState,
-      ].request();
-      
-      final allGranted = permissions.every((status) => status.isGranted);
-      
-      if (!allGranted) {
-        _logger.w('Some WiFi permissions were not granted');
+      final locationStatus = await Permission.location.request();
+
+      if (!locationStatus.isGranted) {
+        _logger.w('Location permission was not granted');
       }
-      
-      return allGranted;
+
+      return locationStatus.isGranted;
     } catch (e) {
       _logger.e('Error requesting permissions: $e');
       return false;

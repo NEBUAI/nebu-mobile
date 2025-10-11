@@ -193,7 +193,7 @@ class BluetoothService {
 
     try {
       _logger.i('Discovering services...');
-      final services = _connectedDevice!.discoverServices();
+      final services = await _connectedDevice!.discoverServices();
       _logger.i('Discovered ${services.length} services');
       return services;
     } catch (e) {

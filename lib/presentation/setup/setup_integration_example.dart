@@ -82,11 +82,10 @@ class SetupIntegrationExample {
 
 /// Ejemplo de cómo modificar el SetupWizardController para guardar datos
 class ExtendedSetupWizardController extends SetupWizardController {
-  
-  @override
-  void _saveSetupData() async {
+
+  Future<void> saveSetupDataToPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    
+
     // Guardar datos del setup
     await prefs.setString('user_name', userName.value);
     await prefs.setString('user_email', userEmail.value);
@@ -98,11 +97,9 @@ class ExtendedSetupWizardController extends SetupWizardController {
     await prefs.setBool('microphone_permission', microphonePermission.value);
     await prefs.setBool('camera_permission', cameraPermission.value);
     await prefs.setBool('notifications_permission', notificationsPermission.value);
-    
+
     // Marcar setup como completado
     await prefs.setBool('setup_completed', true);
-    
-    super._saveSetupData();
   }
   
   /// Cargar datos del setup desde SharedPreferences

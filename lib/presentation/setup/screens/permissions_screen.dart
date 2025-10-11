@@ -243,7 +243,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
         _showPermissionDeniedDialog('Microphone');
       }
     } catch (e) {
-      print('Error requesting microphone permission: $e');
+      debugPrint('Error requesting microphone permission: $e');
     } finally {
       setState(() {
         isLoading = false;
@@ -264,7 +264,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
         _showPermissionDeniedDialog('Notifications');
       }
     } catch (e) {
-      print('Error requesting notification permission: $e');
+      debugPrint('Error requesting notification permission: $e');
     } finally {
       setState(() {
         isLoading = false;
@@ -285,7 +285,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
         _showPermissionDeniedDialog('Camera');
       }
     } catch (e) {
-      print('Error requesting camera permission: $e');
+      debugPrint('Error requesting camera permission: $e');
     } finally {
       setState(() {
         isLoading = false;

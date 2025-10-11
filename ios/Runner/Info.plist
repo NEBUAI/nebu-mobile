@@ -45,5 +45,21 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Necesitamos acceso a Bluetooth para conectar con dispositivos IoT</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Necesitamos acceso a Bluetooth para conectar con dispositivos IoT</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Necesitamos acceso al micrófono para el asistente de voz</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Necesitamos acceso a la cámara para escanear códigos QR de dispositivos</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Necesitamos tu ubicación para conectar con dispositivos cercanos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Necesitamos acceso a tus fotos para configurar tu perfil</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Necesitamos reconocimiento de voz para el asistente inteligente</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Necesitamos acceso a la red local para conectar con dispositivos IoT</string>
 </dict>
 </plist>

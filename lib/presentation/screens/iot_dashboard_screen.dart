@@ -83,8 +83,8 @@ class _DeviceCard extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isOnline
-                ? AppTheme.primaryLight.withOpacity(0.1)
-                : Colors.grey.withOpacity(0.1),
+                ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                : Colors.grey.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -100,7 +100,7 @@ class _DeviceCard extends StatelessWidget {
         trailing: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: isOnline ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+            color: isOnline ? Colors.green.withValues(alpha: 0.1) : Colors.red.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(

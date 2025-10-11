@@ -120,7 +120,7 @@ class AppTheme {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         hintStyle: TextStyle(
-          color: onBackgroundLight.withOpacity(0.5),
+          color: onBackgroundLight.withValues(alpha: 0.5),
           fontFamily: fontFamily,
         ),
       ),
@@ -221,7 +221,7 @@ class AppTheme {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         hintStyle: TextStyle(
-          color: onBackgroundDark.withOpacity(0.5),
+          color: onBackgroundDark.withValues(alpha: 0.5),
           fontFamily: fontFamily,
         ),
       ),
@@ -260,7 +260,7 @@ class AppTheme {
   static List<BoxShadow> get cardShadow {
     return [
       BoxShadow(
-        color: Colors.black.withOpacity(0.1),
+        color: Colors.black.withValues(alpha: 0.1),
         blurRadius: 10,
         offset: const Offset(0, 4),
       ),

@@ -117,38 +117,35 @@ class LiveKitService {
   void _setupRoomEventHandlers() {
     if (_room == null) return;
 
-    _room!.on(RoomEvent.connected, () {
-      _logger.i('LiveKit room connected');
-      _setStatus(LiveKitConnectionStatus.connected);
-    });
-
-    _room!.on(RoomEvent.disconnected, () {
-      _logger.i('LiveKit room disconnected');
-      _setStatus(LiveKitConnectionStatus.disconnected);
-    });
-
-    _room!.on(RoomEvent.dataReceived, (data) {
-      _handleDataReceived(data);
-    });
-
-    _room!.on(RoomEvent.participantConnected, (participant) {
-      _logger.i('Participant connected: ${participant.identity}');
-    });
-
-    _room!.on(RoomEvent.participantDisconnected, (participant) {
-      _logger.i('Participant disconnected: ${participant.identity}');
-    });
+    _room!.createListener()
+      ..on<RoomConnectedEvent>((event) {
+        _logger.i('LiveKit room connected');
+        _setStatus(LiveKitConnectionStatus.connected);
+      })
+      ..on<RoomDisconnectedEvent>((event) {
+        _logger.i('LiveKit room disconnected');
+        _setStatus(LiveKitConnectionStatus.disconnected);
+      })
+      ..on<DataReceivedEvent>((event) {
+        _handleDataReceived(event.data);
+      })
+      ..on<ParticipantConnectedEvent>((event) {
+        _logger.i('Participant connected: ${event.participant.identity}');
+      })
+      ..on<ParticipantDisconnectedEvent>((event) {
+        _logger.i('Participant disconnected: ${event.participant.identity}');
+      });
   }
 
   /// Manejar datos recibidos
-  void _handleDataReceived(DataPacket data) {
+  void _handleDataReceived(List<int> data) {
     try {
-      final payload = utf8.decode(data.data);
+      final payload = utf8.decode(data);
       final deviceData = IoTDeviceData.fromJson(jsonDecode(payload));
-      
+
       _deviceDataController.add(deviceData);
       _onDeviceDataCallback?.call(deviceData);
-      
+
       _logger.d('Received IoT device data: ${deviceData.deviceId}');
     } catch (e) {
       _logger.e('Error handling received data: $e');
@@ -212,7 +209,7 @@ class LiveKitService {
       await _room!.localParticipant?.publishData(
         payload,
         topic: 'iot-device-data',
-        kind: DataPacket_Kind.LOSSY,
+        reliable: false,
       );
       
       _logger.d('Sent IoT device data: ${deviceData.deviceId}');
@@ -245,7 +242,7 @@ class LiveKitService {
       await _room!.localParticipant?.publishData(
         payload,
         topic: 'device-command',
-        kind: DataPacket_Kind.RELIABLE,
+        reliable: true,
       );
       
       _logger.d('Sent device command: $command to $deviceId');
