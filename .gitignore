@@ -241,3 +241,74 @@ venv.bak/
 .idea/
 *.swp
 *.swo
+
+# === Flutter (generados) ===
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+.packages
+.fvm/
+.metadata
+coverage/
+build/
+
+# Android
+**/android/.gradle/
+**/android/local.properties
+**/android/.cxx/
+**/android/**/GeneratedPluginRegistrant.java
+**/*.iml
+**/*.apk
+**/*.aab
+**/*.keystore
+**/*.jks
+
+# iOS / macOS
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/**/xcuserdata/
+**/ios/**/DerivedData/
+**/macos/Pods/
+**/macos/Flutter/ephemeral/
+**/macos/**/xcuserdata/
+.DS_Store
+
+# Linux / Windows
+**/linux/build/
+**/windows/build/
+
+# Web (build ya cubierto por build/)
+
+# === Backend Node/NestJS ===
+node_modules/
+dist/
+coverage/
+.nyc_output/
+.eslintcache
+.turbo/
+*.tsbuildinfo
+
+# Entornos
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Docker (datos locales)
+docker-data/
+postgres-data/
+redis-data/
+**/*.pid
+
+# VS Code
+.vscode/
