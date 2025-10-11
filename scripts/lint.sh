@@ -84,3 +84,4 @@ echo "🎯 Análisis completado!"
 echo "Para corregir automáticamente algunos problemas:"
 echo "  - dart format lib/"
 echo "  - dart fix --apply"
+
