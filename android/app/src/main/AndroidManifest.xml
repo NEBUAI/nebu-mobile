@@ -1,113 +1,45 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <!-- Permisos necesarios para la aplicación -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    
-    <!-- Permisos de Bluetooth -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    
-    <!-- Permisos de ubicación -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    
-    <!-- Permisos de audio -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    
-    <!-- Permisos de cámara -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    
-    <!-- Permisos de notificaciones -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    
-    <!-- Permisos de almacenamiento -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
-        android:maxSdkVersion="28" />
-    
-    <!-- Características de hardware -->
-    <uses-feature 
-        android:name="android.hardware.bluetooth_le" 
-        android:required="true" />
-    <uses-feature 
-        android:name="android.hardware.camera" 
-        android:required="false" />
-    <uses-feature 
-        android:name="android.hardware.microphone" 
-        android:required="true" />
-    
-    <!-- Consultas para Android 11+ -->
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="https" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="http" />
-        </intent>
-    </queries>
-
     <application
+        android:label="nebu_mobile_flutter"
         android:name="${applicationName}"
-        android:label="Nebu"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:allowBackup="true"
-        android:theme="@style/LaunchTheme"
-        android:supportsRtl="true"
-        android:usesCleartextTraffic="false"
-        android:requestLegacyExternalStorage="true"
-        android:hardwareAccelerated="true"
-        android:largeHeap="true">
-        
-        <!-- Configuración de la actividad principal -->
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
+            android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
-            <!-- Especifique que es una actividad de lanzamiento -->
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
             <meta-data
-                android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme" />
-            <intent-filter android:autoVerify="true">
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        
-        <!-- No eliminar el meta-data debajo.
-             Esto es usado por el sistema de actualización de Flutter para determinar
-             cuando recrear el archivo de base de datos de la aplicación -->
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-            
-        <!-- Configuración de notificaciones -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/notification_color" />
-            
-        <!-- Configuración de WebRTC -->
-        <meta-data
-            android:name="android.webkit.WebView.Metrics"
-            android:value="true" />
-            
     </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
 </manifest>

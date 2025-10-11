@@ -1,123 +1,44 @@
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
 }
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.nebu.mobile"
-    compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    namespace = "com.example.nebu_mobile_flutter"
+    compileSdk = 36
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
-        applicationId "com.nebu.mobile"
-        minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-        
-        // Optimizaciones de rendimiento
-        multiDexEnabled true
-        
-        // Configuración de ProGuard para optimización
-        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.example.nebu_mobile_flutter"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
     }
 
     buildTypes {
         release {
-            // Optimizaciones de release
-            minifyEnabled true
-            shrinkResources true
-            signingConfig signingConfigs.debug
-            
-            // Optimizaciones de rendimiento
-            debuggable false
-            jniDebuggable false
-            renderscriptDebuggable false
-            zipAlignEnabled true
-            
-            // Configuración de ProGuard
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        
-        debug {
-            // Configuración de debug
-            debuggable true
-            minifyEnabled false
-            shrinkResources false
-        }
-    }
-    
-    // Optimizaciones de compilación
-    packagingOptions {
-        pickFirst '**/libc++_shared.so'
-        pickFirst '**/libjsc.so'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/ASL2.0'
-    }
-    
-    // Configuración de splits para optimizar APK
-    splits {
-        abi {
-            enable true
-            reset()
-            include "armeabi-v7a", "x86_64", "arm64-v8a"
-            universalApk false
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig = signingConfigs.debug
         }
     }
 }
 
 flutter {
-    source '../..'
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    
-    // MultiDex para soporte de múltiples DEX
-    implementation 'androidx.multidex:multidex:2.0.1'
-    
-    // Optimizaciones de rendimiento
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    source = "../.."
 }

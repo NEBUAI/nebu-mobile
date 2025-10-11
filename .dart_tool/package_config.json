@@ -903,9 +903,9 @@
     },
     {
       "name": "record",
-      "rootUri": "file:///home/duvet05/.pub-cache/hosted/pub.dev/record-5.2.1",
+      "rootUri": "file:///home/duvet05/.pub-cache/hosted/pub.dev/record-6.1.2",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.5"
     },
     {
       "name": "record_android",
@@ -914,16 +914,22 @@
       "languageVersion": "3.5"
     },
     {
-      "name": "record_darwin",
-      "rootUri": "file:///home/duvet05/.pub-cache/hosted/pub.dev/record_darwin-1.2.2",
+      "name": "record_ios",
+      "rootUri": "file:///home/duvet05/.pub-cache/hosted/pub.dev/record_ios-1.1.4",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.5"
     },
     {
       "name": "record_linux",
-      "rootUri": "file:///home/duvet05/.pub-cache/hosted/pub.dev/record_linux-0.7.2",
+      "rootUri": "file:///home/duvet05/.pub-cache/hosted/pub.dev/record_linux-1.2.1",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "record_macos",
+      "rootUri": "file:///home/duvet05/.pub-cache/hosted/pub.dev/record_macos-1.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
     },
     {
       "name": "record_platform_interface",
@@ -1298,7 +1304,7 @@
       "languageVersion": "3.6"
     }
   ],
-  "generated": "2025-10-11T03:54:46.555991Z",
+  "generated": "2025-10-11T05:03:09.356529Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///home/duvet05/flutter",

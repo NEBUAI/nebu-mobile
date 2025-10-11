@@ -51,7 +51,7 @@ dependencies:
   # Audio
   audioplayers: ^6.0.0
   just_audio: ^0.9.37
-  record: ^5.1.0
+  record: ^6.1.2
 
   # LiveKit (WebRTC)
   livekit_client: ^2.1.2
