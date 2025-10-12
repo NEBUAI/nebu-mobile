@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants/app_constants.dart';
+import '../../presentation/providers/auth_provider.dart' as auth;
 
 // Language state
 class LanguageState {
@@ -28,7 +29,7 @@ class LanguageNotifier extends Notifier<LanguageState> {
 
   @override
   LanguageState build() {
-    _prefs = ref.watch(sharedPreferencesProvider);
+    _prefs = ref.watch(auth.sharedPreferencesProvider);
     Future.microtask(() => _loadLanguage());
     return LanguageState();
   }

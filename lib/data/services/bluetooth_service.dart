@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -11,22 +11,22 @@ class BluetoothService {
 
   BluetoothService({required Logger logger})
       : _logger = logger,
-        _scanResultsController = StreamController<List<ScanResult>>.broadcast(),
-        _connectionStateController = StreamController<BluetoothConnectionState>.broadcast();
+        _scanResultsController = StreamController<List<fbp.ScanResult>>.broadcast(),
+        _connectionStateController = StreamController<fbp.BluetoothConnectionState>.broadcast();
   final Logger _logger;
-  final StreamController<List<ScanResult>> _scanResultsController;
-  final StreamController<BluetoothConnectionState> _connectionStateController;
+  final StreamController<List<fbp.ScanResult>> _scanResultsController;
+  final StreamController<fbp.BluetoothConnectionState> _connectionStateController;
 
-  BluetoothDevice? _connectedDevice;
-  StreamSubscription<List<ScanResult>>? _scanSubscription;
-  StreamSubscription<BluetoothConnectionState>? _connectionSubscription;
+  fbp.BluetoothDevice? _connectedDevice;
+  StreamSubscription<List<fbp.ScanResult>>? _scanSubscription;
+  StreamSubscription<fbp.BluetoothConnectionState>? _connectionSubscription;
 
   // Streams
-  Stream<List<ScanResult>> get scanResults => _scanResultsController.stream;
-  Stream<BluetoothConnectionState> get connectionState => _connectionStateController.stream;
+  Stream<List<fbp.ScanResult>> get scanResults => _scanResultsController.stream;
+  Stream<fbp.BluetoothConnectionState> get connectionState => _connectionStateController.stream;
 
   // Getters
-  BluetoothDevice? get connectedDevice => _connectedDevice;
+  fbp.BluetoothDevice? get connectedDevice => _connectedDevice;
   bool get isConnected => _connectedDevice != null;
 
   // Request Bluetooth permissions
@@ -64,15 +64,15 @@ class BluetoothService {
   Future<bool> isBluetoothAvailable() async {
     try {
       if (Platform.isAndroid) {
-        final isSupported = await FlutterBluePlus.isSupported;
+        final isSupported = await fbp.FlutterBluePlus.isSupported;
         if (!isSupported) {
           _logger.w('Bluetooth not supported on this device');
           return false;
         }
       }
 
-      final adapterState = await FlutterBluePlus.adapterState.first;
-      return adapterState == BluetoothAdapterState.on;
+      final adapterState = await fbp.FlutterBluePlus.adapterState.first;
+      return adapterState == fbp.BluetoothAdapterState.on;
     } catch (e) {
       _logger.e('Error checking Bluetooth availability: $e');
       return false;
@@ -98,15 +98,15 @@ class BluetoothService {
       await stopScan();
 
       // Start scanning
-      await FlutterBluePlus.startScan(
+      await fbp.FlutterBluePlus.startScan(
         timeout: timeout ?? AppConstants.scanTimeout,
       );
 
       // Listen to scan results
-      _scanSubscription = FlutterBluePlus.scanResults.listen(
+      _scanSubscription = fbp.FlutterBluePlus.scanResults.listen(
         (results) {
           _logger.d('Found ${results.length} devices');
-          _scanResultsController.add(results);
+          _scanResultsController.add(results as List<fbp.ScanResult>);
         },
         onError: (Object error) {
           _logger.e('Scan error: $error');
@@ -131,7 +131,7 @@ class BluetoothService {
   }
 
   // Connect to a device
-  Future<void> connect(BluetoothDevice device) async {
+  Future<void> connect(fbp.BluetoothDevice device) async {
     try {
       _logger.i('Connecting to device: ${device.platformName}');
 
@@ -143,7 +143,6 @@ class BluetoothService {
       // Connect to the device
       await device.connect(
         timeout: AppConstants.connectionTimeout,
-        license: '',
       );
 
       _connectedDevice = device;
@@ -154,7 +153,7 @@ class BluetoothService {
           _logger.d('Connection state changed: $state');
           _connectionStateController.add(state);
 
-          if (state == BluetoothConnectionState.disconnected) {
+          if (state == fbp.BluetoothConnectionState.disconnected) {
             _connectedDevice = null;
           }
         },
@@ -188,7 +187,7 @@ class BluetoothService {
   }
 
   // Discover services
-  Future<List<BluetoothService>> discoverServices() {
+  Future<List<fbp.BluetoothService>> discoverServices() {
     if (_connectedDevice == null) {
       throw Exception('No device connected');
     }
@@ -197,7 +196,7 @@ class BluetoothService {
     return _connectedDevice!.discoverServices().then((services) {
       _logger.i('Discovered ${services.length} services');
       return services;
-    }).catchError((e) {
+    }).catchError((Object e) {
       _logger.e('Error discovering services: $e');
       throw e;
     });
@@ -205,7 +204,7 @@ class BluetoothService {
 
   // Read characteristic
   Future<List<int>> readCharacteristic(
-    BluetoothCharacteristic characteristic,
+    fbp.BluetoothCharacteristic characteristic,
   ) async {
     try {
       _logger.d('Reading characteristic: ${characteristic.uuid}');
@@ -219,7 +218,7 @@ class BluetoothService {
 
   // Write characteristic
   Future<void> writeCharacteristic(
-    BluetoothCharacteristic characteristic,
+    fbp.BluetoothCharacteristic characteristic,
     List<int> value, {
     bool withoutResponse = false,
   }) async {
@@ -237,7 +236,7 @@ class BluetoothService {
 
   // Subscribe to characteristic notifications
   StreamSubscription<List<int>> subscribeToCharacteristic(
-    BluetoothCharacteristic characteristic,
+    fbp.BluetoothCharacteristic characteristic,
     void Function(List<int>) onData,
   ) {
     try {
@@ -251,9 +250,9 @@ class BluetoothService {
   }
 
   // Get connected devices
-  Future<List<BluetoothDevice>> getConnectedDevices() async {
+  Future<List<fbp.BluetoothDevice>> getConnectedDevices() async {
     try {
-      return FlutterBluePlus.connectedDevices;
+      return fbp.FlutterBluePlus.connectedDevices;
     } catch (e) {
       _logger.e('Error getting connected devices: $e');
       return [];
