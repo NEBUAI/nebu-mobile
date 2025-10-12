@@ -1,0 +1,2 @@
+dependency_overrides:
+  flutter_webrtc: 0.14.1
