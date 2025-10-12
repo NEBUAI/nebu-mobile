@@ -84,17 +84,24 @@ class NebuApp extends ConsumerWidget {
     final themeState = ref.watch(themeProvider);
     final router = ref.watch(routerProvider);
 
-    return MaterialApp.router(
-      title: AppConstants.appName,
-      debugShowCheckedModeBanner: false,
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Banner(
+        message: "Hot Reload!",
+        location: BannerLocation.topEnd,
+        child: MaterialApp.router(
+          title: AppConstants.appName,
+          debugShowCheckedModeBanner: false,
 
-      // Theme
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeState.themeMode,
+          // Theme
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeState.themeMode,
 
-      // Router
-      routerConfig: router,
+          // Router
+          routerConfig: router,
+        ),
+      ),
     );
   }
 }
