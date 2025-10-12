@@ -115,8 +115,9 @@ class LiveKitService {
 
   /// Configurar manejadores de eventos de la sala
   void _setupRoomEventHandlers() {
-    if (_room == null)
+    if (_room == null) {
       return;
+    }
 
     _room!.createListener()
       ..on<RoomConnectedEvent>((event) {
@@ -255,8 +256,9 @@ class LiveKitService {
 
   /// Habilitar/deshabilitar micrófono
   Future<void> setMicrophoneEnabled(bool enabled) async {
-    if (_room == null)
+    if (_room == null) {
       return;
+    }
 
     try {
       await _room!.localParticipant?.setMicrophoneEnabled(enabled);
@@ -268,8 +270,9 @@ class LiveKitService {
 
   /// Habilitar/deshabilitar cámara
   Future<void> setCameraEnabled(bool enabled) async {
-    if (_room == null)
+    if (_room == null) {
       return;
+    }
 
     try {
       await _room!.localParticipant?.setCameraEnabled(enabled);

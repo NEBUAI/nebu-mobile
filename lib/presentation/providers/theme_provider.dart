@@ -30,7 +30,7 @@ class ThemeNotifier extends Notifier<ThemeState> {
   @override
   ThemeState build() {
     _prefs = ref.watch(auth.sharedPreferencesProvider);
-    Future.microtask(() => _loadTheme());
+    Future.microtask(_loadTheme);
     return ThemeState();
   }
 

@@ -46,7 +46,7 @@ class ConnectionSetupScreen extends StatelessWidget {
                   const SizedBox(height: 12),
 
                   Text(
-                    'Let\'s connect your Nebu toy to get started',
+                    "Let's connect your Nebu toy to get started",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white.withValues(alpha: 0.9),

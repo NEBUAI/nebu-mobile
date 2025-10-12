@@ -30,7 +30,7 @@ class LanguageNotifier extends Notifier<LanguageState> {
   @override
   LanguageState build() {
     _prefs = ref.watch(auth.sharedPreferencesProvider);
-    Future.microtask(() => _loadLanguage());
+    Future.microtask(_loadLanguage);
     return LanguageState();
   }
 

@@ -229,8 +229,9 @@ class DeviceTokenService {
   /// Obtener tiempo restante del token
   Duration? getTokenTimeRemaining(String deviceId) {
     final expiry = _tokenExpiry[deviceId];
-    if (expiry == null)
+    if (expiry == null) {
       return null;
+    }
     
     final remaining = expiry.difference(DateTime.now());
     return remaining.isNegative ? null : remaining;

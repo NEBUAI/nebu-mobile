@@ -47,7 +47,7 @@ class AuthNotifier extends Notifier<AuthState> {
   AuthState build() {
     _authService = ref.watch(authServiceProvider);
     _prefs = ref.watch(sharedPreferencesProvider);
-    Future.microtask(() => _loadUser());
+    Future.microtask(_loadUser);
     return AuthState(isLoading: true);
   }
 

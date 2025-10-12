@@ -103,7 +103,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                             });
                           },
                           borderRadius: BorderRadius.circular(16),
-                          child: Container(
+                          child: DecoratedBox(
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? Colors.white

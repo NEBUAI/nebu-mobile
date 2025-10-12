@@ -48,7 +48,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
 
                   // Title
                   const Text(
-                    'Child\'s Age',
+                    "Child's Age",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,

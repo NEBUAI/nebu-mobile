@@ -285,7 +285,7 @@ class OpenAIVoiceService {
         },
       );
 
-      final data = response.data as Map<String, dynamic>;
+      final data = response.data!;
       final assistantMessage = data['choices'][0]['message']['content'] as String;
       
       // Crear mensaje del usuario (transcripción)
@@ -398,7 +398,7 @@ class OpenAIVoiceService {
         },
       );
 
-      final data = response.data as Map<String, dynamic>;
+      final data = response.data!;
       final assistantMessage = data['choices'][0]['message']['content'] as String;
 
       // Crear mensajes
