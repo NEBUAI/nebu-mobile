@@ -10,6 +10,13 @@ import '../../presentation/screens/iot_dashboard_screen.dart';
 import '../../presentation/screens/main_screen.dart';
 import '../../presentation/screens/profile_screen.dart';
 import '../../presentation/screens/qr_scanner_screen.dart';
+import '../../presentation/screens/setup/age_setup_screen.dart';
+import '../../presentation/screens/setup/connection_setup_screen.dart';
+import '../../presentation/screens/setup/favorites_setup_screen.dart';
+import '../../presentation/screens/setup/personality_setup_screen.dart';
+import '../../presentation/screens/setup/toy_name_setup_screen.dart';
+import '../../presentation/screens/setup/voice_setup_screen.dart';
+import '../../presentation/screens/setup/world_info_setup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
 import '../../presentation/screens/voice_agent_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
@@ -114,43 +121,43 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppConstants.routeConnectionSetup,
         name: 'connection-setup',
-        builder: (context, state) => const Placeholder(), // TODO: Create screen
+        builder: (context, state) => const ConnectionSetupScreen(),
       ),
 
       GoRoute(
         path: AppConstants.routeToyNameSetup,
         name: 'toy-name-setup',
-        builder: (context, state) => const Placeholder(), // TODO: Create screen
+        builder: (context, state) => const ToyNameSetupScreen(),
       ),
 
       GoRoute(
         path: AppConstants.routeAgeSetup,
         name: 'age-setup',
-        builder: (context, state) => const Placeholder(), // TODO: Create screen
+        builder: (context, state) => const AgeSetupScreen(),
       ),
 
       GoRoute(
         path: AppConstants.routePersonalitySetup,
         name: 'personality-setup',
-        builder: (context, state) => const Placeholder(), // TODO: Create screen
+        builder: (context, state) => const PersonalitySetupScreen(),
       ),
 
       GoRoute(
         path: AppConstants.routeVoiceSetup,
         name: 'voice-setup',
-        builder: (context, state) => const Placeholder(), // TODO: Create screen
+        builder: (context, state) => const VoiceSetupScreen(),
       ),
 
       GoRoute(
         path: AppConstants.routeFavoritesSetup,
         name: 'favorites-setup',
-        builder: (context, state) => const Placeholder(), // TODO: Create screen
+        builder: (context, state) => const FavoritesSetupScreen(),
       ),
 
       GoRoute(
         path: AppConstants.routeWorldInfoSetup,
         name: 'world-info-setup',
-        builder: (context, state) => const Placeholder(), // TODO: Create screen
+        builder: (context, state) => const WorldInfoSetupScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
