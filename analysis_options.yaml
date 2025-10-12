@@ -108,7 +108,6 @@ linter:
     null_check_on_nullable_type_parameter: true
     null_closures: true
     overridden_fields: true
-    package_api_docs: true
     package_prefixed_library_names: true
     parameter_assignments: true
     prefer_adjacent_string_concatenation: true
