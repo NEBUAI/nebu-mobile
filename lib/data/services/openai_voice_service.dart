@@ -82,7 +82,7 @@ class OpenAIVoiceService {
   final AudioRecorder _recorder;
   final AudioPlayer _audioPlayer;
 
-  VoiceAgentConfig? _config;
+  late VoiceAgentConfig? _config;
   bool _isInitialized = false;
   VoiceAgentStatus _status = VoiceAgentStatus.idle;
   final List<ConversationMessage> _conversation = [];
@@ -149,7 +149,7 @@ class OpenAIVoiceService {
       final prefs = await SharedPreferences.getInstance();
       final conversationJson = _conversation.map((m) => m.toJson()).toList();
       await prefs.setString('voice_conversation', jsonEncode(conversationJson));
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error saving conversation: $e');
     }
   }
@@ -163,12 +163,13 @@ class OpenAIVoiceService {
       final conversationString = prefs.getString('voice_conversation');
       if (conversationString != null) {
         final conversationJson = jsonDecode(conversationString) as List;
-        _conversation.clear();
-        _conversation.addAll(
-          conversationJson.map((json) => ConversationMessage.fromJson(json as Map<String, dynamic>)),
-        );
+        _conversation
+          ..clear()
+          ..addAll(
+            conversationJson.map((json) => ConversationMessage.fromJson(json as Map<String, dynamic>)),
+          );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error loading conversation: $e');
     }
   }
@@ -238,7 +239,7 @@ class OpenAIVoiceService {
     try {
       // Leer archivo de audio
       final audioFile = File(audioPath);
-      if (!await audioFile.exists()) {
+      if (!audioFile.existsSync()) {
         throw Exception('Audio file not found');
       }
 
@@ -444,12 +445,12 @@ class OpenAIVoiceService {
   Stream<ConversationMessage> get messageStream => _messageController.stream;
 
   /// Establecer callback de mensajes
-  void setOnMessageCallback(void Function(ConversationMessage) callback) {
+  set onMessageCallback(void Function(ConversationMessage) callback) {
     _onMessageCallback = callback;
   }
 
   /// Establecer callback de estado
-  void setOnStatusCallback(void Function(VoiceAgentStatus) callback) {
+  set onStatusCallback(void Function(VoiceAgentStatus) callback) {
     _onStatusCallback = callback;
   }
 

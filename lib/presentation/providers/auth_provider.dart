@@ -94,7 +94,7 @@ class AuthNotifier extends Notifier<AuthState> {
         );
         return false;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),
@@ -135,7 +135,7 @@ class AuthNotifier extends Notifier<AuthState> {
         );
         return false;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),
@@ -166,7 +166,7 @@ class AuthNotifier extends Notifier<AuthState> {
         );
         return false;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),
@@ -197,7 +197,7 @@ class AuthNotifier extends Notifier<AuthState> {
         );
         return false;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),
@@ -228,7 +228,7 @@ class AuthNotifier extends Notifier<AuthState> {
         );
         return false;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),

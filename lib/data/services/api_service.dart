@@ -80,7 +80,7 @@ class ApiService {
                 error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
                 final retryResponse = await dio.fetch<dynamic>(error.requestOptions);
                 return handler.resolve(retryResponse);
-              } catch (e) {
+              } on Exception catch (e) {
                 _logger.e('Token refresh failed: $e');
                 // Clear tokens and redirect to login
                 await _secureStorage.delete(key: AppConstants.keyAccessToken);

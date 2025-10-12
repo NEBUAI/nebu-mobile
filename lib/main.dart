@@ -21,7 +21,7 @@ void main() async {
   // Load environment variables
   try {
     await dotenv.load();
-  } catch (e) {
+  } on Exception catch (e) {
     debugPrint('Error loading .env file: $e');
   }
 

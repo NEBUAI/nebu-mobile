@@ -339,9 +339,10 @@ class CheckmarkPainter extends CustomPainter {
     final endX = size.width * 0.75;
     final endY = size.height * 0.35;
 
-    path.moveTo(startX, startY);
-    path.lineTo(middleX, middleY);
-    path.lineTo(endX, endY);
+    path
+      ..moveTo(startX, startY)
+      ..lineTo(middleX, middleY)
+      ..lineTo(endX, endY);
 
     final animatedPath = Path();
     final pathMetrics = path.computeMetrics();

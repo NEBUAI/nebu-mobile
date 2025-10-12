@@ -149,7 +149,7 @@ class LiveKitService {
       _onDeviceDataCallback?.call(deviceData);
 
       _logger.d('Received IoT device data: ${deviceData.deviceId}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error handling received data: $e');
     }
   }
@@ -180,7 +180,7 @@ class LiveKitService {
       );
 
       return response.data?['token'] as String;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.w('Failed to generate token from server, using demo token: $e');
       return _createSimpleToken(participantName, roomName);
     }
@@ -255,7 +255,7 @@ class LiveKitService {
   }
 
   /// Habilitar/deshabilitar micrófono
-  Future<void> setMicrophoneEnabled(bool enabled) async {
+  Future<void> setMicrophoneEnabled({required bool enabled}) async {
     if (_room == null) {
       return;
     }
@@ -263,13 +263,13 @@ class LiveKitService {
     try {
       await _room!.localParticipant?.setMicrophoneEnabled(enabled);
       _logger.d('Microphone ${enabled ? 'enabled' : 'disabled'}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error setting microphone: $e');
     }
   }
 
   /// Habilitar/deshabilitar cámara
-  Future<void> setCameraEnabled(bool enabled) async {
+  Future<void> setCameraEnabled({required bool enabled}) async {
     if (_room == null) {
       return;
     }
@@ -277,7 +277,7 @@ class LiveKitService {
     try {
       await _room!.localParticipant?.setCameraEnabled(enabled);
       _logger.d('Camera ${enabled ? 'enabled' : 'disabled'}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error setting camera: $e');
     }
   }
@@ -296,12 +296,12 @@ class LiveKitService {
   Stream<IoTDeviceData> get deviceDataStream => _deviceDataController.stream;
 
   /// Establecer callback de datos de dispositivo
-  set onDeviceDataCallback(void Function(IoTDeviceData) callback) {
+  void setOnDeviceDataCallback(void Function(IoTDeviceData) callback) {
     _onDeviceDataCallback = callback;
   }
 
   /// Establecer callback de estado de conexión
-  set onConnectionStatusCallback(void Function(LiveKitConnectionStatus) callback) {
+  void setOnConnectionStatusCallback(void Function(LiveKitConnectionStatus) callback) {
     _onConnectionStatusCallback = callback;
   }
 
@@ -312,7 +312,7 @@ class LiveKitService {
       _room = null;
       _setStatus(LiveKitConnectionStatus.disconnected);
       _logger.i('Disconnected from LiveKit');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error disconnecting from LiveKit: $e');
     }
   }

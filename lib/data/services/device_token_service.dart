@@ -166,7 +166,7 @@ class DeviceTokenService {
       
       _logger.i('Device token revoked successfully for: $deviceId');
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error revoking device token: $e');
       return false;
     }
@@ -189,7 +189,7 @@ class DeviceTokenService {
       
       _logger.d('Token status for $deviceId: ${isValid ? 'valid' : 'invalid'}');
       return isValid;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error verifying token status: $e');
       return false;
     }

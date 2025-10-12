@@ -236,15 +236,15 @@ class WiFiService {
 
       _connectionController.add(result);
       _logger.i('WiFi connection result: ${result.success ? 'Success' : 'Failed'}');
-      
+
       return result;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error connecting to WiFi: $e');
       final result = WiFiConnectionResult(
         success: false,
         message: 'Connection failed: $e',
       );
-      
+
       _connectionController.add(result);
       return result;
     }
@@ -327,7 +327,7 @@ class WiFiService {
       final locationPermission = await Permission.location.status;
 
       return locationPermission.isGranted;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error checking permissions: $e');
       return false;
     }
@@ -343,7 +343,7 @@ class WiFiService {
       }
 
       return locationStatus.isGranted;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error requesting permissions: $e');
       return false;
     }

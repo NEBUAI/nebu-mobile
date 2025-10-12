@@ -254,8 +254,9 @@ class RobotService {
           .map((json) => RobotDevice.fromJson(json as Map<String, dynamic>))
           .toList();
 
-      _devices.clear();
-      _devices.addAll(devices);
+      _devices
+        ..clear()
+        ..addAll(devices);
       _devicesController.add(List.unmodifiable(_devices));
 
       _logger.i('Found ${devices.length} robot devices');
@@ -291,8 +292,9 @@ class RobotService {
         ),
       ];
 
-      _devices.clear();
-      _devices.addAll(mockDevices);
+      _devices
+        ..clear()
+        ..addAll(mockDevices);
       _devicesController.add(List.unmodifiable(_devices));
 
       return mockDevices;

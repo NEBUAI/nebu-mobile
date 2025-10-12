@@ -392,9 +392,10 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
     setState(() {
       isRecording = false;
     });
-    _animationController.stop();
-    _animationController.reset();
-    
+    _animationController
+      ..stop()
+      ..reset();
+
     // TODO: Process recorded audio
     // Show result or error
     ScaffoldMessenger.of(context).showSnackBar(
