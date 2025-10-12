@@ -292,7 +292,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   }
 
   void _showPermissionDeniedDialog(String permission) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('$permission Permission'),

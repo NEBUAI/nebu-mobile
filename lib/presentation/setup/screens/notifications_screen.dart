@@ -122,12 +122,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       _buildNotificationSection(
                         title: 'Notification Types',
                         icon: Icons.notifications_active,
-                        children: notificationTypes.map((notification) => 
+                        children: notificationTypes.map((notification) =>
                           _buildNotificationTile(
-                            title: notification['title'],
-                            description: notification['description'],
-                            icon: notification['icon'],
-                            enabled: notification['enabled'],
+                            title: notification['title'] as String,
+                            description: notification['description'] as String,
+                            icon: notification['icon'] as IconData,
+                            enabled: notification['enabled'] as bool,
                             onChanged: (value) {
                               setState(() {
                                 notification['enabled'] = value;
@@ -145,12 +145,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       _buildNotificationSection(
                         title: 'Quiet Hours',
                         icon: Icons.bedtime,
-                        children: quietHours.map((setting) => 
+                        children: quietHours.map((setting) =>
                           _buildNotificationTile(
-                            title: setting['title'],
-                            description: setting['description'],
-                            icon: setting['icon'],
-                            enabled: setting['enabled'],
+                            title: setting['title'] as String,
+                            description: setting['description'] as String,
+                            icon: setting['icon'] as IconData,
+                            enabled: setting['enabled'] as bool,
                             onChanged: (value) {
                               setState(() {
                                 setting['enabled'] = value;

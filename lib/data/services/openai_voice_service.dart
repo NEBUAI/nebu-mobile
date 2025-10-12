@@ -163,7 +163,7 @@ class OpenAIVoiceService {
         final conversationJson = jsonDecode(conversationString) as List;
         _conversation.clear();
         _conversation.addAll(
-          conversationJson.map((json) => ConversationMessage.fromJson(json)),
+          conversationJson.map((json) => ConversationMessage.fromJson(json as Map<String, dynamic>)),
         );
       }
     } catch (e) {
@@ -252,7 +252,7 @@ class OpenAIVoiceService {
           .toList();
 
       // Llamada a OpenAI API
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         'https://api.openai.com/v1/chat/completions',
         data: {
           'model': _config!.model,
@@ -324,7 +324,7 @@ class OpenAIVoiceService {
       _setStatus(VoiceAgentStatus.speaking);
 
       // Generar audio con OpenAI TTS
-      final response = await _dio.post(
+      final response = await _dio.post<List<int>>(
         'https://api.openai.com/v1/audio/speech',
         data: {
           'model': 'tts-1',
@@ -340,7 +340,7 @@ class OpenAIVoiceService {
       // Guardar audio temporal
       const audioPath = '/tmp/voice_response.mp3';
       final audioFile = File(audioPath);
-      await audioFile.writeAsBytes(response.data);
+      await audioFile.writeAsBytes(response.data!);
 
       // Reproducir audio
       await _audioPlayer.setFilePath(audioPath);
@@ -375,7 +375,7 @@ class OpenAIVoiceService {
               })
           .toList();
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         'https://api.openai.com/v1/chat/completions',
         data: {
           'model': _config!.model,

@@ -302,10 +302,10 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
           const SizedBox(height: 16),
           
           ...voiceSettings.map((setting) => _buildSettingTile(
-            title: setting['title'],
-            description: setting['description'],
-            icon: setting['icon'],
-            enabled: setting['enabled'],
+            title: setting['title'] as String,
+            description: setting['description'] as String,
+            icon: setting['icon'] as IconData,
+            enabled: setting['enabled'] as bool,
             isDark: isDark,
           )),
         ],

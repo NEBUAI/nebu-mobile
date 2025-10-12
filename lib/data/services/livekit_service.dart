@@ -141,7 +141,7 @@ class LiveKitService {
   void _handleDataReceived(List<int> data) {
     try {
       final payload = utf8.decode(data);
-      final deviceData = IoTDeviceData.fromJson(jsonDecode(payload));
+      final deviceData = IoTDeviceData.fromJson(jsonDecode(payload) as Map<String, dynamic>);
 
       _deviceDataController.add(deviceData);
       _onDeviceDataCallback?.call(deviceData);
@@ -169,7 +169,7 @@ class LiveKitService {
       }
 
       // En producción, obtener token del servidor
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '${EnvConfig.apiBaseUrl}/livekit/token',
         data: {
           'participantName': participantName,
@@ -177,7 +177,7 @@ class LiveKitService {
         },
       );
 
-      return response.data['token'] as String;
+      return response.data?['token'] as String;
     } catch (e) {
       _logger.w('Failed to generate token from server, using demo token: $e');
       return _createSimpleToken(participantName, roomName);

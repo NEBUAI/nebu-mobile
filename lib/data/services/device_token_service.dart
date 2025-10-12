@@ -88,12 +88,12 @@ class DeviceTokenService {
         return _tokenCache[deviceId]!;
       }
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         _baseEndpoint,
         data: DeviceTokenRequest(deviceId: deviceId).toJson(),
       );
 
-      final tokenResponse = DeviceTokenResponse.fromJson(response.data);
+      final tokenResponse = DeviceTokenResponse.fromJson(response.data!);
       
       // Guardar en cache
       _tokenCache[deviceId] = tokenResponse;
@@ -158,7 +158,7 @@ class DeviceTokenService {
     try {
       _logger.i('Revoking device token for: $deviceId');
 
-      await _dio.delete('$_baseEndpoint/$deviceId');
+      await _dio.delete<void>('$_baseEndpoint/$deviceId');
       
       // Remover del cache
       _tokenCache.remove(deviceId);
@@ -177,7 +177,7 @@ class DeviceTokenService {
     try {
       _logger.d('Verifying token status for: $deviceId');
 
-      final response = await _dio.get('$_baseEndpoint/$deviceId/status');
+      final response = await _dio.get<Map<String, dynamic>>('$_baseEndpoint/$deviceId/status');
       
       final isValid = response.data['valid'] as bool? ?? false;
       

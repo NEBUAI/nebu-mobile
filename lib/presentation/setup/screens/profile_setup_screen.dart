@@ -252,7 +252,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   void _showAvatarOptions() {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) => Container(
         padding: const EdgeInsets.all(24),

@@ -202,7 +202,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
-              onTap: () => controller.selectedLanguage.value = language['code'],
+              onTap: () => controller.selectedLanguage.value = language['code'] as String,
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -219,13 +219,13 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 child: Row(
                   children: [
                     Text(
-                      language['flag'],
+                      language['flag'] as String,
                       style: const TextStyle(fontSize: 24),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        language['name'],
+                        language['name'] as String,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
@@ -258,7 +258,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
-              onTap: () => controller.selectedTheme.value = theme['code'],
+              onTap: () => controller.selectedTheme.value = theme['code'] as String,
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -275,14 +275,14 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      theme['icon'],
+                      theme['icon'] as IconData?,
                       color: isSelected ? AppTheme.primaryLight : Colors.grey[600],
                       size: 20,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        theme['name'],
+                        theme['name'] as String,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,

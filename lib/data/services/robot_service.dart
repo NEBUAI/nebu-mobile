@@ -93,8 +93,8 @@ class RobotValidationResponse {
   factory RobotValidationResponse.fromJson(Map<String, dynamic> json) =>
       RobotValidationResponse(
         isValid: json['isValid'] as bool,
-        device: json['device'] != null 
-            ? RobotDevice.fromJson(json['device']) 
+        device: json['device'] != null
+            ? RobotDevice.fromJson(json['device'] as Map<String, dynamic>)
             : null,
         message: json['message'] as String,
         requiresUpdate: json['requiresUpdate'] as bool? ?? false,
@@ -141,7 +141,7 @@ class WiFiConfigurationResponse {
         success: json['success'] as bool,
         message: json['message'] as String,
         connectionTest: json['connectionTest'] != null
-            ? ConnectionTest.fromJson(json['connectionTest'])
+            ? ConnectionTest.fromJson(json['connectionTest'] as Map<String, dynamic>)
             : null,
       );
   final bool success;
@@ -218,12 +218,12 @@ class RobotService {
     try {
       _logger.i('Validating robot device: ${request.deviceName}');
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/robots/validate',
         data: request.toJson(),
       );
 
-      final validationResponse = RobotValidationResponse.fromJson(response.data);
+      final validationResponse = RobotValidationResponse.fromJson(response.data!);
       
       if (validationResponse.isValid && validationResponse.device != null) {
         _updateDeviceInList(validationResponse.device!);
@@ -247,11 +247,11 @@ class RobotService {
     try {
       _logger.i('Fetching user robot devices');
 
-      final response = await _dio.get('/robots');
+      final response = await _dio.get<Map<String, dynamic>>('/robots');
 
-      final devicesJson = response.data['devices'] as List;
+      final devicesJson = response.data?['devices'] as List;
       final devices = devicesJson
-          .map((json) => RobotDevice.fromJson(json))
+          .map((json) => RobotDevice.fromJson(json as Map<String, dynamic>))
           .toList();
 
       _devices.clear();
@@ -304,12 +304,12 @@ class RobotService {
     try {
       _logger.i('Configuring WiFi for robot: ${request.deviceId}');
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/robots/${request.deviceId}/wifi',
         data: request.toJson(),
       );
 
-      final configResponse = WiFiConfigurationResponse.fromJson(response.data);
+      final configResponse = WiFiConfigurationResponse.fromJson(response.data!);
       
       _logger.i('WiFi configuration result: ${configResponse.success}');
       return configResponse;
@@ -329,7 +329,7 @@ class RobotService {
     try {
       _logger.i('Sending command to robot: ${command.deviceId} - ${command.command}');
 
-      await _dio.post(
+      await _dio.post<void>(
         '/robots/${command.deviceId}/commands',
         data: command.toJson(),
       );
@@ -380,7 +380,7 @@ class RobotService {
     try {
       _logger.i('Updating firmware for robot: $deviceId');
 
-      await _dio.post('/robots/$deviceId/firmware/update');
+      await _dio.post<void>('/robots/$deviceId/firmware/update');
       
       _logger.i('Firmware update initiated');
       return true;
