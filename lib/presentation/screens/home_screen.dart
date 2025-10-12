@@ -11,8 +11,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
-    final themeState = ref.watch(themeProvider);
+    final AuthState authState = ref.watch(authProvider);
+    final ThemeState themeState = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(

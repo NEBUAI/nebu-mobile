@@ -13,9 +13,9 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
-    final themeState = ref.watch(themeProvider);
-    final languageState = ref.watch(languageProvider);
+    final AuthState authState = ref.watch(authProvider);
+    final ThemeState themeState = ref.watch(themeProvider);
+    final LanguageState languageState = ref.watch(languageProvider);
 
     return Scaffold(
       appBar: AppBar(

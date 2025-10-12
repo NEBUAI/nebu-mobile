@@ -61,12 +61,8 @@ void main() async {
         authServiceProvider.overrideWithValue(authService),
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
         authProvider.overrideWith(AuthNotifier.new),
-        themeProvider.overrideWith(
-          (ref) => ThemeNotifier(prefs: sharedPreferences),
-        ),
-        languageProvider.overrideWith(
-          (ref) => LanguageNotifier(prefs: sharedPreferences),
-        ),
+        themeProvider.overrideWith(ThemeNotifier.new),
+        languageProvider.overrideWith(LanguageNotifier.new),
       ],
       child: const NebuApp(),
     ),
@@ -78,7 +74,7 @@ class NebuApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeState = ref.watch(themeProvider);
+    final ThemeState themeState = ref.watch(themeProvider);
     final router = ref.watch(routerProvider);
 
     return Directionality(
