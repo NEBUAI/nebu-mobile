@@ -54,7 +54,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (isAuth) {
       final userJson = _prefs.getString(AppConstants.keyUser);
       if (userJson != null) {
-        final user = User.fromJson(json.decode(userJson));
+        final user = User.fromJson(json.decode(userJson) as Map<String, dynamic>);
         state = state.copyWith(
           user: user,
           isAuthenticated: true,

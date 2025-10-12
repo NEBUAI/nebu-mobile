@@ -178,8 +178,8 @@ class DeviceTokenService {
       _logger.d('Verifying token status for: $deviceId');
 
       final response = await _dio.get<Map<String, dynamic>>('$_baseEndpoint/$deviceId/status');
-      
-      final isValid = response.data['valid'] as bool? ?? false;
+
+      final isValid = response.data?['valid'] as bool? ?? false;
       
       if (!isValid) {
         // Remover del cache si no es válido

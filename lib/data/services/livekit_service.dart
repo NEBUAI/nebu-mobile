@@ -70,7 +70,7 @@ class LiveKitService {
   final Dio _dio;
 
   Room? _room;
-  LiveKitConfig? _config;
+  // LiveKitConfig? _config; // Unused field, commented for future use
   LiveKitConnectionStatus _status = LiveKitConnectionStatus.disconnected;
 
   // Streams para notificaciones
@@ -80,13 +80,13 @@ class LiveKitService {
       StreamController<IoTDeviceData>.broadcast();
 
   // Callbacks
-  Function(IoTDeviceData)? _onDeviceDataCallback;
-  Function(LiveKitConnectionStatus)? _onConnectionStatusCallback;
+  void Function(IoTDeviceData)? _onDeviceDataCallback;
+  void Function(LiveKitConnectionStatus)? _onConnectionStatusCallback;
 
   /// Conectar a LiveKit
   Future<void> connect(LiveKitConfig config) async {
     try {
-      _config = config;
+      // _config = config; // Unused assignment
       _setStatus(LiveKitConnectionStatus.connecting);
 
       // Usar servidor local en desarrollo, demo server como fallback
@@ -290,12 +290,12 @@ class LiveKitService {
   Stream<IoTDeviceData> get deviceDataStream => _deviceDataController.stream;
 
   /// Establecer callback de datos de dispositivo
-  void setOnDeviceDataCallback(Function(IoTDeviceData) callback) {
+  void setOnDeviceDataCallback(void Function(IoTDeviceData) callback) {
     _onDeviceDataCallback = callback;
   }
 
   /// Establecer callback de estado de conexión
-  void setOnConnectionStatusCallback(Function(LiveKitConnectionStatus) callback) {
+  void setOnConnectionStatusCallback(void Function(LiveKitConnectionStatus) callback) {
     _onConnectionStatusCallback = callback;
   }
 

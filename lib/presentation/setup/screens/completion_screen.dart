@@ -59,10 +59,10 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
   }
 
   Future<void> _startAnimations() async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
     _animationController.forward();
-    
-    await Future.delayed(const Duration(milliseconds: 800));
+
+    await Future<void>.delayed(const Duration(milliseconds: 800));
     _checkAnimationController.forward();
   }
 

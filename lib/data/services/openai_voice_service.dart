@@ -94,8 +94,8 @@ class OpenAIVoiceService {
       StreamController<ConversationMessage>.broadcast();
 
   // Callbacks
-  Function(ConversationMessage)? _onMessageCallback;
-  Function(VoiceAgentStatus)? _onStatusCallback;
+  void Function(ConversationMessage)? _onMessageCallback;
+  void Function(VoiceAgentStatus)? _onStatusCallback;
 
   /// Inicializar el servicio
   Future<void> initialize(VoiceAgentConfig config) async {
@@ -155,6 +155,8 @@ class OpenAIVoiceService {
   }
 
   /// Cargar conversación desde almacenamiento local
+  // TODO: Implement conversation loading when needed
+  // ignore: unused_element
   Future<void> _loadConversation() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -440,12 +442,12 @@ class OpenAIVoiceService {
   Stream<ConversationMessage> get messageStream => _messageController.stream;
 
   /// Establecer callback de mensajes
-  void setOnMessageCallback(Function(ConversationMessage) callback) {
+  void setOnMessageCallback(void Function(ConversationMessage) callback) {
     _onMessageCallback = callback;
   }
 
   /// Establecer callback de estado
-  void setOnStatusCallback(Function(VoiceAgentStatus) callback) {
+  void setOnStatusCallback(void Function(VoiceAgentStatus) callback) {
     _onStatusCallback = callback;
   }
 

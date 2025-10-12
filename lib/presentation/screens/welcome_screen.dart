@@ -117,7 +117,7 @@ class WelcomeScreen extends StatelessWidget {
     );
 
   void _showLoginDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Sign In'),
