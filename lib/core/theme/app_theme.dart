@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  // Private constructor to prevent instantiation
+  AppTheme._();
+
   // Colors - Light Theme
   static const Color primaryLight = Color(0xFF6366F1); // Indigo
   static const Color secondaryLight = Color(0xFF8B5CF6); // Purple

@@ -44,7 +44,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _navigateToNextScreen() async {
     await Future<void>.delayed(const Duration(seconds: 2));
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     final AuthState authState = ref.read(authProvider);
 

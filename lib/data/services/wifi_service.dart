@@ -284,7 +284,9 @@ class WiFiService {
 
   /// Obtener información de la red actual
   Map<String, dynamic>? get currentNetworkInfo {
-    if (_currentNetwork == null) return null;
+    if (_currentNetwork == null) {
+      return null;
+    }
     
     return {
       'ssid': _currentNetwork!.ssid,

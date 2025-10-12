@@ -36,8 +36,9 @@ class ApiService {
             options.headers['Authorization'] = 'Bearer $token';
           }
 
-          _logger.d('Request: ${options.method} ${options.path}');
-          _logger.d('Headers: ${options.headers}');
+          _logger
+            ..d('Request: ${options.method} ${options.path}')
+            ..d('Headers: ${options.headers}');
 
           return handler.next(options);
         },
@@ -46,8 +47,9 @@ class ApiService {
           return handler.next(response);
         },
         onError: (error, handler) async {
-          _logger.e('Error: ${error.response?.statusCode} ${error.requestOptions.path}');
-          _logger.e('Error message: ${error.message}');
+          _logger
+            ..e('Error: ${error.response?.statusCode} ${error.requestOptions.path}')
+            ..e('Error message: ${error.message}');
 
           // Handle 401 Unauthorized - Try to refresh token
           if (error.response?.statusCode == 401) {

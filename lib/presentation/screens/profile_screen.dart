@@ -131,7 +131,7 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Edit Profile'),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
-                        // TODO: Navigate to edit profile
+                        // TODO(dev): Navigate to edit profile
                       },
                     ),
                     const Divider(height: 1),
@@ -140,7 +140,7 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Notifications'),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
-                        // TODO: Navigate to notifications settings
+                        // TODO(dev): Navigate to notifications settings
                       },
                     ),
                     const Divider(height: 1),
@@ -149,7 +149,7 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Privacy'),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
-                        // TODO: Navigate to privacy settings
+                        // TODO(dev): Navigate to privacy settings
                       },
                     ),
                   ],

@@ -1,6 +1,9 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EnvConfig {
+  // Private constructor to prevent instantiation
+  EnvConfig._();
+
   // Backend API
   static String get urlBackend => dotenv.get('URL_BACKEND', fallback: '');
   static String get apiBaseUrl => dotenv.get('API_BASE_URL', fallback: 'http://localhost:3000');

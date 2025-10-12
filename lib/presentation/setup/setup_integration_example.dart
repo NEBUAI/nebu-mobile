@@ -7,7 +7,9 @@ import 'setup_wizard_screen.dart';
 
 /// Ejemplo de cómo integrar el Setup Wizard en tu aplicación
 class SetupIntegrationExample {
-  
+  // Private constructor to prevent instantiation
+  SetupIntegrationExample._();
+
   /// Verifica si el setup ya fue completado
   static Future<bool> isSetupCompleted() async {
     final prefs = await SharedPreferences.getInstance();
