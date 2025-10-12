@@ -1,11 +1,18 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import '../../core/constants/app_constants.dart';
 
 class BluetoothService {
+
+  BluetoothService({required Logger logger})
+      : _logger = logger,
+        _scanResultsController = StreamController<List<ScanResult>>.broadcast(),
+        _connectionStateController = StreamController<BluetoothConnectionState>.broadcast();
   final Logger _logger;
   final StreamController<List<ScanResult>> _scanResultsController;
   final StreamController<BluetoothConnectionState> _connectionStateController;
@@ -13,11 +20,6 @@ class BluetoothService {
   BluetoothDevice? _connectedDevice;
   StreamSubscription<List<ScanResult>>? _scanSubscription;
   StreamSubscription<BluetoothConnectionState>? _connectionSubscription;
-
-  BluetoothService({required Logger logger})
-      : _logger = logger,
-        _scanResultsController = StreamController<List<ScanResult>>.broadcast(),
-        _connectionStateController = StreamController<BluetoothConnectionState>.broadcast();
 
   // Streams
   Stream<List<ScanResult>> get scanResults => _scanResultsController.stream;
@@ -106,7 +108,7 @@ class BluetoothService {
           _logger.d('Found ${results.length} devices');
           _scanResultsController.add(results);
         },
-        onError: (error) {
+        onError: (Object error) {
           _logger.e('Scan error: $error');
         },
       );
@@ -141,7 +143,6 @@ class BluetoothService {
       // Connect to the device
       await device.connect(
         timeout: AppConstants.connectionTimeout,
-        autoConnect: false,
       );
 
       _connectedDevice = device;
@@ -156,7 +157,7 @@ class BluetoothService {
             _connectedDevice = null;
           }
         },
-        onError: (error) {
+        onError: (Object error) {
           _logger.e('Connection state error: $error');
         },
       );
@@ -195,7 +196,7 @@ class BluetoothService {
       _logger.i('Discovering services...');
       final services = await _connectedDevice!.discoverServices();
       _logger.i('Discovered ${services.length} services');
-      return services;
+      return Future.value(services);
     } catch (e) {
       _logger.e('Error discovering services: $e');
       rethrow;

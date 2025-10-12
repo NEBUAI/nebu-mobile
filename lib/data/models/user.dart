@@ -46,7 +46,7 @@ class SocialAuthResult with _$SocialAuthResult {
     User? user,
     AuthTokens? tokens,
     String? error,
-    dynamic appleCredential,
+    appleCredential,
   }) = _SocialAuthResult;
 
   factory SocialAuthResult.fromJson(Map<String, dynamic> json) =>

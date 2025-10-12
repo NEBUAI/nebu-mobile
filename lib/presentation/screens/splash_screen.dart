@@ -27,11 +27,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
     );
 
@@ -62,9 +62,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+  Widget build(BuildContext context) => Scaffold(
+      body: DecoratedBox(
         decoration: AppTheme.primaryGradientDecoration,
         child: Center(
           child: FadeTransition(
@@ -114,5 +113,4 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         ),
       ),
     );
-  }
 }

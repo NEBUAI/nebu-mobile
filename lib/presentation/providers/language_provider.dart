@@ -5,34 +5,32 @@ import '../../core/constants/app_constants.dart';
 
 // Language state
 class LanguageState {
-  final Locale locale;
-  final String languageCode;
 
   LanguageState({
     this.locale = const Locale('en'),
     this.languageCode = 'en',
   });
+  final Locale locale;
+  final String languageCode;
 
   LanguageState copyWith({
     Locale? locale,
     String? languageCode,
-  }) {
-    return LanguageState(
+  }) => LanguageState(
       locale: locale ?? this.locale,
       languageCode: languageCode ?? this.languageCode,
     );
-  }
 }
 
 // Language notifier
 class LanguageNotifier extends StateNotifier<LanguageState> {
-  final SharedPreferences _prefs;
 
   LanguageNotifier({required SharedPreferences prefs})
       : _prefs = prefs,
         super(LanguageState()) {
     _loadLanguage();
   }
+  final SharedPreferences _prefs;
 
   // Load language from storage
   Future<void> _loadLanguage() async {

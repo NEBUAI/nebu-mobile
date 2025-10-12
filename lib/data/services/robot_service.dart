@@ -4,16 +4,6 @@ import 'package:logger/logger.dart';
 
 /// Dispositivo Robot
 class RobotDevice {
-  final String id;
-  final String name;
-  final String model;
-  final String serialNumber;
-  final String firmwareVersion;
-  final String bluetoothId;
-  final String status; // 'online' | 'offline' | 'setup' | 'error'
-  final DateTime lastSeen;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   const RobotDevice({
     required this.id,
@@ -28,19 +18,6 @@ class RobotDevice {
     required this.updatedAt,
   });
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'model': model,
-    'serialNumber': serialNumber,
-    'firmwareVersion': firmwareVersion,
-    'bluetoothId': bluetoothId,
-    'status': status,
-    'lastSeen': lastSeen.toIso8601String(),
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
-  };
-
   factory RobotDevice.fromJson(Map<String, dynamic> json) =>
       RobotDevice(
         id: json['id'] as String,
@@ -54,15 +31,33 @@ class RobotDevice {
         createdAt: DateTime.parse(json['createdAt'] as String),
         updatedAt: DateTime.parse(json['updatedAt'] as String),
       );
+  final String id;
+  final String name;
+  final String model;
+  final String serialNumber;
+  final String firmwareVersion;
+  final String bluetoothId;
+  final String status; // 'online' | 'offline' | 'setup' | 'error'
+  final DateTime lastSeen;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'model': model,
+    'serialNumber': serialNumber,
+    'firmwareVersion': firmwareVersion,
+    'bluetoothId': bluetoothId,
+    'status': status,
+    'lastSeen': lastSeen.toIso8601String(),
+    'createdAt': createdAt.toIso8601String(),
+    'updatedAt': updatedAt.toIso8601String(),
+  };
 }
 
 /// Solicitud de validación del robot
 class RobotValidationRequest {
-  final String deviceId;
-  final String deviceName;
-  final String bluetoothId;
-  final String? model;
-  final String? serialNumber;
 
   const RobotValidationRequest({
     required this.deviceId,
@@ -71,6 +66,11 @@ class RobotValidationRequest {
     this.model,
     this.serialNumber,
   });
+  final String deviceId;
+  final String deviceName;
+  final String bluetoothId;
+  final String? model;
+  final String? serialNumber;
 
   Map<String, dynamic> toJson() => {
     'deviceId': deviceId,
@@ -83,15 +83,10 @@ class RobotValidationRequest {
 
 /// Respuesta de validación del robot
 class RobotValidationResponse {
-  final bool isValid;
-  final RobotDevice? device;
-  final String message;
-  final bool requiresUpdate;
 
   const RobotValidationResponse({
     required this.isValid,
-    this.device,
-    required this.message,
+    required this.message, this.device,
     this.requiresUpdate = false,
   });
 
@@ -104,14 +99,14 @@ class RobotValidationResponse {
         message: json['message'] as String,
         requiresUpdate: json['requiresUpdate'] as bool? ?? false,
       );
+  final bool isValid;
+  final RobotDevice? device;
+  final String message;
+  final bool requiresUpdate;
 }
 
 /// Solicitud de configuración WiFi
 class WiFiConfigurationRequest {
-  final String deviceId;
-  final String wifiSSID;
-  final String wifiPassword;
-  final String? encryptionType;
 
   const WiFiConfigurationRequest({
     required this.deviceId,
@@ -119,6 +114,10 @@ class WiFiConfigurationRequest {
     required this.wifiPassword,
     this.encryptionType,
   });
+  final String deviceId;
+  final String wifiSSID;
+  final String wifiPassword;
+  final String? encryptionType;
 
   Map<String, dynamic> toJson() => {
     'deviceId': deviceId,
@@ -130,9 +129,6 @@ class WiFiConfigurationRequest {
 
 /// Respuesta de configuración WiFi
 class WiFiConfigurationResponse {
-  final bool success;
-  final String message;
-  final ConnectionTest? connectionTest;
 
   const WiFiConfigurationResponse({
     required this.success,
@@ -148,14 +144,13 @@ class WiFiConfigurationResponse {
             ? ConnectionTest.fromJson(json['connectionTest'])
             : null,
       );
+  final bool success;
+  final String message;
+  final ConnectionTest? connectionTest;
 }
 
 /// Prueba de conexión
 class ConnectionTest {
-  final bool success;
-  final double ping;
-  final double downloadSpeed;
-  final double uploadSpeed;
 
   const ConnectionTest({
     required this.success,
@@ -171,14 +166,14 @@ class ConnectionTest {
         downloadSpeed: (json['downloadSpeed'] as num).toDouble(),
         uploadSpeed: (json['uploadSpeed'] as num).toDouble(),
       );
+  final bool success;
+  final double ping;
+  final double downloadSpeed;
+  final double uploadSpeed;
 }
 
 /// Comando del robot
 class RobotCommand {
-  final String deviceId;
-  final String command;
-  final Map<String, dynamic> parameters;
-  final DateTime timestamp;
 
   const RobotCommand({
     required this.deviceId,
@@ -186,6 +181,10 @@ class RobotCommand {
     required this.parameters,
     required this.timestamp,
   });
+  final String deviceId;
+  final String command;
+  final Map<String, dynamic> parameters;
+  final DateTime timestamp;
 
   Map<String, dynamic> toJson() => {
     'deviceId': deviceId,
@@ -197,6 +196,12 @@ class RobotCommand {
 
 /// Servicio de Robot
 class RobotService {
+
+  RobotService({
+    required Logger logger,
+    required Dio dio,
+  }) : _logger = logger,
+       _dio = dio;
   final Logger _logger;
   final Dio _dio;
 
@@ -207,12 +212,6 @@ class RobotService {
       StreamController<List<RobotDevice>>.broadcast();
   final StreamController<RobotDevice> _deviceStatusController = 
       StreamController<RobotDevice>.broadcast();
-
-  RobotService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio;
 
   /// Validar dispositivo robot
   Future<RobotValidationResponse> validateDevice(RobotValidationRequest request) async {
@@ -361,7 +360,7 @@ class RobotService {
       timestamp: DateTime.now(),
     );
 
-    return await sendCommand(command);
+    return sendCommand(command);
   }
 
   /// Detener robot
@@ -373,7 +372,7 @@ class RobotService {
       timestamp: DateTime.now(),
     );
 
-    return await sendCommand(command);
+    return sendCommand(command);
   }
 
   /// Actualizar firmware del robot

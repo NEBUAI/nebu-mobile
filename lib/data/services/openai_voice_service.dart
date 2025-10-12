@@ -1,19 +1,16 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:record/record.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Configuración del agente de voz
 class VoiceAgentConfig {
-  final String apiKey;
-  final String model;
-  final String voice;
-  final String language;
 
   const VoiceAgentConfig({
     required this.apiKey,
@@ -21,15 +18,14 @@ class VoiceAgentConfig {
     this.voice = 'nova',
     this.language = 'es',
   });
+  final String apiKey;
+  final String model;
+  final String voice;
+  final String language;
 }
 
 /// Mensaje de conversación
 class ConversationMessage {
-  final String id;
-  final String role; // 'user' | 'assistant'
-  final String content;
-  final DateTime timestamp;
-  final String? audioUrl;
 
   const ConversationMessage({
     required this.id,
@@ -39,14 +35,6 @@ class ConversationMessage {
     this.audioUrl,
   });
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'role': role,
-    'content': content,
-    'timestamp': timestamp.millisecondsSinceEpoch,
-    'audioUrl': audioUrl,
-  };
-
   factory ConversationMessage.fromJson(Map<String, dynamic> json) =>
       ConversationMessage(
         id: json['id'] as String,
@@ -55,6 +43,19 @@ class ConversationMessage {
         timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] as int),
         audioUrl: json['audioUrl'] as String?,
       );
+  final String id;
+  final String role; // 'user' | 'assistant'
+  final String content;
+  final DateTime timestamp;
+  final String? audioUrl;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'role': role,
+    'content': content,
+    'timestamp': timestamp.millisecondsSinceEpoch,
+    'audioUrl': audioUrl,
+  };
 }
 
 /// Estados del agente de voz
@@ -68,6 +69,14 @@ enum VoiceAgentStatus {
 
 /// Servicio de OpenAI Voice Agent
 class OpenAIVoiceService {
+
+  OpenAIVoiceService({
+    required Logger logger,
+    required Dio dio,
+  }) : _logger = logger,
+       _dio = dio,
+       _recorder = AudioRecorder(),
+       _audioPlayer = AudioPlayer();
   final Logger _logger;
   final Dio _dio;
   final AudioRecorder _recorder;
@@ -88,14 +97,6 @@ class OpenAIVoiceService {
   Function(ConversationMessage)? _onMessageCallback;
   Function(VoiceAgentStatus)? _onStatusCallback;
 
-  OpenAIVoiceService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio,
-       _recorder = AudioRecorder(),
-       _audioPlayer = AudioPlayer();
-
   /// Inicializar el servicio
   Future<void> initialize(VoiceAgentConfig config) async {
     try {
@@ -109,7 +110,7 @@ class OpenAIVoiceService {
       await _requestAudioPermissions();
       
       // Configurar audio player
-      await _audioPlayer.setVolume(1.0);
+      await _audioPlayer.setVolume(1);
       
       _isInitialized = true;
       _logger.i('OpenAI Voice Service initialized successfully');
@@ -194,7 +195,6 @@ class OpenAIVoiceService {
         const RecordConfig(
           encoder: AudioEncoder.wav,
           sampleRate: 16000,
-          bitRate: 128000,
         ),
         path: '/tmp/voice_input.wav',
       );
@@ -338,7 +338,7 @@ class OpenAIVoiceService {
       );
 
       // Guardar audio temporal
-      final audioPath = '/tmp/voice_response.mp3';
+      const audioPath = '/tmp/voice_response.mp3';
       final audioFile = File(audioPath);
       await audioFile.writeAsBytes(response.data);
 

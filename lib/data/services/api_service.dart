@@ -1,13 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../core/utils/env_config.dart';
+import 'package:logger/logger.dart';
+
 import '../../core/constants/app_constants.dart';
+import '../../core/utils/env_config.dart';
 
 class ApiService {
-  final Dio dio;
-  final FlutterSecureStorage _secureStorage;
-  final Logger _logger;
 
   ApiService({
     required this.dio,
@@ -17,6 +15,9 @@ class ApiService {
         _logger = logger {
     _setupDio();
   }
+  final Dio dio;
+  final FlutterSecureStorage _secureStorage;
+  final Logger _logger;
 
   void _setupDio() {
     dio.options.baseUrl = EnvConfig.urlBackend;
@@ -57,7 +58,7 @@ class ApiService {
             if (refreshToken != null && refreshToken.isNotEmpty) {
               try {
                 // Try to refresh the token
-                final refreshResponse = await dio.post(
+                final refreshResponse = await dio.post<Map<String, dynamic>>(
                   '/auth/refresh',
                   data: {'refreshToken': refreshToken},
                   options: Options(
@@ -67,7 +68,7 @@ class ApiService {
                   ),
                 );
 
-                final newAccessToken = refreshResponse.data['accessToken'] as String;
+                final newAccessToken = refreshResponse.data?['accessToken'] as String;
                 await _secureStorage.write(
                   key: AppConstants.keyAccessToken,
                   value: newAccessToken,
@@ -75,7 +76,7 @@ class ApiService {
 
                 // Retry the original request with new token
                 error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-                final retryResponse = await dio.fetch(error.requestOptions);
+                final retryResponse = await dio.fetch<dynamic>(error.requestOptions);
                 return handler.resolve(retryResponse);
               } catch (e) {
                 _logger.e('Token refresh failed: $e');
@@ -97,8 +98,7 @@ class ApiService {
         LogInterceptor(
           requestBody: true,
           responseBody: true,
-          error: true,
-          logPrint: (obj) => _logger.d(obj),
+          logPrint: _logger.d,
         ),
       );
     }
@@ -126,7 +126,7 @@ class ApiService {
   // Generic POST request
   Future<T> post<T>(
     String path, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
@@ -147,7 +147,7 @@ class ApiService {
   // Generic PUT request
   Future<T> put<T>(
     String path, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
@@ -168,7 +168,7 @@ class ApiService {
   // Generic DELETE request
   Future<T> delete<T>(
     String path, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
@@ -189,7 +189,7 @@ class ApiService {
   // Generic PATCH request
   Future<T> patch<T>(
     String path, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {

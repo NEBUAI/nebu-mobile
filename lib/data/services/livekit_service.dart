@@ -1,31 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:livekit_client/livekit_client.dart';
+
 import 'package:dio/dio.dart';
+import 'package:livekit_client/livekit_client.dart';
 import 'package:logger/logger.dart';
+
 import '../../core/utils/env_config.dart';
 
 /// Configuración de LiveKit
 class LiveKitConfig {
+
+  const LiveKitConfig({
+    required this.roomName, required this.participantName, this.serverUrl,
+    this.token,
+  });
   final String? serverUrl;
   final String roomName;
   final String participantName;
   final String? token;
-
-  const LiveKitConfig({
-    this.serverUrl,
-    required this.roomName,
-    required this.participantName,
-    this.token,
-  });
 }
 
 /// Datos de dispositivo IoT
 class IoTDeviceData {
-  final String deviceId;
-  final String deviceType; // 'sensor' | 'actuator' | 'camera' | 'microphone'
-  final Map<String, dynamic> data;
-  final DateTime timestamp;
 
   const IoTDeviceData({
     required this.deviceId,
@@ -34,13 +30,6 @@ class IoTDeviceData {
     required this.timestamp,
   });
 
-  Map<String, dynamic> toJson() => {
-    'deviceId': deviceId,
-    'deviceType': deviceType,
-    'data': data,
-    'timestamp': timestamp.millisecondsSinceEpoch,
-  };
-
   factory IoTDeviceData.fromJson(Map<String, dynamic> json) =>
       IoTDeviceData(
         deviceId: json['deviceId'] as String,
@@ -48,6 +37,17 @@ class IoTDeviceData {
         data: json['data'] as Map<String, dynamic>,
         timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] as int),
       );
+  final String deviceId;
+  final String deviceType; // 'sensor' | 'actuator' | 'camera' | 'microphone'
+  final Map<String, dynamic> data;
+  final DateTime timestamp;
+
+  Map<String, dynamic> toJson() => {
+    'deviceId': deviceId,
+    'deviceType': deviceType,
+    'data': data,
+    'timestamp': timestamp.millisecondsSinceEpoch,
+  };
 }
 
 /// Estados de conexión
@@ -60,6 +60,12 @@ enum LiveKitConnectionStatus {
 
 /// Servicio de LiveKit para IoT
 class LiveKitService {
+
+  LiveKitService({
+    required Logger logger,
+    required Dio dio,
+  }) : _logger = logger,
+       _dio = dio;
   final Logger _logger;
   final Dio _dio;
 
@@ -76,12 +82,6 @@ class LiveKitService {
   // Callbacks
   Function(IoTDeviceData)? _onDeviceDataCallback;
   Function(LiveKitConnectionStatus)? _onConnectionStatusCallback;
-
-  LiveKitService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio;
 
   /// Conectar a LiveKit
   Future<void> connect(LiveKitConfig config) async {

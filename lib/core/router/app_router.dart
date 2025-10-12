@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../presentation/providers/auth_provider.dart';
-import '../../presentation/screens/splash_screen.dart';
-import '../../presentation/screens/welcome_screen.dart';
-import '../../presentation/screens/home_screen.dart';
-import '../../presentation/screens/profile_screen.dart';
-import '../../presentation/screens/voice_agent_screen.dart';
-import '../../presentation/screens/iot_dashboard_screen.dart';
-import '../../presentation/screens/device_management_screen.dart';
-import '../../presentation/screens/qr_scanner_screen.dart';
-import '../../presentation/screens/main_screen.dart';
+import 'package:go_router/go_router.dart';
+
 import '../../core/constants/app_constants.dart';
+import '../../presentation/providers/auth_provider.dart';
+import '../../presentation/screens/device_management_screen.dart';
+import '../../presentation/screens/home_screen.dart';
+import '../../presentation/screens/iot_dashboard_screen.dart';
+import '../../presentation/screens/main_screen.dart';
+import '../../presentation/screens/profile_screen.dart';
+import '../../presentation/screens/qr_scanner_screen.dart';
+import '../../presentation/screens/splash_screen.dart';
+import '../../presentation/screens/voice_agent_screen.dart';
+import '../../presentation/screens/welcome_screen.dart';
 
 // Router provider
 final routerProvider = Provider<GoRouter>((ref) {
@@ -61,8 +62,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppConstants.routeHome,
             name: 'home',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const HomeScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: HomeScreen(),
             ),
           ),
 
@@ -70,8 +71,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppConstants.routeVoiceAgent,
             name: 'voice-agent',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const VoiceAgentScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: VoiceAgentScreen(),
             ),
           ),
 
@@ -79,8 +80,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppConstants.routeIoTDashboard,
             name: 'iot-dashboard',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const IoTDashboardScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: IoTDashboardScreen(),
             ),
           ),
 
@@ -88,8 +89,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppConstants.routeProfile,
             name: 'profile',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const ProfileScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: ProfileScreen(),
             ),
           ),
         ],

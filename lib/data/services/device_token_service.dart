@@ -4,11 +4,11 @@ import 'package:logger/logger.dart';
 
 /// Solicitud de token de dispositivo
 class DeviceTokenRequest {
-  final String deviceId;
 
   const DeviceTokenRequest({
     required this.deviceId,
   });
+  final String deviceId;
 
   Map<String, dynamic> toJson() => {
     'device_id': deviceId,
@@ -17,9 +17,6 @@ class DeviceTokenRequest {
 
 /// Respuesta de token de dispositivo
 class DeviceTokenResponse {
-  final String accessToken;
-  final String roomName;
-  final int expiresIn;
 
   const DeviceTokenResponse({
     required this.accessToken,
@@ -33,6 +30,9 @@ class DeviceTokenResponse {
         roomName: json['room_name'] as String,
         expiresIn: json['expires_in'] as int,
       );
+  final String accessToken;
+  final String roomName;
+  final int expiresIn;
 
   Map<String, dynamic> toJson() => {
     'access_token': accessToken,
@@ -43,7 +43,6 @@ class DeviceTokenResponse {
 
 /// Error de token de dispositivo
 class DeviceTokenError {
-  final String error;
 
   const DeviceTokenError({
     required this.error,
@@ -53,10 +52,17 @@ class DeviceTokenError {
       DeviceTokenError(
         error: json['error'] as String,
       );
+  final String error;
 }
 
 /// Servicio de tokens de dispositivo
 class DeviceTokenService {
+
+  DeviceTokenService({
+    required Logger logger,
+    required Dio dio,
+  }) : _logger = logger,
+       _dio = dio;
   final Logger _logger;
   final Dio _dio;
 
@@ -65,12 +71,6 @@ class DeviceTokenService {
   // Cache de tokens
   final Map<String, DeviceTokenResponse> _tokenCache = {};
   final Map<String, DateTime> _tokenExpiry = {};
-
-  DeviceTokenService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio;
 
   /// Solicitar token LiveKit para dispositivo IoT
   Future<DeviceTokenResponse> requestDeviceToken(String deviceId) async {
@@ -150,7 +150,7 @@ class DeviceTokenService {
       return _tokenCache[deviceId]!;
     }
     
-    return await requestDeviceToken(deviceId);
+    return requestDeviceToken(deviceId);
   }
 
   /// Revocar token de dispositivo
@@ -224,9 +224,7 @@ class DeviceTokenService {
   }
 
   /// Obtener información del token desde cache
-  DeviceTokenResponse? getCachedToken(String deviceId) {
-    return _isTokenValid(deviceId) ? _tokenCache[deviceId] : null;
-  }
+  DeviceTokenResponse? getCachedToken(String deviceId) => _isTokenValid(deviceId) ? _tokenCache[deviceId] : null;
 
   /// Obtener tiempo restante del token
   Duration? getTokenTimeRemaining(String deviceId) {

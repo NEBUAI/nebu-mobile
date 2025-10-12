@@ -3,16 +3,14 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
 
 class MainScreen extends StatelessWidget {
-  final Widget child;
 
   const MainScreen({
-    super.key,
-    required this.child,
+    required this.child, super.key,
   });
+  final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: child,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _calculateSelectedIndex(context),
@@ -38,7 +36,6 @@ class MainScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).matchedLocation;

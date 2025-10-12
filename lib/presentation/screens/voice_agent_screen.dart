@@ -5,8 +5,7 @@ class VoiceAgentScreen extends StatelessWidget {
   const VoiceAgentScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('Voice Agent'),
       ),
@@ -54,5 +53,4 @@ class VoiceAgentScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

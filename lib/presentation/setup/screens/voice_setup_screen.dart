@@ -55,7 +55,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
       vsync: this,
     );
     _scaleAnimation = Tween<double>(
-      begin: 1.0,
+      begin: 1,
       end: 1.2,
     ).animate(CurvedAnimation(
       parent: _animationController,
@@ -77,7 +77,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
       backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 40),
@@ -135,13 +135,13 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
                 children: [
                   CustomButton(
                     text: 'Continue',
-                    onPressed: () => controller.nextStep(),
+                    onPressed: controller.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () => controller.previousStep(),
+                    onPressed: controller.previousStep,
                     child: Text(
                       'Back',
                       style: TextStyle(
@@ -161,8 +161,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
     );
   }
 
-  Widget _buildVoiceTestCard(bool isDark) {
-    return Container(
+  Widget _buildVoiceTestCard(bool isDark) => Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -206,13 +205,12 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
           // Animated microphone button
           AnimatedBuilder(
             animation: _scaleAnimation,
-            builder: (context, child) {
-              return Transform.scale(
+            builder: (context, child) => Transform.scale(
                 scale: isRecording ? _scaleAnimation.value : 1.0,
                 child: GestureDetector(
                   onTapDown: (_) => _startRecording(),
                   onTapUp: (_) => _stopRecording(),
-                  onTapCancel: () => _stopRecording(),
+                  onTapCancel: _stopRecording,
                   child: Container(
                     width: 80,
                     height: 80,
@@ -234,8 +232,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
                     ),
                   ),
                 ),
-              );
-            },
+              ),
           ),
           
           const SizedBox(height: 20),
@@ -263,10 +260,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
         ],
       ),
     );
-  }
 
-  Widget _buildVoiceSettings(bool isDark) {
-    return Container(
+  Widget _buildVoiceSettings(bool isDark) => Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
@@ -312,11 +307,10 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
             icon: setting['icon'],
             enabled: setting['enabled'],
             isDark: isDark,
-          )).toList(),
+          )),
         ],
       ),
     );
-  }
 
   Widget _buildSettingTile({
     required String title,
@@ -324,8 +318,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
     required IconData icon,
     required bool enabled,
     required bool isDark,
-  }) {
-    return Container(
+  }) => Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
@@ -371,7 +364,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
             onChanged: (value) {
               setState(() {
                 // Update the specific setting
-                for (var setting in voiceSettings) {
+                for (final setting in voiceSettings) {
                   if (setting['title'] == title) {
                     setting['enabled'] = value;
                     break;
@@ -379,12 +372,11 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
                 }
               });
             },
-            activeColor: AppTheme.primaryLight,
+            activeThumbColor: AppTheme.primaryLight,
           ),
         ],
       ),
     );
-  }
 
   void _startRecording() {
     setState(() {

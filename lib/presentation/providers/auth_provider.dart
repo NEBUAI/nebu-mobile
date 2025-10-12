@@ -1,16 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../core/constants/app_constants.dart';
 import '../../data/models/user.dart';
 import '../../data/services/auth_service.dart';
-import '../../core/constants/app_constants.dart';
-import 'dart:convert';
 
 // Auth state
 class AuthState {
-  final User? user;
-  final bool isAuthenticated;
-  final bool isLoading;
-  final String? error;
 
   AuthState({
     this.user,
@@ -18,26 +16,26 @@ class AuthState {
     this.isLoading = false,
     this.error,
   });
+  final User? user;
+  final bool isAuthenticated;
+  final bool isLoading;
+  final String? error;
 
   AuthState copyWith({
     User? user,
     bool? isAuthenticated,
     bool? isLoading,
     String? error,
-  }) {
-    return AuthState(
+  }) => AuthState(
       user: user ?? this.user,
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
     );
-  }
 }
 
 // Auth notifier
 class AuthNotifier extends StateNotifier<AuthState> {
-  final AuthService _authService;
-  final SharedPreferences _prefs;
 
   AuthNotifier({
     required AuthService authService,
@@ -47,6 +45,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
         super(AuthState()) {
     _loadUser();
   }
+  final AuthService _authService;
+  final SharedPreferences _prefs;
 
   // Load user from storage
   Future<void> _loadUser() async {
@@ -68,7 +68,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     required String email,
     required String password,
   }) async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final response = await _authService.login(
@@ -107,7 +107,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     String? firstName,
     String? lastName,
   }) async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final response = await _authService.register(
@@ -143,7 +143,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   // Google login
   Future<bool> loginWithGoogle(String googleToken) async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final response = await _authService.googleLogin(googleToken);
@@ -174,7 +174,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   // Facebook login
   Future<bool> loginWithFacebook(String facebookToken) async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final response = await _authService.facebookLogin(facebookToken);
@@ -205,7 +205,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   // Apple login
   Future<bool> loginWithApple(String appleToken) async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final response = await _authService.appleLogin(appleToken);

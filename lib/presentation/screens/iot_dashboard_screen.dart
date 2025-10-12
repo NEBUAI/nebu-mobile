@@ -5,8 +5,7 @@ class IoTDashboardScreen extends StatelessWidget {
   const IoTDashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('IoT Dashboard'),
         actions: [
@@ -56,15 +55,9 @@ class IoTDashboardScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 class _DeviceCard extends StatelessWidget {
-  final String name;
-  final String type;
-  final String status;
-  final bool isOnline;
-  final VoidCallback onTap;
 
   const _DeviceCard({
     required this.name,
@@ -73,10 +66,14 @@ class _DeviceCard extends StatelessWidget {
     required this.isOnline,
     required this.onTap,
   });
+  final String name;
+  final String type;
+  final String status;
+  final bool isOnline;
+  final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
+  Widget build(BuildContext context) => Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: Container(
@@ -114,5 +111,4 @@ class _DeviceCard extends StatelessWidget {
         onTap: onTap,
       ),
     );
-  }
 }

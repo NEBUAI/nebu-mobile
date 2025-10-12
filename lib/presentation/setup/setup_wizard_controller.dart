@@ -79,7 +79,7 @@ class SetupWizardController extends GetxController {
     isCompleted.value = true;
     
     // Navigate to main app
-    Get.offAllNamed('/main');
+    Get.offAllNamed<void>('/main');
   }
 
   void _saveSetupData() {
@@ -96,7 +96,7 @@ class SetupWizardController extends GetxController {
 
   void skipSetup() {
     // Skip setup and go to main app
-    Get.offAllNamed('/main');
+    Get.offAllNamed<void>('/main');
   }
 
   bool canProceed() {

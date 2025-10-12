@@ -39,7 +39,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 40),
@@ -118,13 +118,13 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 children: [
                   CustomButton(
                     text: 'Continue',
-                    onPressed: () => controller.nextStep(),
+                    onPressed: controller.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () => controller.previousStep(),
+                    onPressed: controller.previousStep,
                     child: Text(
                       'Back',
                       style: TextStyle(
@@ -149,8 +149,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     required IconData icon,
     required Widget child,
     required bool isDark,
-  }) {
-    return Container(
+  }) => Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
@@ -192,10 +191,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
         ],
       ),
     );
-  }
 
-  Widget _buildLanguageSelector(bool isDark) {
-    return Column(
+  Widget _buildLanguageSelector(bool isDark) => Column(
       children: languages.map((language) {
         final isSelected = controller.selectedLanguage.value == language['code'];
         
@@ -237,7 +234,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                       ),
                     ),
                     if (isSelected)
-                      Icon(
+                      const Icon(
                         Icons.check_circle,
                         color: AppTheme.primaryLight,
                         size: 20,
@@ -250,10 +247,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
         );
       }).toList(),
     );
-  }
 
-  Widget _buildThemeSelector(bool isDark) {
-    return Column(
+  Widget _buildThemeSelector(bool isDark) => Column(
       children: themes.map((theme) {
         final isSelected = controller.selectedTheme.value == theme['code'];
         
@@ -296,7 +291,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                       ),
                     ),
                     if (isSelected)
-                      Icon(
+                      const Icon(
                         Icons.check_circle,
                         color: AppTheme.primaryLight,
                         size: 20,
@@ -309,10 +304,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
         );
       }).toList(),
     );
-  }
 
-  Widget _buildAdditionalSettings(bool isDark) {
-    return Column(
+  Widget _buildAdditionalSettings(bool isDark) => Column(
       children: [
         _buildSettingTile(
           title: 'Haptic Feedback',
@@ -348,7 +341,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
         ),
       ],
     );
-  }
 
   Widget _buildSettingTile({
     required String title,
@@ -357,8 +349,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     required bool value,
     required ValueChanged<bool> onChanged,
     required bool isDark,
-  }) {
-    return Row(
+  }) => Row(
       children: [
         Icon(
           icon,
@@ -390,9 +381,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
         Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: AppTheme.primaryLight,
+          activeThumbColor: AppTheme.primaryLight,
         ),
       ],
     );
-  }
 }

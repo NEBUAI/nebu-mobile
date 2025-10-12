@@ -26,7 +26,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
       backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 40),
@@ -71,7 +71,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       title: 'Microphone',
                       description: 'Required for voice commands and audio features',
                       isGranted: controller.microphonePermission.value,
-                      onTap: () => _requestMicrophonePermission(),
+                      onTap: _requestMicrophonePermission,
                       isDark: isDark,
                     ),
                     const SizedBox(height: 16),
@@ -80,7 +80,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       title: 'Notifications',
                       description: 'Send you important updates and reminders',
                       isGranted: controller.notificationsPermission.value,
-                      onTap: () => _requestNotificationPermission(),
+                      onTap: _requestNotificationPermission,
                       isDark: isDark,
                     ),
                     const SizedBox(height: 16),
@@ -89,7 +89,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       title: 'Camera (Optional)',
                       description: 'For photo capture and video features',
                       isGranted: controller.cameraPermission.value,
-                      onTap: () => _requestCameraPermission(),
+                      onTap: _requestCameraPermission,
                       isDark: isDark,
                       isOptional: true,
                     ),
@@ -103,7 +103,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   CustomButton(
                     text: 'Continue',
                     onPressed: controller.canProceed() && !isLoading
-                        ? () => controller.nextStep()
+                        ? controller.nextStep
                         : null,
                     isFullWidth: true,
                     isLoading: isLoading,
@@ -111,7 +111,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () => controller.previousStep(),
+                    onPressed: controller.previousStep,
                     child: Text(
                       'Back',
                       style: TextStyle(
@@ -139,8 +139,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     required VoidCallback onTap,
     required bool isDark,
     bool isOptional = false,
-  }) {
-    return Container(
+  }) => Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
@@ -228,7 +227,6 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
         ],
       ),
     );
-  }
 
   Future<void> _requestMicrophonePermission() async {
     setState(() {

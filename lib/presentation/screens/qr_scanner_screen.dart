@@ -4,8 +4,7 @@ class QRScannerScreen extends StatelessWidget {
   const QRScannerScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('QR Scanner'),
       ),
@@ -24,5 +23,4 @@ class QRScannerScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

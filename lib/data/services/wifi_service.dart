@@ -4,11 +4,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 /// Red WiFi
 class WiFiNetwork {
-  final String ssid;
-  final int rssi;
-  final String security; // 'Open' | 'WPA' | 'WPA2' | 'WPA3' | 'WEP'
-  final int frequency;
-  final bool isConnected;
 
   const WiFiNetwork({
     required this.ssid,
@@ -18,14 +13,6 @@ class WiFiNetwork {
     this.isConnected = false,
   });
 
-  Map<String, dynamic> toJson() => {
-    'ssid': ssid,
-    'rssi': rssi,
-    'security': security,
-    'frequency': frequency,
-    'isConnected': isConnected,
-  };
-
   factory WiFiNetwork.fromJson(Map<String, dynamic> json) =>
       WiFiNetwork(
         ssid: json['ssid'] as String,
@@ -34,47 +21,51 @@ class WiFiNetwork {
         frequency: json['frequency'] as int,
         isConnected: json['isConnected'] as bool? ?? false,
       );
+  final String ssid;
+  final int rssi;
+  final String security; // 'Open' | 'WPA' | 'WPA2' | 'WPA3' | 'WEP'
+  final int frequency;
+  final bool isConnected;
+
+  Map<String, dynamic> toJson() => {
+    'ssid': ssid,
+    'rssi': rssi,
+    'security': security,
+    'frequency': frequency,
+    'isConnected': isConnected,
+  };
 }
 
 /// Credenciales WiFi
 class WiFiCredentials {
-  final String ssid;
-  final String password;
 
   const WiFiCredentials({
     required this.ssid,
     required this.password,
   });
 
-  Map<String, dynamic> toJson() => {
-    'ssid': ssid,
-    'password': password,
-  };
-
   factory WiFiCredentials.fromJson(Map<String, dynamic> json) =>
       WiFiCredentials(
         ssid: json['ssid'] as String,
         password: json['password'] as String,
       );
+  final String ssid;
+  final String password;
+
+  Map<String, dynamic> toJson() => {
+    'ssid': ssid,
+    'password': password,
+  };
 }
 
 /// Resultado de conexión WiFi
 class WiFiConnectionResult {
-  final bool success;
-  final String message;
-  final WiFiNetwork? connectedNetwork;
 
   const WiFiConnectionResult({
     required this.success,
     required this.message,
     this.connectedNetwork,
   });
-
-  Map<String, dynamic> toJson() => {
-    'success': success,
-    'message': message,
-    'connectedNetwork': connectedNetwork?.toJson(),
-  };
 
   factory WiFiConnectionResult.fromJson(Map<String, dynamic> json) =>
       WiFiConnectionResult(
@@ -84,10 +75,21 @@ class WiFiConnectionResult {
             ? WiFiNetwork.fromJson(json['connectedNetwork'])
             : null,
       );
+  final bool success;
+  final String message;
+  final WiFiNetwork? connectedNetwork;
+
+  Map<String, dynamic> toJson() => {
+    'success': success,
+    'message': message,
+    'connectedNetwork': connectedNetwork?.toJson(),
+  };
 }
 
 /// Servicio WiFi
 class WiFiService {
+
+  WiFiService({required Logger logger}) : _logger = logger;
   final Logger _logger;
 
   bool _isScanning = false;
@@ -98,8 +100,6 @@ class WiFiService {
       StreamController<List<WiFiNetwork>>.broadcast();
   final StreamController<WiFiConnectionResult> _connectionController = 
       StreamController<WiFiConnectionResult>.broadcast();
-
-  WiFiService({required Logger logger}) : _logger = logger;
 
   /// Escanear redes WiFi disponibles
   Future<List<WiFiNetwork>> scanNetworks() async {
@@ -260,7 +260,7 @@ class WiFiService {
       
       _currentNetwork = null;
       
-      final result = WiFiConnectionResult(
+      const result = WiFiConnectionResult(
         success: true,
         message: 'Disconnected from WiFi',
       );

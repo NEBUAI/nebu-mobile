@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'setup_wizard_screen.dart';
+
 import 'setup_wizard_controller.dart';
+import 'setup_wizard_screen.dart';
 
 /// Ejemplo de cómo integrar el Setup Wizard en tu aplicación
 class SetupIntegrationExample {
@@ -21,7 +22,7 @@ class SetupIntegrationExample {
 
   /// Inicia el setup wizard
   static void startSetupWizard(BuildContext context) {
-    Get.to(
+    Get.to<void>(
       () => const SetupWizardScreen(),
       transition: Transition.fadeIn,
       duration: const Duration(milliseconds: 300),
@@ -29,8 +30,7 @@ class SetupIntegrationExample {
   }
 
   /// Ejemplo de cómo usar en el main.dart o en una pantalla de splash
-  static Widget buildSplashWithSetupCheck() {
-    return FutureBuilder<bool>(
+  static Widget buildSplashWithSetupCheck() => FutureBuilder<bool>(
       future: isSetupCompleted(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -77,7 +77,6 @@ class SetupIntegrationExample {
         );
       },
     );
-  }
 }
 
 /// Ejemplo de cómo modificar el SetupWizardController para guardar datos

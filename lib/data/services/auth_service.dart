@@ -1,14 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../core/utils/env_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../core/constants/app_constants.dart';
+import '../../core/utils/env_config.dart';
 import '../models/user.dart';
 
 class AuthService {
-  final Dio _dio;
-  final SharedPreferences _prefs;
-  final FlutterSecureStorage _secureStorage;
 
   AuthService({
     required Dio dio,
@@ -21,6 +19,9 @@ class AuthService {
     _dio.options.connectTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
     _dio.options.receiveTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
   }
+  final Dio _dio;
+  final SharedPreferences _prefs;
+  final FlutterSecureStorage _secureStorage;
 
   // Email/Password Authentication
   Future<AuthResponse> login({
@@ -28,7 +29,7 @@ class AuthService {
     required String password,
   }) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/auth/login',
         data: {
           'email': email,
@@ -36,7 +37,7 @@ class AuthService {
         },
       );
 
-      final authResponse = AuthResponse.fromJson(response.data);
+      final authResponse = AuthResponse.fromJson(response.data!);
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);
@@ -46,10 +47,10 @@ class AuthService {
     } on DioException catch (e) {
       return AuthResponse(
         success: false,
-        error: e.response?.data['message'] ?? 'Login failed. Please check your credentials.',
+        error: (e.response?.data['message'] as String?) ?? 'Login failed. Please check your credentials.',
       );
     } catch (e) {
-      return AuthResponse(
+      return const AuthResponse(
         success: false,
         error: 'An unexpected error occurred.',
       );
@@ -63,7 +64,7 @@ class AuthService {
     String? lastName,
   }) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/auth/register',
         data: {
           'email': email,
@@ -73,7 +74,7 @@ class AuthService {
         },
       );
 
-      final authResponse = AuthResponse.fromJson(response.data);
+      final authResponse = AuthResponse.fromJson(response.data!);
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);
@@ -83,10 +84,10 @@ class AuthService {
     } on DioException catch (e) {
       return AuthResponse(
         success: false,
-        error: e.response?.data['message'] ?? 'Registration failed. Please try again.',
+        error: (e.response?.data['message'] as String?) ?? 'Registration failed. Please try again.',
       );
     } catch (e) {
-      return AuthResponse(
+      return const AuthResponse(
         success: false,
         error: 'An unexpected error occurred.',
       );
@@ -96,12 +97,12 @@ class AuthService {
   // Social Authentication
   Future<SocialAuthResult> googleLogin(String googleToken) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/auth/google',
         data: {'token': googleToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data);
+      final authResult = SocialAuthResult.fromJson(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -111,10 +112,10 @@ class AuthService {
     } on DioException catch (e) {
       return SocialAuthResult(
         success: false,
-        error: e.response?.data['message'] ?? 'Google login failed. Please try again.',
+        error: (e.response?.data['message'] as String?) ?? 'Google login failed. Please try again.',
       );
     } catch (e) {
-      return SocialAuthResult(
+      return const SocialAuthResult(
         success: false,
         error: 'An unexpected error occurred.',
       );
@@ -123,12 +124,12 @@ class AuthService {
 
   Future<SocialAuthResult> facebookLogin(String facebookToken) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/auth/facebook',
         data: {'token': facebookToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data);
+      final authResult = SocialAuthResult.fromJson(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -138,10 +139,10 @@ class AuthService {
     } on DioException catch (e) {
       return SocialAuthResult(
         success: false,
-        error: e.response?.data['message'] ?? 'Facebook login failed. Please try again.',
+        error: (e.response?.data['message'] as String?) ?? 'Facebook login failed. Please try again.',
       );
     } catch (e) {
-      return SocialAuthResult(
+      return const SocialAuthResult(
         success: false,
         error: 'An unexpected error occurred.',
       );
@@ -150,12 +151,12 @@ class AuthService {
 
   Future<SocialAuthResult> appleLogin(String appleToken) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/auth/apple',
         data: {'token': appleToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data);
+      final authResult = SocialAuthResult.fromJson(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -165,10 +166,10 @@ class AuthService {
     } on DioException catch (e) {
       return SocialAuthResult(
         success: false,
-        error: e.response?.data['message'] ?? 'Apple login failed. Please try again.',
+        error: (e.response?.data['message'] as String?) ?? 'Apple login failed. Please try again.',
       );
     } catch (e) {
-      return SocialAuthResult(
+      return const SocialAuthResult(
         success: false,
         error: 'An unexpected error occurred.',
       );
@@ -187,13 +188,9 @@ class AuthService {
     );
   }
 
-  Future<String?> getAccessToken() async {
-    return await _secureStorage.read(key: AppConstants.keyAccessToken);
-  }
+  Future<String?> getAccessToken() async => _secureStorage.read(key: AppConstants.keyAccessToken);
 
-  Future<String?> getRefreshToken() async {
-    return await _secureStorage.read(key: AppConstants.keyRefreshToken);
-  }
+  Future<String?> getRefreshToken() async => _secureStorage.read(key: AppConstants.keyRefreshToken);
 
   Future<String?> refreshAccessToken() async {
     try {
@@ -202,12 +199,12 @@ class AuthService {
         throw Exception('No refresh token available');
       }
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '/auth/refresh',
         data: {'refreshToken': refreshToken},
       );
 
-      final newAccessToken = response.data['accessToken'] as String;
+      final newAccessToken = response.data?['accessToken'] as String;
       await _secureStorage.write(
         key: AppConstants.keyAccessToken,
         value: newAccessToken,
@@ -234,7 +231,7 @@ class AuthService {
   // Password Reset
   Future<bool> requestPasswordReset(String email) async {
     try {
-      await _dio.post(
+      await _dio.post<void>(
         '/auth/forgot-password',
         data: {'email': email},
       );
@@ -249,7 +246,7 @@ class AuthService {
     required String newPassword,
   }) async {
     try {
-      await _dio.post(
+      await _dio.post<void>(
         '/auth/reset-password',
         data: {
           'token': token,
@@ -265,7 +262,7 @@ class AuthService {
   // Email Verification
   Future<bool> verifyEmail(String token) async {
     try {
-      await _dio.post(
+      await _dio.post<void>(
         '/auth/verify-email',
         data: {'token': token},
       );
@@ -277,7 +274,7 @@ class AuthService {
 
   Future<bool> resendVerificationEmail(String email) async {
     try {
-      await _dio.post(
+      await _dio.post<void>(
         '/auth/resend-verification',
         data: {'email': email},
       );

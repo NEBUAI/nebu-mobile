@@ -1,26 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'core/theme/app_theme.dart';
 import 'core/constants/app_constants.dart';
 import 'core/router/app_router.dart';
-import 'presentation/providers/auth_provider.dart';
-import 'presentation/providers/theme_provider.dart';
-import 'presentation/providers/language_provider.dart';
-import 'data/services/auth_service.dart';
+import 'core/theme/app_theme.dart';
 import 'data/services/api_service.dart';
+import 'data/services/auth_service.dart';
+import 'presentation/providers/auth_provider.dart';
+import 'presentation/providers/language_provider.dart';
+import 'presentation/providers/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load environment variables
   try {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load();
   } catch (e) {
     debugPrint('Error loading .env file: $e');
   }
@@ -38,8 +38,6 @@ void main() async {
       methodCount: 0,
       errorMethodCount: 5,
       lineLength: 50,
-      colors: true,
-      printEmojis: true,
     ),
   );
 

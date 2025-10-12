@@ -42,7 +42,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Form(
             key: _formKey,
             child: Column(
@@ -122,7 +122,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 
                 TextButton(
                   onPressed: _showAvatarOptions,
-                  child: Text(
+                  child: const Text(
                     'Change Avatar',
                     style: TextStyle(
                       color: AppTheme.primaryLight,
@@ -191,7 +191,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         ),
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.privacy_tip,
                               color: AppTheme.primaryLight,
                               size: 20,
@@ -224,7 +224,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextButton(
-                      onPressed: () => controller.previousStep(),
+                      onPressed: controller.previousStep,
                       child: Text(
                         'Back',
                         style: TextStyle(
@@ -277,13 +277,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 mainAxisSpacing: 16,
               ),
               itemCount: 8,
-              itemBuilder: (context, index) {
-                return GestureDetector(
+              itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     controller.avatarUrl.value = 'https://via.placeholder.com/100/6C5CE7/FFFFFF?text=${index + 1}';
                     Navigator.pop(context);
                   },
-                  child: Container(
+                  child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: AppTheme.primaryLight.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -294,7 +293,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     child: Center(
                       child: Text(
                         '${index + 1}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.primaryLight,
@@ -302,8 +301,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       ),
                     ),
                   ),
-                );
-              },
+                ),
             ),
             
             const SizedBox(height: 20),

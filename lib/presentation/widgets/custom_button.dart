@@ -4,6 +4,17 @@ import '../../core/theme/app_theme.dart';
 enum ButtonVariant { primary, secondary, outline }
 
 class CustomButton extends StatelessWidget {
+
+  const CustomButton({
+    required this.text, super.key,
+    this.onPressed,
+    this.variant = ButtonVariant.primary,
+    this.isLoading = false,
+    this.isFullWidth = false,
+    this.icon,
+    this.width,
+    this.height,
+  });
   final String text;
   final VoidCallback? onPressed;
   final ButtonVariant variant;
@@ -13,23 +24,11 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const CustomButton({
-    super.key,
-    required this.text,
-    this.onPressed,
-    this.variant = ButtonVariant.primary,
-    this.isLoading = false,
-    this.isFullWidth = false,
-    this.icon,
-    this.width,
-    this.height,
-  });
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Widget buttonChild = Row(
+    final Widget buttonChild = Row(
       mainAxisSize: isFullWidth ? MainAxisSize.max : MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

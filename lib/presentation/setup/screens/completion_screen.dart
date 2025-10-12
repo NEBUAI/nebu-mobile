@@ -33,16 +33,16 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
     );
     
     _scaleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+      begin: 0,
+      end: 1,
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.elasticOut,
     ));
     
     _checkAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+      begin: 0,
+      end: 1,
     ).animate(CurvedAnimation(
       parent: _checkAnimationController,
       curve: Curves.easeInOut,
@@ -58,7 +58,7 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
     super.dispose();
   }
 
-  void _startAnimations() async {
+  Future<void> _startAnimations() async {
     await Future.delayed(const Duration(milliseconds: 300));
     _animationController.forward();
     
@@ -74,7 +74,7 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
       backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 40),
@@ -94,8 +94,7 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
                     // Animated success icon
                     AnimatedBuilder(
                       animation: _scaleAnimation,
-                      builder: (context, child) {
-                        return Transform.scale(
+                      builder: (context, child) => Transform.scale(
                           scale: _scaleAnimation.value,
                           child: Container(
                             width: 120,
@@ -117,16 +116,13 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
                             ),
                             child: AnimatedBuilder(
                               animation: _checkAnimation,
-                              builder: (context, child) {
-                                return CustomPaint(
+                              builder: (context, child) => CustomPaint(
                                   painter: CheckmarkPainter(_checkAnimation.value),
                                   size: const Size(120, 120),
-                                );
-                              },
+                                ),
                             ),
                           ),
-                        );
-                      },
+                        ),
                     ),
                     
                     const SizedBox(height: 40),
@@ -166,7 +162,7 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
               // Action button
               CustomButton(
                 text: 'Start Using Nebu',
-                onPressed: () => controller.completeSetup(),
+                onPressed: controller.completeSetup,
                 isFullWidth: true,
                 icon: Icons.rocket_launch,
               ),
@@ -179,8 +175,7 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
     );
   }
 
-  Widget _buildSummarySection(bool isDark) {
-    return Container(
+  Widget _buildSummarySection(bool isDark) => Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
@@ -252,15 +247,13 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
         ],
       ),
     );
-  }
 
   Widget _buildSummaryItem({
     required IconData icon,
     required String title,
     required String value,
     required bool isDark,
-  }) {
-    return Container(
+  }) => Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
@@ -302,7 +295,6 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
         ],
       ),
     );
-  }
 
   String _getLanguageName(String code) {
     switch (code) {
@@ -325,9 +317,9 @@ class _CompletionScreenState extends State<CompletionScreen> with TickerProvider
 }
 
 class CheckmarkPainter extends CustomPainter {
-  final double animationValue;
 
   CheckmarkPainter(this.animationValue);
+  final double animationValue;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -365,8 +357,6 @@ class CheckmarkPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return oldDelegate is CheckmarkPainter && 
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => oldDelegate is CheckmarkPainter && 
            oldDelegate.animationValue != animationValue;
-  }
 }

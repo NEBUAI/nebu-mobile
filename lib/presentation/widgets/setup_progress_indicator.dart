@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
 class SetupProgressIndicator extends StatelessWidget {
-  final int currentStep;
-  final int totalSteps;
 
   const SetupProgressIndicator({
-    super.key,
-    required this.currentStep,
-    required this.totalSteps,
+    required this.currentStep, required this.totalSteps, super.key,
   });
+  final int currentStep;
+  final int totalSteps;
 
   @override
   Widget build(BuildContext context) {

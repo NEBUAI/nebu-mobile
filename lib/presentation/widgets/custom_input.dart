@@ -2,24 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomInput extends StatefulWidget {
-  final String? label;
-  final String? hint;
-  final String? initialValue;
-  final TextEditingController? controller;
-  final ValueChanged<String>? onChanged;
-  final VoidCallback? onEditingComplete;
-  final String? Function(String?)? validator;
-  final bool obscureText;
-  final TextInputType? keyboardType;
-  final TextInputAction? textInputAction;
-  final List<TextInputFormatter>? inputFormatters;
-  final int? maxLines;
-  final int? maxLength;
-  final bool enabled;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final String? errorText;
-  final bool autofocus;
 
   const CustomInput({
     super.key,
@@ -42,6 +24,24 @@ class CustomInput extends StatefulWidget {
     this.errorText,
     this.autofocus = false,
   });
+  final String? label;
+  final String? hint;
+  final String? initialValue;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onEditingComplete;
+  final String? Function(String?)? validator;
+  final bool obscureText;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLines;
+  final int? maxLength;
+  final bool enabled;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final String? errorText;
+  final bool autofocus;
 
   @override
   State<CustomInput> createState() => _CustomInputState();
@@ -57,8 +57,7 @@ class _CustomInputState extends State<CustomInput> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) ...[
@@ -106,5 +105,4 @@ class _CustomInputState extends State<CustomInput> {
         ),
       ],
     );
-  }
 }

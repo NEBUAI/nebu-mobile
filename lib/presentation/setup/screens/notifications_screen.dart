@@ -77,7 +77,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 40),
@@ -176,13 +176,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 children: [
                   CustomButton(
                     text: 'Continue',
-                    onPressed: () => controller.nextStep(),
+                    onPressed: controller.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () => controller.previousStep(),
+                    onPressed: controller.previousStep,
                     child: Text(
                       'Back',
                       style: TextStyle(
@@ -207,8 +207,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     required IconData icon,
     required List<Widget> children,
     required bool isDark,
-  }) {
-    return Container(
+  }) => Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
@@ -250,7 +249,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ],
       ),
     );
-  }
 
   Widget _buildNotificationTile({
     required String title,
@@ -259,8 +257,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     required bool enabled,
     required ValueChanged<bool> onChanged,
     required bool isDark,
-  }) {
-    return Container(
+  }) => Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
@@ -304,15 +301,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           Switch(
             value: enabled,
             onChanged: onChanged,
-            activeColor: AppTheme.primaryLight,
+            activeThumbColor: AppTheme.primaryLight,
           ),
         ],
       ),
     );
-  }
 
-  Widget _buildNotificationPreview(bool isDark) {
-    return Container(
+  Widget _buildNotificationPreview(bool isDark) => Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -410,5 +405,4 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ],
       ),
     );
-  }
 }

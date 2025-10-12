@@ -34,8 +34,7 @@ class AppTheme {
   static const String fontFamily = 'Inter';
 
   // Light Theme
-  static ThemeData get lightTheme {
-    return ThemeData(
+  static ThemeData get lightTheme => ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       primaryColor: primaryLight,
@@ -44,9 +43,7 @@ class AppTheme {
       colorScheme: const ColorScheme.light(
         primary: primaryLight,
         secondary: secondaryLight,
-        surface: surfaceLight,
         error: errorLight,
-        onPrimary: onPrimaryLight,
         onSurface: onBackgroundLight,
       ),
       appBarTheme: const AppBarTheme(
@@ -132,11 +129,9 @@ class AppTheme {
         elevation: 8,
       ),
     );
-  }
 
   // Dark Theme
-  static ThemeData get darkTheme {
-    return ThemeData(
+  static ThemeData get darkTheme => ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: primaryDark,
@@ -147,7 +142,6 @@ class AppTheme {
         secondary: secondaryDark,
         surface: surfaceDark,
         error: errorDark,
-        onPrimary: onPrimaryDark,
         onSurface: onBackgroundDark,
       ),
       appBarTheme: const AppBarTheme(
@@ -233,37 +227,30 @@ class AppTheme {
         elevation: 8,
       ),
     );
-  }
 
   // Gradient Decorations
-  static BoxDecoration get primaryGradientDecoration {
-    return const BoxDecoration(
+  static BoxDecoration get primaryGradientDecoration => const BoxDecoration(
       gradient: LinearGradient(
         colors: primaryGradient,
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
     );
-  }
 
-  static BoxDecoration get secondaryGradientDecoration {
-    return const BoxDecoration(
+  static BoxDecoration get secondaryGradientDecoration => const BoxDecoration(
       gradient: LinearGradient(
         colors: secondaryGradient,
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
     );
-  }
 
   // Shadows
-  static List<BoxShadow> get cardShadow {
-    return [
+  static List<BoxShadow> get cardShadow => [
       BoxShadow(
         color: Colors.black.withValues(alpha: 0.1),
         blurRadius: 10,
         offset: const Offset(0, 4),
       ),
     ];
-  }
 }

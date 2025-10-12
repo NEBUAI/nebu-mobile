@@ -36,7 +36,5 @@ class EnvConfig {
       dotenv.get('DEBUG_MODE', fallback: 'true') == 'true';
 
   // Validation
-  static bool get isConfigured {
-    return urlBackend.isNotEmpty && openaiApiKey.isNotEmpty;
-  }
+  static bool get isConfigured => urlBackend.isNotEmpty && openaiApiKey.isNotEmpty;
 }

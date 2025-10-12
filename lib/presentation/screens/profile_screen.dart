@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
-import '../providers/theme_provider.dart';
 import '../providers/language_provider.dart';
+import '../providers/theme_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -22,7 +23,7 @@ class ProfileScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               // Profile Header
@@ -173,9 +174,9 @@ class ProfileScreen extends ConsumerWidget {
                     ListTile(
                       leading: const Icon(Icons.info),
                       title: const Text('About'),
-                      trailing: Text(
+                      trailing: const Text(
                         'v${AppConstants.appVersion}',
-                        style: const TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                       ),
                       onTap: () {
                         // TODO: Show about dialog
@@ -193,7 +194,7 @@ class ProfileScreen extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     final shouldLogout = await _showLogoutDialog(context);
-                    if (shouldLogout == true) {
+                    if (shouldLogout ?? false) {
                       await ref.read(authProvider.notifier).logout();
                       if (context.mounted) {
                         context.go(AppConstants.routeWelcome);
@@ -216,8 +217,7 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Future<bool?> _showLogoutDialog(BuildContext context) {
-    return showDialog<bool>(
+  Future<bool?> _showLogoutDialog(BuildContext context) => showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Logout'),
@@ -234,5 +234,4 @@ class ProfileScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
 }

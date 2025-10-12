@@ -5,34 +5,32 @@ import '../../core/constants/app_constants.dart';
 
 // Theme state
 class ThemeState {
-  final ThemeMode themeMode;
-  final bool isDarkMode;
 
   ThemeState({
     this.themeMode = ThemeMode.system,
     this.isDarkMode = false,
   });
+  final ThemeMode themeMode;
+  final bool isDarkMode;
 
   ThemeState copyWith({
     ThemeMode? themeMode,
     bool? isDarkMode,
-  }) {
-    return ThemeState(
+  }) => ThemeState(
       themeMode: themeMode ?? this.themeMode,
       isDarkMode: isDarkMode ?? this.isDarkMode,
     );
-  }
 }
 
 // Theme notifier
 class ThemeNotifier extends StateNotifier<ThemeState> {
-  final SharedPreferences _prefs;
 
   ThemeNotifier({required SharedPreferences prefs})
       : _prefs = prefs,
         super(ThemeState()) {
     _loadTheme();
   }
+  final SharedPreferences _prefs;
 
   // Load theme from storage
   Future<void> _loadTheme() async {

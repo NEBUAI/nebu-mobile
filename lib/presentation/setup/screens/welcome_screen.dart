@@ -18,7 +18,7 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 40),
@@ -115,13 +115,13 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   CustomButton(
                     text: 'Get Started',
-                    onPressed: () => controller.nextStep(),
+                    onPressed: controller.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () => controller.skipSetup(),
+                    onPressed: controller.skipSetup,
                     child: Text(
                       'Skip Setup',
                       style: TextStyle(
@@ -146,8 +146,7 @@ class WelcomeScreen extends StatelessWidget {
     required String title,
     required String description,
     required bool isDark,
-  }) {
-    return Row(
+  }) => Row(
       children: [
         Container(
           width: 50,
@@ -187,5 +186,4 @@ class WelcomeScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 }
