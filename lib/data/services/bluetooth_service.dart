@@ -142,6 +142,7 @@ class BluetoothService {
 
       // Connect to the device
       await device.connect(
+        license: fbp.License.free,
         timeout: AppConstants.connectionTimeout,
       );
 

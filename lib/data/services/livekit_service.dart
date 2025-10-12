@@ -293,12 +293,12 @@ class LiveKitService {
   Stream<IoTDeviceData> get deviceDataStream => _deviceDataController.stream;
 
   /// Establecer callback de datos de dispositivo
-  void setOnDeviceDataCallback(void Function(IoTDeviceData) callback) {
+  set onDeviceDataCallback(void Function(IoTDeviceData) callback) {
     _onDeviceDataCallback = callback;
   }
 
   /// Establecer callback de estado de conexión
-  void setOnConnectionStatusCallback(void Function(LiveKitConnectionStatus) callback) {
+  set onConnectionStatusCallback(void Function(LiveKitConnectionStatus) callback) {
     _onConnectionStatusCallback = callback;
   }
 
