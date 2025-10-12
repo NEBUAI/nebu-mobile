@@ -143,6 +143,7 @@ class BluetoothService {
       // Connect to the device
       await device.connect(
         timeout: AppConstants.connectionTimeout,
+        license: '',
       );
 
       _connectedDevice = device;
@@ -187,20 +188,19 @@ class BluetoothService {
   }
 
   // Discover services
-  Future<List<BluetoothService>> discoverServices() async {
+  Future<List<BluetoothService>> discoverServices() {
     if (_connectedDevice == null) {
       throw Exception('No device connected');
     }
 
-    try {
-      _logger.i('Discovering services...');
-      final services = await _connectedDevice!.discoverServices();
+    _logger.i('Discovering services...');
+    return _connectedDevice!.discoverServices().then((services) {
       _logger.i('Discovered ${services.length} services');
       return services;
-    } catch (e) {
+    }).catchError((e) {
       _logger.e('Error discovering services: $e');
-      rethrow;
-    }
+      throw e;
+    });
   }
 
   // Read characteristic

@@ -58,12 +58,9 @@ void main() async {
     ProviderScope(
       overrides: [
         // Override providers with actual instances
-        authProvider.overrideWith(
-          (ref) => AuthNotifier(
-            authService: authService,
-            prefs: sharedPreferences,
-          ),
-        ),
+        authServiceProvider.overrideWithValue(authService),
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        authProvider.overrideWith(AuthNotifier.new),
         themeProvider.overrideWith(
           (ref) => ThemeNotifier(prefs: sharedPreferences),
         ),

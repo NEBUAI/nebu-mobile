@@ -395,7 +395,7 @@ class RobotService {
     try {
       final response = await _dio.get('/robots/$deviceId/status');
       
-      final device = RobotDevice.fromJson(response.data);
+      final device = RobotDevice.fromJson(response.data as Map<String, dynamic>);
       _updateDeviceInList(device);
       
       return device;

@@ -23,7 +23,7 @@ import '../../presentation/screens/welcome_screen.dart';
 
 // Router provider
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
+  final AuthState authState = ref.watch(authProvider);
 
   return GoRouter(
     initialLocation: AppConstants.routeSplash,

@@ -72,7 +72,7 @@ class WiFiConnectionResult {
         success: json['success'] as bool,
         message: json['message'] as String,
         connectedNetwork: json['connectedNetwork'] != null
-            ? WiFiNetwork.fromJson(json['connectedNetwork'])
+            ? WiFiNetwork.fromJson(json['connectedNetwork'] as Map<String, dynamic>)
             : null,
       );
   final bool success;

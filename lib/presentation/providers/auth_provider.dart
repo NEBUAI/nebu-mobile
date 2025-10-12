@@ -7,6 +7,10 @@ import '../../core/constants/app_constants.dart';
 import '../../data/models/user.dart';
 import '../../data/services/auth_service.dart';
 
+// Providers
+final authServiceProvider = Provider<AuthService>((ref) => throw UnimplementedError());
+final sharedPreferencesProvider = Provider<SharedPreferences>((ref) => throw UnimplementedError());
+
 // Auth state
 class AuthState {
 
@@ -35,18 +39,17 @@ class AuthState {
 }
 
 // Auth notifier
-class AuthNotifier extends StateNotifier<AuthState> {
+class AuthNotifier extends Notifier<AuthState> {
+  late AuthService _authService;
+  late SharedPreferences _prefs;
 
-  AuthNotifier({
-    required AuthService authService,
-    required SharedPreferences prefs,
-  })  : _authService = authService,
-        _prefs = prefs,
-        super(AuthState()) {
-    _loadUser();
+  @override
+  AuthState build() {
+    _authService = ref.watch(authServiceProvider);
+    _prefs = ref.watch(sharedPreferencesProvider);
+    Future.microtask(() => _loadUser());
+    return AuthState(isLoading: true);
   }
-  final AuthService _authService;
-  final SharedPreferences _prefs;
 
   // Load user from storage
   Future<void> _loadUser() async {
@@ -257,6 +260,4 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 // Provider
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  throw UnimplementedError('authProvider must be overridden');
-});
+final authProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);

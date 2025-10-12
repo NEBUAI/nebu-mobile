@@ -23,14 +23,15 @@ class LanguageState {
 }
 
 // Language notifier
-class LanguageNotifier extends StateNotifier<LanguageState> {
+class LanguageNotifier extends Notifier<LanguageState> {
+  late SharedPreferences _prefs;
 
-  LanguageNotifier({required SharedPreferences prefs})
-      : _prefs = prefs,
-        super(LanguageState()) {
-    _loadLanguage();
+  @override
+  LanguageState build() {
+    _prefs = ref.watch(sharedPreferencesProvider);
+    Future.microtask(() => _loadLanguage());
+    return LanguageState();
   }
-  final SharedPreferences _prefs;
 
   // Load language from storage
   Future<void> _loadLanguage() async {
@@ -80,6 +81,4 @@ class LanguageNotifier extends StateNotifier<LanguageState> {
 }
 
 // Provider
-final languageProvider = StateNotifierProvider<LanguageNotifier, LanguageState>((ref) {
-  throw UnimplementedError('languageProvider must be overridden');
-});
+final languageProvider = NotifierProvider<LanguageNotifier, LanguageState>(LanguageNotifier.new);

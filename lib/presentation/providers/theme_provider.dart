@@ -23,14 +23,15 @@ class ThemeState {
 }
 
 // Theme notifier
-class ThemeNotifier extends StateNotifier<ThemeState> {
+class ThemeNotifier extends Notifier<ThemeState> {
+  late SharedPreferences _prefs;
 
-  ThemeNotifier({required SharedPreferences prefs})
-      : _prefs = prefs,
-        super(ThemeState()) {
-    _loadTheme();
+  @override
+  ThemeState build() {
+    _prefs = ref.watch(sharedPreferencesProvider);
+    Future.microtask(() => _loadTheme());
+    return ThemeState();
   }
-  final SharedPreferences _prefs;
 
   // Load theme from storage
   Future<void> _loadTheme() async {
@@ -122,6 +123,4 @@ class ThemeNotifier extends StateNotifier<ThemeState> {
 }
 
 // Provider
-final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeState>((ref) {
-  throw UnimplementedError('themeProvider must be overridden');
-});
+final themeProvider = NotifierProvider<ThemeNotifier, ThemeState>(ThemeNotifier.new);
