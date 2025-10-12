@@ -393,9 +393,9 @@ class RobotService {
   /// Obtener estado del robot
   Future<RobotDevice?> getDeviceStatus(String deviceId) async {
     try {
-      final response = await _dio.get('/robots/$deviceId/status');
+      final response = await _dio.get<Map<String, dynamic>>('/robots/$deviceId/status');
       
-      final device = RobotDevice.fromJson(response.data as Map<String, dynamic>);
+      final device = RobotDevice.fromJson(response.data!);
       _updateDeviceInList(device);
       
       return device;

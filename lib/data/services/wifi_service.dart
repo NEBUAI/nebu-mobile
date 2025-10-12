@@ -119,7 +119,7 @@ class WiFiService {
 
       // Simular escaneo de redes WiFi (en una implementación real usaríamos
       // un plugin nativo para acceder a las APIs de WiFi)
-      await Future.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 2));
 
       final mockNetworks = <WiFiNetwork>[
         const WiFiNetwork(
@@ -173,7 +173,7 @@ class WiFiService {
       _logger.i('Attempting to connect to WiFi: ${credentials.ssid}');
 
       // Simular proceso de conexión
-      await Future.delayed(const Duration(seconds: 3));
+      await Future<void>.delayed(const Duration(seconds: 3));
 
       // Simular diferentes resultados basados en la red
       WiFiConnectionResult result;
@@ -256,7 +256,7 @@ class WiFiService {
       _logger.i('Disconnecting from WiFi');
       
       // Simular desconexión
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
       
       _currentNetwork = null;
       
@@ -298,10 +298,14 @@ class WiFiService {
 
   /// Calcular fuerza de señal basada en RSSI
   String _getSignalStrength(int rssi) {
-    if (rssi >= -30) return 'Excelente';
-    if (rssi >= -50) return 'Buena';
-    if (rssi >= -70) return 'Regular';
-    if (rssi >= -80) return 'Débil';
+    if (rssi >= -30)
+      return 'Excelente';
+    if (rssi >= -50)
+      return 'Buena';
+    if (rssi >= -70)
+      return 'Regular';
+    if (rssi >= -80)
+      return 'Débil';
     return 'Muy débil';
   }
 

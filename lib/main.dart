@@ -80,7 +80,7 @@ class NebuApp extends ConsumerWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Banner(
-        message: "Hot Reload!",
+        message: 'Hot Reload!',
         location: BannerLocation.topEnd,
         child: MaterialApp.router(
           title: AppConstants.appName,
