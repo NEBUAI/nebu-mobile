@@ -313,7 +313,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           icon: Icons.vibration,
           value: true,
           onChanged: (value) {
-            // TODO: Implement haptic feedback setting
+            // TODO(duvet05): Implement haptic feedback setting
           },
           isDark: isDark,
         ),
@@ -324,7 +324,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           icon: Icons.save,
           value: true,
           onChanged: (value) {
-            // TODO: Implement auto-save setting
+            // TODO(duvet05): Implement auto-save setting
           },
           isDark: isDark,
         ),
@@ -335,7 +335,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           icon: Icons.analytics,
           value: false,
           onChanged: (value) {
-            // TODO: Implement analytics setting
+            // TODO(duvet05): Implement analytics setting
           },
           isDark: isDark,
         ),

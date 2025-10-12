@@ -383,8 +383,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
       isRecording = true;
     });
     _animationController.repeat(reverse: true);
-    
-    // TODO: Implement actual voice recording
+
+    // TODO(duvet05): Implement actual voice recording
     // This is just a demo animation
   }
 
@@ -396,7 +396,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
       ..stop()
       ..reset();
 
-    // TODO: Process recorded audio
+    // TODO(duvet05): Process recorded audio
     // Show result or error
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -410,8 +410,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
     setState(() {
       isPlaying = true;
     });
-    
-    // TODO: Implement text-to-speech
+
+    // TODO(duvet05): Implement text-to-speech
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {

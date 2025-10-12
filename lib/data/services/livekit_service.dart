@@ -80,8 +80,8 @@ class LiveKitService {
       StreamController<IoTDeviceData>.broadcast();
 
   // Callbacks
-  void Function(IoTDeviceData)? _onDeviceDataCallback;
-  void Function(LiveKitConnectionStatus)? _onConnectionStatusCallback;
+  void Function(IoTDeviceData)? onDeviceDataCallback;
+  void Function(LiveKitConnectionStatus)? onConnectionStatusCallback;
 
   /// Conectar a LiveKit
   Future<void> connect(LiveKitConfig config) async {
@@ -146,7 +146,7 @@ class LiveKitService {
       final deviceData = IoTDeviceData.fromJson(jsonDecode(payload) as Map<String, dynamic>);
 
       _deviceDataController.add(deviceData);
-      _onDeviceDataCallback?.call(deviceData);
+      onDeviceDataCallback?.call(deviceData);
 
       _logger.d('Received IoT device data: ${deviceData.deviceId}');
     } on Exception catch (e) {
@@ -158,7 +158,7 @@ class LiveKitService {
   void _setStatus(LiveKitConnectionStatus status) {
     _status = status;
     _statusController.add(status);
-    _onConnectionStatusCallback?.call(status);
+    onConnectionStatusCallback?.call(status);
     _logger.d('LiveKit status changed to: $status');
   }
 
@@ -295,15 +295,6 @@ class LiveKitService {
   /// Stream de datos de dispositivos
   Stream<IoTDeviceData> get deviceDataStream => _deviceDataController.stream;
 
-  /// Establecer callback de datos de dispositivo
-  void setOnDeviceDataCallback(void Function(IoTDeviceData) callback) {
-    _onDeviceDataCallback = callback;
-  }
-
-  /// Establecer callback de estado de conexión
-  void setOnConnectionStatusCallback(void Function(LiveKitConnectionStatus) callback) {
-    _onConnectionStatusCallback = callback;
-  }
 
   /// Desconectar de LiveKit
   Future<void> disconnect() async {

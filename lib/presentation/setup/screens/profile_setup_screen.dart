@@ -312,7 +312,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               title: const Text('Take Photo'),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Implement camera functionality
+                // TODO(duvet05): Implement camera functionality
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Camera functionality coming soon!'),
@@ -326,7 +326,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               title: const Text('Choose from Gallery'),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Implement gallery functionality
+                // TODO(duvet05): Implement gallery functionality
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Gallery functionality coming soon!'),

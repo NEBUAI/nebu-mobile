@@ -167,7 +167,7 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Help & Support'),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
-                        // TODO: Navigate to help
+                        // TODO(duvet05): Navigate to help
                       },
                     ),
                     const Divider(height: 1),
@@ -179,7 +179,7 @@ class ProfileScreen extends ConsumerWidget {
                         style: TextStyle(color: Colors.grey),
                       ),
                       onTap: () {
-                        // TODO: Show about dialog
+                        // TODO(duvet05): Show about dialog
                       },
                     ),
                   ],

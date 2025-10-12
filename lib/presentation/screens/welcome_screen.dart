@@ -63,7 +63,7 @@ class WelcomeScreen extends StatelessWidget {
                 // Get Started Button
                 ElevatedButton(
                   onPressed: () {
-                    // TODO: Navigate to setup or home
+                    // TODO(duvet05): Navigate to setup or home
                     context.go(AppConstants.routeConnectionSetup);
                   },
                   style: ElevatedButton.styleFrom(
@@ -88,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
                 // Sign In Button
                 OutlinedButton(
                   onPressed: () {
-                    // TODO: Navigate to login
+                    // TODO(duvet05): Navigate to login
                     _showLoginDialog(context);
                   },
                   style: OutlinedButton.styleFrom(

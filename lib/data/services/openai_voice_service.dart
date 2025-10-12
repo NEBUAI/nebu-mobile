@@ -94,8 +94,8 @@ class OpenAIVoiceService {
       StreamController<ConversationMessage>.broadcast();
 
   // Callbacks
-  void Function(ConversationMessage)? _onMessageCallback;
-  void Function(VoiceAgentStatus)? _onStatusCallback;
+  void Function(ConversationMessage)? onMessageCallback;
+  void Function(VoiceAgentStatus)? onStatusCallback;
 
   /// Inicializar el servicio
   Future<void> initialize(VoiceAgentConfig config) async {
@@ -132,7 +132,7 @@ class OpenAIVoiceService {
   void _setStatus(VoiceAgentStatus status) {
     _status = status;
     _statusController.add(status);
-    _onStatusCallback?.call(status);
+    onStatusCallback?.call(status);
     _logger.d('Voice agent status changed to: $status');
   }
 
@@ -140,7 +140,7 @@ class OpenAIVoiceService {
   void _addMessage(ConversationMessage message) {
     _conversation.add(message);
     _messageController.add(message);
-    _onMessageCallback?.call(message);
+    onMessageCallback?.call(message);
   }
 
   /// Guardar conversación en almacenamiento local
@@ -444,15 +444,6 @@ class OpenAIVoiceService {
   /// Stream de mensajes
   Stream<ConversationMessage> get messageStream => _messageController.stream;
 
-  /// Establecer callback de mensajes
-  set onMessageCallback(void Function(ConversationMessage) callback) {
-    _onMessageCallback = callback;
-  }
-
-  /// Establecer callback de estado
-  set onStatusCallback(void Function(VoiceAgentStatus) callback) {
-    _onStatusCallback = callback;
-  }
 
   /// Limpiar conversación
   Future<void> clearConversation() async {
