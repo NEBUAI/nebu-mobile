@@ -54,7 +54,7 @@ class BluetoothService {
       }
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error requesting Bluetooth permissions: $e');
       return false;
     }
@@ -73,7 +73,7 @@ class BluetoothService {
 
       final adapterState = await fbp.FlutterBluePlus.adapterState.first;
       return adapterState == fbp.BluetoothAdapterState.on;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error checking Bluetooth availability: $e');
       return false;
     }
@@ -106,13 +106,13 @@ class BluetoothService {
       _scanSubscription = fbp.FlutterBluePlus.scanResults.listen(
         (results) {
           _logger.d('Found ${results.length} devices');
-          _scanResultsController.add(results as List<fbp.ScanResult>);
+          _scanResultsController.add(results);
         },
         onError: (Object error) {
           _logger.e('Scan error: $error');
         },
       );
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error starting scan: $e');
       rethrow;
     }
@@ -121,11 +121,11 @@ class BluetoothService {
   // Stop scanning
   Future<void> stopScan() async {
     try {
-      await FlutterBluePlus.stopScan();
+      await fbp.FlutterBluePlus.stopScan();
       await _scanSubscription?.cancel();
       _scanSubscription = null;
       _logger.i('Bluetooth scan stopped');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error stopping scan: $e');
     }
   }
@@ -163,7 +163,7 @@ class BluetoothService {
       );
 
       _logger.i('Connected to device: ${device.platformName}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error connecting to device: $e');
       _connectedDevice = null;
       rethrow;
@@ -181,7 +181,7 @@ class BluetoothService {
         _connectedDevice = null;
         _logger.i('Disconnected successfully');
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error disconnecting: $e');
     }
   }
@@ -210,7 +210,7 @@ class BluetoothService {
       _logger.d('Reading characteristic: ${characteristic.uuid}');
       final value = await characteristic.read();
       return value;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error reading characteristic: $e');
       rethrow;
     }
@@ -228,7 +228,7 @@ class BluetoothService {
         value,
         withoutResponse: withoutResponse,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error writing characteristic: $e');
       rethrow;
     }
@@ -243,7 +243,7 @@ class BluetoothService {
       _logger.d('Subscribing to characteristic: ${characteristic.uuid}');
       characteristic.setNotifyValue(true);
       return characteristic.lastValueStream.listen(onData);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error subscribing to characteristic: $e');
       rethrow;
     }
@@ -253,7 +253,7 @@ class BluetoothService {
   Future<List<fbp.BluetoothDevice>> getConnectedDevices() async {
     try {
       return fbp.FlutterBluePlus.connectedDevices;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error getting connected devices: $e');
       return [];
     }

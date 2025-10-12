@@ -49,7 +49,7 @@ class AuthService {
         success: false,
         error: (e.response?.data['message'] as String?) ?? 'Login failed. Please check your credentials.',
       );
-    } catch (e) {
+    } on Exception {
       return const AuthResponse(
         success: false,
         error: 'An unexpected error occurred.',
@@ -86,7 +86,7 @@ class AuthService {
         success: false,
         error: (e.response?.data['message'] as String?) ?? 'Registration failed. Please try again.',
       );
-    } catch (e) {
+    } on Exception {
       return const AuthResponse(
         success: false,
         error: 'An unexpected error occurred.',
@@ -114,7 +114,7 @@ class AuthService {
         success: false,
         error: (e.response?.data['message'] as String?) ?? 'Google login failed. Please try again.',
       );
-    } catch (e) {
+    } on Exception {
       return const SocialAuthResult(
         success: false,
         error: 'An unexpected error occurred.',
@@ -141,7 +141,7 @@ class AuthService {
         success: false,
         error: (e.response?.data['message'] as String?) ?? 'Facebook login failed. Please try again.',
       );
-    } catch (e) {
+    } on Exception {
       return const SocialAuthResult(
         success: false,
         error: 'An unexpected error occurred.',
@@ -168,7 +168,7 @@ class AuthService {
         success: false,
         error: (e.response?.data['message'] as String?) ?? 'Apple login failed. Please try again.',
       );
-    } catch (e) {
+    } on Exception {
       return const SocialAuthResult(
         success: false,
         error: 'An unexpected error occurred.',
@@ -211,7 +211,7 @@ class AuthService {
       );
 
       return newAccessToken;
-    } catch (e) {
+    } on Exception {
       await logout();
       return null;
     }
@@ -236,7 +236,7 @@ class AuthService {
         data: {'email': email},
       );
       return true;
-    } catch (e) {
+    } on Exception {
       return false;
     }
   }
@@ -254,7 +254,7 @@ class AuthService {
         },
       );
       return true;
-    } catch (e) {
+    } on Exception {
       return false;
     }
   }
@@ -267,7 +267,7 @@ class AuthService {
         data: {'token': token},
       );
       return true;
-    } catch (e) {
+    } on Exception {
       return false;
     }
   }
@@ -279,7 +279,7 @@ class AuthService {
         data: {'email': email},
       );
       return true;
-    } catch (e) {
+    } on Exception {
       return false;
     }
   }

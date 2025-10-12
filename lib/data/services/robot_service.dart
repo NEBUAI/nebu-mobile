@@ -231,7 +231,7 @@ class RobotService {
 
       _logger.i('Device validation result: ${validationResponse.isValid}');
       return validationResponse;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error validating robot device: $e');
       
       // Simular respuesta de error para desarrollo
@@ -260,7 +260,7 @@ class RobotService {
 
       _logger.i('Found ${devices.length} robot devices');
       return devices;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error fetching robot devices: $e');
       
       // Simular datos de prueba para desarrollo
@@ -313,7 +313,7 @@ class RobotService {
       
       _logger.i('WiFi configuration result: ${configResponse.success}');
       return configResponse;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error configuring WiFi: $e');
       
       // Simular respuesta para desarrollo
@@ -336,7 +336,7 @@ class RobotService {
 
       _logger.i('Command sent successfully');
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error sending command to robot: $e');
       return false;
     }
@@ -384,7 +384,7 @@ class RobotService {
       
       _logger.i('Firmware update initiated');
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error updating firmware: $e');
       return false;
     }
@@ -399,7 +399,7 @@ class RobotService {
       _updateDeviceInList(device);
       
       return device;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error getting device status: $e');
       return null;
     }
@@ -426,7 +426,7 @@ class RobotService {
   RobotDevice? getDeviceById(String deviceId) {
     try {
       return _devices.firstWhere((device) => device.id == deviceId);
-    } catch (e) {
+    } on Exception {
       return null;
     }
   }
