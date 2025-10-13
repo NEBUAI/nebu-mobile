@@ -117,13 +117,13 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     _QuickActionCard(
                       icon: Icons.dashboard,
-                      title: 'home.iot_dashboard'.tr(),
-                      onTap: () => context.go(AppConstants.routeIoTDashboard),
+                      title: 'home.my_toys'.tr(),
+                      onTap: () => context.go(AppConstants.routeMyToys),
                     ),
                     _QuickActionCard(
-                      icon: Icons.record_voice_over,
-                      title: 'home.voice_agent'.tr(),
-                      onTap: () => context.go(AppConstants.routeVoiceAgent),
+                      icon: Icons.history,
+                      title: 'home.activity_log'.tr(),
+                      onTap: () => context.go(AppConstants.routeActivityLog),
                     ),
                   ],
                 ),

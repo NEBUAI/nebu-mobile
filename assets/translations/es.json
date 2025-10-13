@@ -124,6 +124,7 @@
   },
   "home": {
     "title": "Inicio",
+    "my_active_toys": "My Active Toys",
     "welcome_back": "¡Bienvenido de nuevo!",
     "my_toys": "Mis Juguetes",
     "add_toy": "Agregar Juguete",
@@ -132,8 +133,7 @@
     "quick_actions": "Acciones Rápidas",
     "scan_qr": "Escanear QR",
     "devices": "Dispositivos",
-    "iot_dashboard": "Panel IoT",
-    "voice_agent": "Agente de Voz",
+    "activity_log": "Registro de actividad",
     "setup_new_toy": "Configurar Nuevo Juguete"
   },
   "profile": {
@@ -156,8 +156,20 @@
     "tap_to_speak": "Toca para hablar",
     "coming_soon": "¡La funcionalidad del agente de voz estará disponible pronto!"
   },
+  "activity_log": {
+    "title": "Registro de actividad",
+    "view_history": "Ver historial de uso",
+    "coming_soon": "¡La funcionalidad del registro de actividad estará disponible pronto!"
+  },
   "iot_dashboard": {
     "title": "Panel IoT",
+    "my_devices": "Mis Dispositivos",
+    "online": "En Línea",
+    "offline": "Desconectado",
+    "add_more_devices": "Agrega más dispositivos para comenzar"
+  },
+  "my_toys": {
+    "title": "Mis Juguetes",
     "my_devices": "Mis Dispositivos",
     "online": "En Línea",
     "offline": "Desconectado",

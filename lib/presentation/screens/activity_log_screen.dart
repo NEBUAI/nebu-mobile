@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
 
-class VoiceAgentScreen extends StatelessWidget {
-  const VoiceAgentScreen({super.key});
+class ActivityLogScreen extends StatelessWidget {
+  const ActivityLogScreen({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text('voice_agent.title'.tr()),
+        title: Text('activity_log.title'.tr()),
       ),
       body: Center(
         child: Column(
@@ -26,14 +26,14 @@ class VoiceAgentScreen extends StatelessWidget {
                 boxShadow: AppTheme.cardShadow,
               ),
               child: const Icon(
-                Icons.mic,
+                Icons.history,
                 size: 80,
                 color: Colors.white,
               ),
             ),
             const SizedBox(height: 32),
             Text(
-              'voice_agent.tap_to_speak'.tr(),
+              'activity_log.view_history'.tr(),
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class VoiceAgentScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 48),
               child: Text(
-                'voice_agent.coming_soon'.tr(),
+                'activity_log.coming_soon'.tr(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 16,

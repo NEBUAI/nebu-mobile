@@ -29,8 +29,8 @@ class AppConstants {
   static const String routeSignUp = '/signup';
   static const String routeHome = '/home';
   static const String routeProfile = '/profile';
-  static const String routeVoiceAgent = '/voice-agent';
-  static const String routeIoTDashboard = '/iot-dashboard';
+  static const String routeActivityLog = '/activity-log';
+  static const String routeMyToys = '/my-toys';
   static const String routeDeviceManagement = '/device-management';
   static const String routeQRScanner = '/qr-scanner';
 

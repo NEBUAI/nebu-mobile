@@ -22,12 +22,12 @@ class MainScreen extends StatelessWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.record_voice_over),
-            label: 'Voice',
+            icon: Icon(Icons.history),
+            label: 'Registro de actividad',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
-            label: 'IoT',
+            label: 'My Toys',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -43,10 +43,10 @@ class MainScreen extends StatelessWidget {
     if (location.startsWith(AppConstants.routeHome)) {
       return 0;
     }
-    if (location.startsWith(AppConstants.routeVoiceAgent)) {
+    if (location.startsWith(AppConstants.routeActivityLog)) {
       return 1;
     }
-    if (location.startsWith(AppConstants.routeIoTDashboard)) {
+    if (location.startsWith(AppConstants.routeMyToys)) {
       return 2;
     }
     if (location.startsWith(AppConstants.routeProfile)) {
@@ -61,10 +61,10 @@ class MainScreen extends StatelessWidget {
         context.go(AppConstants.routeHome);
         break;
       case 1:
-        context.go(AppConstants.routeVoiceAgent);
+        context.go(AppConstants.routeActivityLog);
         break;
       case 2:
-        context.go(AppConstants.routeIoTDashboard);
+        context.go(AppConstants.routeMyToys);
         break;
       case 3:
         context.go(AppConstants.routeProfile);

@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 
-class IoTDashboardScreen extends StatelessWidget {
-  const IoTDashboardScreen({super.key});
+class MyToysScreen extends StatelessWidget {
+  const MyToysScreen({super.key});
 
   void _showToyDetails(BuildContext context, String toyName, bool isOnline) {
     showModalBottomSheet<void>(

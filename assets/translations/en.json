@@ -124,6 +124,7 @@
   },
   "home": {
     "title": "Home",
+    "my_active_toys": "My Active Toys",
     "welcome_back": "Welcome back!",
     "my_toys": "My Toys",
     "add_toy": "Add Toy",
@@ -132,8 +133,7 @@
     "quick_actions": "Quick Actions",
     "scan_qr": "Scan QR",
     "devices": "Devices",
-    "iot_dashboard": "IoT Dashboard",
-    "voice_agent": "Voice Agent",
+    "activity_log": "Activity Log",
     "setup_new_toy": "Setup New Toy"
   },
   "profile": {
@@ -156,8 +156,20 @@
     "tap_to_speak": "Tap to speak",
     "coming_soon": "Voice agent functionality coming soon!"
   },
+  "activity_log": {
+    "title": "Activity Log",
+    "view_history": "View Usage History",
+    "coming_soon": "Activity log functionality coming soon!"
+  },
   "iot_dashboard": {
     "title": "IoT Dashboard",
+    "my_devices": "My Devices",
+    "online": "Online",
+    "offline": "Offline",
+    "add_more_devices": "Add more devices to get started"
+  },
+  "my_toys": {
+    "title": "My Toys",
     "my_devices": "My Devices",
     "online": "Online",
     "offline": "Offline",
