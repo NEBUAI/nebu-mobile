@@ -167,6 +167,26 @@
     "title": "Escáner QR",
     "coming_soon": "Escáner QR - Próximamente"
   },
+  "auth": {
+    "sign_in": "Iniciar Sesión",
+    "sign_in_subtitle": "Inicia sesión para guardar automáticamente tus datos",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "forgot_password": "¿Olvidaste tu Contraseña?",
+    "or_continue_with": "O continuar con",
+    "sign_in_google": "Iniciar sesión con Google",
+    "no_account": "¿No tienes una cuenta?",
+    "sign_up": "Registrarse",
+    "email_required": "El correo electrónico es requerido",
+    "email_invalid": "Por favor ingresa un correo válido",
+    "password_required": "La contraseña es requerida",
+    "password_short": "La contraseña debe tener al menos 6 caracteres",
+    "invalid_credentials": "Correo o contraseña inválidos",
+    "login_error": "Ocurrió un error durante el inicio de sesión",
+    "google_login_error": "Error al iniciar sesión con Google",
+    "forgot_password_coming_soon": "Recuperación de contraseña próximamente",
+    "sign_up_coming_soon": "Registro próximamente"
+  },
   "common": {
     "next": "Siguiente",
     "back": "Atrás",

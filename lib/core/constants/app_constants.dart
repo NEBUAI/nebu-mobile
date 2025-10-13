@@ -1,7 +1,7 @@
 class AppConstants {
   // App Info
   static const String appName = 'Nebu Mobile';
-  static const String appVersion = '1.0.0';
+  static const String appVersion = '1.0.1';
 
   // API
   static const Duration apiTimeout = Duration(seconds: 30);
@@ -25,6 +25,7 @@ class AppConstants {
   // Routes (will be defined in go_router)
   static const String routeSplash = '/';
   static const String routeWelcome = '/welcome';
+  static const String routeLogin = '/login';
   static const String routeHome = '/home';
   static const String routeProfile = '/profile';
   static const String routeVoiceAgent = '/voice-agent';
