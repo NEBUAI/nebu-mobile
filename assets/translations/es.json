@@ -163,6 +163,18 @@
     "offline": "Desconectado",
     "add_more_devices": "Agrega más dispositivos para comenzar"
   },
+  "toys": {
+    "title": "Mis Juguetes",
+    "my_active_toys": "Mis Juguetes Activos",
+    "add_toy": "Agregar Juguete",
+    "setup_new_toy": "Configurar Nuevo Juguete",
+    "add_more_hint": "¡Conecta más juguetes Nebu para mejorar la experiencia!",
+    "online": "En Línea",
+    "offline": "Desconectado",
+    "type": "Tipo",
+    "configure": "Configurar Juguete",
+    "remove": "Eliminar Juguete"
+  },
   "device_management": {
     "title": "Gestión de Dispositivos",
     "coming_soon": "Pantalla de Gestión de Dispositivos - Próximamente"

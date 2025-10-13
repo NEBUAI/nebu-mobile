@@ -163,6 +163,18 @@
     "offline": "Offline",
     "add_more_devices": "Add more devices to get started"
   },
+  "toys": {
+    "title": "My Toys",
+    "my_active_toys": "My Active Toys",
+    "add_toy": "Add Toy",
+    "setup_new_toy": "Setup New Toy",
+    "add_more_hint": "Connect more Nebu toys to enhance the experience!",
+    "online": "Online",
+    "offline": "Offline",
+    "type": "Type",
+    "configure": "Configure Toy",
+    "remove": "Remove Toy"
+  },
   "device_management": {
     "title": "Device Management",
     "coming_soon": "Device Management Screen - Coming Soon"
