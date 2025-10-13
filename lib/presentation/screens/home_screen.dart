@@ -72,6 +72,65 @@ class HomeScreen extends ConsumerWidget {
 
               const SizedBox(height: 24),
 
+              // My Toys Section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'My Toys',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton.icon(
+                    onPressed: () => context.push(AppConstants.routeConnectionSetup),
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add Toy'),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              // Toys List (placeholder for now)
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.toys_outlined,
+                      size: 64,
+                      color: Colors.grey.shade400,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No toys configured yet',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Tap "Add Toy" to set up your first Nebu device',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
               // Quick Actions
               const Text(
                 'Quick Actions',
@@ -115,6 +174,12 @@ class HomeScreen extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.push(AppConstants.routeConnectionSetup),
+        icon: const Icon(Icons.add),
+        label: const Text('Setup New Toy'),
+        backgroundColor: AppTheme.primaryLight,
       ),
     );
   }

@@ -221,6 +221,37 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
     );
   }
 
+  void _showSkipSetupDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Skip Device Setup?'),
+        content: const Text(
+          'You can set up your Nebu device later from the home screen.\n\n'
+          'Are you sure you want to skip the setup now?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // Go to home screen
+              context.go(AppConstants.routeHome);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryLight,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Skip Setup'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showPermissionsDeniedDialog() {
     showDialog<void>(
       context: context,
@@ -349,7 +380,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
 
                   // Skip button
                   TextButton(
-                    onPressed: () => context.go(AppConstants.routeHome),
+                    onPressed: _showSkipSetupDialog,
                     child: Text(
                       'Skip Setup',
                       style: TextStyle(

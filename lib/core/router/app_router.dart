@@ -34,8 +34,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isWelcome = state.matchedLocation == AppConstants.routeWelcome;
       final isSetupRoute = state.matchedLocation.startsWith('/setup/');
 
-      // If not authenticated and not on welcome/splash/setup, redirect to welcome
-      if (!isAuthenticated && !isWelcome && !isSplash && !isSetupRoute) {
+      // Main app routes that can be accessed without authentication
+      final isMainRoute = state.matchedLocation == AppConstants.routeHome ||
+          state.matchedLocation == AppConstants.routeVoiceAgent ||
+          state.matchedLocation == AppConstants.routeIoTDashboard ||
+          state.matchedLocation == AppConstants.routeProfile;
+
+      // Allow access to main routes even without authentication (user can skip setup)
+      if (!isAuthenticated && !isWelcome && !isSplash && !isSetupRoute && !isMainRoute) {
         return AppConstants.routeWelcome;
       }
 
