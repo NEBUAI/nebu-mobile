@@ -75,7 +75,7 @@ class ProfileScreen extends ConsumerWidget {
                           : Center(
                               child: Text(
                                 (authState.user?.name ?? 'U')[0].toUpperCase(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: AppTheme.primaryLight,
@@ -110,12 +110,12 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     // Settings Icon
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.settings_outlined,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       onPressed: () {
-                        // TODO: Navigate to settings
+                        // TODO(duvet05): Navigate to settings
                       },
                     ),
                   ],
@@ -135,7 +135,7 @@ class ProfileScreen extends ConsumerWidget {
                     title: 'Your orders',
                     trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                     onTap: () {
-                      // TODO: Navigate to orders
+                      // TODO(duvet05): Navigate to orders
                     },
                   ),
                   Divider(height: 1, indent: 56, color: theme.dividerColor),
@@ -159,7 +159,7 @@ class ProfileScreen extends ConsumerWidget {
                       ],
                     ),
                     onTap: () {
-                      // TODO: Navigate to notifications
+                      // TODO(duvet05): Navigate to notifications
                     },
                   ),
                 ],
@@ -198,7 +198,12 @@ class ProfileScreen extends ConsumerWidget {
                         ref.read(themeProvider.notifier).toggleDarkMode();
                       },
                       activeTrackColor: AppTheme.primaryLight.withValues(alpha: 0.5),
-                      activeColor: AppTheme.primaryLight,
+                      thumbColor: WidgetStateProperty.resolveWith((states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return AppTheme.primaryLight;
+                        }
+                        return null;
+                      }),
                     ),
                   ),
                   Divider(height: 1, indent: 56, color: theme.dividerColor),
@@ -301,9 +306,7 @@ class ProfileScreen extends ConsumerWidget {
               const SizedBox(height: 24),
 
               // Logout Button
-              Container(
-                width: double.infinity,
-                height: 54,
+              DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
@@ -314,29 +317,33 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final shouldLogout = await _showLogoutDialog(context);
-                    if (shouldLogout ?? false) {
-                      await ref.read(authProvider.notifier).logout();
-                      if (context.mounted) {
-                        context.go(AppConstants.routeWelcome);
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final shouldLogout = await _showLogoutDialog(context);
+                      if (shouldLogout ?? false) {
+                        await ref.read(authProvider.notifier).logout();
+                        if (context.mounted) {
+                          context.go(AppConstants.routeWelcome);
+                        }
                       }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    'profile.logout'.tr(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                    child: Text(
+                      'profile.logout'.tr(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
