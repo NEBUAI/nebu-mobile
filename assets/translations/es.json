@@ -3,8 +3,12 @@
   "welcome": {
     "title": "Bienvenido a Nebu",
     "subtitle": "Diversión sin pantallas para una imaginación infinita",
-    "get_started": "Comenzar",
+    "auth_section_title": "Guarda tus datos y sincroniza entre dispositivos",
     "sign_in": "Iniciar Sesión",
+    "sign_up": "Registrarse",
+    "or": "O",
+    "continue_without_account": "Continuar sin una cuenta",
+    "get_started": "Comenzar",
     "login_coming_soon": "¡Funcionalidad de inicio de sesión próximamente!"
   },
   "setup": {

@@ -13,101 +13,185 @@ class WelcomeScreen extends StatelessWidget {
         decoration: AppTheme.primaryGradientDecoration,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Spacer(),
+                const SizedBox(height: 20),
 
                 // Logo and Title
-                Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: AppTheme.cardShadow,
-                        ),
-                        child: const Icon(
-                          Icons.smart_toy,
-                          size: 56,
-                          color: AppTheme.primaryLight,
-                        ),
+                Column(
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.15),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 24),
-                      Text(
-                        'welcome.title'.tr(),
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                      child: const Icon(
+                        Icons.smart_toy,
+                        size: 64,
+                        color: AppTheme.primaryLight,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      'welcome.title'.tr(),
+                      style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
                         'welcome.subtitle'.tr(),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white.withValues(alpha: 0.9),
+                          height: 1.4,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
-                const Spacer(),
+                // Buttons Section
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Authentication Section Title
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        'welcome.auth_section_title'.tr(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.white.withValues(alpha: 0.85),
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ),
 
-                // Get Started Button
-                ElevatedButton(
-                  onPressed: () {
-                    context.push(AppConstants.routeConnectionSetup);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppTheme.primaryLight,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    const SizedBox(height: 20),
+
+                    // Sign In Button
+                    ElevatedButton(
+                      onPressed: () {
+                        context.push(AppConstants.routeLogin);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: AppTheme.primaryLight,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 4,
+                      ),
+                      child: Text(
+                        'welcome.sign_in'.tr(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    'welcome.get_started'.tr(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+
+                    const SizedBox(height: 12),
+
+                    // Sign Up Button
+                    OutlinedButton(
+                      onPressed: () {
+                        context.push(AppConstants.routeSignUp);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        side: const BorderSide(color: Colors.white, width: 2),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        'welcome.sign_up'.tr(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(height: 28),
+
+                    // Divider
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white.withValues(alpha: 0.4),
+                            thickness: 1.5,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'welcome.or'.tr(),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.white.withValues(alpha: 0.8),
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white.withValues(alpha: 0.4),
+                            thickness: 1.5,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Continue Without Account Button
+                    TextButton(
+                      onPressed: () {
+                        context.push(AppConstants.routeConnectionSetup);
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: Text(
+                        'welcome.continue_without_account'.tr(),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                          decorationThickness: 2,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 12),
-
-                // Sign In Button
-                OutlinedButton(
-                  onPressed: () {
-                    context.push(AppConstants.routeLogin);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white, width: 2),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'welcome.sign_in'.tr(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 48),
               ],
             ),
           ),

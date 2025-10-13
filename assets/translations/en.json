@@ -3,8 +3,12 @@
   "welcome": {
     "title": "Welcome to Nebu",
     "subtitle": "Screen-free fun for endless imagination",
-    "get_started": "Get Started",
+    "auth_section_title": "Save your data and sync across devices",
     "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "or": "OR",
+    "continue_without_account": "Continue without an account",
+    "get_started": "Get Started",
     "login_coming_soon": "Login functionality coming soon!"
   },
   "setup": {
