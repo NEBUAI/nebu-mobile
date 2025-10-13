@@ -57,7 +57,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
     if (!_isBluetoothEnabled) {
       _showEnableBluetoothDialog();
     } else {
-      _checkPermissionsAndStartScan();
+      await _checkPermissionsAndStartScan();
     }
   }
 
@@ -83,14 +83,16 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       }
 
       return granted;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error requesting permissions: $e');
       return false;
     }
   }
 
   Future<void> _startScan() async {
-    if (_isScanning) return;
+    if (_isScanning) {
+      return;
+    }
 
     setState(() {
       _isScanning = true;
@@ -115,12 +117,12 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       });
 
       // Auto-stop after timeout
-      Future.delayed(const Duration(seconds: 15), () {
+      Future<void>.delayed(const Duration(seconds: 15), () {
         if (mounted) {
           _stopScan();
         }
       });
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error starting scan: $e');
       if (mounted) {
         setState(() {
@@ -140,7 +142,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           _isScanning = false;
         });
       }
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error stopping scan: $e');
     }
   }
@@ -170,7 +172,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                 if (await fbp.FlutterBluePlus.isSupported) {
                   await fbp.FlutterBluePlus.turnOn();
                 }
-              } catch (e) {
+              } on Exception catch (e) {
                 debugPrint('Error turning on Bluetooth: $e');
               }
             },
@@ -273,7 +275,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                             if (_scanResults.isEmpty) {
                               await _startScan();
                             } else {
-                              context.push(AppConstants.routeToyNameSetup);
+                              await context.push(AppConstants.routeToyNameSetup);
                             }
                           },
                     style: ElevatedButton.styleFrom(
