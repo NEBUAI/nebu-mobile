@@ -64,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // TODO(duvet05): Navigate to setup or home
-                    context.go(AppConstants.routeConnectionSetup);
+                    context.push(AppConstants.routeConnectionSetup);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

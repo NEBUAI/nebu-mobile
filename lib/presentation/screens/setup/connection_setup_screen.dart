@@ -78,7 +78,7 @@ class ConnectionSetupScreen extends StatelessWidget {
                   // Next button
                   ElevatedButton(
                     onPressed: () {
-                      context.go(AppConstants.routeToyNameSetup);
+                      context.push(AppConstants.routeToyNameSetup);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
