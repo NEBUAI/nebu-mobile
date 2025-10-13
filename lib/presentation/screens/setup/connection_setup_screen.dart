@@ -42,10 +42,6 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       setState(() {
         _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
       });
-
-      if (state == fbp.BluetoothAdapterState.on) {
-        _checkPermissionsAndStartScan();
-      }
     });
 
     // Check initial state
@@ -53,12 +49,6 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
     setState(() {
       _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
     });
-
-    if (!_isBluetoothEnabled) {
-      _showEnableBluetoothDialog();
-    } else {
-      await _checkPermissionsAndStartScan();
-    }
   }
 
   Future<void> _checkPermissionsAndStartScan() async {
@@ -160,13 +150,22 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context.pop(); // Go back to welcome screen
+              // Show message that Bluetooth is required
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Bluetooth is required to scan for devices'),
+                  backgroundColor: Colors.orange,
+                  duration: Duration(seconds: 3),
+                ),
+              );
             },
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
+              final messenger = ScaffoldMessenger.of(context);
+
               // Try to turn on Bluetooth
               try {
                 if (await fbp.FlutterBluePlus.isSupported) {
@@ -174,6 +173,15 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                 }
               } on Exception catch (e) {
                 debugPrint('Error turning on Bluetooth: $e');
+                if (mounted) {
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text('Could not enable Bluetooth: $e'),
+                      backgroundColor: Colors.red,
+                      duration: const Duration(seconds: 3),
+                    ),
+                  );
+                }
               }
             },
             child: const Text('Enable'),
@@ -273,7 +281,14 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                         ? null
                         : () async {
                             if (_scanResults.isEmpty) {
-                              await _startScan();
+                              // Check if Bluetooth is enabled first
+                              if (!_isBluetoothEnabled) {
+                                _showEnableBluetoothDialog();
+                                return;
+                              }
+
+                              // Then check permissions and start scan
+                              await _checkPermissionsAndStartScan();
                             } else {
                               await context.push(AppConstants.routeToyNameSetup);
                             }
