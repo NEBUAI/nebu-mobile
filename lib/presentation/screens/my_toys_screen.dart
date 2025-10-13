@@ -1,16 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
+import '../providers/theme_provider.dart';
 
-class MyToysScreen extends StatelessWidget {
+class MyToysScreen extends ConsumerWidget {
   const MyToysScreen({super.key});
 
-  void _showToyDetails(BuildContext context, String toyName, bool isOnline) {
+  void _showToyDetails(BuildContext context, String toyName, bool isOnline, 
+      ThemeData theme, bool isDark) {
     showModalBottomSheet<void>(
       context: context,
+      backgroundColor: theme.colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -25,7 +28,7 @@ class MyToysScreen extends StatelessWidget {
               height: 4,
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: theme.dividerColor.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -35,21 +38,20 @@ class MyToysScreen extends StatelessWidget {
               height: 80,
               decoration: BoxDecoration(
                 color: isOnline
-                    ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                    : Colors.grey.withValues(alpha: 0.1),
+                    ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                    : theme.disabledColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
                 Icons.smart_toy,
                 size: 40,
-                color: isOnline ? AppTheme.primaryLight : Colors.grey,
+                color: isOnline ? theme.colorScheme.primary : theme.disabledColor,
               ),
             ),
             const SizedBox(height: 16),
             Text(
               toyName,
-              style: const TextStyle(
-                fontSize: 24,
+              style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -75,16 +77,14 @@ class MyToysScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               'toys.type'.tr(),
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[600],
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
+            Text(
               'Nebu Robot',
-              style: TextStyle(
-                fontSize: 16,
+              style: theme.textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -97,7 +97,7 @@ class MyToysScreen extends StatelessWidget {
                   // TODO(duvet05): Navigate to toy settings
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryLight,
+                  backgroundColor: theme.colorScheme.primary,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -140,15 +140,19 @@ class MyToysScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-      backgroundColor: Colors.grey[50],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeState = ref.watch(themeProvider);
+    final isDark = themeState.isDarkMode;
+    final theme = Theme.of(context);
+    
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         title: Text(
           'toys.title'.tr(),
-          style: const TextStyle(
-            color: Colors.black87,
+          style: theme.appBarTheme.titleTextStyle?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -162,15 +166,13 @@ class MyToysScreen extends StatelessWidget {
             children: [
               Text(
                 'toys.my_toys'.tr(),
-                style: const TextStyle(
-                  fontSize: 20,
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
                 ),
               ),
               DecoratedBox(
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryLight,
+                  color: theme.colorScheme.primary,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Material(
@@ -186,16 +188,16 @@ class MyToysScreen extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.add,
-                            color: Colors.white,
+                            color: theme.colorScheme.onPrimary,
                             size: 20,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             'toys.add_toy'.tr(),
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
                             ),
@@ -215,13 +217,17 @@ class MyToysScreen extends StatelessWidget {
             name: 'Robot 1',
             type: 'Nebu Robot',
             isOnline: true,
-            onTap: () => _showToyDetails(context, 'Robot 1', true),
+            theme: theme,
+            isDark: isDark,
+            onTap: () => _showToyDetails(context, 'Robot 1', true, theme, isDark),
           ),
           _ToyCard(
             name: 'Robot 2',
             type: 'Nebu Robot',
             isOnline: false,
-            onTap: () => _showToyDetails(context, 'Robot 2', false),
+            theme: theme,
+            isDark: isDark,
+            onTap: () => _showToyDetails(context, 'Robot 2', false, theme, isDark),
           ),
 
           const SizedBox(height: 24),
@@ -230,10 +236,10 @@ class MyToysScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: Colors.grey[200]!,
+                color: theme.dividerColor.withValues(alpha: 0.3),
                 width: 2,
               ),
             ),
@@ -242,15 +248,14 @@ class MyToysScreen extends StatelessWidget {
                 Icon(
                   Icons.add_circle_outline,
                   size: 48,
-                  color: Colors.grey[400],
+                  color: theme.disabledColor,
                 ),
                 const SizedBox(height: 12),
                 Text(
                   'toys.add_more_hint'.tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     height: 1.4,
                   ),
                 ),
@@ -260,7 +265,7 @@ class MyToysScreen extends StatelessWidget {
                   icon: const Icon(Icons.add),
                   label: Text('toys.setup_new_toy'.tr()),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppTheme.primaryLight,
+                    foregroundColor: theme.colorScheme.primary,
                   ),
                 ),
               ],
@@ -269,6 +274,7 @@ class MyToysScreen extends StatelessWidget {
         ],
       ),
     );
+  }
 }
 
 class _ToyCard extends StatelessWidget {
@@ -276,17 +282,22 @@ class _ToyCard extends StatelessWidget {
     required this.name,
     required this.type,
     required this.isOnline,
+    required this.theme,
+    required this.isDark,
     required this.onTap,
   });
 
   final String name;
   final String type;
   final bool isOnline;
+  final ThemeData theme;
+  final bool isDark;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) => Card(
-        elevation: 2,
+        color: theme.colorScheme.surface,
+        elevation: isDark ? 4 : 2,
         margin: const EdgeInsets.only(bottom: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -303,14 +314,14 @@ class _ToyCard extends StatelessWidget {
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: isOnline
-                        ? AppTheme.primaryLight.withValues(alpha: 0.15)
-                        : Colors.grey.withValues(alpha: 0.15),
+                        ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                        : theme.disabledColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Icon(
                     Icons.smart_toy,
                     size: 28,
-                    color: isOnline ? AppTheme.primaryLight : Colors.grey,
+                    color: isOnline ? theme.colorScheme.primary : theme.disabledColor,
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -321,18 +332,15 @@ class _ToyCard extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         type,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[600],
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                     ],
@@ -376,7 +384,7 @@ class _ToyCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Icon(
                   Icons.chevron_right,
-                  color: Colors.grey[400],
+                  color: theme.iconTheme.color?.withValues(alpha: 0.4),
                 ),
               ],
             ),

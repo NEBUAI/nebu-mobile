@@ -177,6 +177,7 @@
   },
   "toys": {
     "title": "Mis Juguetes",
+    "my_toys": "Mis Juguetes",
     "my_active_toys": "Mis Juguetes Activos",
     "add_toy": "Agregar Juguete",
     "setup_new_toy": "Configurar Nuevo Juguete",

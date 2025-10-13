@@ -177,6 +177,7 @@
   },
   "toys": {
     "title": "My Toys",
+    "my_toys": "toys.my_toys",
     "my_active_toys": "My Active Toys",
     "add_toy": "Add Toy",
     "setup_new_toy": "Setup New Toy",
