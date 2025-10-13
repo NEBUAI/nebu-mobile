@@ -18,6 +18,7 @@ import '../../presentation/screens/setup/personality_setup_screen.dart';
 import '../../presentation/screens/setup/toy_name_setup_screen.dart';
 import '../../presentation/screens/setup/voice_setup_screen.dart';
 import '../../presentation/screens/setup/world_info_setup_screen.dart';
+import '../../presentation/screens/signup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
 import '../../presentation/screens/voice_agent_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
@@ -34,6 +35,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isSplash = state.matchedLocation == AppConstants.routeSplash;
       final isWelcome = state.matchedLocation == AppConstants.routeWelcome;
       final isLogin = state.matchedLocation == AppConstants.routeLogin;
+      final isSignUp = state.matchedLocation == AppConstants.routeSignUp;
       final isSetupRoute = state.matchedLocation.startsWith('/setup/');
 
       // Main app routes that can be accessed without authentication
@@ -43,7 +45,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           state.matchedLocation == AppConstants.routeProfile;
 
       // Allow access to main routes even without authentication (user can skip setup)
-      if (!isAuthenticated && !isWelcome && !isSplash && !isLogin && !isSetupRoute && !isMainRoute) {
+      if (!isAuthenticated && !isWelcome && !isSplash && !isLogin && !isSignUp && !isSetupRoute && !isMainRoute) {
         return AppConstants.routeWelcome;
       }
 
@@ -75,6 +77,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppConstants.routeLogin,
         name: 'login',
         builder: (context, state) => const LoginScreen(),
+      ),
+
+      // Sign Up Screen
+      GoRoute(
+        path: AppConstants.routeSignUp,
+        name: 'signup',
+        builder: (context, state) => const SignUpScreen(),
       ),
 
       // Main Screen with Bottom Navigation

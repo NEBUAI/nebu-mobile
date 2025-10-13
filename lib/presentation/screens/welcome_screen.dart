@@ -88,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
                 // Sign In Button
                 OutlinedButton(
                   onPressed: () {
-                    _showLoginDialog(context);
+                    context.push(AppConstants.routeLogin);
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -114,20 +114,4 @@ class WelcomeScreen extends StatelessWidget {
         ),
       ),
     );
-
-  void _showLoginDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('welcome.sign_in'.tr()),
-        content: Text('welcome.login_coming_soon'.tr()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('common.done'.tr()),
-          ),
-        ],
-      ),
-    );
-  }
 }
