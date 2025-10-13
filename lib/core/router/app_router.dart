@@ -32,9 +32,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isAuthenticated = authState.isAuthenticated;
       final isSplash = state.matchedLocation == AppConstants.routeSplash;
       final isWelcome = state.matchedLocation == AppConstants.routeWelcome;
+      final isSetupRoute = state.matchedLocation.startsWith('/setup/');
 
-      // If not authenticated and not on welcome/splash, redirect to welcome
-      if (!isAuthenticated && !isWelcome && !isSplash) {
+      // If not authenticated and not on welcome/splash/setup, redirect to welcome
+      if (!isAuthenticated && !isWelcome && !isSplash && !isSetupRoute) {
         return AppConstants.routeWelcome;
       }
 
