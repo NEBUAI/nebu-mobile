@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -15,24 +17,24 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
 
   final List<Map<String, String>> _personalities = [
     {
-      'label': 'Playful',
+      'label': 'setup.personality.playful',
       'icon': '😄',
-      'description': 'Energetic and fun-loving',
+      'description': 'setup.personality.playful_desc',
     },
     {
-      'label': 'Calm',
+      'label': 'setup.personality.calm',
       'icon': '😌',
-      'description': 'Gentle and soothing',
+      'description': 'setup.personality.calm_desc',
     },
     {
-      'label': 'Curious',
+      'label': 'setup.personality.curious',
       'icon': '🤔',
-      'description': 'Always learning and exploring',
+      'description': 'setup.personality.curious_desc',
     },
     {
-      'label': 'Wise',
+      'label': 'setup.personality.wise',
       'icon': '🧙',
-      'description': 'Thoughtful and knowledgeable',
+      'description': 'setup.personality.wise_desc',
     },
   ];
 
@@ -63,9 +65,9 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   const SizedBox(height: 40),
 
                   // Title
-                  const Text(
-                    'Choose Personality',
-                    style: TextStyle(
+                  Text(
+                    'setup.personality.title'.tr(),
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -76,7 +78,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   const SizedBox(height: 12),
 
                   Text(
-                    'What personality suits your companion best?',
+                    'setup.personality.subtitle'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white.withValues(alpha: 0.9),
@@ -131,7 +133,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          personality['label']!,
+                                          personality['label']!.tr(),
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
@@ -142,7 +144,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          personality['description']!,
+                                          personality['description']!.tr(),
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: isSelected
@@ -188,9 +190,9 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(
+                    child: Text(
+                      'common.next'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -203,7 +205,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   TextButton(
                     onPressed: () => context.go(AppConstants.routeHome),
                     child: Text(
-                      'Skip Setup',
+                      'setup.connection.skip_setup'.tr(),
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.8),
                         fontSize: 16,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +20,7 @@ class ProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text('profile.title'.tr()),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -57,7 +58,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      authState.user?.name ?? 'User',
+                      authState.user?.name ?? 'profile.user'.tr(),
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -84,7 +85,7 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     ListTile(
                       leading: const Icon(Icons.dark_mode),
-                      title: const Text('Dark Mode'),
+                      title: Text('profile.dark_mode'.tr()),
                       trailing: Switch(
                         value: themeState.isDarkMode,
                         onChanged: (value) {
@@ -95,18 +96,18 @@ class ProfileScreen extends ConsumerWidget {
                     const Divider(height: 1),
                     ListTile(
                       leading: const Icon(Icons.language),
-                      title: const Text('Language'),
+                      title: Text('profile.language'.tr()),
                       trailing: DropdownButton<String>(
                         value: languageState.languageCode,
                         underline: const SizedBox(),
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             value: 'en',
-                            child: Text('English'),
+                            child: Text('profile.english'.tr()),
                           ),
                           DropdownMenuItem(
                             value: 'es',
-                            child: Text('Español'),
+                            child: Text('profile.spanish'.tr()),
                           ),
                         ],
                         onChanged: (value) {
@@ -128,7 +129,7 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     ListTile(
                       leading: const Icon(Icons.person),
-                      title: const Text('Edit Profile'),
+                      title: Text('profile.edit_profile'.tr()),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
                         // TODO(dev): Navigate to edit profile
@@ -137,7 +138,7 @@ class ProfileScreen extends ConsumerWidget {
                     const Divider(height: 1),
                     ListTile(
                       leading: const Icon(Icons.notifications),
-                      title: const Text('Notifications'),
+                      title: Text('profile.notifications'.tr()),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
                         // TODO(dev): Navigate to notifications settings
@@ -146,7 +147,7 @@ class ProfileScreen extends ConsumerWidget {
                     const Divider(height: 1),
                     ListTile(
                       leading: const Icon(Icons.privacy_tip),
-                      title: const Text('Privacy'),
+                      title: Text('profile.privacy'.tr()),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
                         // TODO(dev): Navigate to privacy settings
@@ -164,7 +165,7 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     ListTile(
                       leading: const Icon(Icons.help),
-                      title: const Text('Help & Support'),
+                      title: Text('profile.help_support'.tr()),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
                         // TODO(duvet05): Navigate to help
@@ -173,7 +174,7 @@ class ProfileScreen extends ConsumerWidget {
                     const Divider(height: 1),
                     ListTile(
                       leading: const Icon(Icons.info),
-                      title: const Text('About'),
+                      title: Text('profile.about'.tr()),
                       trailing: const Text(
                         'v${AppConstants.appVersion}',
                         style: TextStyle(color: Colors.grey),
@@ -205,7 +206,7 @@ class ProfileScreen extends ConsumerWidget {
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Logout'),
+                  child: Text('profile.logout'.tr()),
                 ),
               ),
 
@@ -220,16 +221,16 @@ class ProfileScreen extends ConsumerWidget {
   Future<bool?> _showLogoutDialog(BuildContext context) => showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+        title: Text('profile.logout'.tr()),
+        content: Text('profile.logout_confirmation'.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text('common.cancel'.tr()),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Logout'),
+            child: Text('profile.logout'.tr()),
           ),
         ],
       ),

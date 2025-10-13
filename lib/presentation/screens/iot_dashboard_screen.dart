@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_theme.dart';
 
 class IoTDashboardScreen extends StatelessWidget {
@@ -7,7 +9,7 @@ class IoTDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: const Text('IoT Dashboard'),
+        title: Text('iot_dashboard.title'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -20,9 +22,9 @@ class IoTDashboardScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
-            'My Devices',
-            style: TextStyle(
+          Text(
+            'iot_dashboard.my_devices'.tr(),
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -31,21 +33,21 @@ class IoTDashboardScreen extends StatelessWidget {
           _DeviceCard(
             name: 'Robot 1',
             type: 'Nebu Robot',
-            status: 'Online',
+            status: 'iot_dashboard.online'.tr(),
             isOnline: true,
             onTap: () {},
           ),
           _DeviceCard(
             name: 'Robot 2',
             type: 'Nebu Robot',
-            status: 'Offline',
+            status: 'iot_dashboard.offline'.tr(),
             isOnline: false,
             onTap: () {},
           ),
           const SizedBox(height: 16),
           Center(
             child: Text(
-              'Add more devices to get started',
+              'iot_dashboard.add_more_devices'.tr(),
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey.shade600,

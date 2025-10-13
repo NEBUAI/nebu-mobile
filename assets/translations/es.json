@@ -1,0 +1,183 @@
+{
+  "app_name": "Nebu Mobile",
+  "welcome": {
+    "title": "Bienvenido a Nebu",
+    "subtitle": "Tu juguete favorito",
+    "get_started": "Comenzar",
+    "sign_in": "Iniciar Sesión",
+    "login_coming_soon": "¡Funcionalidad de inicio de sesión próximamente!"
+  },
+  "setup": {
+    "connection": {
+      "title": "Conecta Tu Dispositivo",
+      "subtitle": "Conectemos tu juguete Nebu para comenzar",
+      "searching": "Buscando tu dispositivo Nebu...",
+      "no_devices": "No se encontraron dispositivos",
+      "start_scan": "Iniciar Escaneo",
+      "start_scan_hint": "Toca \"Iniciar Escaneo\" para buscar tu dispositivo Nebu",
+      "scanning": "Escaneando...",
+      "skip_setup": "Omitir Configuración",
+      "enable_bluetooth_title": "Habilitar Bluetooth",
+      "enable_bluetooth_message": "Por favor habilita el Bluetooth para conectarte a tu dispositivo Nebu.",
+      "bluetooth_required": "Se requiere Bluetooth para escanear dispositivos",
+      "enable": "Habilitar",
+      "cancel": "Cancelar",
+      "skip_dialog_title": "¿Omitir Configuración del Dispositivo?",
+      "skip_dialog_message": "Puedes configurar tu dispositivo Nebu más tarde desde la pantalla de inicio.\n\n¿Estás seguro de que quieres omitir la configuración ahora?",
+      "permissions_required_title": "Permisos Requeridos",
+      "permissions_required_message": "Se requieren permisos de Bluetooth y ubicación para conectarte a tu dispositivo. Por favor habilítalos en configuración.",
+      "open_settings": "Abrir Configuración",
+      "device_found": "Dispositivo: {name}",
+      "signal_strength": "Señal: {rssi} dBm"
+    },
+    "toy_name": {
+      "title": "Nombra Tu Juguete",
+      "subtitle": "Dale un nombre especial a tu Nebu",
+      "hint": "Ingresa un nombre",
+      "validation_empty": "Por favor ingresa un nombre para tu juguete",
+      "validation_short": "El nombre debe tener al menos 2 caracteres",
+      "next": "Siguiente"
+    },
+    "age": {
+      "title": "Edad del Niño",
+      "subtitle": "Ayúdanos a personalizar la experiencia",
+      "age_3_5": "3-5 años",
+      "age_6_8": "6-8 años",
+      "age_9_12": "9-12 años",
+      "age_13_plus": "13+ años",
+      "hint": "Ingresa la edad",
+      "validation_empty": "Por favor ingresa la edad del niño",
+      "validation_invalid": "Por favor ingresa una edad válida",
+      "validation_range": "La edad debe estar entre 3 y 12",
+      "next": "Siguiente"
+    },
+    "personality": {
+      "title": "Elige la Personalidad",
+      "subtitle": "Selecciona el tipo de personalidad de tu juguete",
+      "friendly": "Amigable",
+      "friendly_desc": "Cálido, cariñoso y siempre feliz de ayudar",
+      "playful": "Juguetón",
+      "playful_desc": "Divertido, energético y le encanta jugar",
+      "curious": "Curioso",
+      "curious_desc": "Le encanta aprender y hacer preguntas",
+      "calm": "Tranquilo",
+      "calm_desc": "Pacífico, paciente y relajante",
+      "wise": "Sabio",
+      "wise_desc": "Reflexivo y con conocimiento",
+      "next": "Siguiente"
+    },
+    "voice": {
+      "title": "Selecciona la Voz",
+      "subtitle": "Elige cómo sonará tu juguete",
+      "child_voice": "Voz Infantil",
+      "child_voice_desc": "Aguda y juguetona",
+      "friendly_adult": "Adulto Amigable",
+      "friendly_adult_desc": "Cálida y cariñosa",
+      "robot_voice": "Voz de Robot",
+      "robot_voice_desc": "Sonidos digitales divertidos",
+      "custom": "Personalizada",
+      "custom_desc": "Configura tus preferencias",
+      "test": "Probar Voz",
+      "next": "Siguiente"
+    },
+    "favorites": {
+      "title": "Cosas Favoritas",
+      "subtitle": "Cuéntanos qué le encanta a tu hijo",
+      "animals": "Animales",
+      "space": "Espacio",
+      "sports": "Deportes",
+      "music": "Música",
+      "art": "Arte",
+      "science": "Ciencia",
+      "stories": "Historias",
+      "games": "Juegos",
+      "colors": "Colores Favoritos",
+      "activities": "Actividades Favoritas",
+      "foods": "Comidas Favoritas",
+      "hint": "Ingresa favoritos (separados por comas)",
+      "next_with_count": "Siguiente ({} seleccionados)",
+      "select_at_least": "Selecciona al menos 2",
+      "next": "Siguiente",
+      "skip": "Omitir"
+    },
+    "world_info": {
+      "title": "Sobre Tu Mundo",
+      "subtitle": "Ayuda a tu juguete a conocer sobre tu familia",
+      "all_set": "¡Todo Listo!",
+      "ready_message": "¡Tu compañero Nebu está listo para conocerte!",
+      "device_connected": "Dispositivo conectado",
+      "profile_configured": "Perfil configurado",
+      "preferences_saved": "Preferencias guardadas",
+      "start_using": "Comenzar a Usar Nebu",
+      "family_members": "Miembros de la Familia",
+      "pets": "Mascotas",
+      "school": "Nombre de Escuela/Guardería",
+      "city": "Ciudad",
+      "hint": "Opcional",
+      "finish": "Finalizar Configuración",
+      "skip": "Omitir"
+    }
+  },
+  "home": {
+    "title": "Inicio",
+    "welcome_back": "¡Bienvenido de nuevo!",
+    "my_toys": "Mis Juguetes",
+    "add_toy": "Agregar Juguete",
+    "no_toys": "Aún no hay juguetes configurados",
+    "no_toys_hint": "Toca \"Agregar Juguete\" para configurar tu primer dispositivo Nebu",
+    "quick_actions": "Acciones Rápidas",
+    "scan_qr": "Escanear QR",
+    "devices": "Dispositivos",
+    "iot_dashboard": "Panel IoT",
+    "voice_agent": "Agente de Voz",
+    "setup_new_toy": "Configurar Nuevo Juguete"
+  },
+  "profile": {
+    "title": "Perfil",
+    "user": "Usuario",
+    "dark_mode": "Modo Oscuro",
+    "language": "Idioma",
+    "english": "English",
+    "spanish": "Español",
+    "edit_profile": "Editar Perfil",
+    "notifications": "Notificaciones",
+    "privacy": "Privacidad",
+    "help_support": "Ayuda y Soporte",
+    "about": "Acerca de",
+    "logout": "Cerrar Sesión",
+    "logout_confirmation": "¿Estás seguro de que quieres cerrar sesión?"
+  },
+  "voice_agent": {
+    "title": "Agente de Voz",
+    "tap_to_speak": "Toca para hablar",
+    "coming_soon": "¡La funcionalidad del agente de voz estará disponible pronto!"
+  },
+  "iot_dashboard": {
+    "title": "Panel IoT",
+    "my_devices": "Mis Dispositivos",
+    "online": "En Línea",
+    "offline": "Desconectado",
+    "add_more_devices": "Agrega más dispositivos para comenzar"
+  },
+  "device_management": {
+    "title": "Gestión de Dispositivos",
+    "coming_soon": "Pantalla de Gestión de Dispositivos - Próximamente"
+  },
+  "qr_scanner": {
+    "title": "Escáner QR",
+    "coming_soon": "Escáner QR - Próximamente"
+  },
+  "common": {
+    "next": "Siguiente",
+    "back": "Atrás",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "done": "Listo",
+    "skip": "Omitir",
+    "continue": "Continuar",
+    "yes": "Sí",
+    "no": "No"
+  }
+}

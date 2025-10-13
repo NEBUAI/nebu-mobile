@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,9 @@ import 'presentation/providers/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Easy Localization
+  await EasyLocalization.ensureInitialized();
 
   // Load environment variables
   try {
@@ -55,16 +59,21 @@ void main() async {
   );
 
   runApp(
-    ProviderScope(
-      overrides: [
-        // Override providers with actual instances
-        authServiceProvider.overrideWithValue(authService),
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-        authProvider.overrideWith(AuthNotifier.new),
-        themeProvider.overrideWith(ThemeNotifier.new),
-        languageProvider.overrideWith(LanguageNotifier.new),
-      ],
-      child: const NebuApp(),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('es')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: ProviderScope(
+        overrides: [
+          // Override providers with actual instances
+          authServiceProvider.overrideWithValue(authService),
+          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+          authProvider.overrideWith(AuthNotifier.new),
+          themeProvider.overrideWith(ThemeNotifier.new),
+          languageProvider.overrideWith(LanguageNotifier.new),
+        ],
+        child: const NebuApp(),
+      ),
     ),
   );
 }
@@ -77,23 +86,25 @@ class NebuApp extends ConsumerWidget {
     final ThemeState themeState = ref.watch(themeProvider);
     final router = ref.watch(routerProvider);
 
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Banner(
-        message: 'Hot Reload!',
-        location: BannerLocation.topEnd,
-        child: MaterialApp.router(
-          title: AppConstants.appName,
-          debugShowCheckedModeBanner: false,
+    return Banner(
+      message: 'Hot Reload!',
+      location: BannerLocation.topEnd,
+      child: MaterialApp.router(
+        title: AppConstants.appName,
+        debugShowCheckedModeBanner: false,
 
-          // Theme
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: themeState.themeMode,
+        // Localization
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
 
-          // Router
-          routerConfig: router,
-        ),
+        // Theme
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeState.themeMode,
+
+        // Router
+        routerConfig: router,
       ),
     );
   }

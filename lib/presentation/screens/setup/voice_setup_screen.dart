@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -15,24 +17,24 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
 
   final List<Map<String, dynamic>> _voices = [
     {
-      'label': 'Child Voice',
+      'label': 'setup.voice.child_voice',
       'icon': Icons.child_care,
-      'description': 'High-pitched and playful',
+      'description': 'setup.voice.child_voice_desc',
     },
     {
-      'label': 'Friendly Adult',
+      'label': 'setup.voice.friendly_adult',
       'icon': Icons.person,
-      'description': 'Warm and caring',
+      'description': 'setup.voice.friendly_adult_desc',
     },
     {
-      'label': 'Robot Voice',
+      'label': 'setup.voice.robot_voice',
       'icon': Icons.smart_toy,
-      'description': 'Fun digital sounds',
+      'description': 'setup.voice.robot_voice_desc',
     },
     {
-      'label': 'Custom',
+      'label': 'setup.voice.custom',
       'icon': Icons.tune,
-      'description': 'Set your preferences',
+      'description': 'setup.voice.custom_desc',
     },
   ];
 
@@ -63,9 +65,9 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   const SizedBox(height: 40),
 
                   // Title
-                  const Text(
-                    'Voice Selection',
-                    style: TextStyle(
+                  Text(
+                    'setup.voice.title'.tr(),
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -76,7 +78,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   const SizedBox(height: 12),
 
                   Text(
-                    'Choose how your companion sounds',
+                    'setup.voice.subtitle'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white.withValues(alpha: 0.9),
@@ -143,7 +145,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          voice['label'] as String,
+                                          (voice['label'] as String).tr(),
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
@@ -154,7 +156,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          voice['description'] as String,
+                                          (voice['description'] as String).tr(),
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: isSelected
@@ -200,9 +202,9 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(
+                    child: Text(
+                      'common.next'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -215,7 +217,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   TextButton(
                     onPressed: () => context.go(AppConstants.routeHome),
                     child: Text(
-                      'Skip Setup',
+                      'setup.connection.skip_setup'.tr(),
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.8),
                         fontSize: 16,

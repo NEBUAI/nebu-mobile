@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_theme.dart';
 
 class VoiceAgentScreen extends StatelessWidget {
@@ -7,7 +9,7 @@ class VoiceAgentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: const Text('Voice Agent'),
+        title: Text('voice_agent.title'.tr()),
       ),
       body: Center(
         child: Column(
@@ -30,20 +32,20 @@ class VoiceAgentScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            const Text(
-              'Tap to speak',
-              style: TextStyle(
+            Text(
+              'voice_agent.tap_to_speak'.tr(),
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 48),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 48),
               child: Text(
-                'Voice agent functionality coming soon!',
+                'voice_agent.coming_soon'.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),

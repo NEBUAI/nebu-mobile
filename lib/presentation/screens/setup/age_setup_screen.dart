@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -14,10 +16,10 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
   String? _selectedAge;
 
   final List<Map<String, String>> _ageGroups = [
-    {'label': '3-5 years', 'icon': '👶'},
-    {'label': '6-8 years', 'icon': '🧒'},
-    {'label': '9-12 years', 'icon': '👦'},
-    {'label': '13+ years', 'icon': '👨'},
+    {'label': 'setup.age.age_3_5', 'icon': '👶'},
+    {'label': 'setup.age.age_6_8', 'icon': '🧒'},
+    {'label': 'setup.age.age_9_12', 'icon': '👦'},
+    {'label': 'setup.age.age_13_plus', 'icon': '👨'},
   ];
 
   @override
@@ -47,9 +49,9 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                   const SizedBox(height: 40),
 
                   // Title
-                  const Text(
-                    "Child's Age",
-                    style: TextStyle(
+                  Text(
+                    'setup.age.title'.tr(),
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -60,7 +62,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                   const SizedBox(height: 12),
 
                   Text(
-                    'Help us personalize the experience',
+                    'setup.age.subtitle'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white.withValues(alpha: 0.9),
@@ -109,7 +111,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                                   ),
                                   const SizedBox(width: 16),
                                   Text(
-                                    age['label']!,
+                                    age['label']!.tr(),
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
@@ -152,9 +154,9 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(
+                    child: Text(
+                      'common.next'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -167,7 +169,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                   TextButton(
                     onPressed: () => context.go(AppConstants.routeHome),
                     child: Text(
-                      'Skip Setup',
+                      'setup.connection.skip_setup'.tr(),
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.8),
                         fontSize: 16,

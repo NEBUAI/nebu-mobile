@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
@@ -38,9 +39,9 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      const Text(
-                        'Welcome to Nebu',
-                        style: TextStyle(
+                      Text(
+                        'welcome.title'.tr(),
+                        style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -48,7 +49,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Your favorite toy',
+                        'welcome.subtitle'.tr(),
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white.withValues(alpha: 0.9),
@@ -63,7 +64,6 @@ class WelcomeScreen extends StatelessWidget {
                 // Get Started Button
                 ElevatedButton(
                   onPressed: () {
-                    // TODO(duvet05): Navigate to setup or home
                     context.push(AppConstants.routeConnectionSetup);
                   },
                   style: ElevatedButton.styleFrom(
@@ -74,9 +74,9 @@ class WelcomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'Get Started',
-                    style: TextStyle(
+                  child: Text(
+                    'welcome.get_started'.tr(),
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -88,7 +88,6 @@ class WelcomeScreen extends StatelessWidget {
                 // Sign In Button
                 OutlinedButton(
                   onPressed: () {
-                    // TODO(duvet05): Navigate to login
                     _showLoginDialog(context);
                   },
                   style: OutlinedButton.styleFrom(
@@ -99,9 +98,9 @@ class WelcomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(
+                  child: Text(
+                    'welcome.sign_in'.tr(),
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -120,12 +119,12 @@ class WelcomeScreen extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sign In'),
-        content: const Text('Login functionality coming soon!'),
+        title: Text('welcome.sign_in'.tr()),
+        content: Text('welcome.login_coming_soon'.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text('common.done'.tr()),
           ),
         ],
       ),

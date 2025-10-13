@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DeviceManagementScreen extends StatelessWidget {
@@ -6,10 +7,10 @@ class DeviceManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: const Text('Device Management'),
+        title: Text('device_management.title'.tr()),
       ),
-      body: const Center(
-        child: Text('Device Management Screen - Coming Soon'),
+      body: Center(
+        child: Text('device_management.coming_soon'.tr()),
       ),
     );
 }

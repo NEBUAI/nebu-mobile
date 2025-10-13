@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -14,14 +16,14 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
   final Set<String> _selectedFavorites = {};
 
   final List<Map<String, dynamic>> _categories = [
-    {'label': 'Animals', 'icon': Icons.pets},
-    {'label': 'Space', 'icon': Icons.rocket_launch},
-    {'label': 'Sports', 'icon': Icons.sports_soccer},
-    {'label': 'Music', 'icon': Icons.music_note},
-    {'label': 'Art', 'icon': Icons.palette},
-    {'label': 'Science', 'icon': Icons.science},
-    {'label': 'Stories', 'icon': Icons.menu_book},
-    {'label': 'Games', 'icon': Icons.games},
+    {'label': 'setup.favorites.animals', 'icon': Icons.pets},
+    {'label': 'setup.favorites.space', 'icon': Icons.rocket_launch},
+    {'label': 'setup.favorites.sports', 'icon': Icons.sports_soccer},
+    {'label': 'setup.favorites.music', 'icon': Icons.music_note},
+    {'label': 'setup.favorites.art', 'icon': Icons.palette},
+    {'label': 'setup.favorites.science', 'icon': Icons.science},
+    {'label': 'setup.favorites.stories', 'icon': Icons.menu_book},
+    {'label': 'setup.favorites.games', 'icon': Icons.games},
   ];
 
   @override
@@ -51,9 +53,9 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                   const SizedBox(height: 40),
 
                   // Title
-                  const Text(
-                    'Favorite Topics',
-                    style: TextStyle(
+                  Text(
+                    'setup.favorites.title'.tr(),
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -64,7 +66,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                   const SizedBox(height: 12),
 
                   Text(
-                    'Select topics your child enjoys (choose at least 2)',
+                    'setup.favorites.subtitle'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white.withValues(alpha: 0.9),
@@ -128,7 +130,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  category['label'] as String,
+                                  (category['label'] as String).tr(),
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -174,8 +176,9 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                     ),
                     child: Text(
                       _selectedFavorites.length >= 2
-                          ? 'Next (${_selectedFavorites.length} selected)'
-                          : 'Select at least 2',
+                          ? 'setup.favorites.next_with_count'
+                              .tr(args: [_selectedFavorites.length.toString()])
+                          : 'setup.favorites.select_at_least'.tr(),
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -189,7 +192,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                   TextButton(
                     onPressed: () => context.go(AppConstants.routeHome),
                     child: Text(
-                      'Skip Setup',
+                      'setup.connection.skip_setup'.tr(),
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.8),
                         fontSize: 16,

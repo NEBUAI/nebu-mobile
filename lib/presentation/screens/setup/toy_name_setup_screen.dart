@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
@@ -18,6 +19,33 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _showSkipSetupDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('setup.connection.skip_dialog_title'.tr()),
+        content: Text('setup.connection.skip_dialog_message'.tr()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('common.cancel'.tr()),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.go(AppConstants.routeHome);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryLight,
+              foregroundColor: Colors.white,
+            ),
+            child: Text('setup.connection.skip_setup'.tr()),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -49,9 +77,9 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                     const SizedBox(height: 40),
 
                     // Title
-                    const Text(
-                      'Name Your Toy',
-                      style: TextStyle(
+                    Text(
+                      'setup.toy_name.title'.tr(),
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -62,7 +90,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                     const SizedBox(height: 12),
 
                     Text(
-                      'What would you like to call your Nebu companion?',
+                      'setup.toy_name.subtitle'.tr(),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white.withValues(alpha: 0.9),
@@ -76,8 +104,9 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                     TextFormField(
                       controller: _controller,
                       style: const TextStyle(color: Colors.white, fontSize: 18),
+                      textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
-                        hintText: 'e.g., Buddy, Sparky, Luna',
+                        hintText: 'setup.toy_name.hint'.tr(),
                         hintStyle: TextStyle(
                           color: Colors.white.withValues(alpha: 0.5),
                         ),
@@ -91,7 +120,10 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter a name';
+                          return 'setup.toy_name.validation_empty'.tr();
+                        }
+                        if (value.trim().length < 2) {
+                          return 'setup.toy_name.validation_short'.tr();
                         }
                         return null;
                       },
@@ -103,7 +135,8 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          context.go(AppConstants.routeAgeSetup);
+                          // TODO(setup): Save toy name to storage
+                          context.push(AppConstants.routeAgeSetup);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -114,9 +147,9 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Next',
-                        style: TextStyle(
+                      child: Text(
+                        'setup.toy_name.next'.tr(),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -127,9 +160,9 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
 
                     // Skip button
                     TextButton(
-                      onPressed: () => context.go(AppConstants.routeHome),
+                      onPressed: _showSkipSetupDialog,
                       child: Text(
-                        'Skip Setup',
+                        'setup.connection.skip_setup'.tr(),
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 16,

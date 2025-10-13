@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +17,7 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: Text('home.title'.tr()),
         actions: [
           IconButton(
             icon: Icon(
@@ -50,9 +51,9 @@ class HomeScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Welcome back!',
-                      style: TextStyle(
+                    Text(
+                      'home.welcome_back'.tr(),
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -76,9 +77,9 @@ class HomeScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'My Toys',
-                    style: TextStyle(
+                  Text(
+                    'home.my_toys'.tr(),
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -86,7 +87,7 @@ class HomeScreen extends ConsumerWidget {
                   TextButton.icon(
                     onPressed: () => context.push(AppConstants.routeConnectionSetup),
                     icon: const Icon(Icons.add),
-                    label: const Text('Add Toy'),
+                    label: Text('home.add_toy'.tr()),
                   ),
                 ],
               ),
@@ -109,7 +110,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No toys configured yet',
+                      'home.no_toys'.tr(),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey.shade600,
@@ -118,7 +119,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Tap "Add Toy" to set up your first Nebu device',
+                      'home.no_toys_hint'.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
@@ -132,9 +133,9 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 24),
 
               // Quick Actions
-              const Text(
-                'Quick Actions',
-                style: TextStyle(
+              Text(
+                'home.quick_actions'.tr(),
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -150,22 +151,22 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     _QuickActionCard(
                       icon: Icons.qr_code_scanner,
-                      title: 'Scan QR',
+                      title: 'home.scan_qr'.tr(),
                       onTap: () => context.push(AppConstants.routeQRScanner),
                     ),
                     _QuickActionCard(
                       icon: Icons.devices,
-                      title: 'Devices',
+                      title: 'home.devices'.tr(),
                       onTap: () => context.push(AppConstants.routeDeviceManagement),
                     ),
                     _QuickActionCard(
                       icon: Icons.dashboard,
-                      title: 'IoT Dashboard',
+                      title: 'home.iot_dashboard'.tr(),
                       onTap: () => context.go(AppConstants.routeIoTDashboard),
                     ),
                     _QuickActionCard(
                       icon: Icons.record_voice_over,
-                      title: 'Voice Agent',
+                      title: 'home.voice_agent'.tr(),
                       onTap: () => context.go(AppConstants.routeVoiceAgent),
                     ),
                   ],
@@ -178,7 +179,7 @@ class HomeScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push(AppConstants.routeConnectionSetup),
         icon: const Icon(Icons.add),
-        label: const Text('Setup New Toy'),
+        label: Text('home.setup_new_toy'.tr()),
         backgroundColor: AppTheme.primaryLight,
       ),
     );

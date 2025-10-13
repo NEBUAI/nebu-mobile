@@ -1,0 +1,183 @@
+{
+  "app_name": "Nebu Mobile",
+  "welcome": {
+    "title": "Welcome to Nebu",
+    "subtitle": "Your favorite toy",
+    "get_started": "Get Started",
+    "sign_in": "Sign In",
+    "login_coming_soon": "Login functionality coming soon!"
+  },
+  "setup": {
+    "connection": {
+      "title": "Connect Your Device",
+      "subtitle": "Let's connect your Nebu toy to get started",
+      "searching": "Searching for your Nebu device...",
+      "no_devices": "No devices found",
+      "start_scan": "Start Scan",
+      "start_scan_hint": "Tap \"Start Scan\" to search for your Nebu device",
+      "scanning": "Scanning...",
+      "skip_setup": "Skip Setup",
+      "enable_bluetooth_title": "Enable Bluetooth",
+      "enable_bluetooth_message": "Please enable Bluetooth to connect to your Nebu device.",
+      "bluetooth_required": "Bluetooth is required to scan for devices",
+      "enable": "Enable",
+      "cancel": "Cancel",
+      "skip_dialog_title": "Skip Device Setup?",
+      "skip_dialog_message": "You can set up your Nebu device later from the home screen.\n\nAre you sure you want to skip the setup now?",
+      "permissions_required_title": "Permissions Required",
+      "permissions_required_message": "Bluetooth and location permissions are required to connect to your device. Please enable them in settings.",
+      "open_settings": "Open Settings",
+      "device_found": "Device: {name}",
+      "signal_strength": "Signal: {rssi} dBm"
+    },
+    "toy_name": {
+      "title": "Name Your Toy",
+      "subtitle": "Give your Nebu a special name",
+      "hint": "Enter a name",
+      "validation_empty": "Please enter a name for your toy",
+      "validation_short": "Name must be at least 2 characters",
+      "next": "Next"
+    },
+    "age": {
+      "title": "Child's Age",
+      "subtitle": "Help us personalize the experience",
+      "age_3_5": "3-5 years",
+      "age_6_8": "6-8 years",
+      "age_9_12": "9-12 years",
+      "age_13_plus": "13+ years",
+      "hint": "Enter age",
+      "validation_empty": "Please enter the child's age",
+      "validation_invalid": "Please enter a valid age",
+      "validation_range": "Age must be between 3 and 12",
+      "next": "Next"
+    },
+    "personality": {
+      "title": "Choose Personality",
+      "subtitle": "Select your toy's personality type",
+      "friendly": "Friendly",
+      "friendly_desc": "Warm, caring and always happy to help",
+      "playful": "Playful",
+      "playful_desc": "Fun, energetic and loves to play games",
+      "curious": "Curious",
+      "curious_desc": "Loves to learn and ask questions",
+      "calm": "Calm",
+      "calm_desc": "Peaceful, patient and soothing",
+      "wise": "Wise",
+      "wise_desc": "Thoughtful and knowledgeable",
+      "next": "Next"
+    },
+    "voice": {
+      "title": "Select Voice",
+      "subtitle": "Choose how your toy will sound",
+      "child_voice": "Child Voice",
+      "child_voice_desc": "High-pitched and playful",
+      "friendly_adult": "Friendly Adult",
+      "friendly_adult_desc": "Warm and caring",
+      "robot_voice": "Robot Voice",
+      "robot_voice_desc": "Fun digital sounds",
+      "custom": "Custom",
+      "custom_desc": "Set your preferences",
+      "test": "Test Voice",
+      "next": "Next"
+    },
+    "favorites": {
+      "title": "Favorite Things",
+      "subtitle": "Tell us what your child loves",
+      "animals": "Animals",
+      "space": "Space",
+      "sports": "Sports",
+      "music": "Music",
+      "art": "Art",
+      "science": "Science",
+      "stories": "Stories",
+      "games": "Games",
+      "colors": "Favorite Colors",
+      "activities": "Favorite Activities",
+      "foods": "Favorite Foods",
+      "hint": "Enter favorites (comma separated)",
+      "next_with_count": "Next ({} selected)",
+      "select_at_least": "Select at least 2",
+      "next": "Next",
+      "skip": "Skip"
+    },
+    "world_info": {
+      "title": "About Your World",
+      "subtitle": "Help your toy know about your family",
+      "all_set": "All Set!",
+      "ready_message": "Your Nebu companion is ready to meet you!",
+      "device_connected": "Device connected",
+      "profile_configured": "Profile configured",
+      "preferences_saved": "Preferences saved",
+      "start_using": "Start Using Nebu",
+      "family_members": "Family Members",
+      "pets": "Pets",
+      "school": "School/Daycare Name",
+      "city": "City",
+      "hint": "Optional",
+      "finish": "Finish Setup",
+      "skip": "Skip"
+    }
+  },
+  "home": {
+    "title": "Home",
+    "welcome_back": "Welcome back!",
+    "my_toys": "My Toys",
+    "add_toy": "Add Toy",
+    "no_toys": "No toys configured yet",
+    "no_toys_hint": "Tap \"Add Toy\" to set up your first Nebu device",
+    "quick_actions": "Quick Actions",
+    "scan_qr": "Scan QR",
+    "devices": "Devices",
+    "iot_dashboard": "IoT Dashboard",
+    "voice_agent": "Voice Agent",
+    "setup_new_toy": "Setup New Toy"
+  },
+  "profile": {
+    "title": "Profile",
+    "user": "User",
+    "dark_mode": "Dark Mode",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Español",
+    "edit_profile": "Edit Profile",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "help_support": "Help & Support",
+    "about": "About",
+    "logout": "Logout",
+    "logout_confirmation": "Are you sure you want to logout?"
+  },
+  "voice_agent": {
+    "title": "Voice Agent",
+    "tap_to_speak": "Tap to speak",
+    "coming_soon": "Voice agent functionality coming soon!"
+  },
+  "iot_dashboard": {
+    "title": "IoT Dashboard",
+    "my_devices": "My Devices",
+    "online": "Online",
+    "offline": "Offline",
+    "add_more_devices": "Add more devices to get started"
+  },
+  "device_management": {
+    "title": "Device Management",
+    "coming_soon": "Device Management Screen - Coming Soon"
+  },
+  "qr_scanner": {
+    "title": "QR Scanner",
+    "coming_soon": "QR Scanner - Coming Soon"
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done",
+    "skip": "Skip",
+    "continue": "Continue",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

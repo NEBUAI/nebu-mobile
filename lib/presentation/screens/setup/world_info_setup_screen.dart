@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -59,9 +61,9 @@ class WorldInfoSetupScreen extends StatelessWidget {
                   const SizedBox(height: 40),
 
                   // Title
-                  const Text(
-                    'All Set!',
-                    style: TextStyle(
+                  Text(
+                    'setup.world_info.all_set'.tr(),
+                    style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -72,7 +74,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   Text(
-                    'Your Nebu companion is ready to meet you!',
+                    'setup.world_info.ready_message'.tr(),
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white.withValues(alpha: 0.9),
@@ -85,17 +87,17 @@ class WorldInfoSetupScreen extends StatelessWidget {
                   // Features summary
                   _buildFeatureSummary(
                     Icons.check_circle,
-                    'Device connected',
+                    'setup.world_info.device_connected'.tr(),
                   ),
                   const SizedBox(height: 16),
                   _buildFeatureSummary(
                     Icons.check_circle,
-                    'Profile configured',
+                    'setup.world_info.profile_configured'.tr(),
                   ),
                   const SizedBox(height: 16),
                   _buildFeatureSummary(
                     Icons.check_circle,
-                    'Preferences saved',
+                    'setup.world_info.preferences_saved'.tr(),
                   ),
 
                   const Spacer(),
@@ -114,18 +116,18 @@ class WorldInfoSetupScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Start Using Nebu',
-                          style: TextStyle(
+                          'setup.world_info.start_using'.tr(),
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 8),
-                        Icon(Icons.arrow_forward),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward),
                       ],
                     ),
                   ),
