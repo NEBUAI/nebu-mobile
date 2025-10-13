@@ -60,21 +60,42 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
 
   Future<bool> _requestPermissions() async {
     try {
+      debugPrint('🔵 Requesting Bluetooth permissions...');
+
+      // Check current status first
+      final scanStatus = await Permission.bluetoothScan.status;
+      final connectStatus = await Permission.bluetoothConnect.status;
+      final locationStatus = await Permission.location.status;
+
+      debugPrint('📊 Current status:');
+      debugPrint('  - Bluetooth Scan: $scanStatus');
+      debugPrint('  - Bluetooth Connect: $connectStatus');
+      debugPrint('  - Location: $locationStatus');
+
+      // Request permissions
       final bluetoothScan = await Permission.bluetoothScan.request();
       final bluetoothConnect = await Permission.bluetoothConnect.request();
       final location = await Permission.location.request();
+
+      debugPrint('📊 After request:');
+      debugPrint('  - Bluetooth Scan: $bluetoothScan');
+      debugPrint('  - Bluetooth Connect: $bluetoothConnect');
+      debugPrint('  - Location: $location');
 
       final granted = bluetoothScan.isGranted &&
           bluetoothConnect.isGranted &&
           location.isGranted;
 
+      debugPrint('✅ All permissions granted: $granted');
+
       if (!granted && mounted) {
+        debugPrint('❌ Showing permissions denied dialog');
         _showPermissionsDeniedDialog();
       }
 
       return granted;
     } on Exception catch (e) {
-      debugPrint('Error requesting permissions: $e');
+      debugPrint('❌ Error requesting permissions: $e');
       return false;
     }
   }
@@ -96,6 +117,13 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       );
 
       _scanSubscription = fbp.FlutterBluePlus.scanResults.listen((results) {
+        debugPrint('📡 Scan results: ${results.length} devices found');
+
+        // Log all devices for debugging
+        for (final result in results) {
+          debugPrint('  Device: ${result.device.platformName.isNotEmpty ? result.device.platformName : "Unknown"} (${result.device.remoteId}) - RSSI: ${result.rssi}');
+        }
+
         setState(() {
           _scanResults = results
               .where((r) =>
@@ -103,6 +131,8 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                   (r.device.platformName.toLowerCase().contains('nebu') ||
                       r.device.platformName.toLowerCase().contains('esp32')))
               .toList();
+
+          debugPrint('✅ Filtered results: ${_scanResults.length} Nebu/ESP32 devices');
         });
       });
 
