@@ -49,7 +49,10 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Scaffold(
         body: DecoratedBox(
           decoration: AppTheme.primaryGradientDecoration,
           child: SafeArea(
@@ -79,9 +82,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                     // Title
                     Text(
                       'setup.toy_name.title'.tr(),
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
+                      style: theme.textTheme.headlineMedium?.copyWith(
                         color: Colors.white,
                       ),
                       textAlign: TextAlign.center,
@@ -91,8 +92,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
 
                     Text(
                       'setup.toy_name.subtitle'.tr(),
-                      style: TextStyle(
-                        fontSize: 16,
+                      style: theme.textTheme.bodyLarge?.copyWith(
                         color: Colors.white.withValues(alpha: 0.9),
                       ),
                       textAlign: TextAlign.center,
@@ -103,7 +103,9 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                     // Name input
                     TextFormField(
                       controller: _controller,
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
+                      ),
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
                         hintText: 'setup.toy_name.hint'.tr(),
@@ -149,8 +151,8 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                       ),
                       child: Text(
                         'setup.toy_name.next'.tr(),
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: AppTheme.primaryLight,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -163,9 +165,8 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                       onPressed: _showSkipSetupDialog,
                       child: Text(
                         'setup.connection.skip_setup'.tr(),
-                        style: TextStyle(
+                        style: theme.textTheme.bodyLarge?.copyWith(
                           color: Colors.white.withValues(alpha: 0.8),
-                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -178,6 +179,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
           ),
         ),
       );
+  }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
         mainAxisAlignment: MainAxisAlignment.center,

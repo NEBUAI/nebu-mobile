@@ -278,7 +278,10 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Scaffold(
         body: DecoratedBox(
           decoration: AppTheme.primaryGradientDecoration,
           child: SafeArea(
@@ -304,11 +307,9 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                   const SizedBox(height: 40),
 
                   // Title
-                  const Text(
+                  Text(
                     'Connect Your Device',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                    style: theme.textTheme.headlineMedium?.copyWith(
                       color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
@@ -320,8 +321,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                     _isScanning
                         ? 'Searching for your Nebu device...'
                         : "Let's connect your Nebu toy to get started",
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: theme.textTheme.bodyLarge?.copyWith(
                       color: Colors.white.withValues(alpha: 0.9),
                     ),
                     textAlign: TextAlign.center,
@@ -332,8 +332,8 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                   // Scanning status and devices list
                   Expanded(
                     child: _isScanning
-                        ? _buildScanningView()
-                        : _buildDevicesList(),
+                        ? _buildScanningView(theme)
+                        : _buildDevicesList(theme),
                   ),
 
                   // Scan/Next button
@@ -369,8 +369,8 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                           : _scanResults.isEmpty
                               ? 'Start Scan'
                               : 'Next',
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: AppTheme.primaryLight,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -383,9 +383,8 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                     onPressed: _showSkipSetupDialog,
                     child: Text(
                       'Skip Setup',
-                      style: TextStyle(
+                      style: theme.textTheme.bodyLarge?.copyWith(
                         color: Colors.white.withValues(alpha: 0.8),
-                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -397,6 +396,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           ),
         ),
       );
+  }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -416,7 +416,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
         ),
       );
 
-  Widget _buildScanningView() => Center(
+  Widget _buildScanningView(ThemeData theme) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -432,17 +432,14 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
             const SizedBox(height: 24),
             Text(
               'Scanning for devices...',
-              style: TextStyle(
-                fontSize: 18,
+              style: theme.textTheme.titleMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.9),
-                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 12),
             Text(
               'Make sure your Nebu device is turned on',
-              style: TextStyle(
-                fontSize: 14,
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
@@ -451,7 +448,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
         ),
       );
 
-  Widget _buildDevicesList() {
+  Widget _buildDevicesList(ThemeData theme) {
     if (_scanResults.isEmpty) {
       return Center(
         child: Column(
@@ -465,17 +462,14 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
             const SizedBox(height: 24),
             Text(
               'No devices found',
-              style: TextStyle(
-                fontSize: 18,
+              style: theme.textTheme.titleMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.9),
-                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 12),
             Text(
               'Tap "Start Scan" to search for your Nebu device',
-              style: TextStyle(
-                fontSize: 14,
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
@@ -492,10 +486,8 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Text(
             'Available Devices (${_scanResults.length})',
-            style: TextStyle(
-              fontSize: 16,
+            style: theme.textTheme.bodyLarge?.copyWith(
               color: Colors.white.withValues(alpha: 0.9),
-              fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -537,17 +529,15 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                     device.platformName.isNotEmpty
                         ? device.platformName
                         : 'Unknown Device',
-                    style: const TextStyle(
+                    style: theme.textTheme.bodyLarge?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 16,
                     ),
                   ),
                   subtitle: Text(
                     'Signal: $rssi dBm',
-                    style: TextStyle(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.7),
-                      fontSize: 14,
                     ),
                   ),
                   trailing: Icon(

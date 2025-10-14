@@ -27,9 +27,8 @@ class ProfileScreen extends ConsumerWidget {
         elevation: 0,
         title: Text(
           'profile.title'.tr(),
-          style: TextStyle(
+          style: theme.textTheme.titleLarge?.copyWith(
             color: theme.colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -75,9 +74,7 @@ class ProfileScreen extends ConsumerWidget {
                           : Center(
                               child: Text(
                                 (authState.user?.name ?? 'U')[0].toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
+                                style: theme.textTheme.headlineMedium?.copyWith(
                                   color: AppTheme.primaryLight,
                                 ),
                               ),
@@ -91,17 +88,14 @@ class ProfileScreen extends ConsumerWidget {
                         children: [
                           Text(
                             authState.user?.name ?? 'profile.user'.tr(),
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                            style: theme.textTheme.titleMedium?.copyWith(
                               color: theme.colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             'View Profile',
-                            style: TextStyle(
-                              fontSize: 14,
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
@@ -174,9 +168,7 @@ class ProfileScreen extends ConsumerWidget {
                   padding: const EdgeInsets.only(left: 4, bottom: 12),
                   child: Text(
                     'Settings',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    style: theme.textTheme.titleMedium?.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
@@ -214,8 +206,7 @@ class ProfileScreen extends ConsumerWidget {
                     trailing: DropdownButton<String>(
                       value: languageState.languageCode,
                       underline: const SizedBox(),
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface,
                       ),
                       dropdownColor: theme.colorScheme.surface,
@@ -291,9 +282,8 @@ class ProfileScreen extends ConsumerWidget {
                     title: 'profile.about'.tr(),
                     trailing: Text(
                       'v${AppConstants.appVersion}',
-                      style: TextStyle(
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                        fontSize: 14,
                       ),
                     ),
                     onTap: () {
@@ -340,9 +330,8 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       'profile.logout'.tr(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -434,9 +423,7 @@ class _SettingsTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
+        style: theme.textTheme.bodyLarge?.copyWith(
           color: theme.colorScheme.onSurface,
         ),
       ),

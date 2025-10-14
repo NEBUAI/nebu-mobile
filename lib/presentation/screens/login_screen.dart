@@ -122,7 +122,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SafeArea(
         child: SingleChildScrollView(
@@ -148,9 +151,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // Title
                 Text(
                   'auth.sign_in'.tr(),
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    color: Colors.grey[800],
                   ),
                 ),
 
@@ -158,8 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 Text(
                   'auth.sign_in_subtitle'.tr(),
-                  style: TextStyle(
-                    fontSize: 16,
+                  style: theme.textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[600],
                   ),
                 ),
@@ -291,8 +292,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         )
                       : Text(
                           'auth.sign_in'.tr(),
-                          style: const TextStyle(
-                            fontSize: 18,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -308,7 +309,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         'auth.or_continue_with'.tr(),
-                        style: TextStyle(color: Colors.grey[600]),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ),
                     const Expanded(child: Divider()),
@@ -336,8 +339,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   label: Text(
                     'auth.sign_in_google'.tr(),
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: theme.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
                     ),
@@ -352,7 +354,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     Text(
                       'auth.no_account'.tr(),
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey[600],
+                      ),
                     ),
                     TextButton(
                       onPressed: () => context.push(AppConstants.routeSignUp),
@@ -366,4 +370,5 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
     );
+  }
 }

@@ -8,7 +8,10 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Scaffold(
       body: DecoratedBox(
         decoration: AppTheme.primaryGradientDecoration,
         child: SafeArea(
@@ -46,9 +49,7 @@ class WelcomeScreen extends StatelessWidget {
                     const SizedBox(height: 32),
                     Text(
                       'welcome.title'.tr(),
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                      style: theme.textTheme.displaySmall?.copyWith(
                         color: Colors.white,
                         letterSpacing: 0.5,
                       ),
@@ -59,8 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                       child: Text(
                         'welcome.subtitle'.tr(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
+                        style: theme.textTheme.bodyLarge?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           height: 1.4,
                         ),
@@ -79,10 +79,8 @@ class WelcomeScreen extends StatelessWidget {
                       child: Text(
                         'welcome.auth_section_title'.tr(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 13,
+                        style: theme.textTheme.labelMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.85),
-                          fontWeight: FontWeight.w500,
                           letterSpacing: 0.3,
                         ),
                       ),
@@ -106,8 +104,8 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       child: Text(
                         'welcome.sign_in'.tr(),
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: AppTheme.primaryLight,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -130,8 +128,8 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       child: Text(
                         'welcome.sign_up'.tr(),
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -152,10 +150,8 @@ class WelcomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             'welcome.or'.tr(),
-                            style: TextStyle(
-                              fontSize: 13,
+                            style: theme.textTheme.labelMedium?.copyWith(
                               color: Colors.white.withValues(alpha: 0.8),
-                              fontWeight: FontWeight.w600,
                               letterSpacing: 1,
                             ),
                           ),
@@ -182,9 +178,8 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       child: Text(
                         'welcome.continue_without_account'.tr(),
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: Colors.white,
                           decoration: TextDecoration.underline,
                           decorationThickness: 2,
                         ),
@@ -198,4 +193,5 @@ class WelcomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
 }
