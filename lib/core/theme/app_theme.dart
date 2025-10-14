@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Private constructor to prevent instantiation
@@ -33,8 +34,95 @@ class AppTheme {
     Color(0xFFEC4899),
   ];
 
-  // Text Styles
-  static const String fontFamily = 'Inter';
+  // Text Themes - Using Google Fonts
+  // Josefin Sans for headings/titles
+  // Poppins for body text
+  static TextTheme _getTextTheme(Color textColor) => TextTheme(
+    // Display styles (Josefin Sans)
+    displayLarge: GoogleFonts.josefinSans(
+      fontSize: 57,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+    displayMedium: GoogleFonts.josefinSans(
+      fontSize: 45,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+    displaySmall: GoogleFonts.josefinSans(
+      fontSize: 36,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+    
+    // Headline styles (Josefin Sans)
+    headlineLarge: GoogleFonts.josefinSans(
+      fontSize: 32,
+      fontWeight: FontWeight.w600,
+      color: textColor,
+    ),
+    headlineMedium: GoogleFonts.josefinSans(
+      fontSize: 28,
+      fontWeight: FontWeight.w600,
+      color: textColor,
+    ),
+    headlineSmall: GoogleFonts.josefinSans(
+      fontSize: 24,
+      fontWeight: FontWeight.w600,
+      color: textColor,
+    ),
+    
+    // Title styles (Josefin Sans)
+    titleLarge: GoogleFonts.josefinSans(
+      fontSize: 22,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+    ),
+    titleMedium: GoogleFonts.josefinSans(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+    ),
+    titleSmall: GoogleFonts.josefinSans(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+    ),
+    
+    // Body styles (Poppins)
+    bodyLarge: GoogleFonts.poppins(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+    bodyMedium: GoogleFonts.poppins(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+    bodySmall: GoogleFonts.poppins(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+    
+    // Label styles (Poppins)
+    labelLarge: GoogleFonts.poppins(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+    ),
+    labelMedium: GoogleFonts.poppins(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+    ),
+    labelSmall: GoogleFonts.poppins(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+    ),
+  );
 
   // Light Theme
   static ThemeData get lightTheme => ThemeData(
@@ -42,23 +130,22 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: primaryLight,
       scaffoldBackgroundColor: backgroundLight,
-      fontFamily: fontFamily,
+      textTheme: _getTextTheme(onBackgroundLight),
       colorScheme: const ColorScheme.light(
         primary: primaryLight,
         secondary: secondaryLight,
         error: errorLight,
         onSurface: onBackgroundLight,
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: surfaceLight,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: onBackgroundLight),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: onBackgroundLight),
+        titleTextStyle: GoogleFonts.josefinSans(
           color: onBackgroundLight,
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          fontFamily: fontFamily,
         ),
       ),
       cardTheme: const CardThemeData(
@@ -77,10 +164,9 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
+          textStyle: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            fontFamily: fontFamily,
           ),
         ),
       ),
@@ -92,10 +178,9 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           side: const BorderSide(color: primaryLight, width: 2),
-          textStyle: const TextStyle(
+          textStyle: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            fontFamily: fontFamily,
           ),
         ),
       ),
@@ -119,9 +204,8 @@ class AppTheme {
           borderSide: const BorderSide(color: errorLight),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: TextStyle(
+        hintStyle: GoogleFonts.poppins(
           color: onBackgroundLight.withValues(alpha: 0.5),
-          fontFamily: fontFamily,
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -139,7 +223,7 @@ class AppTheme {
       brightness: Brightness.dark,
       primaryColor: primaryDark,
       scaffoldBackgroundColor: backgroundDark,
-      fontFamily: fontFamily,
+      textTheme: _getTextTheme(onBackgroundDark),
       colorScheme: const ColorScheme.dark(
         primary: primaryDark,
         secondary: secondaryDark,
@@ -147,16 +231,15 @@ class AppTheme {
         error: errorDark,
         onSurface: onBackgroundDark,
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: surfaceDark,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: onBackgroundDark),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: onBackgroundDark),
+        titleTextStyle: GoogleFonts.josefinSans(
           color: onBackgroundDark,
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          fontFamily: fontFamily,
         ),
       ),
       cardTheme: const CardThemeData(
@@ -175,10 +258,9 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
+          textStyle: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            fontFamily: fontFamily,
           ),
         ),
       ),
@@ -190,10 +272,9 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           side: const BorderSide(color: primaryDark, width: 2),
-          textStyle: const TextStyle(
+          textStyle: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            fontFamily: fontFamily,
           ),
         ),
       ),
@@ -217,9 +298,8 @@ class AppTheme {
           borderSide: const BorderSide(color: errorDark),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: TextStyle(
+        hintStyle: GoogleFonts.poppins(
           color: onBackgroundDark.withValues(alpha: 0.5),
-          fontFamily: fontFamily,
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
