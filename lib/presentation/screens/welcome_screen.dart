@@ -44,7 +44,6 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       child: SvgPicture.asset(
                         'assets/icon_flow.svg',
-                        fit: BoxFit.contain,
                       ),
                     ),
                     const SizedBox(height: 32),

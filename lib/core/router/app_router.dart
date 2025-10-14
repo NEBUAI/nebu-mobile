@@ -4,11 +4,12 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../presentation/providers/auth_provider.dart';
+import '../../presentation/screens/activity_log_screen.dart';
 import '../../presentation/screens/device_management_screen.dart';
 import '../../presentation/screens/home_screen.dart';
-import '../../presentation/screens/my_toys_screen.dart';
 import '../../presentation/screens/login_screen.dart';
 import '../../presentation/screens/main_screen.dart';
+import '../../presentation/screens/my_toys_screen.dart';
 import '../../presentation/screens/profile_screen.dart';
 import '../../presentation/screens/qr_scanner_screen.dart';
 import '../../presentation/screens/setup/age_setup_screen.dart';
@@ -20,7 +21,6 @@ import '../../presentation/screens/setup/voice_setup_screen.dart';
 import '../../presentation/screens/setup/world_info_setup_screen.dart';
 import '../../presentation/screens/signup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
-import '../../presentation/screens/activity_log_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
 
 // Router provider

@@ -88,7 +88,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     ),
                     child: SvgPicture.asset(
                       'assets/icon_flow.svg',
-                      fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 24),
