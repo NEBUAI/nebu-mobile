@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
@@ -79,15 +80,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   Container(
                     width: 120,
                     height: 120,
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: AppTheme.cardShadow,
                     ),
-                    child: const Icon(
-                      Icons.smart_toy,
-                      size: 64,
-                      color: AppTheme.primaryLight,
+                    child: SvgPicture.asset(
+                      'assets/icon_flow.svg',
+                      fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 24),

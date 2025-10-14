@@ -9,7 +9,10 @@ class WorldInfoSetupScreen extends StatelessWidget {
   const WorldInfoSetupScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Scaffold(
         body: DecoratedBox(
           decoration: AppTheme.primaryGradientDecoration,
           child: SafeArea(
@@ -63,9 +66,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                   // Title
                   Text(
                     'setup.world_info.all_set'.tr(),
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+                    style: theme.textTheme.displaySmall?.copyWith(
                       color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
@@ -75,8 +76,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
 
                   Text(
                     'setup.world_info.ready_message'.tr(),
-                    style: TextStyle(
-                      fontSize: 18,
+                    style: theme.textTheme.titleMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.9),
                     ),
                     textAlign: TextAlign.center,
@@ -86,16 +86,19 @@ class WorldInfoSetupScreen extends StatelessWidget {
 
                   // Features summary
                   _buildFeatureSummary(
+                    theme,
                     Icons.check_circle,
                     'setup.world_info.device_connected'.tr(),
                   ),
                   const SizedBox(height: 16),
                   _buildFeatureSummary(
+                    theme,
                     Icons.check_circle,
                     'setup.world_info.profile_configured'.tr(),
                   ),
                   const SizedBox(height: 16),
                   _buildFeatureSummary(
+                    theme,
                     Icons.check_circle,
                     'setup.world_info.preferences_saved'.tr(),
                   ),
@@ -121,8 +124,8 @@ class WorldInfoSetupScreen extends StatelessWidget {
                       children: [
                         Text(
                           'setup.world_info.start_using'.tr(),
-                          style: const TextStyle(
-                            fontSize: 18,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppTheme.primaryLight,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -139,6 +142,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
           ),
         ),
       );
+  }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +162,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
         ),
       );
 
-  Widget _buildFeatureSummary(IconData icon, String text) => Row(
+  Widget _buildFeatureSummary(ThemeData theme, IconData icon, String text) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
@@ -169,8 +173,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             text,
-            style: const TextStyle(
-              fontSize: 16,
+            style: theme.textTheme.bodyLarge?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w500,
             ),

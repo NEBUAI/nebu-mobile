@@ -39,7 +39,10 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Scaffold(
         body: DecoratedBox(
           decoration: AppTheme.primaryGradientDecoration,
           child: SafeArea(
@@ -67,9 +70,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   // Title
                   Text(
                     'setup.voice.title'.tr(),
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                    style: theme.textTheme.headlineMedium?.copyWith(
                       color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
@@ -79,8 +80,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
 
                   Text(
                     'setup.voice.subtitle'.tr(),
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: theme.textTheme.bodyLarge?.copyWith(
                       color: Colors.white.withValues(alpha: 0.9),
                     ),
                     textAlign: TextAlign.center,
@@ -146,19 +146,17 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                       children: [
                                         Text(
                                           (voice['label'] as String).tr(),
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
+                                          style: theme.textTheme.titleMedium?.copyWith(
                                             color: isSelected
                                                 ? AppTheme.primaryLight
                                                 : Colors.white,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
                                           (voice['description'] as String).tr(),
-                                          style: TextStyle(
-                                            fontSize: 14,
+                                          style: theme.textTheme.bodyMedium?.copyWith(
                                             color: isSelected
                                                 ? AppTheme.primaryLight
                                                     .withValues(alpha: 0.7)
@@ -204,8 +202,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                     ),
                     child: Text(
                       'common.next'.tr(),
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: AppTheme.primaryLight,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -218,9 +216,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                     onPressed: () => context.go(AppConstants.routeHome),
                     child: Text(
                       'setup.connection.skip_setup'.tr(),
-                      style: TextStyle(
+                      style: theme.textTheme.bodyLarge?.copyWith(
                         color: Colors.white.withValues(alpha: 0.8),
-                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -232,6 +229,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
           ),
         ),
       );
+  }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
