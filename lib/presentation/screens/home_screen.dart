@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
 import '../providers/auth_provider.dart';
@@ -50,15 +51,18 @@ class HomeScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
+                  border: Border.all(color: theme.dividerColor.withOpacity(0.3)),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.toys_outlined,
-                      size: 64,
-                      color: theme.disabledColor,
+                    SvgPicture.asset(
+                      'assets/icon_flow.svg',
+                      height: 64,
+                      colorFilter: ColorFilter.mode(
+                        theme.disabledColor,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -72,7 +76,7 @@ class HomeScreen extends ConsumerWidget {
                       'home.no_toys_hint'.tr(),
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
                       ),
                     ),
                   ],

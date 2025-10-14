@@ -12,6 +12,7 @@ import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'data/services/api_service.dart';
 import 'data/services/auth_service.dart';
+import 'presentation/providers/api_provider.dart';
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/language_provider.dart';
 import 'presentation/providers/theme_provider.dart';
@@ -46,7 +47,7 @@ void main() async {
   );
 
   // Initialize services
-  ApiService(
+  final apiService = ApiService(
     dio: dio,
     secureStorage: secureStorage,
     logger: logger,
@@ -66,6 +67,7 @@ void main() async {
       child: ProviderScope(
         overrides: [
           // Override providers with actual instances
+          apiServiceProvider.overrideWithValue(apiService),
           authServiceProvider.overrideWithValue(authService),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           authProvider.overrideWith(AuthNotifier.new),

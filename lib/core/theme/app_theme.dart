@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Private constructor to prevent instantiation
@@ -39,85 +39,85 @@ class AppTheme {
   // Poppins for body text
   static TextTheme _getTextTheme(Color textColor) => TextTheme(
     // Display styles (Josefin Sans)
-    displayLarge: GoogleFonts.josefinSans(
+    displayLarge: TextStyle(
       fontSize: 57,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    displayMedium: GoogleFonts.josefinSans(
+    displayMedium: TextStyle(
       fontSize: 45,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    displaySmall: GoogleFonts.josefinSans(
+    displaySmall: TextStyle(
       fontSize: 36,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
     
     // Headline styles (Josefin Sans)
-    headlineLarge: GoogleFonts.josefinSans(
+    headlineLarge: TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.w600,
       color: textColor,
     ),
-    headlineMedium: GoogleFonts.josefinSans(
+    headlineMedium: TextStyle(
       fontSize: 28,
       fontWeight: FontWeight.w600,
       color: textColor,
     ),
-    headlineSmall: GoogleFonts.josefinSans(
+    headlineSmall: TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.w600,
       color: textColor,
     ),
     
     // Title styles (Josefin Sans)
-    titleLarge: GoogleFonts.josefinSans(
+    titleLarge: TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    titleMedium: GoogleFonts.josefinSans(
+    titleMedium: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    titleSmall: GoogleFonts.josefinSans(
+    titleSmall: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
     
     // Body styles (Poppins)
-    bodyLarge: GoogleFonts.poppins(
+    bodyLarge: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    bodyMedium: GoogleFonts.poppins(
+    bodyMedium: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    bodySmall: GoogleFonts.poppins(
+    bodySmall: TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
     
     // Label styles (Poppins)
-    labelLarge: GoogleFonts.poppins(
+    labelLarge: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    labelMedium: GoogleFonts.poppins(
+    labelMedium: TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    labelSmall: GoogleFonts.poppins(
+    labelSmall: TextStyle(
       fontSize: 11,
       fontWeight: FontWeight.w500,
       color: textColor,
@@ -137,12 +137,12 @@ class AppTheme {
         error: errorLight,
         onSurface: onBackgroundLight,
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: surfaceLight,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: onBackgroundLight),
-        titleTextStyle: GoogleFonts.josefinSans(
+        iconTheme: IconThemeData(color: onBackgroundLight),
+        titleTextStyle: TextStyle(
           color: onBackgroundLight,
           fontSize: 18,
           fontWeight: FontWeight.w600,
@@ -164,7 +164,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.poppins(
+          textStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -178,7 +178,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           side: const BorderSide(color: primaryLight, width: 2),
-          textStyle: GoogleFonts.poppins(
+          textStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -204,8 +204,8 @@ class AppTheme {
           borderSide: const BorderSide(color: errorLight),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: GoogleFonts.poppins(
-          color: onBackgroundLight.withValues(alpha: 0.5),
+        hintStyle: TextStyle(
+          color: onBackgroundLight.withAlpha(128),
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -231,12 +231,12 @@ class AppTheme {
         error: errorDark,
         onSurface: onBackgroundDark,
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: surfaceDark,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: onBackgroundDark),
-        titleTextStyle: GoogleFonts.josefinSans(
+        iconTheme: IconThemeData(color: onBackgroundDark),
+        titleTextStyle: TextStyle(
           color: onBackgroundDark,
           fontSize: 18,
           fontWeight: FontWeight.w600,
@@ -258,7 +258,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.poppins(
+          textStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -272,7 +272,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           side: const BorderSide(color: primaryDark, width: 2),
-          textStyle: GoogleFonts.poppins(
+          textStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -298,8 +298,8 @@ class AppTheme {
           borderSide: const BorderSide(color: errorDark),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: GoogleFonts.poppins(
-          color: onBackgroundDark.withValues(alpha: 0.5),
+        hintStyle: TextStyle(
+          color: onBackgroundDark.withAlpha(128),
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -331,7 +331,7 @@ class AppTheme {
   // Shadows
   static List<BoxShadow> get cardShadow => [
       BoxShadow(
-        color: Colors.black.withValues(alpha: 0.1),
+        color: Colors.black.withAlpha(26),
         blurRadius: 10,
         offset: const Offset(0, 4),
       ),
