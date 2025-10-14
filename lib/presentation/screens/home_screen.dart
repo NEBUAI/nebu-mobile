@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../providers/theme_provider.dart';
 
@@ -14,6 +13,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthState authState = ref.watch(authProvider);
     final ThemeState themeState = ref.watch(themeProvider);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -33,10 +33,7 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   Text(
                     'home.my_active_toys'.tr(),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: theme.textTheme.titleLarge,
                   ),
                   TextButton.icon(
                     onPressed: () =>
@@ -53,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
+                  border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -61,14 +58,12 @@ class HomeScreen extends ConsumerWidget {
                     Icon(
                       Icons.toys_outlined,
                       size: 64,
-                      color: Colors.grey.shade400,
+                      color: theme.disabledColor,
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'home.no_toys'.tr(),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey.shade600,
+                      style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -76,9 +71,8 @@ class HomeScreen extends ConsumerWidget {
                     Text(
                       'home.no_toys_hint'.tr(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade500,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -90,10 +84,7 @@ class HomeScreen extends ConsumerWidget {
               // Quick Actions
               Text(
                 'home.quick_actions'.tr(),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: theme.textTheme.titleLarge,
               ),
 
               const SizedBox(height: 16),
@@ -147,7 +138,10 @@ class _QuickActionCard extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Card(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -163,20 +157,18 @@ class _QuickActionCard extends StatelessWidget {
                 Icon(
                   icon,
                   size: 48,
-                  color: AppTheme.primaryLight,
+                  color: theme.colorScheme.primary,
                 ),
                 const SizedBox(height: 12),
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: theme.textTheme.titleMedium,
                 ),
               ],
             ),
           ),
         ),
       );
+  }
 }
