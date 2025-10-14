@@ -51,7 +51,7 @@ class HomeScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  border: Border.all(color: theme.dividerColor.withOpacity(0.3)),
+                  border: Border.all(color: theme.dividerColor.withAlpha(77)),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -76,7 +76,7 @@ class HomeScreen extends ConsumerWidget {
                       'home.no_toys_hint'.tr(),
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        color: theme.colorScheme.onSurface.withAlpha(153),
                       ),
                     ),
                   ],

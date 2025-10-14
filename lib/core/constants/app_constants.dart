@@ -47,6 +47,12 @@ class AppConstants {
   static const Duration scanTimeout = Duration(seconds: 10);
   static const Duration connectionTimeout = Duration(seconds: 15);
 
+  // ESP32 WiFi Configuration BLE Protocol
+  static const String esp32WifiServiceUuid = '12345678-1234-1234-1234-123456789abc';
+  static const String esp32SsidCharUuid = '12345678-1234-1234-1234-123456789abd';
+  static const String esp32PasswordCharUuid = '12345678-1234-1234-1234-123456789abe';
+  static const String esp32StatusCharUuid = '12345678-1234-1234-1234-123456789abf';
+
   // Animation Durations
   static const Duration animationShort = Duration(milliseconds: 200);
   static const Duration animationMedium = Duration(milliseconds: 300);
