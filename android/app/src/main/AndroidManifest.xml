@@ -19,7 +19,7 @@
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
 
     <application
-        android:label="nebu_mobile_flutter"
+        android:label="Nebu Mobile"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
