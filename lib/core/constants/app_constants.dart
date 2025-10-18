@@ -37,6 +37,7 @@ class AppConstants {
   // Setup Flow Routes
   static const String routeConnectionSetup = '/setup/connection';
   static const String routeToyNameSetup = '/setup/toy-name';
+  static const String routeWifiSetup = '/setup/wifi';
   static const String routeAgeSetup = '/setup/age';
   static const String routePersonalitySetup = '/setup/personality';
   static const String routeVoiceSetup = '/setup/voice';

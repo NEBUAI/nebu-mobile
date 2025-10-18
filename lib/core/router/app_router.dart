@@ -18,6 +18,7 @@ import '../../presentation/screens/setup/favorites_setup_screen.dart';
 import '../../presentation/screens/setup/personality_setup_screen.dart';
 import '../../presentation/screens/setup/toy_name_setup_screen.dart';
 import '../../presentation/screens/setup/voice_setup_screen.dart';
+import '../../presentation/screens/setup/wifi_setup_screen.dart';
 import '../../presentation/screens/setup/world_info_setup_screen.dart';
 import '../../presentation/screens/signup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
@@ -153,6 +154,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppConstants.routeToyNameSetup,
         name: 'toy-name-setup',
         builder: (context, state) => const ToyNameSetupScreen(),
+      ),
+
+      GoRoute(
+        path: AppConstants.routeWifiSetup,
+        name: 'wifi-setup',
+        builder: (context, state) => const WifiSetupScreen(),
       ),
 
       GoRoute(

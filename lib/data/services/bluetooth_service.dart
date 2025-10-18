@@ -13,7 +13,8 @@ class BluetoothService {
   BluetoothService({required Logger logger})
       : _logger = logger,
         _scanResultsController = StreamController<List<fbp.ScanResult>>.broadcast(),
-        _connectionStateController = StreamController<fbp.BluetoothConnectionState>.broadcast();
+        _connectionStateController =
+            StreamController<fbp.BluetoothConnectionState>.broadcast();
   final Logger _logger;
   final StreamController<List<fbp.ScanResult>> _scanResultsController;
   final StreamController<fbp.BluetoothConnectionState> _connectionStateController;
@@ -22,9 +23,13 @@ class BluetoothService {
   StreamSubscription<List<fbp.ScanResult>>? _scanSubscription;
   StreamSubscription<fbp.BluetoothConnectionState>? _connectionSubscription;
 
+  // Cache for discovered services to avoid repeated discovery
+  final Map<String, List<fbp.BluetoothService>> _servicesCache = {};
+
   // Streams
   Stream<List<fbp.ScanResult>> get scanResults => _scanResultsController.stream;
-  Stream<fbp.BluetoothConnectionState> get connectionState => _connectionStateController.stream;
+  Stream<fbp.BluetoothConnectionState> get connectionState =>
+      _connectionStateController.stream;
 
   // Getters
   fbp.BluetoothDevice? get connectedDevice => _connectedDevice;
@@ -156,6 +161,8 @@ class BluetoothService {
           _connectionStateController.add(state);
 
           if (state == fbp.BluetoothConnectionState.disconnected) {
+            _logger.i('Device ${device.remoteId} disconnected, clearing cache.');
+            _servicesCache.remove(device.remoteId.toString());
             _connectedDevice = null;
           }
         },
@@ -165,6 +172,10 @@ class BluetoothService {
       );
 
       _logger.i('Connected to device: ${device.platformName}');
+
+      // Pre-discover and cache services upon connection
+      await discoverServicesForDevice(device);
+
     } on Exception catch (e) {
       _logger.e('Error connecting to device: $e');
       _connectedDevice = null;
@@ -176,33 +187,57 @@ class BluetoothService {
   Future<void> disconnect() async {
     try {
       if (_connectedDevice != null) {
+        final deviceId = _connectedDevice!.remoteId.toString();
         _logger.i('Disconnecting from device: ${_connectedDevice!.platformName}');
         await _connectedDevice!.disconnect();
         await _connectionSubscription?.cancel();
         _connectionSubscription = null;
         _connectedDevice = null;
-        _logger.i('Disconnected successfully');
+
+        // Clear cache for the disconnected device
+        _servicesCache.remove(deviceId);
+        _logger.i('Disconnected successfully and cache cleared for $deviceId');
       }
     } on Exception catch (e) {
       _logger.e('Error disconnecting: $e');
     }
   }
 
-  // Discover services
+  /// Discovers services for a specific device and caches them.
+  /// Use this method instead of calling `device.discoverServices()` directly.
+  Future<List<fbp.BluetoothService>> discoverServicesForDevice(
+    fbp.BluetoothDevice device,
+  ) async {
+    final deviceId = device.remoteId.toString();
+
+    // 1. Check cache first
+    if (_servicesCache.containsKey(deviceId)) {
+      _logger.d('Returning cached services for $deviceId');
+      return _servicesCache[deviceId]!;
+    }
+
+    // 2. If not in cache, discover, store, and return
+    _logger.i('Discovering services for $deviceId...');
+    try {
+      final services = await device.discoverServices();
+      _servicesCache[deviceId] = services;
+      _logger.i('Discovered and cached ${services.length} services for $deviceId');
+      return services;
+    } on Exception catch (e) {
+      _logger.e('Error discovering services for $deviceId: $e');
+      rethrow;
+    }
+  }
+
+  /// @deprecated Use `discoverServicesForDevice(device)` instead.
+  @Deprecated('Use discoverServicesForDevice(device) for caching')
   Future<List<fbp.BluetoothService>> discoverServices() {
     if (_connectedDevice == null) {
       throw Exception('No device connected');
     }
-
-    _logger.i('Discovering services...');
-    return _connectedDevice!.discoverServices().then((services) {
-      _logger.i('Discovered ${services.length} services');
-      return services;
-    }).catchError((Object e) {
-      _logger.e('Error discovering services: $e');
-      throw e;
-    });
+    return discoverServicesForDevice(_connectedDevice!);
   }
+
 
   // Read characteristic
   Future<List<int>> readCharacteristic(

@@ -53,6 +53,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
     final theme = Theme.of(context);
     
     return Scaffold(
+        resizeToAvoidBottomInset: true, // Asegura que el teclado no cause overflow
         body: DecoratedBox(
           decoration: AppTheme.primaryGradientDecoration,
           child: SafeArea(
@@ -63,82 +64,97 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Back button
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        onPressed: () => context.pop(),
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      ),
+                    // Back button and Progress
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () => context.pop(),
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        ),
+                        const Spacer(),
+                        _buildProgressIndicator(2, 7),
+                        const Spacer(),
+                        // Placeholder to balance the row
+                        const Opacity(
+                          opacity: 0,
+                          child: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 20),
 
-                    // Progress indicator
-                    _buildProgressIndicator(2, 7),
+                    // Use a scrollable view for the main content
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            // Title
+                            Text(
+                              'setup.toy_name.title'.tr(),
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
 
-                    const SizedBox(height: 40),
+                            const SizedBox(height: 12),
 
-                    // Title
-                    Text(
-                      'setup.toy_name.title'.tr(),
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                            Text(
+                              'setup.toy_name.subtitle'.tr(),
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: Colors.white.withOpacity(0.9),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
 
-                    const SizedBox(height: 12),
+                            const SizedBox(height: 60),
 
-                    Text(
-                      'setup.toy_name.subtitle'.tr(),
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    const SizedBox(height: 60),
-
-                    // Name input
-                    TextFormField(
-                      controller: _controller,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                      ),
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        hintText: 'setup.toy_name.hint'.tr(),
-                        hintStyle: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.5),
+                            // Name input
+                            TextFormField(
+                              controller: _controller,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: Colors.white,
+                              ),
+                              textCapitalization: TextCapitalization.words,
+                              decoration: InputDecoration(
+                                hintText: 'setup.toy_name.hint'.tr(),
+                                hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.5),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white.withOpacity(0.2),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: const EdgeInsets.all(20),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'setup.toy_name.validation_empty'.tr();
+                                }
+                                if (value.trim().length < 2) {
+                                  return 'setup.toy_name.validation_short'.tr();
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
                         ),
-                        filled: true,
-                        fillColor: Colors.white.withValues(alpha: 0.2),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
                       ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'setup.toy_name.validation_empty'.tr();
-                        }
-                        if (value.trim().length < 2) {
-                          return 'setup.toy_name.validation_short'.tr();
-                        }
-                        return null;
-                      },
                     ),
 
-                    const Spacer(),
+                    const SizedBox(height: 16),
 
+                    // Bottom Buttons
                     // Next button
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           // TODO(setup): Save toy name to storage
-                          context.push(AppConstants.routeAgeSetup);
+                          context.push(AppConstants.routeWifiSetup);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -166,7 +182,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                       child: Text(
                         'setup.connection.skip_setup'.tr(),
                         style: theme.textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.8),
+                          color: Colors.white.withOpacity(0.8),
                         ),
                       ),
                     ),
@@ -192,7 +208,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
             decoration: BoxDecoration(
               color: index < current
                   ? Colors.white
-                  : Colors.white.withValues(alpha: 0.3),
+                  : Colors.white.withOpacity(0.3),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
