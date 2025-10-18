@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_constants.dart';
@@ -16,6 +17,7 @@ class ConnectionSetupScreen extends StatefulWidget {
 }
 
 class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
+  final _logger = Logger();
   bool _isScanning = false;
   bool _isBluetoothEnabled = false;
   StreamSubscription<fbp.BluetoothAdapterState>? _adapterStateSubscription;
@@ -33,12 +35,14 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
     _stopScan();
     _adapterStateSubscription?.cancel();
     _scanSubscription?.cancel();
+    _logger.close();
     super.dispose();
   }
 
   Future<void> _initializeBluetooth() async {
     // Listen to Bluetooth adapter state changes
     _adapterStateSubscription = fbp.FlutterBluePlus.adapterState.listen((state) {
+      _logger.d('Bluetooth adapter state changed: $state');
       setState(() {
         _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
       });
@@ -60,51 +64,45 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
 
   Future<bool> _requestPermissions() async {
     try {
-      debugPrint('🔵 Requesting Bluetooth permissions...');
+      _logger.i('Requesting Bluetooth permissions...');
 
       // Check current status first
       final scanStatus = await Permission.bluetoothScan.status;
       final connectStatus = await Permission.bluetoothConnect.status;
       final locationStatus = await Permission.location.status;
 
-      debugPrint('📊 Current status:');
-      debugPrint('  - Bluetooth Scan: $scanStatus');
-      debugPrint('  - Bluetooth Connect: $connectStatus');
-      debugPrint('  - Location: $locationStatus');
+      _logger.d('Current status: Scan=$scanStatus, Connect=$connectStatus, Location=$locationStatus');
 
       // Request permissions
-      final bluetoothScan = await Permission.bluetoothScan.request();
-      final bluetoothConnect = await Permission.bluetoothConnect.request();
-      final location = await Permission.location.request();
+      final permissions = await [
+        Permission.bluetoothScan,
+        Permission.bluetoothConnect,
+        Permission.location,
+      ].request();
 
-      debugPrint('📊 After request:');
-      debugPrint('  - Bluetooth Scan: $bluetoothScan');
-      debugPrint('  - Bluetooth Connect: $bluetoothConnect');
-      debugPrint('  - Location: $location');
+      final granted = permissions.values.every((status) => status.isGranted);
 
-      final granted = bluetoothScan.isGranted &&
-          bluetoothConnect.isGranted &&
-          location.isGranted;
-
-      debugPrint('✅ All permissions granted: $granted');
+      _logger.i('All permissions granted: $granted');
 
       if (!granted && mounted) {
-        debugPrint('❌ Showing permissions denied dialog');
+        _logger.w('Permissions denied, showing dialog');
         _showPermissionsDeniedDialog();
       }
 
       return granted;
     } on Exception catch (e) {
-      debugPrint('❌ Error requesting permissions: $e');
+      _logger.e('Error requesting permissions: $e');
       return false;
     }
   }
 
   Future<void> _startScan() async {
     if (_isScanning) {
+      _logger.d('Scan already in progress');
       return;
     }
 
+    _logger.i('Starting Bluetooth scan...');
     setState(() {
       _isScanning = true;
       _scanResults = [];
@@ -117,23 +115,20 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       );
 
       _scanSubscription = fbp.FlutterBluePlus.scanResults.listen((results) {
-        debugPrint('📡 Scan results: ${results.length} devices found');
+        _logger.d('Scan results: ${results.length} devices found');
 
-        // Log all devices for debugging
-        for (final result in results) {
-          debugPrint('  Device: ${result.device.platformName.isNotEmpty ? result.device.platformName : "Unknown"} (${result.device.remoteId}) - RSSI: ${result.rssi}');
-        }
+        final filteredResults = results
+            .where((r) =>
+                r.device.platformName.isNotEmpty &&
+                (r.device.platformName.toLowerCase().contains('nebu') ||
+                    r.device.platformName.toLowerCase().contains('esp32')))
+            .toList();
 
         setState(() {
-          _scanResults = results
-              .where((r) =>
-                  r.device.platformName.isNotEmpty &&
-                  (r.device.platformName.toLowerCase().contains('nebu') ||
-                      r.device.platformName.toLowerCase().contains('esp32')))
-              .toList();
-
-          debugPrint('✅ Filtered results: ${_scanResults.length} Nebu/ESP32 devices');
+          _scanResults = filteredResults;
         });
+
+        _logger.d('Filtered results: ${_scanResults.length} Nebu/ESP32 devices');
       });
 
       // Auto-stop after timeout
@@ -143,7 +138,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
         }
       });
     } on Exception catch (e) {
-      debugPrint('Error starting scan: $e');
+      _logger.e('Error starting scan: $e');
       if (mounted) {
         setState(() {
           _isScanning = false;
@@ -153,6 +148,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   }
 
   Future<void> _stopScan() async {
+    _logger.i('Stopping Bluetooth scan...');
     try {
       await fbp.FlutterBluePlus.stopScan();
       await _scanSubscription?.cancel();
@@ -163,7 +159,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
         });
       }
     } on Exception catch (e) {
-      debugPrint('Error stopping scan: $e');
+      _logger.e('Error stopping scan: $e');
     }
   }
 
@@ -180,35 +176,26 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              // Show message that Bluetooth is required
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Bluetooth is required to scan for devices'),
-                  backgroundColor: Colors.orange,
-                  duration: Duration(seconds: 3),
-                ),
-              );
+              _logger.d('User cancelled enable Bluetooth dialog');
             },
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
-              final messenger = ScaffoldMessenger.of(context);
-
-              // Try to turn on Bluetooth
+              _logger.i('Attempting to turn on Bluetooth...');
               try {
                 if (await fbp.FlutterBluePlus.isSupported) {
                   await fbp.FlutterBluePlus.turnOn();
+                  _logger.i('Bluetooth turned on successfully');
                 }
               } on Exception catch (e) {
-                debugPrint('Error turning on Bluetooth: $e');
+                _logger.e('Error turning on Bluetooth: $e');
                 if (mounted) {
-                  messenger.showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Could not enable Bluetooth: $e'),
                       backgroundColor: Colors.red,
-                      duration: const Duration(seconds: 3),
                     ),
                   );
                 }
@@ -237,8 +224,8 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           ),
           ElevatedButton(
             onPressed: () {
+              _logger.i('User skipped setup');
               Navigator.pop(context);
-              // Go to home screen
               context.go(AppConstants.routeHome);
             },
             style: ElevatedButton.styleFrom(
@@ -322,7 +309,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                         ? 'Searching for your Nebu device...'
                         : "Let's connect your Nebu toy to get started",
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.9),
+                      color: Colors.white.withAlpha(230),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -344,6 +331,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                             if (_scanResults.isEmpty) {
                               // Check if Bluetooth is enabled first
                               if (!_isBluetoothEnabled) {
+                                _logger.d('Bluetooth not enabled, showing dialog');
                                 _showEnableBluetoothDialog();
                                 return;
                               }
@@ -351,13 +339,14 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                               // Then check permissions and start scan
                               await _checkPermissionsAndStartScan();
                             } else {
+                              _logger.i('Proceeding to next step (toy name setup)');
                               await context.push(AppConstants.routeToyNameSetup);
                             }
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: AppTheme.primaryLight,
-                      disabledBackgroundColor: Colors.white.withValues(alpha: 0.5),
+                      disabledBackgroundColor: Colors.white.withAlpha(128),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -384,7 +373,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                     child: Text(
                       'Skip Setup',
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: Colors.white.withAlpha(204),
                       ),
                     ),
                   ),
@@ -409,7 +398,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
             decoration: BoxDecoration(
               color: index < current
                   ? Colors.white
-                  : Colors.white.withValues(alpha: 0.3),
+                  : Colors.white.withAlpha(77),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -433,14 +422,14 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
             Text(
               'Scanning for devices...',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: Colors.white.withValues(alpha: 0.9),
+                color: Colors.white.withAlpha(230),
               ),
             ),
             const SizedBox(height: 12),
             Text(
               'Make sure your Nebu device is turned on',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withValues(alpha: 0.7),
+                color: Colors.white.withAlpha(179),
               ),
               textAlign: TextAlign.center,
             ),
@@ -457,20 +446,20 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
             Icon(
               Icons.bluetooth_searching,
               size: 80,
-              color: Colors.white.withValues(alpha: 0.7),
+              color: Colors.white.withAlpha(179),
             ),
             const SizedBox(height: 24),
             Text(
               'No devices found',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: Colors.white.withValues(alpha: 0.9),
+                color: Colors.white.withAlpha(230),
               ),
             ),
             const SizedBox(height: 12),
             Text(
               'Tap "Start Scan" to search for your Nebu device',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withValues(alpha: 0.7),
+                color: Colors.white.withAlpha(179),
               ),
               textAlign: TextAlign.center,
             ),
@@ -487,7 +476,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           child: Text(
             'Available Devices (${_scanResults.length})',
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: Colors.white.withAlpha(230),
             ),
           ),
         ),
@@ -502,10 +491,10 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
               return Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Colors.white.withAlpha(26),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: Colors.white.withAlpha(51),
                   ),
                 ),
                 child: ListTile(
@@ -516,7 +505,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                   leading: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: Colors.white.withAlpha(51),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -537,14 +526,15 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                   subtitle: Text(
                     'Signal: $rssi dBm',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: Colors.white.withAlpha(179),
                     ),
                   ),
                   trailing: Icon(
                     Icons.chevron_right,
-                    color: Colors.white.withValues(alpha: 0.7),
+                    color: Colors.white.withAlpha(179),
                   ),
                   onTap: () async {
+                    _logger.i('Attempting to connect to ${device.platformName} (${device.remoteId})');
                     final messenger = ScaffoldMessenger.of(context);
                     final router = GoRouter.of(context);
 
@@ -557,6 +547,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                         return;
                       }
 
+                      _logger.i('Successfully connected to ${device.platformName}');
                       messenger.showSnackBar(
                         SnackBar(
                           content: Text('Connected to ${device.platformName}'),
@@ -565,6 +556,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                       );
                       await router.push(AppConstants.routeToyNameSetup);
                     } on Exception catch (e) {
+                      _logger.e('Failed to connect to ${device.platformName}: $e');
                       if (!mounted) {
                         return;
                       }

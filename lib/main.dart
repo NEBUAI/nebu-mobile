@@ -12,8 +12,12 @@ import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'data/services/api_service.dart';
 import 'data/services/auth_service.dart';
+import 'data/services/bluetooth_service.dart';
+import 'data/services/device_service.dart';
 import 'presentation/providers/api_provider.dart';
 import 'presentation/providers/auth_provider.dart';
+import 'presentation/providers/bluetooth_provider.dart';
+import 'presentation/providers/device_provider.dart';
 import 'presentation/providers/language_provider.dart';
 import 'presentation/providers/theme_provider.dart';
 
@@ -59,6 +63,13 @@ void main() async {
     secureStorage: secureStorage,
   );
 
+  final bluetoothService = BluetoothService(logger: logger);
+
+  final deviceService = DeviceService(
+    bluetoothService: bluetoothService,
+    logger: logger,
+  );
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('es')],
@@ -69,6 +80,8 @@ void main() async {
           // Override providers with actual instances
           apiServiceProvider.overrideWithValue(apiService),
           authServiceProvider.overrideWithValue(authService),
+          bluetoothServiceProvider.overrideWithValue(bluetoothService),
+          deviceServiceProvider.overrideWithValue(deviceService),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           authProvider.overrideWith(AuthNotifier.new),
           themeProvider.overrideWith(ThemeNotifier.new),

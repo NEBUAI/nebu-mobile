@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
+
 import '../../core/constants/app_constants.dart';
 import '../providers/auth_provider.dart';
+import '../providers/bluetooth_provider.dart';
+import '../providers/device_provider.dart';
 import '../providers/theme_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -12,8 +16,6 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AuthState authState = ref.watch(authProvider);
-    final ThemeState themeState = ref.watch(themeProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -26,8 +28,6 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Welcome Card
-
               // My Toys Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,41 +47,8 @@ class HomeScreen extends ConsumerWidget {
 
               const SizedBox(height: 16),
 
-              // Toys List (placeholder for now)
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  border: Border.all(color: theme.dividerColor.withAlpha(77)),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icon_flow.svg',
-                      height: 64,
-                      colorFilter: ColorFilter.mode(
-                        theme.disabledColor,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'home.no_toys'.tr(),
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'home.no_toys_hint'.tr(),
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withAlpha(153),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Active Toys List
+              _buildActiveToysList(context, ref),
 
               const SizedBox(height: 24),
 
@@ -129,6 +96,95 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
+
+  Widget _buildActiveToysList(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final connectedDevices = ref.watch(connectedDevicesProvider);
+
+    return connectedDevices.when(
+      data: (devices) {
+        if (devices.isEmpty) {
+          return _buildNoToysPlaceholder(theme);
+        }
+
+        return Column(
+          children: devices
+              .map((device) => _DeviceBatteryCard(device: device))
+              .toList(),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(
+        child: Text('Error loading devices: $error'),
+      ),
+    );
+  }
+
+  Widget _buildNoToysPlaceholder(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        border: Border.all(color: theme.dividerColor.withAlpha(77)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          SvgPicture.asset(
+            'assets/icon_flow.svg',
+            height: 64,
+            colorFilter: ColorFilter.mode(
+              theme.disabledColor,
+              BlendMode.srcIn,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'home.no_toys'.tr(),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'home.no_toys_hint'.tr(),
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withAlpha(153),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DeviceBatteryCard extends ConsumerWidget {
+  const _DeviceBatteryCard({required this.device});
+
+  final fbp.BluetoothDevice device;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final batteryLevel = ref.watch(batteryLevelProvider(device));
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: const Icon(Icons.bluetooth_connected),
+        title: Text(device.platformName.isNotEmpty ? device.platformName : 'Unknown Device'),
+        trailing: batteryLevel.when(
+          data: (level) => Text('$level%', style: theme.textTheme.titleMedium),
+          loading: () => const SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(strokeWidth: 2.5),
+          ),
+          error: (error, stack) => const Icon(Icons.error_outline, color: Colors.red),
+        ),
+      ),
+    );
+  }
 }
 
 class _QuickActionCard extends StatelessWidget {
@@ -144,35 +200,35 @@ class _QuickActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  icon,
-                  size: 48,
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.titleMedium,
-                ),
-              ],
-            ),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 48,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleMedium,
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
