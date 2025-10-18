@@ -14,12 +14,14 @@ import 'data/services/api_service.dart';
 import 'data/services/auth_service.dart';
 import 'data/services/bluetooth_service.dart';
 import 'data/services/device_service.dart';
+import 'data/services/esp32_wifi_config_service.dart';
 import 'presentation/providers/api_provider.dart';
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/bluetooth_provider.dart';
 import 'presentation/providers/device_provider.dart';
 import 'presentation/providers/language_provider.dart';
 import 'presentation/providers/theme_provider.dart';
+import 'presentation/screens/setup/wifi_setup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,6 +72,11 @@ void main() async {
     logger: logger,
   );
 
+  final esp32WifiConfigService = ESP32WifiConfigService(
+    bluetoothService: bluetoothService,
+    logger: logger,
+  );
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('es')],
@@ -82,6 +89,7 @@ void main() async {
           authServiceProvider.overrideWithValue(authService),
           bluetoothServiceProvider.overrideWithValue(bluetoothService),
           deviceServiceProvider.overrideWithValue(deviceService),
+          esp32WifiConfigServiceProvider.overrideWithValue(esp32WifiConfigService),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           authProvider.overrideWith(AuthNotifier.new),
           themeProvider.overrideWith(ThemeNotifier.new),

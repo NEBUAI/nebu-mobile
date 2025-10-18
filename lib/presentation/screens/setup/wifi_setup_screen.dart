@@ -61,11 +61,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             backgroundColor: Colors.green,
           ),
         );
-        // TODO: Listen to status characteristic for connection result
-        // For now, just navigate to the next step after a delay
         await Future<void>.delayed(const Duration(seconds: 2));
         if (mounted) {
-          context.push(AppConstants.routeAgeSetup);
+          context.push(AppConstants.routeToyNameSetup);
         }
       } else {
         throw Exception(result.message);
@@ -137,7 +135,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         const Spacer(),
-        _buildProgressIndicator(3, 7), // Assuming this is step 3
+        _buildProgressIndicator(2, 7), // This is now step 2
         const Spacer(),
         const Opacity(
           opacity: 0,
@@ -245,7 +243,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         ),
         const SizedBox(height: 12),
         TextButton(
-          onPressed: () => context.push(AppConstants.routeAgeSetup),
+          onPressed: () => context.push(AppConstants.routeToyNameSetup),
           child: Text(
             'setup.wifi.skip_button'.tr(),
             style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white.withOpacity(0.8)),

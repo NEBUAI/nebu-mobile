@@ -23,6 +23,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   StreamSubscription<fbp.BluetoothAdapterState>? _adapterStateSubscription;
   StreamSubscription<List<fbp.ScanResult>>? _scanSubscription;
   List<fbp.ScanResult> _scanResults = [];
+  fbp.BluetoothDevice? _selectedDevice;
 
   @override
   void initState() {
@@ -40,7 +41,6 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   }
 
   Future<void> _initializeBluetooth() async {
-    // Listen to Bluetooth adapter state changes
     _adapterStateSubscription = fbp.FlutterBluePlus.adapterState.listen((state) {
       _logger.d('Bluetooth adapter state changed: $state');
       setState(() {
@@ -48,7 +48,6 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       });
     });
 
-    // Check initial state
     final state = await fbp.FlutterBluePlus.adapterState.first;
     setState(() {
       _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
@@ -65,30 +64,17 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   Future<bool> _requestPermissions() async {
     try {
       _logger.i('Requesting Bluetooth permissions...');
-
-      // Check current status first
-      final scanStatus = await Permission.bluetoothScan.status;
-      final connectStatus = await Permission.bluetoothConnect.status;
-      final locationStatus = await Permission.location.status;
-
-      _logger.d('Current status: Scan=$scanStatus, Connect=$connectStatus, Location=$locationStatus');
-
-      // Request permissions
       final permissions = await [
         Permission.bluetoothScan,
         Permission.bluetoothConnect,
         Permission.location,
       ].request();
-
       final granted = permissions.values.every((status) => status.isGranted);
-
       _logger.i('All permissions granted: $granted');
-
       if (!granted && mounted) {
         _logger.w('Permissions denied, showing dialog');
         _showPermissionsDeniedDialog();
       }
-
       return granted;
     } on Exception catch (e) {
       _logger.e('Error requesting permissions: $e');
@@ -106,6 +92,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
     setState(() {
       _isScanning = true;
       _scanResults = [];
+      _selectedDevice = null;
     });
 
     try {
@@ -116,7 +103,6 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
 
       _scanSubscription = fbp.FlutterBluePlus.scanResults.listen((results) {
         _logger.d('Scan results: ${results.length} devices found');
-
         final filteredResults = results
             .where((r) =>
                 r.device.platformName.isNotEmpty &&
@@ -131,7 +117,6 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
         _logger.d('Filtered results: ${_scanResults.length} Nebu/ESP32 devices');
       });
 
-      // Auto-stop after timeout
       Future<void>.delayed(const Duration(seconds: 15), () {
         if (mounted) {
           _stopScan();
@@ -163,42 +148,62 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
     }
   }
 
+  Future<void> _connectToDevice(fbp.BluetoothDevice device) async {
+    _logger.i('Attempting to connect to ${device.platformName} (${device.remoteId})');
+    final messenger = ScaffoldMessenger.of(context);
+
+    try {
+      await device.connect(
+        license: fbp.License.free,
+        timeout: const Duration(seconds: 15),
+      );
+      if (!mounted) return;
+
+      _logger.i('Successfully connected to ${device.platformName}');
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('Connected to ${device.platformName}'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      
+      setState(() {
+        _selectedDevice = device;
+      });
+
+    } on Exception catch (e) {
+      _logger.e('Failed to connect to ${device.platformName}: $e');
+      if (!mounted) return;
+
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('Failed to connect: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   void _showEnableBluetoothDialog() {
     showDialog<void>(
       context: context,
-      barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('Enable Bluetooth'),
-        content: const Text(
-          'Please enable Bluetooth to connect to your Nebu device.',
-        ),
+        content: const Text('Please enable Bluetooth to connect to your Nebu device.'),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _logger.d('User cancelled enable Bluetooth dialog');
-            },
+            onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
-              _logger.i('Attempting to turn on Bluetooth...');
               try {
                 if (await fbp.FlutterBluePlus.isSupported) {
                   await fbp.FlutterBluePlus.turnOn();
-                  _logger.i('Bluetooth turned on successfully');
                 }
               } on Exception catch (e) {
                 _logger.e('Error turning on Bluetooth: $e');
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Could not enable Bluetooth: $e'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
               }
             },
             child: const Text('Enable'),
@@ -267,7 +272,8 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+    final canProceed = _selectedDevice != null;
+
     return Scaffold(
         body: DecoratedBox(
           decoration: AppTheme.primaryGradientDecoration,
@@ -277,70 +283,23 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Back button
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      onPressed: () => context.pop(),
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Progress indicator
-                  _buildProgressIndicator(1, 7),
-
+                  _buildHeader(context),
                   const SizedBox(height: 40),
-
-                  // Title
-                  Text(
-                    'Connect Your Device',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  Text(
-                    _isScanning
-                        ? 'Searching for your Nebu device...'
-                        : "Let's connect your Nebu toy to get started",
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withAlpha(230),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-
+                  _buildTitle(theme),
                   const SizedBox(height: 32),
-
-                  // Scanning status and devices list
                   Expanded(
                     child: _isScanning
                         ? _buildScanningView(theme)
                         : _buildDevicesList(theme),
                   ),
-
-                  // Scan/Next button
                   ElevatedButton(
-                    onPressed: _isScanning
-                        ? null
-                        : () async {
-                            if (_scanResults.isEmpty) {
-                              // Check if Bluetooth is enabled first
-                              if (!_isBluetoothEnabled) {
-                                _logger.d('Bluetooth not enabled, showing dialog');
-                                _showEnableBluetoothDialog();
-                                return;
-                              }
-
-                              // Then check permissions and start scan
-                              await _checkPermissionsAndStartScan();
+                    onPressed: canProceed
+                        ? () => context.push(AppConstants.routeWifiSetup)
+                        : () {
+                            if (!_isBluetoothEnabled) {
+                              _showEnableBluetoothDialog();
                             } else {
-                              _logger.i('Proceeding to next step (toy name setup)');
-                              await context.push(AppConstants.routeToyNameSetup);
+                              _checkPermissionsAndStartScan();
                             }
                           },
                     style: ElevatedButton.styleFrom(
@@ -355,19 +314,16 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                     child: Text(
                       _isScanning
                           ? 'Scanning...'
-                          : _scanResults.isEmpty
-                              ? 'Start Scan'
-                              : 'Next',
+                          : canProceed
+                              ? 'Next'
+                              : 'Start Scan',
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: AppTheme.primaryLight,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
-                  // Skip button
                   TextButton(
                     onPressed: _showSkipSetupDialog,
                     child: Text(
@@ -377,17 +333,59 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20),
                 ],
               ),
             ),
           ),
-        ),
-      );
+        ));
   }
 
-  Widget _buildProgressIndicator(int current, int total) => Row(
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () => context.pop(),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
+        const Spacer(),
+        _buildProgressIndicator(1, 7),
+        const Spacer(),
+        const Opacity(
+          opacity: 0,
+          child: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTitle(ThemeData theme) {
+    return Column(
+      children: [
+        Text(
+          'Connect Your Device',
+          style: theme.textTheme.headlineMedium?.copyWith(
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        Text(
+          _isScanning
+              ? 'Searching for your Nebu device...'
+              : "Let's connect your Nebu toy to get started",
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: Colors.white.withAlpha(230),
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildProgressIndicator(int current, int total) {
+    return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(
           total,
@@ -404,12 +402,13 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           ),
         ),
       );
+  }
 
-  Widget _buildScanningView(ThemeData theme) => Center(
+  Widget _buildScanningView(ThemeData theme) {
+    return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Animated scanning indicator
             const SizedBox(
               width: 80,
               height: 80,
@@ -436,145 +435,98 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           ],
         ),
       );
+  }
 
   Widget _buildDevicesList(ThemeData theme) {
-    if (_scanResults.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.bluetooth_searching,
-              size: 80,
-              color: Colors.white.withAlpha(179),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'No devices found',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: Colors.white.withAlpha(230),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Tap "Start Scan" to search for your Nebu device',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withAlpha(179),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      );
+    final bool hasResults = _scanResults.isNotEmpty;
+
+    if (!hasResults && !_isScanning) {
+      return _buildNoDevicesPlaceholder(theme);
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text(
-            'Available Devices (${_scanResults.length})',
-            style: theme.textTheme.bodyLarge?.copyWith(
+        if (hasResults)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              'Available Devices (${_scanResults.length})',
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: Colors.white.withAlpha(230),
+              ),
+            ),
+          ),
+        if (hasResults)
+          Expanded(
+            child: ListView.builder(
+              itemCount: _scanResults.length,
+              itemBuilder: (context, index) {
+                final result = _scanResults[index];
+                final device = result.device;
+                final isSelected = _selectedDevice?.remoteId == device.remoteId;
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.white.withAlpha(51) : Colors.white.withAlpha(26),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isSelected ? Colors.white : Colors.white.withAlpha(51),
+                      width: isSelected ? 2 : 1,
+                    ),
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    leading: const Icon(Icons.bluetooth, color: Colors.white),
+                    title: Text(
+                      device.platformName.isNotEmpty ? device.platformName : 'Unknown Device',
+                      style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      'Signal: ${result.rssi} dBm',
+                      style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withAlpha(179)),
+                    ),
+                    onTap: () => _connectToDevice(device),
+                  ),
+                );
+              },
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildNoDevicesPlaceholder(ThemeData theme) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.bluetooth_searching,
+            size: 80,
+            color: Colors.white.withAlpha(179),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'No devices found',
+            style: theme.textTheme.titleMedium?.copyWith(
               color: Colors.white.withAlpha(230),
             ),
           ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: _scanResults.length,
-            itemBuilder: (context, index) {
-              final result = _scanResults[index];
-              final device = result.device;
-              final rssi = result.rssi;
-
-              return Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(26),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.white.withAlpha(51),
-                  ),
-                ),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  leading: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(51),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.bluetooth,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                  title: Text(
-                    device.platformName.isNotEmpty
-                        ? device.platformName
-                        : 'Unknown Device',
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  subtitle: Text(
-                    'Signal: $rssi dBm',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.white.withAlpha(179),
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.chevron_right,
-                    color: Colors.white.withAlpha(179),
-                  ),
-                  onTap: () async {
-                    _logger.i('Attempting to connect to ${device.platformName} (${device.remoteId})');
-                    final messenger = ScaffoldMessenger.of(context);
-                    final router = GoRouter.of(context);
-
-                    try {
-                      await device.connect(
-                        license: fbp.License.free,
-                        timeout: const Duration(seconds: 15),
-                      );
-                      if (!mounted) {
-                        return;
-                      }
-
-                      _logger.i('Successfully connected to ${device.platformName}');
-                      messenger.showSnackBar(
-                        SnackBar(
-                          content: Text('Connected to ${device.platformName}'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      await router.push(AppConstants.routeToyNameSetup);
-                    } on Exception catch (e) {
-                      _logger.e('Failed to connect to ${device.platformName}: $e');
-                      if (!mounted) {
-                        return;
-                      }
-
-                      messenger.showSnackBar(
-                        SnackBar(
-                          content: Text('Failed to connect: $e'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  },
-                ),
-              );
-            },
+          const SizedBox(height: 12),
+          Text(
+            'Tap "Start Scan" to search for your Nebu device',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: Colors.white.withAlpha(179),
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

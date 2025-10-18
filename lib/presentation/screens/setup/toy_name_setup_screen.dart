@@ -73,7 +73,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                           icon: const Icon(Icons.arrow_back, color: Colors.white),
                         ),
                         const Spacer(),
-                        _buildProgressIndicator(2, 7),
+                        _buildProgressIndicator(3, 7), // This is now step 3
                         const Spacer(),
                         // Placeholder to balance the row
                         const Opacity(
@@ -154,7 +154,7 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           // TODO(setup): Save toy name to storage
-                          context.push(AppConstants.routeWifiSetup);
+                          context.push(AppConstants.routeAgeSetup);
                         }
                       },
                       style: ElevatedButton.styleFrom(
