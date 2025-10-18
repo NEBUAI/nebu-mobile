@@ -47,6 +47,10 @@ class AppConstants {
   static const Duration scanTimeout = Duration(seconds: 10);
   static const Duration connectionTimeout = Duration(seconds: 15);
 
+  // Standard BLE Services & Characteristics
+  static const String batteryServiceUuid = '0000180f-0000-1000-8000-00805f9b34fb';
+  static const String batteryLevelCharUuid = '00002a19-0000-1000-8000-00805f9b34fb';
+
   // ESP32 WiFi Configuration BLE Protocol
   static const String esp32WifiServiceUuid = '12345678-1234-1234-1234-123456789abc';
   static const String esp32SsidCharUuid = '12345678-1234-1234-1234-123456789abd';

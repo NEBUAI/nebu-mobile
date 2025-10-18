@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
@@ -210,6 +211,7 @@ class BluetoothService {
     try {
       _logger.d('Reading characteristic: ${characteristic.uuid}');
       final value = await characteristic.read();
+      _logger.d('Read value: ${utf8.decode(value, allowMalformed: true)}');
       return value;
     } on Exception catch (e) {
       _logger.e('Error reading characteristic: $e');
@@ -224,7 +226,9 @@ class BluetoothService {
     bool withoutResponse = false,
   }) async {
     try {
-      _logger.d('Writing to characteristic: ${characteristic.uuid}');
+      _logger.d(
+        'Writing to characteristic: ${characteristic.uuid} - Value: ${utf8.decode(value, allowMalformed: true)}',
+      );
       await characteristic.write(
         value,
         withoutResponse: withoutResponse,
