@@ -34,6 +34,15 @@
       "device_found": "Dispositivo: {name}",
       "signal_strength": "Señal: {rssi} dBm"
     },
+    "wifi": {
+      "title": "Conectar a Wi-Fi",
+      "subtitle": "Ingresa las credenciales de la red Wi-Fi a la que quieres que se conecte tu dispositivo Nebu.",
+      "ssid_hint": "Nombre de la Wi-Fi (SSID)",
+      "password_hint": "Contraseña",
+      "connect_button": "Conectar",
+      "skip_button": "Omitir por ahora",
+      "validation_ssid_empty": "Por favor ingresa el nombre de la Wi-Fi"
+    },
     "toy_name": {
       "title": "Nombra Tu Juguete",
       "subtitle": "Dale un nombre especial a tu Nebu",

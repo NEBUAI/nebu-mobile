@@ -2,23 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../data/services/esp32_wifi_config_service.dart';
+import 'wifi_setup_screen.dart';
 
-class ConnectionSetupScreen extends StatefulWidget {
+class ConnectionSetupScreen extends ConsumerStatefulWidget {
   const ConnectionSetupScreen({super.key});
 
   @override
-  State<ConnectionSetupScreen> createState() => _ConnectionSetupScreenState();
+  ConsumerState<ConnectionSetupScreen> createState() =>
+      _ConnectionSetupScreenState();
 }
 
-class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
+class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
   final _logger = Logger();
   bool _isScanning = false;
+  bool _isConnecting = false;
   bool _isBluetoothEnabled = false;
   StreamSubscription<fbp.BluetoothAdapterState>? _adapterStateSubscription;
   StreamSubscription<List<fbp.ScanResult>>? _scanSubscription;
@@ -43,15 +48,19 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   Future<void> _initializeBluetooth() async {
     _adapterStateSubscription = fbp.FlutterBluePlus.adapterState.listen((state) {
       _logger.d('Bluetooth adapter state changed: $state');
-      setState(() {
-        _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
-      });
+      if (mounted) {
+        setState(() {
+          _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
+        });
+      }
     });
 
     final state = await fbp.FlutterBluePlus.adapterState.first;
-    setState(() {
-      _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
-    });
+    if (mounted) {
+      setState(() {
+        _isBluetoothEnabled = state == fbp.BluetoothAdapterState.on;
+      });
+    }
   }
 
   Future<void> _checkPermissionsAndStartScan() async {
@@ -110,9 +119,11 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                     r.device.platformName.toLowerCase().contains('esp32')))
             .toList();
 
-        setState(() {
-          _scanResults = filteredResults;
-        });
+        if (mounted) {
+          setState(() {
+            _scanResults = filteredResults;
+          });
+        }
 
         _logger.d('Filtered results: ${_scanResults.length} Nebu/ESP32 devices');
       });
@@ -151,15 +162,19 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
   Future<void> _connectToDevice(fbp.BluetoothDevice device) async {
     _logger.i('Attempting to connect to ${device.platformName} (${device.remoteId})');
     final messenger = ScaffoldMessenger.of(context);
+    final esp32service = ref.read(esp32WifiConfigServiceProvider);
+
+    setState(() {
+      _isConnecting = true;
+    });
 
     try {
-      await device.connect(
-        license: fbp.License.free,
-        timeout: const Duration(seconds: 15),
-      );
+      // This now connects and discovers services for WiFi config
+      await esp32service.connectToESP32(device);
+
       if (!mounted) return;
 
-      _logger.i('Successfully connected to ${device.platformName}');
+      _logger.i('Successfully connected and prepared device: ${device.platformName}');
       messenger.showSnackBar(
         SnackBar(
           content: Text('Connected to ${device.platformName}'),
@@ -172,7 +187,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       });
 
     } on Exception catch (e) {
-      _logger.e('Failed to connect to ${device.platformName}: $e');
+      _logger.e('Failed to connect and prepare device ${device.platformName}: $e');
       if (!mounted) return;
 
       messenger.showSnackBar(
@@ -181,6 +196,12 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
           backgroundColor: Colors.red,
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isConnecting = false;
+        });
+      }
     }
   }
 
@@ -293,9 +314,10 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                         : _buildDevicesList(theme),
                   ),
                   ElevatedButton(
-                    onPressed: canProceed
+                    onPressed: canProceed && !_isConnecting
                         ? () => context.push(AppConstants.routeWifiSetup)
                         : () {
+                            if (_isScanning) return;
                             if (!_isBluetoothEnabled) {
                               _showEnableBluetoothDialog();
                             } else {
@@ -383,58 +405,56 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
       ],
     );
   }
-  
+
   Widget _buildProgressIndicator(int current, int total) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(
-          total,
-          (index) => Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: index < current ? 24 : 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: index < current
-                  ? Colors.white
-                  : Colors.white.withAlpha(77),
-              borderRadius: BorderRadius.circular(4),
-            ),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        total,
+        (index) => Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          width: index < current ? 24 : 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: index < current ? Colors.white : Colors.white.withAlpha(77),
+            borderRadius: BorderRadius.circular(4),
           ),
         ),
-      );
+      ),
+    );
   }
 
   Widget _buildScanningView(ThemeData theme) {
     return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              width: 80,
-              height: 80,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: 80,
+            height: 80,
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Scanning for devices...',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: Colors.white.withAlpha(230),
-              ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Scanning for devices...',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: Colors.white.withAlpha(230),
             ),
-            const SizedBox(height: 12),
-            Text(
-              'Make sure your Nebu device is turned on',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withAlpha(179),
-              ),
-              textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Make sure your Nebu device is turned on',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: Colors.white.withAlpha(179),
             ),
-          ],
-        ),
-      );
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildDevicesList(ThemeData theme) {
@@ -481,7 +501,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                       horizontal: 16,
                       vertical: 8,
                     ),
-                    leading: const Icon(Icons.bluetooth, color: Colors.white),
+                    leading: _isConnecting && isSelected ? const CircularProgressIndicator(color: Colors.white) : const Icon(Icons.bluetooth, color: Colors.white),
                     title: Text(
                       device.platformName.isNotEmpty ? device.platformName : 'Unknown Device',
                       style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
@@ -490,7 +510,7 @@ class _ConnectionSetupScreenState extends State<ConnectionSetupScreen> {
                       'Signal: ${result.rssi} dBm',
                       style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withAlpha(179)),
                     ),
-                    onTap: () => _connectToDevice(device),
+                    onTap: _isConnecting ? null : () => _connectToDevice(device),
                   ),
                 );
               },
