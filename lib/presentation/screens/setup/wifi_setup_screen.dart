@@ -28,11 +28,139 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   bool _isConnecting = false;
+  StreamSubscription<ESP32WifiStatus>? _statusSubscription;
+  Timer? _timeoutTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscribeToWifiStatus();
+  }
+
+  void _subscribeToWifiStatus() {
+    final esp32service = ref.read(esp32WifiConfigServiceProvider);
+
+    _statusSubscription = esp32service.statusStream.listen(
+      (status) {
+        if (!mounted) {
+          return;
+        }
+
+        final messenger = ScaffoldMessenger.of(context);
+
+        switch (status) {
+          case ESP32WifiStatus.idle:
+            // No hacer nada
+            break;
+
+          case ESP32WifiStatus.connecting:
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text('setup.wifi.status_connecting'.tr()),
+                backgroundColor: Colors.blue,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+            break;
+
+          case ESP32WifiStatus.connected:
+            // Cancelar timeout si existe
+            _timeoutTimer?.cancel();
+
+            setState(() {
+              _isConnecting = false;
+            });
+
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text('setup.wifi.status_connected'.tr()),
+                backgroundColor: Colors.green,
+              ),
+            );
+
+            // Continuar al siguiente paso
+            Future<void>.delayed(const Duration(seconds: 1), () {
+              if (mounted) {
+                context.push(AppConstants.routeToyNameSetup);
+              }
+            });
+            break;
+
+          case ESP32WifiStatus.failed:
+            // Cancelar timeout si existe
+            _timeoutTimer?.cancel();
+
+            setState(() {
+              _isConnecting = false;
+            });
+
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text('setup.wifi.status_failed'.tr()),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 5),
+                action: SnackBarAction(
+                  label: 'setup.wifi.retry'.tr(),
+                  textColor: Colors.white,
+                  onPressed: _connectToWifi,
+                ),
+              ),
+            );
+            break;
+        }
+      },
+      onError: (error) {
+        if (!mounted) {
+          return;
+        }
+
+        _timeoutTimer?.cancel();
+
+        if (_isConnecting) {
+          setState(() {
+            _isConnecting = false;
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('setup.wifi.error_status_stream'.tr()),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+      },
+      onDone: () {
+        if (!mounted) {
+          return;
+        }
+
+        _timeoutTimer?.cancel();
+
+        // El stream se cerró (ESP32 desconectado?)
+        if (_isConnecting) {
+          setState(() {
+            _isConnecting = false;
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('setup.wifi.error_ble_disconnected'.tr()),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+      },
+    );
+  }
 
   @override
   void dispose() {
     _ssidController.dispose();
     _passwordController.dispose();
+    _statusSubscription?.cancel();
+    _timeoutTimer?.cancel();
     super.dispose();
   }
 
@@ -41,12 +169,17 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       return;
     }
 
-    setState(() {
-      _isConnecting = true;
-    });
+    // Prevenir múltiples llamadas simultáneas
+    if (_isConnecting) {
+      return;
+    }
 
     final esp32service = ref.read(esp32WifiConfigServiceProvider);
     final messenger = ScaffoldMessenger.of(context);
+
+    setState(() {
+      _isConnecting = true;
+    });
 
     try {
       final result = await esp32service.sendWifiCredentials(
@@ -56,31 +189,85 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
       if (result.success) {
         messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Credentials sent! Waiting for connection...'),
+          SnackBar(
+            content: Text('setup.wifi.credentials_sent'.tr()),
             backgroundColor: Colors.green,
           ),
         );
-        await Future<void>.delayed(const Duration(seconds: 2));
-        if (mounted) {
-          context.push(AppConstants.routeToyNameSetup);
-        }
+
+        // Iniciar timeout de 45 segundos
+        _timeoutTimer = Timer(const Duration(seconds: 45), () {
+          if (_isConnecting && mounted) {
+            _showTimeoutDialog();
+          }
+        });
+
+        // El statusStream se encargará de actualizar la UI cuando el ESP32 responda
       } else {
         throw Exception(result.message);
       }
     } on Exception catch (e) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text('Failed to send credentials: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isConnecting = false;
-        });
+      final errorMsg = e.toString().toLowerCase();
+
+      // Detectar tipo de error específico
+      if (errorMsg.contains('disconnected') ||
+          errorMsg.contains('connection') ||
+          errorMsg.contains('not connected')) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text('setup.wifi.error_ble_disconnected'.tr()),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      } else if (errorMsg.contains('timeout') || errorMsg.contains('timed out')) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text('setup.wifi.error_ble_timeout'.tr()),
+            backgroundColor: Colors.orange,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      } else {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text('Failed to send credentials: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
+
+      setState(() {
+        _isConnecting = false;
+      });
+    }
+  }
+
+  Future<void> _showTimeoutDialog() async {
+    final shouldContinue = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text('setup.wifi.timeout_dialog_title'.tr()),
+        content: Text('setup.wifi.timeout_dialog_message'.tr()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('setup.wifi.keep_waiting'.tr()),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('setup.wifi.continue_anyway'.tr()),
+          ),
+        ],
+      ),
+    );
+
+    if ((shouldContinue ?? false) && mounted) {
+      setState(() {
+        _isConnecting = false;
+      });
+      await context.push(AppConstants.routeToyNameSetup);
     }
   }
 
@@ -88,36 +275,71 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: DecoratedBox(
-        decoration: AppTheme.primaryGradientDecoration,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildHeader(context),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          _buildTitle(theme),
-                          const SizedBox(height: 40),
-                          _buildSsidInput(theme),
-                          const SizedBox(height: 20),
-                          _buildPasswordInput(theme),
-                        ],
+    return PopScope(
+      canPop: !_isConnecting,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
+
+        if (_isConnecting && context.mounted) {
+          final shouldPop = await showDialog<bool>(
+            context: context,
+            builder: (dialogContext) => AlertDialog(
+              title: Text('setup.wifi.cancel_dialog_title'.tr()),
+              content: Text('setup.wifi.cancel_dialog_message'.tr()),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(false),
+                  child: Text('common.no'.tr()),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _timeoutTimer?.cancel();
+                    Navigator.of(dialogContext).pop(true);
+                  },
+                  child: Text('common.yes'.tr()),
+                ),
+              ],
+            ),
+          );
+
+          if ((shouldPop ?? false) && context.mounted) {
+            Navigator.of(context).pop();
+          }
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: DecoratedBox(
+          decoration: AppTheme.primaryGradientDecoration,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildHeader(context),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            _buildTitle(theme),
+                            const SizedBox(height: 40),
+                            _buildSsidInput(theme),
+                            const SizedBox(height: 20),
+                            _buildPasswordInput(theme),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildFooterButtons(context, theme),
-                ],
+                    const SizedBox(height: 16),
+                    _buildFooterButtons(context, theme),
+                  ],
+                ),
               ),
             ),
           ),
@@ -172,6 +394,17 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         if (value == null || value.trim().isEmpty) {
           return 'setup.wifi.validation_ssid_empty'.tr();
         }
+
+        // Validar longitud máxima del SSID (32 bytes en WiFi)
+        if (value.trim().length > 32) {
+          return 'setup.wifi.validation_ssid_too_long'.tr();
+        }
+
+        // Validar caracteres especiales problemáticos
+        if (value.contains('\n') || value.contains('\r')) {
+          return 'setup.wifi.validation_ssid_invalid_chars'.tr();
+        }
+
         return null;
       },
     );
@@ -197,6 +430,19 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           },
         ),
       ),
+      validator: (value) {
+        // Validar longitud mínima de WPA2 (8 caracteres) si no está vacío
+        if (value != null && value.isNotEmpty && value.length < 8) {
+          return 'setup.wifi.validation_password_too_short'.tr();
+        }
+
+        // Validar longitud máxima (63 caracteres para WPA2)
+        if (value != null && value.length > 63) {
+          return 'setup.wifi.validation_password_too_long'.tr();
+        }
+
+        return null;
+      },
     );
   }
 
