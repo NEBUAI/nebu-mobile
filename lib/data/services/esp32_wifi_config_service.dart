@@ -195,9 +195,8 @@ class ESP32WifiConfigService {
       _logger.d('📡 [WIFI] Password bytes: ${passwordBytes.length} bytes');
 
       // Determinar el modo de escritura basado en las propiedades
-      // Preferir WRITE_WITHOUT_RESPONSE si está disponible para evitar timeouts
-      final useWriteWithoutResponse = _ssidCharacteristic!.properties.writeWithoutResponse ||
-                                      _ssidCharacteristic!.properties.write;
+      // Solo usar WRITE_WITHOUT_RESPONSE si la característica lo soporta
+      final useWriteWithoutResponse = _ssidCharacteristic!.properties.writeWithoutResponse;
       _logger.d('📤 [WIFI] Write mode: ${useWriteWithoutResponse ? 'WRITE_WITHOUT_RESPONSE' : 'WRITE'}');
       _logger.d('📤 [WIFI] Characteristic supports: WRITE=${_ssidCharacteristic!.properties.write}, '
                 'WRITE_NO_RSP=${_ssidCharacteristic!.properties.writeWithoutResponse}');
