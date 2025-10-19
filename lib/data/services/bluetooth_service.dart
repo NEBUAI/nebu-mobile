@@ -206,18 +206,19 @@ class BluetoothService {
   /// Discovers services for a specific device and caches them.
   /// Use this method instead of calling `device.discoverServices()` directly.
   Future<List<fbp.BluetoothService>> discoverServicesForDevice(
-    fbp.BluetoothDevice device,
-  ) async {
+    fbp.BluetoothDevice device, {
+    bool forceRefresh = false,
+  }) async {
     final deviceId = device.remoteId.toString();
 
-    // 1. Check cache first
-    if (_servicesCache.containsKey(deviceId)) {
+    // 1. Check cache first (unless forceRefresh is true)
+    if (!forceRefresh && _servicesCache.containsKey(deviceId)) {
       _logger.d('Returning cached services for $deviceId');
       return _servicesCache[deviceId]!;
     }
 
-    // 2. If not in cache, discover, store, and return
-    _logger.i('Discovering services for $deviceId...');
+    // 2. If not in cache or forceRefresh, discover, store, and return
+    _logger.i('Discovering services for $deviceId${forceRefresh ? ' (forced refresh)' : ''}...');
     try {
       final services = await device.discoverServices();
       _servicesCache[deviceId] = services;

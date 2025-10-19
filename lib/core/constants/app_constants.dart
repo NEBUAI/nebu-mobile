@@ -53,10 +53,10 @@ class AppConstants {
   static const String batteryLevelCharUuid = '00002a19-0000-1000-8000-00805f9b34fb';
 
   // ESP32 WiFi Configuration BLE Protocol
-  static const String esp32WifiServiceUuid = '12345678-1234-1234-1234-123456789abc';
-  static const String esp32SsidCharUuid = '12345678-1234-1234-1234-123456789abd';
-  static const String esp32PasswordCharUuid = '12345678-1234-1234-1234-123456789abe';
-  static const String esp32StatusCharUuid = '12345678-1234-1234-1234-123456789abf';
+  static const String esp32WifiServiceUuid = '00001234-5678-1234-1234-123456789abc';
+  static const String esp32SsidCharUuid = '00001234-5678-1234-1234-123456789abd';
+  static const String esp32PasswordCharUuid = '00001234-5678-1234-1234-123456789abe';
+  static const String esp32StatusCharUuid = '00001234-5678-1234-1234-123456789abf';
 
   // Animation Durations
   static const Duration animationShort = Duration(milliseconds: 200);

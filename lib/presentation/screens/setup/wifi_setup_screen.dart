@@ -156,7 +156,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         const SizedBox(height: 12),
         Text(
           'setup.wifi.subtitle'.tr(),
-          style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white.withOpacity(0.9)),
+          style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white.withAlpha(230)),
           textAlign: TextAlign.center,
         ),
       ],
@@ -188,7 +188,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         suffixIcon: IconButton(
           icon: Icon(
             _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withAlpha(179),
           ),
           onPressed: () {
             setState(() {
@@ -203,9 +203,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   InputDecoration _buildInputDecoration(ThemeData theme, String hintText, {Widget? suffixIcon}) {
     return InputDecoration(
       hintText: hintText,
-      hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+      hintStyle: TextStyle(color: Colors.white.withAlpha(128)),
       filled: true,
-      fillColor: Colors.white.withOpacity(0.2),
+      fillColor: Colors.white.withAlpha(51),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -246,7 +246,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           onPressed: () => context.push(AppConstants.routeToyNameSetup),
           child: Text(
             'setup.wifi.skip_button'.tr(),
-            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white.withOpacity(0.8)),
+            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white.withAlpha(204)),
           ),
         ),
       ],
@@ -262,7 +262,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             width: index < current ? 24 : 8,
             height: 8,
             decoration: BoxDecoration(
-              color: index < current ? Colors.white : Colors.white.withOpacity(0.3),
+              color: index < current ? Colors.white : Colors.white.withAlpha(77),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
