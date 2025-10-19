@@ -489,14 +489,33 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         ),
         const SizedBox(height: 12),
         TextButton(
-          onPressed: () => context.push(AppConstants.routeToyNameSetup),
+          onPressed: _isConnecting ? _cancelConnection : _skipWifiSetup,
           child: Text(
-            'setup.wifi.skip_button'.tr(),
-            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white.withAlpha(204)),
+            _isConnecting ? 'setup.wifi.cancel_button'.tr() : 'setup.wifi.skip_button'.tr(),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: _isConnecting ? Colors.red.withAlpha(204) : Colors.white.withAlpha(204),
+            ),
           ),
         ),
       ],
     );
+  }
+
+  void _cancelConnection() {
+    _timeoutTimer?.cancel();
+    setState(() {
+      _isConnecting = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('setup.wifi.connection_cancelled'.tr()),
+        backgroundColor: Colors.orange,
+      ),
+    );
+  }
+
+  void _skipWifiSetup() {
+    context.push(AppConstants.routeToyNameSetup);
   }
 
   Widget _buildProgressIndicator(int current, int total) => Row(

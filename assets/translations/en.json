@@ -59,7 +59,9 @@
       "continue_anyway": "CONTINUE",
       "cancel_dialog_title": "Cancel WiFi configuration?",
       "cancel_dialog_message": "The ESP32 is still trying to connect to WiFi. Are you sure you want to cancel?",
-      "error_status_stream": "Error in connection with ESP32. Please try again."
+      "error_status_stream": "Error in connection with ESP32. Please try again.",
+      "cancel_button": "CANCEL",
+      "connection_cancelled": "WiFi connection cancelled"
     },
     "toy_name": {
       "title": "Name Your Toy",
