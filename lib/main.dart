@@ -15,6 +15,8 @@ import 'data/services/auth_service.dart';
 import 'data/services/bluetooth_service.dart';
 import 'data/services/device_service.dart';
 import 'data/services/esp32_wifi_config_service.dart';
+import 'data/services/toy_service.dart';
+import 'data/services/user_service.dart';
 import 'presentation/providers/api_provider.dart';
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/bluetooth_provider.dart';
@@ -77,6 +79,16 @@ void main() async {
     logger: logger,
   );
 
+  final userService = UserService(
+    apiService: apiService,
+    logger: logger,
+  );
+
+  final toyService = ToyService(
+    apiService: apiService,
+    logger: logger,
+  );
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('es')],
@@ -90,6 +102,8 @@ void main() async {
           bluetoothServiceProvider.overrideWithValue(bluetoothService),
           deviceServiceProvider.overrideWithValue(deviceService),
           esp32WifiConfigServiceProvider.overrideWithValue(esp32WifiConfigService),
+          userServiceProvider.overrideWithValue(userService),
+          toyServiceProvider.overrideWithValue(toyService),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           authProvider.overrideWith(AuthNotifier.new),
           themeProvider.overrideWith(ThemeNotifier.new),

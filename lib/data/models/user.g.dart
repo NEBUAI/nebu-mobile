@@ -6,35 +6,33 @@ part of 'user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
+_User _$UserFromJson(Map<String, dynamic> json) => _User(
       id: json['id'] as String,
       email: json['email'] as String,
       name: json['name'] as String,
       avatar: json['avatar'] as String?,
     );
 
-Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       'id': instance.id,
       'email': instance.email,
       'name': instance.name,
       'avatar': instance.avatar,
     };
 
-_$AuthTokensImpl _$$AuthTokensImplFromJson(Map<String, dynamic> json) =>
-    _$AuthTokensImpl(
+_AuthTokens _$AuthTokensFromJson(Map<String, dynamic> json) => _AuthTokens(
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,
     );
 
-Map<String, dynamic> _$$AuthTokensImplToJson(_$AuthTokensImpl instance) =>
+Map<String, dynamic> _$AuthTokensToJson(_AuthTokens instance) =>
     <String, dynamic>{
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
     };
 
-_$AuthResponseImpl _$$AuthResponseImplFromJson(Map<String, dynamic> json) =>
-    _$AuthResponseImpl(
+_AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) =>
+    _AuthResponse(
       success: json['success'] as bool,
       user: json['user'] == null
           ? null
@@ -45,7 +43,7 @@ _$AuthResponseImpl _$$AuthResponseImplFromJson(Map<String, dynamic> json) =>
       error: json['error'] as String?,
     );
 
-Map<String, dynamic> _$$AuthResponseImplToJson(_$AuthResponseImpl instance) =>
+Map<String, dynamic> _$AuthResponseToJson(_AuthResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
       'user': instance.user,
@@ -53,9 +51,8 @@ Map<String, dynamic> _$$AuthResponseImplToJson(_$AuthResponseImpl instance) =>
       'error': instance.error,
     };
 
-_$SocialAuthResultImpl _$$SocialAuthResultImplFromJson(
-        Map<String, dynamic> json) =>
-    _$SocialAuthResultImpl(
+_SocialAuthResult _$SocialAuthResultFromJson(Map<String, dynamic> json) =>
+    _SocialAuthResult(
       success: json['success'] as bool,
       user: json['user'] == null
           ? null
@@ -67,8 +64,7 @@ _$SocialAuthResultImpl _$$SocialAuthResultImplFromJson(
       appleCredential: json['appleCredential'],
     );
 
-Map<String, dynamic> _$$SocialAuthResultImplToJson(
-        _$SocialAuthResultImpl instance) =>
+Map<String, dynamic> _$SocialAuthResultToJson(_SocialAuthResult instance) =>
     <String, dynamic>{
       'success': instance.success,
       'user': instance.user,

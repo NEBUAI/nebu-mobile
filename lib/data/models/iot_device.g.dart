@@ -6,8 +6,7 @@ part of 'iot_device.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$IoTDeviceImpl _$$IoTDeviceImplFromJson(Map<String, dynamic> json) =>
-    _$IoTDeviceImpl(
+_IoTDevice _$IoTDeviceFromJson(Map<String, dynamic> json) => _IoTDevice(
       id: json['id'] as String,
       name: json['name'] as String,
       type: json['type'] as String,
@@ -16,7 +15,7 @@ _$IoTDeviceImpl _$$IoTDeviceImplFromJson(Map<String, dynamic> json) =>
       metadata: json['metadata'] as Map<String, dynamic>?,
     );
 
-Map<String, dynamic> _$$IoTDeviceImplToJson(_$IoTDeviceImpl instance) =>
+Map<String, dynamic> _$IoTDeviceToJson(_IoTDevice instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -31,12 +30,11 @@ const _$DeviceStatusEnumMap = {
   DeviceStatus.offline: 'offline',
 };
 
-_$IoTMetricsImpl _$$IoTMetricsImplFromJson(Map<String, dynamic> json) =>
-    _$IoTMetricsImpl(
+_IoTMetrics _$IoTMetricsFromJson(Map<String, dynamic> json) => _IoTMetrics(
       data: json['data'] as Map<String, dynamic>? ?? const {},
     );
 
-Map<String, dynamic> _$$IoTMetricsImplToJson(_$IoTMetricsImpl instance) =>
+Map<String, dynamic> _$IoTMetricsToJson(_IoTMetrics instance) =>
     <String, dynamic>{
       'data': instance.data,
     };
