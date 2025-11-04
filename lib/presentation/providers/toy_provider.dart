@@ -116,6 +116,122 @@ class ToyProvider extends ChangeNotifier {
     }
   }
 
+  /// Obtener un juguete por su ID
+  Future<Toy> getToyById(String id) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final toy = await _toyService.getToyById(id);
+      _logger.d('Loaded toy: ${toy.name}');
+
+      // Actualizar currentToy si es necesario
+      _currentToy = toy;
+
+      // Actualizar en la lista si ya existe
+      final index = _toys.indexWhere((t) => t.id == toy.id);
+      if (index != -1) {
+        _toys[index] = toy;
+      }
+
+      _isLoading = false;
+      notifyListeners();
+
+      return toy;
+    } catch (e) {
+      _logger.e('Error loading toy: $e');
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  /// Actualizar información de un juguete
+  Future<Toy> updateToy({
+    required String id,
+    String? name,
+    String? model,
+    String? manufacturer,
+    ToyStatus? status,
+    String? firmwareVersion,
+    Map<String, dynamic>? capabilities,
+    Map<String, dynamic>? settings,
+    String? notes,
+  }) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final updatedToy = await _toyService.updateToy(
+        id: id,
+        name: name,
+        model: model,
+        manufacturer: manufacturer,
+        status: status,
+        firmwareVersion: firmwareVersion,
+        capabilities: capabilities,
+        settings: settings,
+        notes: notes,
+      );
+
+      _logger.d('Toy updated: ${updatedToy.name}');
+
+      // Actualizar en la lista
+      final index = _toys.indexWhere((toy) => toy.id == updatedToy.id);
+      if (index != -1) {
+        _toys[index] = updatedToy;
+      }
+
+      // Actualizar currentToy si es el mismo
+      if (_currentToy?.id == updatedToy.id) {
+        _currentToy = updatedToy;
+      }
+
+      _isLoading = false;
+      notifyListeners();
+
+      return updatedToy;
+    } catch (e) {
+      _logger.e('Error updating toy: $e');
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  /// Eliminar un juguete
+  Future<void> deleteToy(String id) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      await _toyService.deleteToy(id);
+      _logger.d('Toy deleted: $id');
+
+      // Eliminar de la lista
+      _toys.removeWhere((toy) => toy.id == id);
+
+      // Limpiar currentToy si es el mismo
+      if (_currentToy?.id == id) {
+        _currentToy = null;
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _logger.e('Error deleting toy: $e');
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
   /// Establecer el juguete actual
   void setCurrentToy(Toy? toy) {
     _currentToy = toy;

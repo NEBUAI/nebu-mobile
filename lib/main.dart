@@ -25,6 +25,9 @@ import 'presentation/providers/esp32_provider.dart';
 import 'presentation/providers/language_provider.dart';
 import 'presentation/providers/theme_provider.dart';
 
+// Import loggerProvider explicitly
+export 'presentation/providers/api_provider.dart' show loggerProvider;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -104,6 +107,7 @@ void main() async {
           esp32WifiConfigServiceProvider.overrideWithValue(esp32WifiConfigService),
           userServiceProvider.overrideWithValue(userService),
           toyServiceProvider.overrideWithValue(toyService),
+          loggerProvider.overrideWithValue(logger),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           authProvider.overrideWith(AuthNotifier.new),
           themeProvider.overrideWith(ThemeNotifier.new),

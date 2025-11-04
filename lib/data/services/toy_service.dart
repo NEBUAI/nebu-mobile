@@ -143,4 +143,92 @@ class ToyService {
       throw Exception('Error inesperado al actualizar el estado');
     }
   }
+
+  /// Obtener un juguete por su ID
+  Future<Toy> getToyById(String id) async {
+    try {
+      _logger.d('Fetching toy by ID: $id');
+
+      final response = await _apiService.get<Map<String, dynamic>>('/toys/$id');
+
+      _logger.d('Toy fetched successfully');
+      return Toy.fromJson(response);
+    } on DioException catch (e) {
+      _logger.e('Error fetching toy: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado');
+      }
+      throw Exception('Error al obtener el juguete: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error fetching toy: $e');
+      throw Exception('Error inesperado al obtener el juguete');
+    }
+  }
+
+  /// Actualizar información de un juguete
+  Future<Toy> updateToy({
+    required String id,
+    String? name,
+    String? model,
+    String? manufacturer,
+    ToyStatus? status,
+    String? firmwareVersion,
+    Map<String, dynamic>? capabilities,
+    Map<String, dynamic>? settings,
+    String? notes,
+  }) async {
+    try {
+      _logger.d('Updating toy: $id');
+
+      final response = await _apiService.patch<Map<String, dynamic>>(
+        '/toys/$id',
+        data: {
+          if (name != null) 'name': name,
+          if (model != null) 'model': model,
+          if (manufacturer != null) 'manufacturer': manufacturer,
+          if (status != null) 'status': status.name,
+          if (firmwareVersion != null) 'firmwareVersion': firmwareVersion,
+          if (capabilities != null) 'capabilities': capabilities,
+          if (settings != null) 'settings': settings,
+          if (notes != null) 'notes': notes,
+        },
+      );
+
+      _logger.d('Toy updated successfully');
+      return Toy.fromJson(response);
+    } on DioException catch (e) {
+      _logger.e('Error updating toy: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado');
+      }
+      throw Exception('Error al actualizar el juguete: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error updating toy: $e');
+      throw Exception('Error inesperado al actualizar el juguete');
+    }
+  }
+
+  /// Eliminar un juguete
+  Future<void> deleteToy(String id) async {
+    try {
+      _logger.d('Deleting toy: $id');
+
+      await _apiService.delete('/toys/$id');
+
+      _logger.d('Toy deleted successfully');
+    } on DioException catch (e) {
+      _logger.e('Error deleting toy: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado');
+      } else if (e.response?.statusCode == 409) {
+        throw Exception(
+          'No se puede eliminar el juguete porque está en uso',
+        );
+      }
+      throw Exception('Error al eliminar el juguete: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error deleting toy: $e');
+      throw Exception('Error inesperado al eliminar el juguete');
+    }
+  }
 }

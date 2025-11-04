@@ -1,24 +1,48 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../providers/language_provider.dart';
 
-class ToyNameSetupScreen extends StatefulWidget {
+class ToyNameSetupScreen extends ConsumerStatefulWidget {
   const ToyNameSetupScreen({super.key});
 
   @override
-  State<ToyNameSetupScreen> createState() => _ToyNameSetupScreenState();
+  ConsumerState<ToyNameSetupScreen> createState() =>
+      _ToyNameSetupScreenState();
 }
 
-class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
+class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   final _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedName();
+  }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadSavedName() async {
+    final prefs = ref.read(sharedPreferencesProvider);
+    final savedName = prefs.getString('setup_toy_name');
+    if (savedName != null && savedName.isNotEmpty) {
+      _controller.text = savedName;
+    }
+  }
+
+  Future<void> _saveToyName() async {
+    final prefs = ref.read(sharedPreferencesProvider);
+    await prefs.setString('setup_toy_name', _controller.text.trim());
   }
 
   void _showSkipSetupDialog() {
@@ -151,10 +175,13 @@ class _ToyNameSetupScreenState extends State<ToyNameSetupScreen> {
                     // Bottom Buttons
                     // Next button
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          // TODO(setup): Save toy name to storage
-                          context.push(AppConstants.routeAgeSetup);
+                          // Save toy name to storage
+                          await _saveToyName();
+                          if (mounted) {
+                            context.push(AppConstants.routeAgeSetup);
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(
