@@ -47,6 +47,7 @@ dependencies:
   # Camera & QR
   camera: ^0.11.0+1
   mobile_scanner: ^7.1.2
+  image_picker: ^1.0.7
 
   # Audio
   audioplayers: ^6.0.0

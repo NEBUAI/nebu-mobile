@@ -109,7 +109,7 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       onPressed: () {
-                        // TODO(duvet05): Navigate to settings
+                        context.push(AppConstants.routeEditProfile);
                       },
                     ),
                   ],
@@ -129,7 +129,9 @@ class ProfileScreen extends ConsumerWidget {
                     title: 'Your orders',
                     trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                     onTap: () {
-                      // TODO(duvet05): Navigate to orders
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Orders feature coming soon')),
+                      );
                     },
                   ),
                   Divider(height: 1, indent: 56, color: theme.dividerColor),
@@ -153,7 +155,9 @@ class ProfileScreen extends ConsumerWidget {
                       ],
                     ),
                     onTap: () {
-                      // TODO(duvet05): Navigate to notifications
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Notifications feature coming soon')),
+                      );
                     },
                   ),
                 ],
@@ -243,7 +247,7 @@ class ProfileScreen extends ConsumerWidget {
                     title: 'profile.edit_profile'.tr(),
                     trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                     onTap: () {
-                      // TODO(dev): Navigate to edit profile
+                      context.push(AppConstants.routeEditProfile);
                     },
                   ),
                   Divider(height: 1, indent: 56, color: theme.dividerColor),
@@ -253,7 +257,9 @@ class ProfileScreen extends ConsumerWidget {
                     title: 'profile.privacy'.tr(),
                     trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                     onTap: () {
-                      // TODO(dev): Navigate to privacy settings
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Privacy settings coming soon')),
+                      );
                     },
                   ),
                 ],
@@ -272,7 +278,7 @@ class ProfileScreen extends ConsumerWidget {
                     title: 'profile.help_support'.tr(),
                     trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                     onTap: () {
-                      // TODO(duvet05): Navigate to help
+                      _showHelpDialog(context);
                     },
                   ),
                   Divider(height: 1, indent: 56, color: theme.dividerColor),
@@ -287,7 +293,7 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                     ),
                     onTap: () {
-                      // TODO(duvet05): Show about dialog
+                      _showAboutDialog(context);
                     },
                   ),
                 ],
@@ -364,6 +370,75 @@ class ProfileScreen extends ConsumerWidget {
         ],
       ),
     );
+}
+
+void _showHelpDialog(BuildContext context) {
+  showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Help & Support'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Need help with your Nebu toys?'),
+          const SizedBox(height: 16),
+          _buildHelpOption(Icons.email, 'Email Support', 'support@nebu.ai'),
+          const SizedBox(height: 8),
+          _buildHelpOption(Icons.phone, 'Phone', '+1 (555) 123-4567'),
+          const SizedBox(height: 8),
+          _buildHelpOption(Icons.chat, 'Live Chat', 'Available 9AM-5PM EST'),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Close'),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildHelpOption(IconData icon, String title, String subtitle) {
+  return Row(
+    children: [
+      Icon(icon, size: 20),
+      const SizedBox(width: 12),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(subtitle, style: const TextStyle(fontSize: 12)),
+        ],
+      ),
+    ],
+  );
+}
+
+void _showAboutDialog(BuildContext context) {
+  showAboutDialog(
+    context: context,
+    applicationName: AppConstants.appName,
+    applicationVersion: AppConstants.appVersion,
+    applicationIcon: Container(
+      width: 64,
+      height: 64,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(colors: AppTheme.primaryGradient),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: const Icon(Icons.smart_toy, color: Colors.white, size: 32),
+    ),
+    children: [
+      const SizedBox(height: 16),
+      const Text(
+        'Nebu Mobile brings your interactive toys to life with AI-powered conversations and personalized experiences.',
+      ),
+      const SizedBox(height: 8),
+      const Text('© 2025 Nebu AI. All rights reserved.'),
+    ],
+  );
 }
 
 // Settings Card Widget

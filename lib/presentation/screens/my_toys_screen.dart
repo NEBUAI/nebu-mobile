@@ -191,7 +191,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.pop(context);
-                  // TODO: Navigate to toy settings screen
+                  context.push(AppConstants.routeToySettings, extra: toy);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,

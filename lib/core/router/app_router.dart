@@ -3,15 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_constants.dart';
+import '../../data/models/toy.dart';
 import '../../presentation/providers/auth_provider.dart';
 import '../../presentation/screens/activity_log_screen.dart';
 import '../../presentation/screens/device_management_screen.dart';
+import '../../presentation/screens/edit_profile_screen.dart';
 import '../../presentation/screens/home_screen.dart';
 import '../../presentation/screens/login_screen.dart';
 import '../../presentation/screens/main_screen.dart';
 import '../../presentation/screens/my_toys_screen.dart';
 import '../../presentation/screens/profile_screen.dart';
 import '../../presentation/screens/qr_scanner_screen.dart';
+import '../../presentation/screens/toy_settings_screen.dart';
 import '../../presentation/screens/setup/age_setup_screen.dart';
 import '../../presentation/screens/setup/connection_setup_screen.dart';
 import '../../presentation/screens/setup/favorites_setup_screen.dart';
@@ -140,7 +143,24 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppConstants.routeQRScanner,
         name: 'qr-scanner',
-        builder: (context, state) => const QRScannerScreen(),
+        builder: (context, state) => QRScannerScreen(),
+      ),
+
+      // Edit Profile (full screen)
+      GoRoute(
+        path: AppConstants.routeEditProfile,
+        name: 'edit-profile',
+        builder: (context, state) => const EditProfileScreen(),
+      ),
+
+      // Toy Settings (full screen)
+      GoRoute(
+        path: AppConstants.routeToySettings,
+        name: 'toy-settings',
+        builder: (context, state) {
+          final toy = state.extra as Toy;
+          return ToySettingsScreen(toy: toy);
+        },
       ),
 
       // Setup Flow Routes
