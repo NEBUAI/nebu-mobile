@@ -82,7 +82,7 @@ class OpenAIVoiceService {
   final AudioRecorder _recorder;
   final AudioPlayer _audioPlayer;
 
-  late VoiceAgentConfig? _config;
+  VoiceAgentConfig? _config;
   bool _isInitialized = false;
   VoiceAgentStatus _status = VoiceAgentStatus.idle;
   final List<ConversationMessage> _conversation = [];
@@ -273,9 +273,10 @@ class OpenAIVoiceService {
                   'text': 'Transcribe este audio y responde a la pregunta o comentario.',
                 },
                 {
-                  'type': 'input',
-                  'input': {
-                    'audio': 'data:audio/wav;base64,$audioBase64',
+                  'type': 'input_audio',
+                  'input_audio': {
+                    'data': audioBase64,
+                    'format': 'wav',
                   },
                 },
               ],

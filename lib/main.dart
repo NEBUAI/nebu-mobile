@@ -21,9 +21,9 @@ import 'presentation/providers/api_provider.dart';
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/bluetooth_provider.dart';
 import 'presentation/providers/device_provider.dart';
+import 'presentation/providers/esp32_provider.dart';
 import 'presentation/providers/language_provider.dart';
 import 'presentation/providers/theme_provider.dart';
-import 'presentation/screens/setup/wifi_setup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
