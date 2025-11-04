@@ -4,22 +4,31 @@ part 'toy.freezed.dart';
 part 'toy.g.dart';
 
 enum ToyStatus {
-  @JsonValue('active')
-  active,
   @JsonValue('inactive')
   inactive,
+  @JsonValue('active')
+  active,
+  @JsonValue('connected')
+  connected,
+  @JsonValue('disconnected')
+  disconnected,
   @JsonValue('maintenance')
   maintenance,
+  @JsonValue('error')
+  error,
+  @JsonValue('blocked')
+  blocked,
 }
 
 @freezed
 class Toy with _$Toy {
   const factory Toy({
     required String id,
-    required String iotDeviceId,
+    required String macAddress,
     required String name,
     required ToyStatus status,
-    required String userId,
+    String? iotDeviceId,
+    String? userId,
     String? model,
     String? manufacturer,
     String? firmwareVersion,
@@ -28,6 +37,11 @@ class Toy with _$Toy {
     String? notes,
     String? batteryLevel,
     String? signalStrength,
+    @Default(false) bool isActive,
+    @Default(false) bool isConnected,
+    @Default(false) bool needsAttention,
+    DateTime? activatedAt,
+    DateTime? lastSeenAt,
     DateTime? lastConnected,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -39,9 +53,8 @@ class Toy with _$Toy {
 @freezed
 class CreateToyRequest with _$CreateToyRequest {
   const factory CreateToyRequest({
-    required String iotDeviceId,
+    required String macAddress,
     required String name,
-    required String userId,
     String? model,
     String? manufacturer,
     ToyStatus? status,
@@ -53,6 +66,34 @@ class CreateToyRequest with _$CreateToyRequest {
 
   factory CreateToyRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateToyRequestFromJson(json);
+}
+
+@freezed
+class UpdateToyRequest with _$UpdateToyRequest {
+  const factory UpdateToyRequest({
+    String? name,
+    ToyStatus? status,
+    String? batteryLevel,
+    String? signalStrength,
+    String? notes,
+  }) = _UpdateToyRequest;
+
+  factory UpdateToyRequest.fromJson(Map<String, dynamic> json) =>
+      _$UpdateToyRequestFromJson(json);
+}
+
+@freezed
+class ToysListResponse with _$ToysListResponse {
+  const factory ToysListResponse({
+    required List<Toy> toys,
+    required int total,
+    required int page,
+    required int limit,
+    required int totalPages,
+  }) = _ToysListResponse;
+
+  factory ToysListResponse.fromJson(Map<String, dynamic> json) =>
+      _$ToysListResponseFromJson(json);
 }
 
 @freezed

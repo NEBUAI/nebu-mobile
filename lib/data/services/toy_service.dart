@@ -16,9 +16,8 @@ class ToyService {
 
   /// Registrar un nuevo juguete
   Future<Toy> createToy({
-    required String iotDeviceId,
+    required String macAddress,
     required String name,
-    required String userId,
     String? model,
     String? manufacturer,
     ToyStatus? status,
@@ -28,14 +27,13 @@ class ToyService {
     String? notes,
   }) async {
     try {
-      _logger.d('Creating toy: $name');
+      _logger.d('Creating toy: $name with MAC: $macAddress');
 
       final response = await _apiService.post<Map<String, dynamic>>(
         '/toys',
         data: {
-          'iotDeviceId': iotDeviceId,
+          'macAddress': macAddress,
           'name': name,
-          'userId': userId,
           if (model != null) 'model': model,
           if (manufacturer != null) 'manufacturer': manufacturer,
           if (status != null) 'status': status.name,
@@ -54,6 +52,142 @@ class ToyService {
     } catch (e) {
       _logger.e('Unexpected error creating toy: $e');
       throw Exception('Error inesperado al registrar el juguete');
+    }
+  }
+
+  /// Obtener todos los juguetes con filtros y paginación
+  Future<ToysListResponse> getToys({
+    int page = 1,
+    int limit = 10,
+    ToyStatus? status,
+    String? search,
+  }) async {
+    try {
+      _logger.d('Fetching toys with filters');
+
+      final queryParams = <String, dynamic>{
+        'page': page,
+        'limit': limit,
+        if (status != null) 'status': status.name,
+        if (search != null && search.isNotEmpty) 'search': search,
+      };
+
+      final response = await _apiService.get<Map<String, dynamic>>(
+        '/toys',
+        queryParameters: queryParams,
+      );
+
+      _logger.d('Toys fetched successfully');
+      return ToysListResponse.fromJson(response);
+    } on DioException catch (e) {
+      _logger.e('Error fetching toys: ${e.message}');
+      throw Exception('Error al obtener los juguetes: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error fetching toys: $e');
+      throw Exception('Error inesperado al obtener los juguetes');
+    }
+  }
+
+  /// Obtener un juguete por ID
+  Future<Toy> getToyById(String id) async {
+    try {
+      _logger.d('Fetching toy by ID: $id');
+
+      final response = await _apiService.get<Map<String, dynamic>>('/toys/$id');
+
+      _logger.d('Toy fetched successfully');
+      return Toy.fromJson(response);
+    } on DioException catch (e) {
+      _logger.e('Error fetching toy: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado');
+      }
+      throw Exception('Error al obtener el juguete: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error fetching toy: $e');
+      throw Exception('Error inesperado al obtener el juguete');
+    }
+  }
+
+  /// Obtener un juguete por dirección MAC
+  Future<Toy> getToyByMac(String macAddress) async {
+    try {
+      _logger.d('Fetching toy by MAC: $macAddress');
+
+      final response = await _apiService.get<Map<String, dynamic>>(
+        '/toys/mac/$macAddress',
+      );
+
+      _logger.d('Toy fetched successfully');
+      return Toy.fromJson(response);
+    } on DioException catch (e) {
+      _logger.e('Error fetching toy by MAC: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado con ese MAC address');
+      }
+      throw Exception('Error al obtener el juguete: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error fetching toy by MAC: $e');
+      throw Exception('Error inesperado al obtener el juguete');
+    }
+  }
+
+  /// Actualizar un juguete
+  Future<Toy> updateToy({
+    required String id,
+    String? name,
+    ToyStatus? status,
+    String? batteryLevel,
+    String? signalStrength,
+    String? notes,
+  }) async {
+    try {
+      _logger.d('Updating toy: $id');
+
+      final response = await _apiService.patch<Map<String, dynamic>>(
+        '/toys/$id',
+        data: {
+          if (name != null) 'name': name,
+          if (status != null) 'status': status.name,
+          if (batteryLevel != null) 'batteryLevel': batteryLevel,
+          if (signalStrength != null) 'signalStrength': signalStrength,
+          if (notes != null) 'notes': notes,
+        },
+      );
+
+      _logger.d('Toy updated successfully');
+      return Toy.fromJson(response);
+    } on DioException catch (e) {
+      _logger.e('Error updating toy: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado');
+      }
+      throw Exception('Error al actualizar el juguete: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error updating toy: $e');
+      throw Exception('Error inesperado al actualizar el juguete');
+    }
+  }
+
+  /// Eliminar un juguete (solo admin)
+  Future<void> deleteToy(String id) async {
+    try {
+      _logger.d('Deleting toy: $id');
+
+      await _apiService.delete('/toys/$id');
+
+      _logger.d('Toy deleted successfully');
+    } on DioException catch (e) {
+      _logger.e('Error deleting toy: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado');
+      } else if (e.response?.statusCode == 403) {
+        throw Exception('No tienes permisos para eliminar este juguete');
+      }
+      throw Exception('Error al eliminar el juguete: ${e.message}');
+    } catch (e) {
+      _logger.e('Unexpected error deleting toy: $e');
+      throw Exception('Error inesperado al eliminar el juguete');
     }
   }
 
