@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../providers/esp32_provider.dart';
 import 'wifi_setup_screen.dart';
 
 class ConnectionSetupScreen extends ConsumerStatefulWidget {
