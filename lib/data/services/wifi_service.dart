@@ -117,48 +117,21 @@ class WiFiService {
         throw Exception('Location permission required for WiFi scanning');
       }
 
-      // Simular escaneo de redes WiFi (en una implementación real usaríamos
-      // un plugin nativo para acceder a las APIs de WiFi)
-      await Future<void>.delayed(const Duration(seconds: 2));
+      // TODO: Implementar escaneo real de redes WiFi usando un plugin nativo
+      // Por ahora, retornar lista vacía hasta que se implemente
+      // Se necesita un plugin como 'wifi_scan' o 'wifi_iot' para funcionalidad real
 
-      final mockNetworks = <WiFiNetwork>[
-        const WiFiNetwork(
-          ssid: 'Mi Casa WiFi',
-          rssi: -30,
-          security: 'WPA2',
-          frequency: 2400,
-        ),
-        const WiFiNetwork(
-          ssid: 'Vecino WiFi',
-          rssi: -60,
-          security: 'WPA3',
-          frequency: 5000,
-        ),
-        const WiFiNetwork(
-          ssid: 'WiFi Gratis',
-          rssi: -45,
-          security: 'Open',
-          frequency: 2400,
-        ),
-        const WiFiNetwork(
-          ssid: 'Oficina Corp',
-          rssi: -35,
-          security: 'WPA2',
-          frequency: 5000,
-          isConnected: true,
-        ),
-        const WiFiNetwork(
-          ssid: 'Guest Network',
-          rssi: -55,
-          security: 'WPA2',
-          frequency: 2400,
-        ),
-      ];
+      _logger.w('WiFi scanning not implemented - requires native plugin');
 
-      _networksController.add(mockNetworks);
-      _logger.i('Found ${mockNetworks.length} WiFi networks');
-      
-      return mockNetworks;
+      final networks = <WiFiNetwork>[];
+      _networksController.add(networks);
+
+      throw UnimplementedError(
+        'WiFi scanning requires a native plugin. '
+        'Please implement using wifi_scan or wifi_iot package.'
+      );
+
+      return networks;
     } catch (e) {
       _logger.e('Error scanning WiFi networks: $e');
       rethrow;
@@ -172,70 +145,22 @@ class WiFiService {
     try {
       _logger.i('Attempting to connect to WiFi: ${credentials.ssid}');
 
-      // Simular proceso de conexión
-      await Future<void>.delayed(const Duration(seconds: 3));
+      // TODO: Implementar conexión real a WiFi usando un plugin nativo
+      // Esta funcionalidad requiere permisos de sistema y un plugin adecuado
 
-      // Simular diferentes resultados basados en la red
-      WiFiConnectionResult result;
-      
-      if (credentials.ssid == 'WiFi Gratis') {
-        // Red abierta - conexión exitosa
-        final network = WiFiNetwork(
-          ssid: credentials.ssid,
-          rssi: -45,
-          security: 'Open',
-          frequency: 2400,
-          isConnected: true,
-        );
-        
-        result = WiFiConnectionResult(
-          success: true,
-          message: 'Connected successfully to ${credentials.ssid}',
-          connectedNetwork: network,
-        );
-        
-        _currentNetwork = network;
-      } else if (credentials.ssid == 'Mi Casa WiFi') {
-        // Verificar contraseña
-        if (credentials.password == 'password123') {
-          final network = WiFiNetwork(
-            ssid: credentials.ssid,
-            rssi: -30,
-            security: 'WPA2',
-            frequency: 2400,
-            isConnected: true,
-          );
-          
-          result = WiFiConnectionResult(
-            success: true,
-            message: 'Connected successfully to ${credentials.ssid}',
-            connectedNetwork: network,
-          );
-          
-          _currentNetwork = network;
-        } else {
-          result = WiFiConnectionResult(
-            success: false,
-            message: 'Invalid password for ${credentials.ssid}',
-          );
-        }
-      } else if (credentials.ssid == 'Oficina Corp') {
-        // Ya conectado
-        result = WiFiConnectionResult(
-          success: true,
-          message: 'Already connected to ${credentials.ssid}',
-          connectedNetwork: _currentNetwork,
-        );
-      } else {
-        // Error genérico
-        result = WiFiConnectionResult(
-          success: false,
-          message: 'Failed to connect to ${credentials.ssid}. Check password and try again.',
-        );
-      }
+      _logger.w('WiFi connection not implemented - requires native plugin');
+
+      final result = WiFiConnectionResult(
+        success: false,
+        message: 'WiFi connection not implemented. Use backend API to configure robot WiFi.',
+      );
 
       _connectionController.add(result);
-      _logger.i('WiFi connection result: ${result.success ? 'Success' : 'Failed'}');
+
+      throw UnimplementedError(
+        'WiFi connection requires a native plugin or should be handled via backend API. '
+        'For robot WiFi configuration, use RobotService.configureWiFi() instead.'
+      );
 
       return result;
     } on Exception catch (e) {

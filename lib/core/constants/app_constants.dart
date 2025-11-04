@@ -33,6 +33,12 @@ class AppConstants {
   static const String routeMyToys = '/my-toys';
   static const String routeDeviceManagement = '/device-management';
   static const String routeQRScanner = '/qr-scanner';
+  static const String routeEditProfile = '/edit-profile';
+  static const String routeToySettings = '/toy-settings';
+  static const String routeNotifications = '/notifications';
+  static const String routePrivacySettings = '/privacy-settings';
+  static const String routeHelpSupport = '/help-support';
+  static const String routeOrders = '/orders';
 
   // Setup Flow Routes
   static const String routeConnectionSetup = '/setup/connection';

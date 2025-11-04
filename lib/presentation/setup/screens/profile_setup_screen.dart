@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_input.dart';
@@ -32,6 +33,62 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     _nameController.dispose();
     _emailController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    final ImagePicker picker = ImagePicker();
+    try {
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        // Store the image path
+        controller.avatarUrl.value = image.path;
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Photo captured successfully')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error accessing camera: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final ImagePicker picker = ImagePicker();
+    try {
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        // Store the image path
+        controller.avatarUrl.value = image.path;
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Image selected successfully')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error accessing gallery: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -277,61 +334,64 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 mainAxisSpacing: 16,
               ),
               itemCount: 8,
-              itemBuilder: (context, index) => GestureDetector(
+              itemBuilder: (context, index) {
+                final colors = [
+                  AppTheme.primaryLight,
+                  Colors.teal,
+                  Colors.orange,
+                  Colors.pink,
+                  Colors.purple,
+                  Colors.indigo,
+                  Colors.green,
+                  Colors.red,
+                ];
+                final avatarColor = colors[index % colors.length];
+
+                return GestureDetector(
                   onTap: () {
-                    controller.avatarUrl.value = 'https://via.placeholder.com/100/6C5CE7/FFFFFF?text=${index + 1}';
+                    // Store avatar as local identifier instead of external URL
+                    controller.avatarUrl.value = 'avatar_${index + 1}';
                     Navigator.pop(context);
                   },
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                      color: avatarColor.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppTheme.primaryLight.withValues(alpha: 0.3),
+                        color: avatarColor.withValues(alpha: 0.5),
+                        width: 2,
                       ),
                     ),
                     child: Center(
-                      child: Text(
-                        '${index + 1}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryLight,
-                        ),
+                      child: Icon(
+                        Icons.person,
+                        size: 32,
+                        color: avatarColor,
                       ),
                     ),
-                  ),
-                ),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Camera option (placeholder)
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: const Text('Take Photo'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO(duvet05): Implement camera functionality
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Camera functionality coming soon!'),
                   ),
                 );
               },
             ),
             
+            const SizedBox(height: 20),
+            
+            // Camera option
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Take Photo'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImageFromCamera();
+              },
+            ),
+
             ListTile(
               leading: const Icon(Icons.photo_library),
               title: const Text('Choose from Gallery'),
               onTap: () {
                 Navigator.pop(context);
-                // TODO(duvet05): Implement gallery functionality
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Gallery functionality coming soon!'),
-                  ),
-                );
+                _pickImageFromGallery();
               },
             ),
           ],

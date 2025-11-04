@@ -263,41 +263,13 @@ class RobotService {
       return devices;
     } on Exception catch (e) {
       _logger.e('Error fetching robot devices: $e');
-      
-      // Simular datos de prueba para desarrollo
-      final mockDevices = <RobotDevice>[
-        RobotDevice(
-          id: 'robot-1',
-          name: 'Nebu Robot Alpha',
-          model: 'NR-1000',
-          serialNumber: 'NR1000-001',
-          firmwareVersion: '1.2.3',
-          bluetoothId: '00:11:22:33:44:55',
-          status: 'online',
-          lastSeen: DateTime.now().subtract(const Duration(minutes: 5)),
-          createdAt: DateTime.now().subtract(const Duration(days: 30)),
-          updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
-        ),
-        RobotDevice(
-          id: 'robot-2',
-          name: 'Nebu Robot Beta',
-          model: 'NR-2000',
-          serialNumber: 'NR2000-002',
-          firmwareVersion: '2.1.0',
-          bluetoothId: '00:11:22:33:44:66',
-          status: 'offline',
-          lastSeen: DateTime.now().subtract(const Duration(hours: 2)),
-          createdAt: DateTime.now().subtract(const Duration(days: 15)),
-          updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
-        ),
-      ];
 
-      _devices
-        ..clear()
-        ..addAll(mockDevices);
+      // Clear devices and notify
+      _devices.clear();
       _devicesController.add(List.unmodifiable(_devices));
 
-      return mockDevices;
+      // Rethrow exception to handle in UI
+      rethrow;
     }
   }
 
