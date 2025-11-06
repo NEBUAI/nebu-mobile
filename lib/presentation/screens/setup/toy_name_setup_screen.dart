@@ -2,11 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../providers/language_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class ToyNameSetupScreen extends ConsumerStatefulWidget {
   const ToyNameSetupScreen({super.key});
@@ -33,7 +32,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
 
   Future<void> _loadSavedName() async {
     final prefs = ref.read(sharedPreferencesProvider);
-    final savedName = prefs.getString('setup_toy_name');
+    final String? savedName = prefs.getString('setup_toy_name');
     if (savedName != null && savedName.isNotEmpty) {
       _controller.text = savedName;
     }

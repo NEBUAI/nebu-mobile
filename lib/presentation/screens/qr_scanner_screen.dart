@@ -86,7 +86,7 @@ class QRScannerScreen extends StatelessWidget {
           IconButton(
             icon: Obx(
               () => Icon(
-                controller.scannerController.torchEnabled.value
+                controller.scannerController.torchEnabled
                     ? Icons.flash_on
                     : Icons.flash_off,
               ),

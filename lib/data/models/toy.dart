@@ -14,8 +14,6 @@ enum ToyStatus {
 
 @freezed
 class Toy with _$Toy {
-  const Toy._();
-  
   const factory Toy({
     required String id,
     required String iotDeviceId,
@@ -40,8 +38,6 @@ class Toy with _$Toy {
 
 @freezed
 class CreateToyRequest with _$CreateToyRequest {
-  const CreateToyRequest._();
-  
   const factory CreateToyRequest({
     required String iotDeviceId,
     required String name,
@@ -61,8 +57,6 @@ class CreateToyRequest with _$CreateToyRequest {
 
 @freezed
 class AssignToyRequest with _$AssignToyRequest {
-  const AssignToyRequest._();
-  
   const factory AssignToyRequest({
     required String macAddress,
     required String userId,
@@ -75,8 +69,6 @@ class AssignToyRequest with _$AssignToyRequest {
 
 @freezed
 class AssignToyResponse with _$AssignToyResponse {
-  const AssignToyResponse._();
-  
   const factory AssignToyResponse({
     required bool success,
     String? message,
@@ -89,8 +81,6 @@ class AssignToyResponse with _$AssignToyResponse {
 
 @freezed
 class UpdateToyStatusRequest with _$UpdateToyStatusRequest {
-  const UpdateToyStatusRequest._();
-  
   const factory UpdateToyStatusRequest({
     required ToyStatus status,
     String? batteryLevel,

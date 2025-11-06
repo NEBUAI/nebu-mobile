@@ -180,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
     );
 
-    if (result ?? false && mounted) {
+    if ((result ?? false) && mounted) {
       // TODO: Implement actual password reset API call
       // For now, just show success message
       ScaffoldMessenger.of(context).showSnackBar(

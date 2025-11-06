@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../domain/models/toy_model.dart';
+import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
 
 class ToySettingsController extends GetxController {
@@ -15,24 +13,23 @@ class ToySettingsController extends GetxController {
 
   final isLoading = false.obs;
   late final name = toy.name.obs;
-  late final personality = (toy.personality ?? 'friendly').obs;
+  late final firmwareVersion = (toy.firmwareVersion ?? 'Unknown').obs;
 
-  final personalities = ['friendly', 'energetic', 'calm', 'playful', 'curious'];
+  final voiceOptions = ['Default', 'Child', 'Robot', 'Funny'];
 
   Future<void> updateToySettings({
     required String newName,
-    required String newPersonality,
+    Map<String, dynamic>? settings,
   }) async {
     isLoading.value = true;
 
     try {
       await toyProvider.updateToy(
-        toyId: toy.id,
-        updates: {'name': newName, 'personality': newPersonality},
+        id: toy.id,
+        updates: {'name': newName, if (settings != null) 'settings': settings},
       );
 
       name.value = newName;
-      personality.value = newPersonality;
 
       Get.snackbar(
         'Success',

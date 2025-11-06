@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 import '../../core/theme/app_theme.dart';
-import '../../data/services/toy_service.dart';
-import '../../domain/models/toy_model.dart';
+import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
 
 class DeviceManagementController extends GetxController {
@@ -138,7 +137,7 @@ class DeviceManagementScreen extends StatelessWidget {
     ThemeData theme,
     DeviceManagementController controller,
   ) {
-    final isOnline = toy.connectionStatus == 'connected';
+    final isOnline = toy.status == ToyStatus.active;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -160,9 +159,8 @@ class DeviceManagementScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text('Model: ${toy.model}'),
-            if (toy.macAddress != null)
-              Text('MAC: ${toy.macAddress}', style: theme.textTheme.bodySmall),
+            Text('Model: ${toy.model ?? "Unknown"}'),
+            Text('ID: ${toy.iotDeviceId}', style: theme.textTheme.bodySmall),
           ],
         ),
         trailing: Container(
@@ -189,15 +187,15 @@ class DeviceManagementScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildInfoRow(
-                  'Personality',
-                  toy.personality ?? 'Not set',
+                  'Firmware',
+                  toy.firmwareVersion ?? 'Not set',
                   theme,
                 ),
                 const SizedBox(height: 8),
                 if (toy.batteryLevel != null)
-                  _buildInfoRow('Battery', '${toy.batteryLevel}%', theme),
+                  _buildInfoRow('Battery', '${toy.batteryLevel}', theme),
                 if (toy.batteryLevel != null) const SizedBox(height: 8),
-                _buildInfoRow('Status', toy.connectionStatus, theme),
+                _buildInfoRow('Status', toy.status.name, theme),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

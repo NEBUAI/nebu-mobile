@@ -26,9 +26,9 @@ final loggerProvider = Provider<Logger>((ref) {
   throw UnimplementedError();
 });
 
-// Toy provider instance (ChangeNotifier)
+// Toy provider instance
 final toyProviderInstance = Provider<ToyProvider>((ref) {
-  final toyService = ref.watch(toyServiceProvider);
-  final logger = ref.watch(loggerProvider);
+  final ToyService toyService = ref.watch(toyServiceProvider);
+  final Logger logger = ref.watch(loggerProvider);
   return ToyProvider(toyService: toyService, logger: logger);
 });

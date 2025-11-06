@@ -211,7 +211,7 @@ class ToyService {
     try {
       _logger.d('Deleting toy: $id');
 
-      await _apiService.delete('/toys/$id');
+      await _apiService.delete<void>('/toys/$id');
 
       _logger.d('Toy deleted successfully');
     } on DioException catch (e) {

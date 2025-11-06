@@ -238,8 +238,8 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     final isDark = themeState.isDarkMode;
     final theme = Theme.of(context);
     final toyProvider = ref.watch(toyProviderInstance);
-    final toys = toyProvider.toys;
-    final isLoading = toyProvider.isLoading;
+    final List<Toy> toys = toyProvider.toys;
+    final bool isLoading = toyProvider.isLoading;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -376,7 +376,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     ),
                   ] else ...[
                     // Display toys from API
-                    ...toys.map(
+                    ...toys.map<Widget>(
                       (toy) => _ToyCard(
                         toy: toy,
                         theme: theme,

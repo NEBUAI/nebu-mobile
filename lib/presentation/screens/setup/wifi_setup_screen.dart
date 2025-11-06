@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../data/services/esp32_wifi_config_service.dart';
 import '../../providers/esp32_provider.dart';
 
 class WifiSetupScreen extends ConsumerStatefulWidget {

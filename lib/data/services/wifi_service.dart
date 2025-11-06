@@ -121,8 +121,6 @@ class WiFiService {
         'WiFi scanning requires a native plugin. '
         'Please implement using wifi_scan or wifi_iot package.',
       );
-
-      return networks;
     } catch (e) {
       _logger.e('Error scanning WiFi networks: $e');
       rethrow;
@@ -155,8 +153,6 @@ class WiFiService {
         'WiFi connection requires a native plugin or should be handled via backend API. '
         'For robot WiFi configuration, use RobotService.configureWiFi() instead.',
       );
-
-      return result;
     } on Exception catch (e) {
       _logger.e('Error connecting to WiFi: $e');
       final result = WiFiConnectionResult(

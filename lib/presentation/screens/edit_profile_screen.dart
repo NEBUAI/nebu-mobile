@@ -62,7 +62,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
       // TODO: Implement API call to update user profile
       // For now, just show success message
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
