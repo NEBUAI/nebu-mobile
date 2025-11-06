@@ -8,10 +8,10 @@ import '../../domain/models/toy_model.dart';
 import '../providers/toy_provider.dart';
 
 class ToySettingsController extends GetxController {
-  final Toy toy;
-  final ToyProvider toyProvider;
 
   ToySettingsController(this.toy, this.toyProvider);
+  final Toy toy;
+  final ToyProvider toyProvider;
 
   final isLoading = false.obs;
   late final name = toy.name.obs;
@@ -28,10 +28,7 @@ class ToySettingsController extends GetxController {
     try {
       await toyProvider.updateToy(
         toyId: toy.id,
-        updates: {
-          'name': newName,
-          'personality': newPersonality,
-        },
+        updates: {'name': newName, 'personality': newPersonality},
       );
 
       name.value = newName;
@@ -88,10 +85,7 @@ class ToySettingsController extends GetxController {
 }
 
 class ToySettingsScreen extends StatelessWidget {
-  const ToySettingsScreen({
-    required this.toy,
-    super.key,
-  });
+  const ToySettingsScreen({required this.toy, super.key});
 
   final Toy toy;
 
@@ -105,9 +99,7 @@ class ToySettingsScreen extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Toy Settings'),
-      ),
+      appBar: AppBar(title: const Text('Toy Settings')),
       body: Obx(
         () => controller.isLoading.value
             ? const Center(child: CircularProgressIndicator())
@@ -126,7 +118,8 @@ class ToySettingsScreen extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 40,
-                                backgroundColor: AppTheme.primaryLight.withValues(alpha: 0.2),
+                                backgroundColor: AppTheme.primaryLight
+                                    .withValues(alpha: 0.2),
                                 child: const Icon(
                                   Icons.smart_toy,
                                   size: 48,
@@ -190,8 +183,7 @@ class ToySettingsScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Card(
                         child: Column(
-                          children: controller.personalities.map((p) {
-                            return RadioListTile<String>(
+                          children: controller.personalities.map((p) => RadioListTile<String>(
                               title: Text(p.capitalize ?? p),
                               value: p,
                               groupValue: controller.personality.value,
@@ -200,8 +192,7 @@ class ToySettingsScreen extends StatelessWidget {
                                   controller.personality.value = value;
                                 }
                               },
-                            );
-                          }).toList(),
+                            )).toList(),
                         ),
                       ),
 
@@ -233,11 +224,7 @@ class ToySettingsScreen extends StatelessWidget {
                                   theme,
                                 ),
                               if (toy.batteryLevel != null) const Divider(),
-                              _buildStatusRow(
-                                'Model',
-                                toy.model,
-                                theme,
-                              ),
+                              _buildStatusRow('Model', toy.model, theme),
                             ],
                           ),
                         ),
@@ -266,7 +253,8 @@ class ToySettingsScreen extends StatelessWidget {
 
                       // Remove Toy Button
                       OutlinedButton.icon(
-                        onPressed: () => _showDeleteConfirmation(context, controller),
+                        onPressed: () =>
+                            _showDeleteConfirmation(context, controller),
                         icon: const Icon(Icons.delete, color: Colors.red),
                         label: const Text(
                           'Remove Toy',
@@ -285,8 +273,7 @@ class ToySettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusRow(String label, String value, ThemeData theme) {
-    return Row(
+  Widget _buildStatusRow(String label, String value, ThemeData theme) => Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
@@ -303,7 +290,6 @@ class ToySettingsScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
   void _showDeleteConfirmation(
     BuildContext context,
@@ -326,9 +312,7 @@ class ToySettingsScreen extends StatelessWidget {
               Navigator.pop(context);
               controller.deleteToy();
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Remove'),
           ),
         ],

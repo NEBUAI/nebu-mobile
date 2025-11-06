@@ -8,11 +8,11 @@ import '../../domain/models/toy_model.dart';
 import '../providers/toy_provider.dart';
 
 class DeviceManagementController extends GetxController {
+
+  DeviceManagementController(this.toyProvider);
   final ToyProvider toyProvider;
   final isLoading = false.obs;
   final toys = <Toy>[].obs;
-
-  DeviceManagementController(this.toyProvider);
 
   @override
   void onInit() {
@@ -80,9 +80,7 @@ class DeviceManagementScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (controller.toys.isEmpty) {
@@ -104,8 +102,7 @@ class DeviceManagementScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
-    return Center(
+  Widget _buildEmptyState(ThemeData theme) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -114,22 +111,13 @@ class DeviceManagementScreen extends StatelessWidget {
             height: 120,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: const LinearGradient(
-                colors: AppTheme.primaryGradient,
-              ),
+              gradient: const LinearGradient(colors: AppTheme.primaryGradient),
               boxShadow: AppTheme.cardShadow,
             ),
-            child: const Icon(
-              Icons.devices,
-              size: 60,
-              color: Colors.white,
-            ),
+            child: const Icon(Icons.devices, size: 60, color: Colors.white),
           ),
           const SizedBox(height: 24),
-          Text(
-            'No Devices',
-            style: theme.textTheme.headlineSmall,
-          ),
+          Text('No Devices', style: theme.textTheme.headlineSmall),
           const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
@@ -144,9 +132,12 @@ class DeviceManagementScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 
-  Widget _buildDeviceCard(Toy toy, ThemeData theme, DeviceManagementController controller) {
+  Widget _buildDeviceCard(
+    Toy toy,
+    ThemeData theme,
+    DeviceManagementController controller,
+  ) {
     final isOnline = toy.connectionStatus == 'connected';
 
     return Card(
@@ -171,10 +162,7 @@ class DeviceManagementScreen extends StatelessWidget {
             const SizedBox(height: 4),
             Text('Model: ${toy.model}'),
             if (toy.macAddress != null)
-              Text(
-                'MAC: ${toy.macAddress}',
-                style: theme.textTheme.bodySmall,
-              ),
+              Text('MAC: ${toy.macAddress}', style: theme.textTheme.bodySmall),
           ],
         ),
         trailing: Container(
@@ -200,7 +188,11 @@ class DeviceManagementScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildInfoRow('Personality', toy.personality ?? 'Not set', theme),
+                _buildInfoRow(
+                  'Personality',
+                  toy.personality ?? 'Not set',
+                  theme,
+                ),
                 const SizedBox(height: 8),
                 if (toy.batteryLevel != null)
                   _buildInfoRow('Battery', '${toy.batteryLevel}%', theme),
@@ -243,8 +235,7 @@ class DeviceManagementScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(String label, String value, ThemeData theme) {
-    return Row(
+  Widget _buildInfoRow(String label, String value, ThemeData theme) => Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
@@ -261,9 +252,11 @@ class DeviceManagementScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  void _showDeleteConfirmation(DeviceManagementController controller, String toyId) {
+  void _showDeleteConfirmation(
+    DeviceManagementController controller,
+    String toyId,
+  ) {
     Get.dialog<void>(
       AlertDialog(
         title: const Text('Remove Device'),
@@ -280,9 +273,7 @@ class DeviceManagementScreen extends StatelessWidget {
               Get.back<void>();
               controller.deleteDevice(toyId);
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Remove'),
           ),
         ],

@@ -74,7 +74,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
+      backgroundColor: isDark
+          ? AppTheme.backgroundDark
+          : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -87,19 +89,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 totalSteps: controller.totalSteps,
               ),
               const SizedBox(height: 40),
-              
+
               // Title
               const GradientText(
                 'Notifications',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Subtitle
               Text(
                 'Choose how you want to be notified',
@@ -110,9 +109,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 40),
-              
+
               // Notifications content
               Expanded(
                 child: SingleChildScrollView(
@@ -122,55 +121,60 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       _buildNotificationSection(
                         title: 'Notification Types',
                         icon: Icons.notifications_active,
-                        children: notificationTypes.map((notification) =>
-                          _buildNotificationTile(
-                            title: notification['title'] as String,
-                            description: notification['description'] as String,
-                            icon: notification['icon'] as IconData,
-                            enabled: notification['enabled'] as bool,
-                            onChanged: (value) {
-                              setState(() {
-                                notification['enabled'] = value;
-                              });
-                            },
-                            isDark: isDark,
-                          ),
-                        ).toList(),
+                        children: notificationTypes
+                            .map(
+                              (notification) => _buildNotificationTile(
+                                title: notification['title'] as String,
+                                description:
+                                    notification['description'] as String,
+                                icon: notification['icon'] as IconData,
+                                enabled: notification['enabled'] as bool,
+                                onChanged: (value) {
+                                  setState(() {
+                                    notification['enabled'] = value;
+                                  });
+                                },
+                                isDark: isDark,
+                              ),
+                            )
+                            .toList(),
                         isDark: isDark,
                       ),
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // Quiet hours
                       _buildNotificationSection(
                         title: 'Quiet Hours',
                         icon: Icons.bedtime,
-                        children: quietHours.map((setting) =>
-                          _buildNotificationTile(
-                            title: setting['title'] as String,
-                            description: setting['description'] as String,
-                            icon: setting['icon'] as IconData,
-                            enabled: setting['enabled'] as bool,
-                            onChanged: (value) {
-                              setState(() {
-                                setting['enabled'] = value;
-                              });
-                            },
-                            isDark: isDark,
-                          ),
-                        ).toList(),
+                        children: quietHours
+                            .map(
+                              (setting) => _buildNotificationTile(
+                                title: setting['title'] as String,
+                                description: setting['description'] as String,
+                                icon: setting['icon'] as IconData,
+                                enabled: setting['enabled'] as bool,
+                                onChanged: (value) {
+                                  setState(() {
+                                    setting['enabled'] = value;
+                                  });
+                                },
+                                isDark: isDark,
+                              ),
+                            )
+                            .toList(),
                         isDark: isDark,
                       ),
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // Notification preview
                       _buildNotificationPreview(isDark),
                     ],
                   ),
                 ),
               ),
-              
+
               // Action buttons
               Column(
                 children: [
@@ -193,7 +197,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
             ],
           ),
@@ -208,47 +212,38 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     required List<Widget> children,
     required bool isDark,
   }) => Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, color: AppTheme.primaryLight, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              title,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+          ],
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryLight.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  icon,
-                  color: AppTheme.primaryLight,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ...children,
-        ],
-      ),
-    );
+        const SizedBox(height: 16),
+        ...children,
+      ],
+    ),
+  );
 
   Widget _buildNotificationTile({
     required String title,
@@ -258,151 +253,151 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     required ValueChanged<bool> onChanged,
     required bool isDark,
   }) => Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: enabled
-                  ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                  : (isDark ? Colors.grey[700] : Colors.grey[200]),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              icon,
-              color: enabled ? AppTheme.primaryLight : Colors.grey[600],
-              size: 20,
-            ),
+    margin: const EdgeInsets.only(bottom: 12),
+    child: Row(
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: enabled
+                ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                : (isDark ? Colors.grey[700] : Colors.grey[200]),
+            borderRadius: BorderRadius.circular(8),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
+          child: Icon(
+            icon,
+            color: enabled ? AppTheme.primaryLight : Colors.grey[600],
+            size: 20,
           ),
-          Switch(
-            value: enabled,
-            onChanged: onChanged,
-            activeThumbColor: AppTheme.primaryLight,
-          ),
-        ],
-      ),
-    );
-
-  Widget _buildNotificationPreview(bool isDark) => Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: AppTheme.primaryGradient,
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.notifications,
-                  color: Colors.white,
-                  size: 20,
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(width: 12),
-              const Expanded(
-                child: Text(
-                  'Notification Preview',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
                 ),
               ),
             ],
           ),
-          
-          const SizedBox(height: 16),
-          
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Text(
-                      'Nebu',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      'now',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Your voice command has been processed successfully!',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.9),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          const SizedBox(height: 16),
-          
-          Text(
-            'This is how notifications will appear on your device',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.7),
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ],
+        ),
+        Switch(
+          value: enabled,
+          onChanged: onChanged,
+          activeThumbColor: AppTheme.primaryLight,
+        ),
+      ],
+    ),
+  );
+
+  Widget _buildNotificationPreview(bool isDark) => Container(
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        colors: AppTheme.primaryGradient,
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
-    );
+      borderRadius: BorderRadius.circular(16),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.notifications,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Expanded(
+              child: Text(
+                'Notification Preview',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 16),
+
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    'Nebu',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'now',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Your voice command has been processed successfully!',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white.withValues(alpha: 0.9),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        Text(
+          'This is how notifications will appear on your device',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.white.withValues(alpha: 0.7),
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
+    ),
+  );
 }

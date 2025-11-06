@@ -27,7 +27,7 @@ final loggerProvider = Provider<Logger>((ref) {
 });
 
 // Toy provider instance (ChangeNotifier)
-final toyProviderInstance = ChangeNotifierProvider<ToyProvider>((ref) {
+final toyProviderInstance = Provider<ToyProvider>((ref) {
   final toyService = ref.watch(toyServiceProvider);
   final logger = ref.watch(loggerProvider);
   return ToyProvider(toyService: toyService, logger: logger);

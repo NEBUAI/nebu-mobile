@@ -4,7 +4,6 @@ import 'package:logger/logger.dart';
 
 /// Dispositivo Robot
 class RobotDevice {
-
   const RobotDevice({
     required this.id,
     required this.name,
@@ -18,19 +17,18 @@ class RobotDevice {
     required this.updatedAt,
   });
 
-  factory RobotDevice.fromJson(Map<String, dynamic> json) =>
-      RobotDevice(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        model: json['model'] as String,
-        serialNumber: json['serialNumber'] as String,
-        firmwareVersion: json['firmwareVersion'] as String,
-        bluetoothId: json['bluetoothId'] as String,
-        status: json['status'] as String,
-        lastSeen: DateTime.parse(json['lastSeen'] as String),
-        createdAt: DateTime.parse(json['createdAt'] as String),
-        updatedAt: DateTime.parse(json['updatedAt'] as String),
-      );
+  factory RobotDevice.fromJson(Map<String, dynamic> json) => RobotDevice(
+    id: json['id'] as String,
+    name: json['name'] as String,
+    model: json['model'] as String,
+    serialNumber: json['serialNumber'] as String,
+    firmwareVersion: json['firmwareVersion'] as String,
+    bluetoothId: json['bluetoothId'] as String,
+    status: json['status'] as String,
+    lastSeen: DateTime.parse(json['lastSeen'] as String),
+    createdAt: DateTime.parse(json['createdAt'] as String),
+    updatedAt: DateTime.parse(json['updatedAt'] as String),
+  );
   final String id;
   final String name;
   final String model;
@@ -58,7 +56,6 @@ class RobotDevice {
 
 /// Solicitud de validación del robot
 class RobotValidationRequest {
-
   const RobotValidationRequest({
     required this.deviceId,
     required this.deviceName,
@@ -83,10 +80,10 @@ class RobotValidationRequest {
 
 /// Respuesta de validación del robot
 class RobotValidationResponse {
-
   const RobotValidationResponse({
     required this.isValid,
-    required this.message, this.device,
+    required this.message,
+    this.device,
     this.requiresUpdate = false,
   });
 
@@ -107,7 +104,6 @@ class RobotValidationResponse {
 
 /// Solicitud de configuración WiFi
 class WiFiConfigurationRequest {
-
   const WiFiConfigurationRequest({
     required this.deviceId,
     required this.wifiSSID,
@@ -129,7 +125,6 @@ class WiFiConfigurationRequest {
 
 /// Respuesta de configuración WiFi
 class WiFiConfigurationResponse {
-
   const WiFiConfigurationResponse({
     required this.success,
     required this.message,
@@ -141,7 +136,9 @@ class WiFiConfigurationResponse {
         success: json['success'] as bool,
         message: json['message'] as String,
         connectionTest: json['connectionTest'] != null
-            ? ConnectionTest.fromJson(json['connectionTest'] as Map<String, dynamic>)
+            ? ConnectionTest.fromJson(
+                json['connectionTest'] as Map<String, dynamic>,
+              )
             : null,
       );
   final bool success;
@@ -151,7 +148,6 @@ class WiFiConfigurationResponse {
 
 /// Prueba de conexión
 class ConnectionTest {
-
   const ConnectionTest({
     required this.success,
     required this.ping,
@@ -159,13 +155,12 @@ class ConnectionTest {
     required this.uploadSpeed,
   });
 
-  factory ConnectionTest.fromJson(Map<String, dynamic> json) =>
-      ConnectionTest(
-        success: json['success'] as bool,
-        ping: (json['ping'] as num).toDouble(),
-        downloadSpeed: (json['downloadSpeed'] as num).toDouble(),
-        uploadSpeed: (json['uploadSpeed'] as num).toDouble(),
-      );
+  factory ConnectionTest.fromJson(Map<String, dynamic> json) => ConnectionTest(
+    success: json['success'] as bool,
+    ping: (json['ping'] as num).toDouble(),
+    downloadSpeed: (json['downloadSpeed'] as num).toDouble(),
+    uploadSpeed: (json['uploadSpeed'] as num).toDouble(),
+  );
   final bool success;
   final double ping;
   final double downloadSpeed;
@@ -174,7 +169,6 @@ class ConnectionTest {
 
 /// Comando del robot
 class RobotCommand {
-
   const RobotCommand({
     required this.deviceId,
     required this.command,
@@ -196,25 +190,24 @@ class RobotCommand {
 
 /// Servicio de Robot
 class RobotService {
-
-  RobotService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio;
+  RobotService({required Logger logger, required Dio dio})
+    : _logger = logger,
+      _dio = dio;
   final Logger _logger;
   final Dio _dio;
 
   final List<RobotDevice> _devices = [];
-  
+
   // Streams para notificaciones
-  final StreamController<List<RobotDevice>> _devicesController = 
+  final StreamController<List<RobotDevice>> _devicesController =
       StreamController<List<RobotDevice>>.broadcast();
-  final StreamController<RobotDevice> _deviceStatusController = 
+  final StreamController<RobotDevice> _deviceStatusController =
       StreamController<RobotDevice>.broadcast();
 
   /// Validar dispositivo robot
-  Future<RobotValidationResponse> validateDevice(RobotValidationRequest request) async {
+  Future<RobotValidationResponse> validateDevice(
+    RobotValidationRequest request,
+  ) async {
     try {
       _logger.i('Validating robot device: ${request.deviceName}');
 
@@ -223,8 +216,10 @@ class RobotService {
         data: request.toJson(),
       );
 
-      final validationResponse = RobotValidationResponse.fromJson(response.data!);
-      
+      final validationResponse = RobotValidationResponse.fromJson(
+        response.data!,
+      );
+
       if (validationResponse.isValid && validationResponse.device != null) {
         _updateDeviceInList(validationResponse.device!);
       }
@@ -233,7 +228,7 @@ class RobotService {
       return validationResponse;
     } on Exception catch (e) {
       _logger.e('Error validating robot device: $e');
-      
+
       // Simular respuesta de error para desarrollo
       return RobotValidationResponse(
         isValid: false,
@@ -274,7 +269,9 @@ class RobotService {
   }
 
   /// Configurar WiFi en el robot
-  Future<WiFiConfigurationResponse> configureWiFi(WiFiConfigurationRequest request) async {
+  Future<WiFiConfigurationResponse> configureWiFi(
+    WiFiConfigurationRequest request,
+  ) async {
     try {
       _logger.i('Configuring WiFi for robot: ${request.deviceId}');
 
@@ -284,12 +281,12 @@ class RobotService {
       );
 
       final configResponse = WiFiConfigurationResponse.fromJson(response.data!);
-      
+
       _logger.i('WiFi configuration result: ${configResponse.success}');
       return configResponse;
     } on Exception catch (e) {
       _logger.e('Error configuring WiFi: $e');
-      
+
       // Simular respuesta para desarrollo
       return WiFiConfigurationResponse(
         success: false,
@@ -301,7 +298,9 @@ class RobotService {
   /// Enviar comando al robot
   Future<bool> sendCommand(RobotCommand command) async {
     try {
-      _logger.i('Sending command to robot: ${command.deviceId} - ${command.command}');
+      _logger.i(
+        'Sending command to robot: ${command.deviceId} - ${command.command}',
+      );
 
       await _dio.post<void>(
         '/robots/${command.deviceId}/commands',
@@ -355,7 +354,7 @@ class RobotService {
       _logger.i('Updating firmware for robot: $deviceId');
 
       await _dio.post<void>('/robots/$deviceId/firmware/update');
-      
+
       _logger.i('Firmware update initiated');
       return true;
     } on Exception catch (e) {
@@ -367,11 +366,13 @@ class RobotService {
   /// Obtener estado del robot
   Future<RobotDevice?> getDeviceStatus(String deviceId) async {
     try {
-      final response = await _dio.get<Map<String, dynamic>>('/robots/$deviceId/status');
-      
+      final response = await _dio.get<Map<String, dynamic>>(
+        '/robots/$deviceId/status',
+      );
+
       final device = RobotDevice.fromJson(response.data!);
       _updateDeviceInList(device);
-      
+
       return device;
     } on Exception catch (e) {
       _logger.e('Error getting device status: $e');
@@ -382,13 +383,13 @@ class RobotService {
   /// Actualizar dispositivo en la lista
   void _updateDeviceInList(RobotDevice device) {
     final index = _devices.indexWhere((d) => d.id == device.id);
-    
+
     if (index != -1) {
       _devices[index] = device;
     } else {
       _devices.add(device);
     }
-    
+
     _devicesController.add(List.unmodifiable(_devices));
     _deviceStatusController.add(device);
   }

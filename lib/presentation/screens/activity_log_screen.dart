@@ -74,9 +74,7 @@ class ActivityLogScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (controller.activities.isEmpty) {
@@ -100,8 +98,7 @@ class ActivityLogScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
-    return Center(
+  Widget _buildEmptyState(ThemeData theme) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -110,22 +107,13 @@ class ActivityLogScreen extends StatelessWidget {
             height: 150,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: const LinearGradient(
-                colors: AppTheme.primaryGradient,
-              ),
+              gradient: const LinearGradient(colors: AppTheme.primaryGradient),
               boxShadow: AppTheme.cardShadow,
             ),
-            child: const Icon(
-              Icons.history,
-              size: 80,
-              color: Colors.white,
-            ),
+            child: const Icon(Icons.history, size: 80, color: Colors.white),
           ),
           const SizedBox(height: 32),
-          Text(
-            'No Activity Yet',
-            style: theme.textTheme.headlineSmall,
-          ),
+          Text('No Activity Yet', style: theme.textTheme.headlineSmall),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
@@ -140,18 +128,13 @@ class ActivityLogScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 
-  Widget _buildActivityCard(ActivityLog activity, ThemeData theme) {
-    return Card(
+  Widget _buildActivityCard(ActivityLog activity, ThemeData theme) => Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: AppTheme.primaryLight.withValues(alpha: 0.2),
-          child: Icon(
-            activity.icon,
-            color: AppTheme.primaryLight,
-          ),
+          child: Icon(activity.icon, color: AppTheme.primaryLight),
         ),
         title: Text(
           activity.action,
@@ -179,7 +162,6 @@ class ActivityLogScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 
   String _formatTimestamp(DateTime timestamp) {
     final now = DateTime.now();
@@ -222,17 +204,16 @@ class ActivityLogScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFilterOption(String label, String value) {
-    return Obx(() => RadioListTile<String>(
-          title: Text(label),
-          value: value,
-          groupValue: controller.selectedFilter.value,
-          onChanged: (val) {
-            if (val != null) {
-              controller.filterActivities(val);
-            }
-          },
-        ),
+  Widget _buildFilterOption(String label, String value) => Obx(
+      () => RadioListTile<String>(
+        title: Text(label),
+        value: value,
+        groupValue: controller.selectedFilter.value,
+        onChanged: (val) {
+          if (val != null) {
+            controller.filterActivities(val);
+          }
+        },
+      ),
     );
-  }
 }

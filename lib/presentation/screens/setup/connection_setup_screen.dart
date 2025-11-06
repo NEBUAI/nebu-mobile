@@ -10,7 +10,6 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../providers/esp32_provider.dart';
-import 'wifi_setup_screen.dart';
 
 class ConnectionSetupScreen extends ConsumerStatefulWidget {
   const ConnectionSetupScreen({super.key});
@@ -46,7 +45,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
   }
 
   Future<void> _initializeBluetooth() async {
-    _adapterStateSubscription = fbp.FlutterBluePlus.adapterState.listen((state) {
+    _adapterStateSubscription = fbp.FlutterBluePlus.adapterState.listen((
+      state,
+    ) {
       _logger.d('Bluetooth adapter state changed: $state');
       if (mounted) {
         setState(() {
@@ -113,10 +114,12 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
       _scanSubscription = fbp.FlutterBluePlus.scanResults.listen((results) {
         _logger.d('Scan results: ${results.length} devices found');
         final filteredResults = results
-            .where((r) =>
-                r.device.platformName.isNotEmpty &&
-                (r.device.platformName.toLowerCase().contains('nebu') ||
-                    r.device.platformName.toLowerCase().contains('esp32')))
+            .where(
+              (r) =>
+                  r.device.platformName.isNotEmpty &&
+                  (r.device.platformName.toLowerCase().contains('nebu') ||
+                      r.device.platformName.toLowerCase().contains('esp32')),
+            )
             .toList();
 
         if (mounted) {
@@ -125,7 +128,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
           });
         }
 
-        _logger.d('Filtered results: ${_scanResults.length} Nebu/ESP32 devices');
+        _logger.d(
+          'Filtered results: ${_scanResults.length} Nebu/ESP32 devices',
+        );
       });
 
       Future<void>.delayed(const Duration(seconds: 15), () {
@@ -160,7 +165,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
   }
 
   Future<void> _connectToDevice(fbp.BluetoothDevice device) async {
-    _logger.i('Attempting to connect to ${device.platformName} (${device.remoteId})');
+    _logger.i(
+      'Attempting to connect to ${device.platformName} (${device.remoteId})',
+    );
     final messenger = ScaffoldMessenger.of(context);
     final esp32service = ref.read(esp32WifiConfigServiceProvider);
 
@@ -174,20 +181,23 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
 
       if (!mounted) return;
 
-      _logger.i('Successfully connected and prepared device: ${device.platformName}');
+      _logger.i(
+        'Successfully connected and prepared device: ${device.platformName}',
+      );
       messenger.showSnackBar(
         SnackBar(
           content: Text('Connected to ${device.platformName}'),
           backgroundColor: Colors.green,
         ),
       );
-      
+
       setState(() {
         _selectedDevice = device;
       });
-
     } on Exception catch (e) {
-      _logger.e('Failed to connect and prepare device ${device.platformName}: $e');
+      _logger.e(
+        'Failed to connect and prepare device ${device.platformName}: $e',
+      );
       if (!mounted) return;
 
       messenger.showSnackBar(
@@ -210,7 +220,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Enable Bluetooth'),
-        content: const Text('Please enable Bluetooth to connect to your Nebu device.'),
+        content: const Text(
+          'Please enable Bluetooth to connect to your Nebu device.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -296,75 +308,75 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
     final canProceed = _selectedDevice != null;
 
     return Scaffold(
-        body: DecoratedBox(
-          decoration: AppTheme.primaryGradientDecoration,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildHeader(context),
-                  const SizedBox(height: 40),
-                  _buildTitle(theme),
-                  const SizedBox(height: 32),
-                  Expanded(
-                    child: _isScanning
-                        ? _buildScanningView(theme)
-                        : _buildDevicesList(theme),
-                  ),
-                  ElevatedButton(
-                    onPressed: canProceed && !_isConnecting
-                        ? () => context.push(AppConstants.routeWifiSetup)
-                        : () {
-                            if (_isScanning) return;
-                            if (!_isBluetoothEnabled) {
-                              _showEnableBluetoothDialog();
-                            } else {
-                              _checkPermissionsAndStartScan();
-                            }
-                          },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: AppTheme.primaryLight,
-                      disabledBackgroundColor: Colors.white.withAlpha(128),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      _isScanning
-                          ? 'Scanning...'
-                          : canProceed
-                              ? 'Next'
-                              : 'Start Scan',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppTheme.primaryLight,
-                        fontWeight: FontWeight.bold,
-                      ),
+      body: DecoratedBox(
+        decoration: AppTheme.primaryGradientDecoration,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildHeader(context),
+                const SizedBox(height: 40),
+                _buildTitle(theme),
+                const SizedBox(height: 32),
+                Expanded(
+                  child: _isScanning
+                      ? _buildScanningView(theme)
+                      : _buildDevicesList(theme),
+                ),
+                ElevatedButton(
+                  onPressed: canProceed && !_isConnecting
+                      ? () => context.push(AppConstants.routeWifiSetup)
+                      : () {
+                          if (_isScanning) return;
+                          if (!_isBluetoothEnabled) {
+                            _showEnableBluetoothDialog();
+                          } else {
+                            _checkPermissionsAndStartScan();
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppTheme.primaryLight,
+                    disabledBackgroundColor: Colors.white.withAlpha(128),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  TextButton(
-                    onPressed: _showSkipSetupDialog,
-                    child: Text(
-                      'Skip Setup',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withAlpha(204),
-                      ),
+                  child: Text(
+                    _isScanning
+                        ? 'Scanning...'
+                        : canProceed
+                        ? 'Next'
+                        : 'Start Scan',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: AppTheme.primaryLight,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+                ),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: _showSkipSetupDialog,
+                  child: Text(
+                    'Skip Setup',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: Colors.white.withAlpha(204),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Row(
+  Widget _buildHeader(BuildContext context) => Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
@@ -380,16 +392,12 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
         ),
       ],
     );
-  }
 
-  Widget _buildTitle(ThemeData theme) {
-    return Column(
+  Widget _buildTitle(ThemeData theme) => Column(
       children: [
         Text(
           'Connect Your Device',
-          style: theme.textTheme.headlineMedium?.copyWith(
-            color: Colors.white,
-          ),
+          style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
@@ -404,10 +412,8 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
         ),
       ],
     );
-  }
 
-  Widget _buildProgressIndicator(int current, int total) {
-    return Row(
+  Widget _buildProgressIndicator(int current, int total) => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         total,
@@ -422,10 +428,8 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
         ),
       ),
     );
-  }
 
-  Widget _buildScanningView(ThemeData theme) {
-    return Center(
+  Widget _buildScanningView(ThemeData theme) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -455,7 +459,6 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
         ],
       ),
     );
-  }
 
   Widget _buildDevicesList(ThemeData theme) {
     final bool hasResults = _scanResults.isNotEmpty;
@@ -489,10 +492,14 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
-                    color: isSelected ? Colors.white.withAlpha(51) : Colors.white.withAlpha(26),
+                    color: isSelected
+                        ? Colors.white.withAlpha(51)
+                        : Colors.white.withAlpha(26),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isSelected ? Colors.white : Colors.white.withAlpha(51),
+                      color: isSelected
+                          ? Colors.white
+                          : Colors.white.withAlpha(51),
                       width: isSelected ? 2 : 1,
                     ),
                   ),
@@ -501,16 +508,27 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
                       horizontal: 16,
                       vertical: 8,
                     ),
-                    leading: _isConnecting && isSelected ? const CircularProgressIndicator(color: Colors.white) : const Icon(Icons.bluetooth, color: Colors.white),
+                    leading: _isConnecting && isSelected
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Icon(Icons.bluetooth, color: Colors.white),
                     title: Text(
-                      device.platformName.isNotEmpty ? device.platformName : 'Unknown Device',
-                      style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                      device.platformName.isNotEmpty
+                          ? device.platformName
+                          : 'Unknown Device',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     subtitle: Text(
                       'Signal: ${result.rssi} dBm',
-                      style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withAlpha(179)),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.white.withAlpha(179),
+                      ),
                     ),
-                    onTap: _isConnecting ? null : () => _connectToDevice(device),
+                    onTap: _isConnecting
+                        ? null
+                        : () => _connectToDevice(device),
                   ),
                 );
               },
@@ -520,8 +538,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
     );
   }
 
-  Widget _buildNoDevicesPlaceholder(ThemeData theme) {
-    return Center(
+  Widget _buildNoDevicesPlaceholder(ThemeData theme) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -548,5 +565,4 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
         ],
       ),
     );
-  }
 }

@@ -6,21 +6,14 @@ import '../../presentation/providers/auth_provider.dart' as auth;
 
 // Theme state
 class ThemeState {
-
-  ThemeState({
-    this.themeMode = ThemeMode.system,
-    this.isDarkMode = false,
-  });
+  ThemeState({this.themeMode = ThemeMode.system, this.isDarkMode = false});
   final ThemeMode themeMode;
   final bool isDarkMode;
 
-  ThemeState copyWith({
-    ThemeMode? themeMode,
-    bool? isDarkMode,
-  }) => ThemeState(
-      themeMode: themeMode ?? this.themeMode,
-      isDarkMode: isDarkMode ?? this.isDarkMode,
-    );
+  ThemeState copyWith({ThemeMode? themeMode, bool? isDarkMode}) => ThemeState(
+    themeMode: themeMode ?? this.themeMode,
+    isDarkMode: isDarkMode ?? this.isDarkMode,
+  );
 }
 
 // Theme notifier
@@ -60,10 +53,7 @@ class ThemeNotifier extends Notifier<ThemeState> {
       }
     }
 
-    state = state.copyWith(
-      themeMode: themeMode,
-      isDarkMode: isDarkMode,
-    );
+    state = state.copyWith(themeMode: themeMode, isDarkMode: isDarkMode);
   }
 
   // Toggle dark mode
@@ -73,10 +63,7 @@ class ThemeNotifier extends Notifier<ThemeState> {
 
     await _saveTheme(newThemeMode);
 
-    state = state.copyWith(
-      themeMode: newThemeMode,
-      isDarkMode: newIsDarkMode,
-    );
+    state = state.copyWith(themeMode: newThemeMode, isDarkMode: newIsDarkMode);
   }
 
   // Set theme mode
@@ -124,4 +111,6 @@ class ThemeNotifier extends Notifier<ThemeState> {
 }
 
 // Provider
-final themeProvider = NotifierProvider<ThemeNotifier, ThemeState>(ThemeNotifier.new);
+final themeProvider = NotifierProvider<ThemeNotifier, ThemeState>(
+  ThemeNotifier.new,
+);

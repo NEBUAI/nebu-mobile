@@ -95,13 +95,10 @@ class _SimpleUserRegistrationScreenState
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registro Simple'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Registro Simple'), elevation: 0),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Form(
             key: _formKey,
             child: Column(
@@ -174,8 +171,9 @@ class _SimpleUserRegistrationScreenState
                     if (value == null || value.trim().isEmpty) {
                       return 'Por favor ingresa tu email';
                     }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                        .hasMatch(value.trim())) {
+                    if (!RegExp(
+                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    ).hasMatch(value.trim())) {
                       return 'Por favor ingresa un email válido';
                     }
                     return null;
@@ -243,7 +241,9 @@ class _SimpleUserRegistrationScreenState
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                    color: theme.colorScheme.primaryContainer.withValues(
+                      alpha: 0.3,
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(

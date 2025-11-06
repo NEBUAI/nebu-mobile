@@ -56,9 +56,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error accessing camera: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error accessing camera: $e')));
       }
     }
   }
@@ -84,9 +84,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error accessing gallery: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error accessing gallery: $e')));
       }
     }
   }
@@ -96,7 +96,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
+      backgroundColor: isDark
+          ? AppTheme.backgroundDark
+          : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -111,19 +113,16 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   totalSteps: controller.totalSteps,
                 ),
                 const SizedBox(height: 40),
-                
+
                 // Title
                 const GradientText(
                   'Create Your Profile',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Subtitle
                 Text(
                   'Tell us a bit about yourself to personalize your experience',
@@ -134,9 +133,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Avatar section
                 Center(
                   child: GestureDetector(
@@ -174,9 +173,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 TextButton(
                   onPressed: _showAvatarOptions,
                   child: const Text(
@@ -188,9 +187,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Form fields
                 Expanded(
                   child: Column(
@@ -212,14 +211,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         prefixIcon: const Icon(Icons.person),
                         textInputAction: TextInputAction.next,
                       ),
-                      
+
                       const SizedBox(height: 20),
-                      
+
                       CustomInput(
                         label: 'Email Address',
                         hint: 'Enter your email address',
                         controller: _emailController,
-                        onChanged: (value) => controller.userEmail.value = value,
+                        onChanged: (value) =>
+                            controller.userEmail.value = value,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your email';
@@ -233,9 +233,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.done,
                       ),
-                      
+
                       const Spacer(),
-                      
+
                       // Privacy note
                       Container(
                         padding: const EdgeInsets.all(16),
@@ -259,7 +259,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                                 'Your information is secure and will only be used to personalize your experience.',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: isDark ? Colors.grey[300] : Colors.grey[700],
+                                  color: isDark
+                                      ? Colors.grey[300]
+                                      : Colors.grey[700],
                                 ),
                               ),
                             ),
@@ -269,7 +271,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ],
                   ),
                 ),
-                
+
                 // Action buttons
                 Column(
                   children: [
@@ -292,7 +294,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 20),
               ],
             ),
@@ -318,13 +320,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           children: [
             const Text(
               'Choose Avatar',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            
+
             // Default avatars
             GridView.builder(
               shrinkWrap: true,
@@ -363,19 +362,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       ),
                     ),
                     child: Center(
-                      child: Icon(
-                        Icons.person,
-                        size: 32,
-                        color: avatarColor,
-                      ),
+                      child: Icon(Icons.person, size: 32, color: avatarColor),
                     ),
                   ),
                 );
               },
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Camera option
             ListTile(
               leading: const Icon(Icons.camera_alt),

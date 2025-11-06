@@ -9,7 +9,6 @@ import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../providers/esp32_provider.dart';
 
-
 class WifiSetupScreen extends ConsumerStatefulWidget {
   const WifiSetupScreen({super.key});
 
@@ -215,7 +214,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             duration: const Duration(seconds: 5),
           ),
         );
-      } else if (errorMsg.contains('timeout') || errorMsg.contains('timed out')) {
+      } else if (errorMsg.contains('timeout') ||
+          errorMsg.contains('timed out')) {
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.error_ble_timeout'.tr()),
@@ -343,8 +343,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Row(
+  Widget _buildHeader(BuildContext context) => Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
@@ -360,10 +359,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         ),
       ],
     );
-  }
 
-  Widget _buildTitle(ThemeData theme) {
-    return Column(
+  Widget _buildTitle(ThemeData theme) => Column(
       children: [
         Text(
           'setup.wifi.title'.tr(),
@@ -373,15 +370,15 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         const SizedBox(height: 12),
         Text(
           'setup.wifi.subtitle'.tr(),
-          style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white.withAlpha(230)),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: Colors.white.withAlpha(230),
+          ),
           textAlign: TextAlign.center,
         ),
       ],
     );
-  }
 
-  Widget _buildSsidInput(ThemeData theme) {
-    return TextFormField(
+  Widget _buildSsidInput(ThemeData theme) => TextFormField(
       controller: _ssidController,
       style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
       decoration: _buildInputDecoration(theme, 'setup.wifi.ssid_hint'.tr()),
@@ -403,10 +400,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         return null;
       },
     );
-  }
 
-  Widget _buildPasswordInput(ThemeData theme) {
-    return TextFormField(
+  Widget _buildPasswordInput(ThemeData theme) => TextFormField(
       controller: _passwordController,
       obscureText: !_isPasswordVisible,
       style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
@@ -439,10 +434,12 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         return null;
       },
     );
-  }
 
-  InputDecoration _buildInputDecoration(ThemeData theme, String hintText, {Widget? suffixIcon}) {
-    return InputDecoration(
+  InputDecoration _buildInputDecoration(
+    ThemeData theme,
+    String hintText, {
+    Widget? suffixIcon,
+  }) => InputDecoration(
       hintText: hintText,
       hintStyle: TextStyle(color: Colors.white.withAlpha(128)),
       filled: true,
@@ -454,10 +451,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       contentPadding: const EdgeInsets.all(20),
       suffixIcon: suffixIcon,
     );
-  }
 
-  Widget _buildFooterButtons(BuildContext context, ThemeData theme) {
-    return Column(
+  Widget _buildFooterButtons(BuildContext context, ThemeData theme) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ElevatedButton(
@@ -466,13 +461,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             backgroundColor: Colors.white,
             foregroundColor: AppTheme.primaryLight,
             padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
           child: _isConnecting
               ? const SizedBox(
                   height: 24,
                   width: 24,
-                  child: CircularProgressIndicator(strokeWidth: 3, color: AppTheme.primaryLight),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: AppTheme.primaryLight,
+                  ),
                 )
               : Text(
                   'setup.wifi.connect_button'.tr(),
@@ -486,15 +486,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         TextButton(
           onPressed: _isConnecting ? _cancelConnection : _skipWifiSetup,
           child: Text(
-            _isConnecting ? 'setup.wifi.cancel_button'.tr() : 'setup.wifi.skip_button'.tr(),
+            _isConnecting
+                ? 'setup.wifi.cancel_button'.tr()
+                : 'setup.wifi.skip_button'.tr(),
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: _isConnecting ? Colors.red.withAlpha(204) : Colors.white.withAlpha(204),
+              color: _isConnecting
+                  ? Colors.red.withAlpha(204)
+                  : Colors.white.withAlpha(204),
             ),
           ),
         ),
       ],
     );
-  }
 
   void _cancelConnection() {
     _timeoutTimer?.cancel();
@@ -514,18 +517,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(
-          total,
-          (index) => Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: index < current ? 24 : 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: index < current ? Colors.white : Colors.white.withAlpha(77),
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: List.generate(
+      total,
+      (index) => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        width: index < current ? 24 : 8,
+        height: 8,
+        decoration: BoxDecoration(
+          color: index < current ? Colors.white : Colors.white.withAlpha(77),
+          borderRadius: BorderRadius.circular(4),
         ),
-      );
+      ),
+    ),
+  );
 }

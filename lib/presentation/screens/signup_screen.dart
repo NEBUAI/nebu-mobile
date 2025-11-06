@@ -132,307 +132,305 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      backgroundColor: Colors.grey[50],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 16),
+    backgroundColor: Colors.grey[50],
+    body: SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 16),
 
-                // Back button
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.grey[800]),
-                    onPressed: () => context.pop(),
+              // Back button
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.grey[800]),
+                  onPressed: () => context.pop(),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Title
+              Text(
+                'auth.sign_up'.tr(),
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              Text(
+                'auth.sign_up_subtitle'.tr(),
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Error message
+              if (_errorMessage != null)
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.red[50],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.red[200]!),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.red[700]),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          _errorMessage!,
+                          style: TextStyle(color: Colors.red[700]),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
-                const SizedBox(height: 16),
-
-                // Title
-                Text(
-                  'auth.sign_up'.tr(),
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+              // First Name field
+              TextFormField(
+                controller: _firstNameController,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: 'auth.first_name'.tr(),
+                  prefixIcon: const Icon(Icons.person_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'auth.first_name_required'.tr();
+                  }
+                  return null;
+                },
+              ),
 
-                const SizedBox(height: 8),
+              const SizedBox(height: 16),
 
-                Text(
-                  'auth.sign_up_subtitle'.tr(),
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
+              // Last Name field
+              TextFormField(
+                controller: _lastNameController,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: 'auth.last_name'.tr(),
+                  prefixIcon: const Icon(Icons.person_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'auth.last_name_required'.tr();
+                  }
+                  return null;
+                },
+              ),
 
-                const SizedBox(height: 32),
+              const SizedBox(height: 16),
 
-                // Error message
-                if (_errorMessage != null)
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.only(bottom: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.red[50],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red[200]!),
+              // Email field
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'auth.email'.tr(),
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'auth.email_required'.tr();
+                  }
+                  if (!value.contains('@')) {
+                    return 'auth.email_invalid'.tr();
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // Password field
+              TextFormField(
+                controller: _passwordController,
+                obscureText: _obscurePassword,
+                decoration: InputDecoration(
+                  labelText: 'auth.password'.tr(),
+                  prefixIcon: const Icon(Icons.lock_outlined),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                     ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.error_outline, color: Colors.red[700]),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            _errorMessage!,
-                            style: TextStyle(color: Colors.red[700]),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'auth.password_required'.tr();
+                  }
+                  if (value.length < 6) {
+                    return 'auth.password_short'.tr();
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // Confirm Password field
+              TextFormField(
+                controller: _confirmPasswordController,
+                obscureText: _obscureConfirmPassword,
+                decoration: InputDecoration(
+                  labelText: 'auth.confirm_password'.tr(),
+                  prefixIcon: const Icon(Icons.lock_outlined),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureConfirmPassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'auth.confirm_password_required'.tr();
+                  }
+                  if (value != _passwordController.text) {
+                    return 'auth.passwords_dont_match'.tr();
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 24),
+
+              // Sign up button
+              ElevatedButton(
+                onPressed: _isLoading ? null : _handleEmailSignUp,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryLight,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-
-                // First Name field
-                TextFormField(
-                  controller: _firstNameController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: 'auth.first_name'.tr(),
-                    prefixIcon: const Icon(Icons.person_outline),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'auth.first_name_required'.tr();
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 16),
-
-                // Last Name field
-                TextFormField(
-                  controller: _lastNameController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: 'auth.last_name'.tr(),
-                    prefixIcon: const Icon(Icons.person_outline),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'auth.last_name_required'.tr();
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 16),
-
-                // Email field
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'auth.email'.tr(),
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'auth.email_required'.tr();
-                    }
-                    if (!value.contains('@')) {
-                      return 'auth.email_invalid'.tr();
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 16),
-
-                // Password field
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    labelText: 'auth.password'.tr(),
-                    prefixIcon: const Icon(Icons.lock_outlined),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'auth.password_required'.tr();
-                    }
-                    if (value.length < 6) {
-                      return 'auth.password_short'.tr();
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 16),
-
-                // Confirm Password field
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: _obscureConfirmPassword,
-                  decoration: InputDecoration(
-                    labelText: 'auth.confirm_password'.tr(),
-                    prefixIcon: const Icon(Icons.lock_outlined),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureConfirmPassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureConfirmPassword = !_obscureConfirmPassword;
-                        });
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'auth.confirm_password_required'.tr();
-                    }
-                    if (value != _passwordController.text) {
-                      return 'auth.passwords_dont_match'.tr();
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 24),
-
-                // Sign up button
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _handleEmailSignUp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryLight,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : Text(
-                          'auth.sign_up'.tr(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      )
+                    : Text(
+                        'auth.sign_up'.tr(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Divider
-                Row(
-                  children: [
-                    const Expanded(child: Divider()),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'auth.or_continue_with'.tr(),
-                        style: TextStyle(color: Colors.grey[600]),
                       ),
-                    ),
-                    const Expanded(child: Divider()),
-                  ],
-                ),
+              ),
 
-                const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-                // Google Sign Up button
-                OutlinedButton.icon(
-                  onPressed: _isLoading ? null : _handleGoogleSignUp,
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: BorderSide(color: Colors.grey[300]!),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  icon: Image.asset(
-                    'assets/images/google_logo.png',
-                    height: 24,
-                    width: 24,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.g_mobiledata, size: 24),
-                  ),
-                  label: Text(
-                    'auth.sign_up_google'.tr(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Sign in link
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'auth.already_have_account'.tr(),
+              // Divider
+              Row(
+                children: [
+                  const Expanded(child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'auth.or_continue_with'.tr(),
                       style: TextStyle(color: Colors.grey[600]),
                     ),
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Text('auth.sign_in'.tr()),
-                    ),
-                  ],
+                  ),
+                  const Expanded(child: Divider()),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Google Sign Up button
+              OutlinedButton.icon(
+                onPressed: _isLoading ? null : _handleGoogleSignUp,
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  side: BorderSide(color: Colors.grey[300]!),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-              ],
-            ),
+                icon: Image.asset(
+                  'assets/images/google_logo.png',
+                  height: 24,
+                  width: 24,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.g_mobiledata, size: 24),
+                ),
+                label: Text(
+                  'auth.sign_up_google'.tr(),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Sign in link
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'auth.already_have_account'.tr(),
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  TextButton(
+                    onPressed: () => context.pop(),
+                    child: Text('auth.sign_in'.tr()),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
-    );
+    ),
+  );
 }

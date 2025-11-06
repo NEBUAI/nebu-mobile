@@ -40,13 +40,18 @@ class ProfileScreen extends ConsumerWidget {
               // Profile Header Card - Simplified and Clean
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 24,
+                ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
+                      color: Colors.black.withValues(
+                        alpha: isDark ? 0.3 : 0.08,
+                      ),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -96,7 +101,9 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             'View Profile',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
                             ),
                           ),
                         ],
@@ -104,9 +111,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     // Settings Icon
                     IconButton(
-                      icon: const Icon(
-                        Icons.settings_outlined,
-                      ),
+                      icon: const Icon(Icons.settings_outlined),
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       onPressed: () {
                         context.push(AppConstants.routeEditProfile);
@@ -127,10 +132,15 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.receipt_long_outlined,
                     title: 'Your orders',
-                    trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Orders feature coming soon')),
+                        const SnackBar(
+                          content: Text('Orders feature coming soon'),
+                        ),
                       );
                     },
                   ),
@@ -156,7 +166,9 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Notifications feature coming soon')),
+                        const SnackBar(
+                          content: Text('Notifications feature coming soon'),
+                        ),
                       );
                     },
                   ),
@@ -193,7 +205,9 @@ class ProfileScreen extends ConsumerWidget {
                       onChanged: (value) {
                         ref.read(themeProvider.notifier).toggleDarkMode();
                       },
-                      activeTrackColor: AppTheme.primaryLight.withValues(alpha: 0.5),
+                      activeTrackColor: AppTheme.primaryLight.withValues(
+                        alpha: 0.5,
+                      ),
                       thumbColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.selected)) {
                           return AppTheme.primaryLight;
@@ -226,7 +240,9 @@ class ProfileScreen extends ConsumerWidget {
                       ],
                       onChanged: (value) {
                         if (value != null) {
-                          ref.read(languageProvider.notifier).setLanguage(value);
+                          ref
+                              .read(languageProvider.notifier)
+                              .setLanguage(value);
                         }
                       },
                     ),
@@ -245,7 +261,10 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.person_outline,
                     title: 'profile.edit_profile'.tr(),
-                    trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       context.push(AppConstants.routeEditProfile);
                     },
@@ -255,10 +274,15 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.privacy_tip_outlined,
                     title: 'profile.privacy'.tr(),
-                    trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Privacy settings coming soon')),
+                        const SnackBar(
+                          content: Text('Privacy settings coming soon'),
+                        ),
                       );
                     },
                   ),
@@ -276,7 +300,10 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.help_outline,
                     title: 'profile.help_support'.tr(),
-                    trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       _showHelpDialog(context);
                     },
@@ -289,7 +316,9 @@ class ProfileScreen extends ConsumerWidget {
                     trailing: Text(
                       'v${AppConstants.appVersion}',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -353,23 +382,23 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   Future<bool?> _showLogoutDialog(BuildContext context) => showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('profile.logout'.tr()),
-        content: Text('profile.logout_confirmation'.tr()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text('common.cancel'.tr()),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text('profile.logout'.tr()),
-          ),
-        ],
-      ),
-    );
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('profile.logout'.tr()),
+      content: Text('profile.logout_confirmation'.tr()),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: Text('common.cancel'.tr()),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, true),
+          style: TextButton.styleFrom(foregroundColor: Colors.red),
+          child: Text('profile.logout'.tr()),
+        ),
+      ],
+    ),
+  );
 }
 
 void _showHelpDialog(BuildContext context) {
@@ -400,8 +429,7 @@ void _showHelpDialog(BuildContext context) {
   );
 }
 
-Widget _buildHelpOption(IconData icon, String title, String subtitle) {
-  return Row(
+Widget _buildHelpOption(IconData icon, String title, String subtitle) => Row(
     children: [
       Icon(icon, size: 20),
       const SizedBox(width: 12),
@@ -414,7 +442,6 @@ Widget _buildHelpOption(IconData icon, String title, String subtitle) {
       ),
     ],
   );
-}
 
 void _showAboutDialog(BuildContext context) {
   showAboutDialog(
@@ -455,21 +482,19 @@ class _SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: children,
-      ),
-    );
+    decoration: BoxDecoration(
+      color: theme.colorScheme.surface,
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
+          blurRadius: 10,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Column(children: children),
+  );
 }
 
 // Settings Tile Widget
@@ -490,19 +515,19 @@ class _SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-      leading: Icon(
-        icon,
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-        size: 24,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+    leading: Icon(
+      icon,
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+      size: 24,
+    ),
+    title: Text(
+      title,
+      style: theme.textTheme.bodyLarge?.copyWith(
+        color: theme.colorScheme.onSurface,
       ),
-      title: Text(
-        title,
-        style: theme.textTheme.bodyLarge?.copyWith(
-          color: theme.colorScheme.onSurface,
-        ),
-      ),
-      trailing: trailing,
-      onTap: onTap,
-    );
+    ),
+    trailing: trailing,
+    onTap: onTap,
+  );
 }

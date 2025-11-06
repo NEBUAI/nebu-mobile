@@ -1,15 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 
 import '../../core/constants/app_constants.dart';
-import '../providers/auth_provider.dart';
 import '../providers/bluetooth_provider.dart';
 import '../providers/device_provider.dart';
-import '../providers/theme_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -19,9 +17,7 @@ class HomeScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('home.title'.tr()),
-      ),
+      appBar: AppBar(title: Text('home.title'.tr())),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -114,14 +110,12 @@ class HomeScreen extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(
-        child: Text('Error loading devices: $error'),
-      ),
+      error: (error, stack) =>
+          Center(child: Text('Error loading devices: $error')),
     );
   }
 
-  Widget _buildNoToysPlaceholder(ThemeData theme) {
-    return Container(
+  Widget _buildNoToysPlaceholder(ThemeData theme) => Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         border: Border.all(color: theme.dividerColor.withAlpha(77)),
@@ -132,10 +126,7 @@ class HomeScreen extends ConsumerWidget {
           SvgPicture.asset(
             'assets/icon_flow.svg',
             height: 64,
-            colorFilter: ColorFilter.mode(
-              theme.disabledColor,
-              BlendMode.srcIn,
-            ),
+            colorFilter: ColorFilter.mode(theme.disabledColor, BlendMode.srcIn),
           ),
           const SizedBox(height: 16),
           Text(
@@ -155,7 +146,6 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
 }
 
 class _DeviceBatteryCard extends ConsumerWidget {
@@ -172,7 +162,11 @@ class _DeviceBatteryCard extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: const Icon(Icons.bluetooth_connected),
-        title: Text(device.platformName.isNotEmpty ? device.platformName : 'Unknown Device'),
+        title: Text(
+          device.platformName.isNotEmpty
+              ? device.platformName
+              : 'Unknown Device',
+        ),
         trailing: batteryLevel.when(
           data: (level) => Text('$level%', style: theme.textTheme.titleMedium),
           loading: () => const SizedBox(
@@ -180,7 +174,8 @@ class _DeviceBatteryCard extends ConsumerWidget {
             height: 24,
             child: CircularProgressIndicator(strokeWidth: 2.5),
           ),
-          error: (error, stack) => const Icon(Icons.error_outline, color: Colors.red),
+          error: (error, stack) =>
+              const Icon(Icons.error_outline, color: Colors.red),
         ),
       ),
     );
@@ -203,9 +198,7 @@ class _QuickActionCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
@@ -214,11 +207,7 @@ class _QuickActionCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 48,
-                color: theme.colorScheme.primary,
-              ),
+              Icon(icon, size: 48, color: theme.colorScheme.primary),
               const SizedBox(height: 12),
               Text(
                 title,

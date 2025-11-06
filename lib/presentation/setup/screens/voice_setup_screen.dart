@@ -13,7 +13,8 @@ class VoiceSetupScreen extends StatefulWidget {
   State<VoiceSetupScreen> createState() => _VoiceSetupScreenState();
 }
 
-class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProviderStateMixin {
+class _VoiceSetupScreenState extends State<VoiceSetupScreen>
+    with TickerProviderStateMixin {
   final controller = Get.find<SetupWizardController>();
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
@@ -54,13 +55,9 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1,
-      end: 1.2,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 1, end: 1.2).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -74,7 +71,9 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
+      backgroundColor: isDark
+          ? AppTheme.backgroundDark
+          : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -87,19 +86,16 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
                 totalSteps: controller.totalSteps,
               ),
               const SizedBox(height: 40),
-              
+
               // Title
               const GradientText(
                 'Voice Setup',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Subtitle
               Text(
                 'Configure your voice interaction preferences',
@@ -110,9 +106,9 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 40),
-              
+
               // Voice test section
               Expanded(
                 child: SingleChildScrollView(
@@ -120,16 +116,16 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
                     children: [
                       // Voice test card
                       _buildVoiceTestCard(isDark),
-                      
+
                       const SizedBox(height: 32),
-                      
+
                       // Voice settings
                       _buildVoiceSettings(isDark),
                     ],
                   ),
                 ),
               ),
-              
+
               // Action buttons
               Column(
                 children: [
@@ -152,7 +148,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
             ],
           ),
@@ -162,155 +158,152 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
   }
 
   Widget _buildVoiceTestCard(bool isDark) => Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: AppTheme.primaryGradient,
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.primaryLight.withValues(alpha: 0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
+    padding: const EdgeInsets.all(24),
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        colors: AppTheme.primaryGradient,
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
-      child: Column(
-        children: [
-          const Text(
-            'Test Your Voice',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: AppTheme.primaryLight.withValues(alpha: 0.3),
+          blurRadius: 20,
+          offset: const Offset(0, 10),
+        ),
+      ],
+    ),
+    child: Column(
+      children: [
+        const Text(
+          'Test Your Voice',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          
-          const SizedBox(height: 16),
-          
-          Text(
-            'Tap the microphone to test voice recognition',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white.withValues(alpha: 0.8),
-            ),
-            textAlign: TextAlign.center,
+        ),
+
+        const SizedBox(height: 16),
+
+        Text(
+          'Tap the microphone to test voice recognition',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white.withValues(alpha: 0.8),
           ),
-          
-          const SizedBox(height: 24),
-          
-          // Animated microphone button
-          AnimatedBuilder(
-            animation: _scaleAnimation,
-            builder: (context, child) => Transform.scale(
-                scale: isRecording ? _scaleAnimation.value : 1.0,
-                child: GestureDetector(
-                  onTapDown: (_) => _startRecording(),
-                  onTapUp: (_) => _stopRecording(),
-                  onTapCancel: _stopRecording,
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(40),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
+          textAlign: TextAlign.center,
+        ),
+
+        const SizedBox(height: 24),
+
+        // Animated microphone button
+        AnimatedBuilder(
+          animation: _scaleAnimation,
+          builder: (context, child) => Transform.scale(
+            scale: isRecording ? _scaleAnimation.value : 1.0,
+            child: GestureDetector(
+              onTapDown: (_) => _startRecording(),
+              onTapUp: (_) => _stopRecording(),
+              onTapCancel: _stopRecording,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(40),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
                     ),
-                    child: Icon(
-                      isRecording ? Icons.stop : Icons.mic,
-                      size: 40,
-                      color: isRecording ? Colors.red : AppTheme.primaryLight,
-                    ),
-                  ),
+                  ],
+                ),
+                child: Icon(
+                  isRecording ? Icons.stop : Icons.mic,
+                  size: 40,
+                  color: isRecording ? Colors.red : AppTheme.primaryLight,
                 ),
               ),
-          ),
-          
-          const SizedBox(height: 20),
-          
-          if (isRecording)
-            const Text(
-              'Listening...',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
             ),
-          
-          const SizedBox(height: 16),
-          
-          // Test playback button
-          CustomButton(
-            text: isPlaying ? 'Playing...' : 'Play Sample',
-            onPressed: isPlaying ? null : _playSample,
-            variant: ButtonVariant.secondary,
-            isLoading: isPlaying,
-            icon: Icons.play_arrow,
           ),
-        ],
-      ),
-    );
+        ),
+
+        const SizedBox(height: 20),
+
+        if (isRecording)
+          const Text(
+            'Listening...',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+
+        const SizedBox(height: 16),
+
+        // Test playback button
+        CustomButton(
+          text: isPlaying ? 'Playing...' : 'Play Sample',
+          onPressed: isPlaying ? null : _playSample,
+          variant: ButtonVariant.secondary,
+          isLoading: isPlaying,
+          icon: Icons.play_arrow,
+        ),
+      ],
+    ),
+  );
 
   Widget _buildVoiceSettings(bool isDark) => Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.settings_voice,
+                color: AppTheme.primaryLight,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Voice Settings',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+          ],
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryLight.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.settings_voice,
-                  color: AppTheme.primaryLight,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text(
-                'Voice Settings',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: 16),
-          
-          ...voiceSettings.map((setting) => _buildSettingTile(
+
+        const SizedBox(height: 16),
+
+        ...voiceSettings.map(
+          (setting) => _buildSettingTile(
             title: setting['title'] as String,
             description: setting['description'] as String,
             icon: setting['icon'] as IconData,
             enabled: setting['enabled'] as bool,
             isDark: isDark,
-          )),
-        ],
-      ),
-    );
+          ),
+        ),
+      ],
+    ),
+  );
 
   Widget _buildSettingTile({
     required String title,
@@ -319,64 +312,64 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> with TickerProvider
     required bool enabled,
     required bool isDark,
   }) => Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: enabled
-                  ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                  : (isDark ? Colors.grey[700] : Colors.grey[200]),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              icon,
-              color: enabled ? AppTheme.primaryLight : Colors.grey[600],
-              size: 20,
-            ),
+    margin: const EdgeInsets.only(bottom: 12),
+    child: Row(
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: enabled
+                ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                : (isDark ? Colors.grey[700] : Colors.grey[200]),
+            borderRadius: BorderRadius.circular(8),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
+          child: Icon(
+            icon,
+            color: enabled ? AppTheme.primaryLight : Colors.grey[600],
+            size: 20,
           ),
-          Switch(
-            value: enabled,
-            onChanged: (value) {
-              setState(() {
-                // Update the specific setting
-                for (final setting in voiceSettings) {
-                  if (setting['title'] == title) {
-                    setting['enabled'] = value;
-                    break;
-                  }
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Switch(
+          value: enabled,
+          onChanged: (value) {
+            setState(() {
+              // Update the specific setting
+              for (final setting in voiceSettings) {
+                if (setting['title'] == title) {
+                  setting['enabled'] = value;
+                  break;
                 }
-              });
-            },
-            activeThumbColor: AppTheme.primaryLight,
-          ),
-        ],
-      ),
-    );
+              }
+            });
+          },
+          activeThumbColor: AppTheme.primaryLight,
+        ),
+      ],
+    ),
+  );
 
   void _startRecording() {
     setState(() {

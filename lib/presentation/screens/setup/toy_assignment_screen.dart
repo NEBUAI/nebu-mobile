@@ -66,9 +66,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
         // Mostrar mensaje de éxito
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              response.message ?? 'Juguete asignado exitosamente',
-            ),
+            content: Text(response.message ?? 'Juguete asignado exitosamente'),
             backgroundColor: Colors.green,
           ),
         );
@@ -77,8 +75,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
         Navigator.of(context).pop(response.toy);
       } else {
         setState(() {
-          _errorMessage =
-              response.message ?? 'No se pudo asignar el juguete';
+          _errorMessage = response.message ?? 'No se pudo asignar el juguete';
           _isLoading = false;
         });
       }
@@ -96,13 +93,10 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configurar Juguete'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Configurar Juguete'), elevation: 0),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Form(
             key: _formKey,
             child: Column(
@@ -153,10 +147,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.bluetooth,
-                        color: theme.colorScheme.primary,
-                      ),
+                      Icon(Icons.bluetooth, color: theme.colorScheme.primary),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

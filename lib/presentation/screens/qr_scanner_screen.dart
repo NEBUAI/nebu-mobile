@@ -7,8 +7,7 @@ import '../../core/theme/app_theme.dart';
 
 class QRScannerController extends GetxController {
   final MobileScannerController scannerController = MobileScannerController(
-    detectionSpeed: DetectionSpeed.normal,
-    facing: CameraFacing.back,
+    
   );
 
   final scannedCode = ''.obs;
@@ -39,10 +38,7 @@ class QRScannerController extends GetxController {
             const SizedBox(height: 8),
             Text(
               'Code: $code',
-              style: const TextStyle(
-                fontFamily: 'monospace',
-                fontSize: 12,
-              ),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
             ),
           ],
         ),
@@ -79,23 +75,23 @@ class QRScannerScreen extends StatelessWidget {
   final QRScannerController controller = Get.put(QRScannerController());
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: Text('qr_scanner.title'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.flip_camera_ios),
-            onPressed: () => controller.scannerController.switchCamera(),
+            onPressed: controller.scannerController.switchCamera,
           ),
           IconButton(
-            icon: Obx(() => Icon(
-                  controller.scannerController.torchEnabled.value
-                      ? Icons.flash_on
-                      : Icons.flash_off,
-                ),
+            icon: Obx(
+              () => Icon(
+                controller.scannerController.torchEnabled.value
+                    ? Icons.flash_on
+                    : Icons.flash_off,
+              ),
             ),
-            onPressed: () => controller.scannerController.toggleTorch(),
+            onPressed: controller.scannerController.toggleTorch,
           ),
         ],
       ),
@@ -115,51 +111,28 @@ class QRScannerScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 
-  Widget _buildScannerOverlay() {
-    return Center(
+  Widget _buildScannerOverlay() => Center(
       child: Container(
         width: 250,
         height: 250,
         decoration: BoxDecoration(
-          border: Border.all(
-            color: AppTheme.primaryLight,
-            width: 3,
-          ),
+          border: Border.all(color: AppTheme.primaryLight, width: 3),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Stack(
           children: [
             // Corner indicators
-            Positioned(
-              top: 0,
-              left: 0,
-              child: _buildCorner(true, true),
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: _buildCorner(true, false),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              child: _buildCorner(false, true),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: _buildCorner(false, false),
-            ),
+            Positioned(top: 0, left: 0, child: _buildCorner(true, true)),
+            Positioned(top: 0, right: 0, child: _buildCorner(true, false)),
+            Positioned(bottom: 0, left: 0, child: _buildCorner(false, true)),
+            Positioned(bottom: 0, right: 0, child: _buildCorner(false, false)),
           ],
         ),
       ),
     );
-  }
 
-  Widget _buildCorner(bool top, bool left) {
-    return Container(
+  Widget _buildCorner(bool top, bool left) => Container(
       width: 30,
       height: 30,
       decoration: BoxDecoration(
@@ -179,10 +152,8 @@ class QRScannerScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 
-  Widget _buildInstructions() {
-    return Positioned(
+  Widget _buildInstructions() => Positioned(
       bottom: 50,
       left: 0,
       right: 0,
@@ -196,12 +167,8 @@ class QRScannerScreen extends StatelessWidget {
         child: const Text(
           'Position the QR code within the frame to scan',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 14),
         ),
       ),
     );
-  }
 }

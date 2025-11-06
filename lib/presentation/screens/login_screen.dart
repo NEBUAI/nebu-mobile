@@ -135,7 +135,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Enter your email address and we\'ll send you a link to reset your password.',
+                "Enter your email address and we'll send you a link to reset your password.",
                 style: TextStyle(color: Colors.grey[600]),
               ),
               const SizedBox(height: 16),
@@ -180,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
     );
 
-    if (result == true && mounted) {
+    if (result ?? false && mounted) {
       // TODO: Implement actual password reset API call
       // For now, just show success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -199,7 +199,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SafeArea(
@@ -354,8 +354,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                           ),
                         )
                       : Text(

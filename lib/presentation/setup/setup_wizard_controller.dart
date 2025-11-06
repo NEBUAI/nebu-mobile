@@ -77,7 +77,7 @@ class SetupWizardController extends GetxController {
     // Save setup data to preferences/database
     _saveSetupData();
     isCompleted.value = true;
-    
+
     // Navigate to main app
     Get.offAllNamed<void>('/main');
   }

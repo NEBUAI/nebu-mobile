@@ -15,7 +15,9 @@ class WelcomeScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
+      backgroundColor: isDark
+          ? AppTheme.backgroundDark
+          : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -28,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
                 totalSteps: controller.totalSteps,
               ),
               const SizedBox(height: 60),
-              
+
               // App logo/icon placeholder
               Container(
                 width: 120,
@@ -54,21 +56,18 @@ class WelcomeScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              
+
               const SizedBox(height: 40),
-              
+
               // Welcome title
               const GradientText(
                 'Welcome to Nebu',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Subtitle
               Text(
                 'Your AI-powered companion for productivity and creativity',
@@ -79,9 +78,9 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 60),
-              
+
               // Features list
               Expanded(
                 child: Column(
@@ -109,7 +108,7 @@ class WelcomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Action buttons
               Column(
                 children: [
@@ -132,7 +131,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
             ],
           ),
@@ -147,43 +146,36 @@ class WelcomeScreen extends StatelessWidget {
     required String description,
     required bool isDark,
   }) => Row(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: AppTheme.primaryLight.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            icon,
-            color: AppTheme.primaryLight,
-            size: 24,
-          ),
+    children: [
+      Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: AppTheme.primaryLight.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
         ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+        child: Icon(icon, color: AppTheme.primaryLight, size: 24),
+      ),
+      const SizedBox(width: 16),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              description,
+              style: TextStyle(
+                fontSize: 14,
+                color: isDark ? Colors.grey[400] : Colors.grey[600],
               ),
-              const SizedBox(height: 4),
-              Text(
-                description,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
-    );
+      ),
+    ],
+  );
 }

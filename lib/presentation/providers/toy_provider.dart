@@ -5,11 +5,9 @@ import '../../data/models/toy.dart';
 import '../../data/services/toy_service.dart';
 
 class ToyProvider extends ChangeNotifier {
-  ToyProvider({
-    required ToyService toyService,
-    required Logger logger,
-  })  : _toyService = toyService,
-        _logger = logger;
+  ToyProvider({required ToyService toyService, required Logger logger})
+    : _toyService = toyService,
+      _logger = logger;
 
   final ToyService _toyService;
   final Logger _logger;

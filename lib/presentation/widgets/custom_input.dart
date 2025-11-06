@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomInput extends StatefulWidget {
-
   const CustomInput({
     super.key,
     this.label,
@@ -58,51 +57,48 @@ class _CustomInputState extends State<CustomInput> {
 
   @override
   Widget build(BuildContext context) => Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-        TextFormField(
-          controller: widget.controller,
-          initialValue: widget.initialValue,
-          onChanged: widget.onChanged,
-          onEditingComplete: widget.onEditingComplete,
-          validator: widget.validator,
-          obscureText: _obscureText,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.textInputAction,
-          inputFormatters: widget.inputFormatters,
-          maxLines: widget.obscureText ? 1 : widget.maxLines,
-          maxLength: widget.maxLength,
-          enabled: widget.enabled,
-          autofocus: widget.autofocus,
-          decoration: InputDecoration(
-            hintText: widget.hint,
-            prefixIcon: widget.prefixIcon,
-            suffixIcon: widget.obscureText
-                ? IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                  )
-                : widget.suffixIcon,
-            errorText: widget.errorText,
-            counterText: '',
-          ),
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (widget.label != null) ...[
+        Text(
+          widget.label!,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
+        const SizedBox(height: 8),
       ],
-    );
+      TextFormField(
+        controller: widget.controller,
+        initialValue: widget.initialValue,
+        onChanged: widget.onChanged,
+        onEditingComplete: widget.onEditingComplete,
+        validator: widget.validator,
+        obscureText: _obscureText,
+        keyboardType: widget.keyboardType,
+        textInputAction: widget.textInputAction,
+        inputFormatters: widget.inputFormatters,
+        maxLines: widget.obscureText ? 1 : widget.maxLines,
+        maxLength: widget.maxLength,
+        enabled: widget.enabled,
+        autofocus: widget.autofocus,
+        decoration: InputDecoration(
+          hintText: widget.hint,
+          prefixIcon: widget.prefixIcon,
+          suffixIcon: widget.obscureText
+              ? IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                )
+              : widget.suffixIcon,
+          errorText: widget.errorText,
+          counterText: '',
+        ),
+      ),
+    ],
+  );
 }

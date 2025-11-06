@@ -9,15 +9,16 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../core/constants/app_constants.dart';
 
 class BluetoothService {
-
   BluetoothService({required Logger logger})
-      : _logger = logger,
-        _scanResultsController = StreamController<List<fbp.ScanResult>>.broadcast(),
-        _connectionStateController =
-            StreamController<fbp.BluetoothConnectionState>.broadcast();
+    : _logger = logger,
+      _scanResultsController =
+          StreamController<List<fbp.ScanResult>>.broadcast(),
+      _connectionStateController =
+          StreamController<fbp.BluetoothConnectionState>.broadcast();
   final Logger _logger;
   final StreamController<List<fbp.ScanResult>> _scanResultsController;
-  final StreamController<fbp.BluetoothConnectionState> _connectionStateController;
+  final StreamController<fbp.BluetoothConnectionState>
+  _connectionStateController;
 
   fbp.BluetoothDevice? _connectedDevice;
   StreamSubscription<List<fbp.ScanResult>>? _scanSubscription;
@@ -43,7 +44,8 @@ class BluetoothService {
         final bluetoothConnect = await Permission.bluetoothConnect.request();
         final location = await Permission.location.request();
 
-        final granted = bluetoothScan.isGranted &&
+        final granted =
+            bluetoothScan.isGranted &&
             bluetoothConnect.isGranted &&
             location.isGranted;
 
@@ -161,7 +163,9 @@ class BluetoothService {
           _connectionStateController.add(state);
 
           if (state == fbp.BluetoothConnectionState.disconnected) {
-            _logger.i('Device ${device.remoteId} disconnected, clearing cache.');
+            _logger.i(
+              'Device ${device.remoteId} disconnected, clearing cache.',
+            );
             _servicesCache.remove(device.remoteId.toString());
             _connectedDevice = null;
           }
@@ -175,7 +179,6 @@ class BluetoothService {
 
       // Pre-discover and cache services upon connection
       await discoverServicesForDevice(device);
-
     } on Exception catch (e) {
       _logger.e('Error connecting to device: $e');
       _connectedDevice = null;
@@ -188,7 +191,9 @@ class BluetoothService {
     try {
       if (_connectedDevice != null) {
         final deviceId = _connectedDevice!.remoteId.toString();
-        _logger.i('Disconnecting from device: ${_connectedDevice!.platformName}');
+        _logger.i(
+          'Disconnecting from device: ${_connectedDevice!.platformName}',
+        );
         await _connectedDevice!.disconnect();
         await _connectionSubscription?.cancel();
         _connectionSubscription = null;
@@ -218,11 +223,15 @@ class BluetoothService {
     }
 
     // 2. If not in cache or forceRefresh, discover, store, and return
-    _logger.i('Discovering services for $deviceId${forceRefresh ? ' (forced refresh)' : ''}...');
+    _logger.i(
+      'Discovering services for $deviceId${forceRefresh ? ' (forced refresh)' : ''}...',
+    );
     try {
       final services = await device.discoverServices();
       _servicesCache[deviceId] = services;
-      _logger.i('Discovered and cached ${services.length} services for $deviceId');
+      _logger.i(
+        'Discovered and cached ${services.length} services for $deviceId',
+      );
       return services;
     } on Exception catch (e) {
       _logger.e('Error discovering services for $deviceId: $e');
@@ -238,7 +247,6 @@ class BluetoothService {
     }
     return discoverServicesForDevice(_connectedDevice!);
   }
-
 
   // Read characteristic
   Future<List<int>> readCharacteristic(
@@ -265,10 +273,7 @@ class BluetoothService {
       _logger.d(
         'Writing to characteristic: ${characteristic.uuid} - Value: ${utf8.decode(value, allowMalformed: true)}',
       );
-      await characteristic.write(
-        value,
-        withoutResponse: withoutResponse,
-      );
+      await characteristic.write(value, withoutResponse: withoutResponse);
     } on Exception catch (e) {
       _logger.e('Error writing characteristic: $e');
       rethrow;

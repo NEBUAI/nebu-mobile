@@ -7,14 +7,13 @@ import '../../core/utils/env_config.dart';
 import '../models/user.dart';
 
 class AuthService {
-
   AuthService({
     required Dio dio,
     required SharedPreferences prefs,
     required FlutterSecureStorage secureStorage,
-  })  : _dio = dio,
-        _prefs = prefs,
-        _secureStorage = secureStorage {
+  }) : _dio = dio,
+       _prefs = prefs,
+       _secureStorage = secureStorage {
     _dio.options.baseUrl = EnvConfig.urlBackend;
     _dio.options.connectTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
     _dio.options.receiveTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
@@ -31,10 +30,7 @@ class AuthService {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
         '/auth/login',
-        data: {
-          'email': email,
-          'password': password,
-        },
+        data: {'email': email, 'password': password},
       );
 
       final authResponse = AuthResponse.fromJson(response.data!);
@@ -47,7 +43,9 @@ class AuthService {
     } on DioException catch (e) {
       return AuthResponse(
         success: false,
-        error: (e.response?.data['message'] as String?) ?? 'Login failed. Please check your credentials.',
+        error:
+            (e.response?.data['message'] as String?) ??
+            'Login failed. Please check your credentials.',
       );
     } on Exception {
       return const AuthResponse(
@@ -84,7 +82,9 @@ class AuthService {
     } on DioException catch (e) {
       return AuthResponse(
         success: false,
-        error: (e.response?.data['message'] as String?) ?? 'Registration failed. Please try again.',
+        error:
+            (e.response?.data['message'] as String?) ??
+            'Registration failed. Please try again.',
       );
     } on Exception {
       return const AuthResponse(
@@ -112,7 +112,9 @@ class AuthService {
     } on DioException catch (e) {
       return SocialAuthResult(
         success: false,
-        error: (e.response?.data['message'] as String?) ?? 'Google login failed. Please try again.',
+        error:
+            (e.response?.data['message'] as String?) ??
+            'Google login failed. Please try again.',
       );
     } on Exception {
       return const SocialAuthResult(
@@ -139,7 +141,9 @@ class AuthService {
     } on DioException catch (e) {
       return SocialAuthResult(
         success: false,
-        error: (e.response?.data['message'] as String?) ?? 'Facebook login failed. Please try again.',
+        error:
+            (e.response?.data['message'] as String?) ??
+            'Facebook login failed. Please try again.',
       );
     } on Exception {
       return const SocialAuthResult(
@@ -166,7 +170,9 @@ class AuthService {
     } on DioException catch (e) {
       return SocialAuthResult(
         success: false,
-        error: (e.response?.data['message'] as String?) ?? 'Apple login failed. Please try again.',
+        error:
+            (e.response?.data['message'] as String?) ??
+            'Apple login failed. Please try again.',
       );
     } on Exception {
       return const SocialAuthResult(
@@ -188,9 +194,11 @@ class AuthService {
     );
   }
 
-  Future<String?> getAccessToken() async => _secureStorage.read(key: AppConstants.keyAccessToken);
+  Future<String?> getAccessToken() async =>
+      _secureStorage.read(key: AppConstants.keyAccessToken);
 
-  Future<String?> getRefreshToken() async => _secureStorage.read(key: AppConstants.keyRefreshToken);
+  Future<String?> getRefreshToken() async =>
+      _secureStorage.read(key: AppConstants.keyRefreshToken);
 
   Future<String?> refreshAccessToken() async {
     try {
@@ -231,10 +239,7 @@ class AuthService {
   // Password Reset
   Future<bool> requestPasswordReset(String email) async {
     try {
-      await _dio.post<void>(
-        '/auth/forgot-password',
-        data: {'email': email},
-      );
+      await _dio.post<void>('/auth/forgot-password', data: {'email': email});
       return true;
     } on Exception {
       return false;
@@ -248,10 +253,7 @@ class AuthService {
     try {
       await _dio.post<void>(
         '/auth/reset-password',
-        data: {
-          'token': token,
-          'password': newPassword,
-        },
+        data: {'token': token, 'password': newPassword},
       );
       return true;
     } on Exception {
@@ -262,10 +264,7 @@ class AuthService {
   // Email Verification
   Future<bool> verifyEmail(String token) async {
     try {
-      await _dio.post<void>(
-        '/auth/verify-email',
-        data: {'token': token},
-      );
+      await _dio.post<void>('/auth/verify-email', data: {'token': token});
       return true;
     } on Exception {
       return false;

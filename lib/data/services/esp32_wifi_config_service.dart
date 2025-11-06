@@ -42,9 +42,9 @@ class ESP32WifiConfigService {
   ESP32WifiConfigService({
     required BluetoothService bluetoothService,
     required Logger logger,
-  })  : _bluetoothService = bluetoothService,
-        _logger = logger,
-        _statusController = StreamController<ESP32WifiStatus>.broadcast();
+  }) : _bluetoothService = bluetoothService,
+       _logger = logger,
+       _statusController = StreamController<ESP32WifiStatus>.broadcast();
 
   final BluetoothService _bluetoothService;
   final Logger _logger;
@@ -61,10 +61,13 @@ class ESP32WifiConfigService {
   /// Conectar a un ESP32 y preparar las características
   Future<void> connectToESP32(fbp.BluetoothDevice device) async {
     try {
-      _logger.i('🔵 [ESP32] Connecting to: ${device.platformName} (${device.remoteId})');
+      _logger.i(
+        '🔵 [ESP32] Connecting to: ${device.platformName} (${device.remoteId})',
+      );
 
       // Conectar al dispositivo usando el servicio principal
-      if (!_bluetoothService.isConnected || _bluetoothService.connectedDevice?.remoteId != device.remoteId) {
+      if (!_bluetoothService.isConnected ||
+          _bluetoothService.connectedDevice?.remoteId != device.remoteId) {
         _logger.d('🔵 [ESP32] Device not connected, connecting now...');
         await _bluetoothService.connect(device);
         _logger.i('🔵 [ESP32] Device connected successfully');
@@ -78,14 +81,19 @@ class ESP32WifiConfigService {
 
       _logger.i('🔍 [ESP32] Starting service discovery (forced refresh)...');
       // Forzar refresh para asegurar que obtenemos servicios actualizados
-      final services = await _bluetoothService.discoverServicesForDevice(device, forceRefresh: true);
+      final services = await _bluetoothService.discoverServicesForDevice(
+        device,
+        forceRefresh: true,
+      );
 
       // Log all discovered services for debugging
       _logger.i('✅ [ESP32] Discovered ${services.length} total services:');
       for (final service in services) {
         _logger.i('  📦 Service UUID: ${service.uuid}');
         if (service.characteristics.isNotEmpty) {
-          _logger.i('     └─ Characteristics (${service.characteristics.length}):');
+          _logger.i(
+            '     └─ Characteristics (${service.characteristics.length}):',
+          );
           for (final char in service.characteristics) {
             final props = <String>[];
             if (char.properties.read) props.add('READ');
@@ -99,7 +107,9 @@ class ESP32WifiConfigService {
       }
 
       // Buscar el servicio de configuración WiFi
-      _logger.i('🔍 [ESP32] Searching for WiFi service: ${AppConstants.esp32WifiServiceUuid}');
+      _logger.i(
+        '🔍 [ESP32] Searching for WiFi service: ${AppConstants.esp32WifiServiceUuid}',
+      );
 
       final wifiService = services.firstWhere(
         (service) =>
@@ -107,7 +117,9 @@ class ESP32WifiConfigService {
             AppConstants.esp32WifiServiceUuid.toLowerCase(),
         orElse: () {
           _logger.e('❌ [ESP32] WiFi service NOT found!');
-          _logger.e('❌ [ESP32] Available services: ${services.map((s) => s.uuid).join(', ')}');
+          _logger.e(
+            '❌ [ESP32] Available services: ${services.map((s) => s.uuid).join(', ')}',
+          );
           throw Exception('WiFi configuration service not found');
         },
       );
@@ -115,38 +127,54 @@ class ESP32WifiConfigService {
       _logger.i('✅ [ESP32] Found WiFi configuration service!');
 
       // Obtener las características
-      _logger.d('🔍 [ESP32] Looking for SSID characteristic: ${AppConstants.esp32SsidCharUuid}');
+      _logger.d(
+        '🔍 [ESP32] Looking for SSID characteristic: ${AppConstants.esp32SsidCharUuid}',
+      );
       _ssidCharacteristic = wifiService.characteristics.firstWhere(
-        (c) => c.uuid.toString().toLowerCase() == AppConstants.esp32SsidCharUuid.toLowerCase(),
+        (c) =>
+            c.uuid.toString().toLowerCase() ==
+            AppConstants.esp32SsidCharUuid.toLowerCase(),
         orElse: () {
           _logger.e('❌ [ESP32] SSID characteristic NOT found!');
           throw Exception('SSID characteristic not found');
         },
       );
       _logger.i('✅ [ESP32] Found SSID characteristic');
-      _logger.d('   Properties: READ=${_ssidCharacteristic!.properties.read}, '
-          'WRITE=${_ssidCharacteristic!.properties.write}, '
-          'WRITE_NO_RSP=${_ssidCharacteristic!.properties.writeWithoutResponse}, '
-          'NOTIFY=${_ssidCharacteristic!.properties.notify}');
+      _logger.d(
+        '   Properties: READ=${_ssidCharacteristic!.properties.read}, '
+        'WRITE=${_ssidCharacteristic!.properties.write}, '
+        'WRITE_NO_RSP=${_ssidCharacteristic!.properties.writeWithoutResponse}, '
+        'NOTIFY=${_ssidCharacteristic!.properties.notify}',
+      );
 
-      _logger.d('🔍 [ESP32] Looking for Password characteristic: ${AppConstants.esp32PasswordCharUuid}');
+      _logger.d(
+        '🔍 [ESP32] Looking for Password characteristic: ${AppConstants.esp32PasswordCharUuid}',
+      );
       _passwordCharacteristic = wifiService.characteristics.firstWhere(
-        (c) => c.uuid.toString().toLowerCase() == AppConstants.esp32PasswordCharUuid.toLowerCase(),
+        (c) =>
+            c.uuid.toString().toLowerCase() ==
+            AppConstants.esp32PasswordCharUuid.toLowerCase(),
         orElse: () {
           _logger.e('❌ [ESP32] Password characteristic NOT found!');
           throw Exception('Password characteristic not found');
         },
       );
       _logger.i('✅ [ESP32] Found Password characteristic');
-      _logger.d('   Properties: READ=${_passwordCharacteristic!.properties.read}, '
-          'WRITE=${_passwordCharacteristic!.properties.write}, '
-          'WRITE_NO_RSP=${_passwordCharacteristic!.properties.writeWithoutResponse}, '
-          'NOTIFY=${_passwordCharacteristic!.properties.notify}');
+      _logger.d(
+        '   Properties: READ=${_passwordCharacteristic!.properties.read}, '
+        'WRITE=${_passwordCharacteristic!.properties.write}, '
+        'WRITE_NO_RSP=${_passwordCharacteristic!.properties.writeWithoutResponse}, '
+        'NOTIFY=${_passwordCharacteristic!.properties.notify}',
+      );
 
       // Status characteristic es opcional
-      _logger.d('🔍 [ESP32] Looking for Status characteristic: ${AppConstants.esp32StatusCharUuid}');
+      _logger.d(
+        '🔍 [ESP32] Looking for Status characteristic: ${AppConstants.esp32StatusCharUuid}',
+      );
       final statusChars = wifiService.characteristics.where(
-        (c) => c.uuid.toString().toLowerCase() == AppConstants.esp32StatusCharUuid.toLowerCase(),
+        (c) =>
+            c.uuid.toString().toLowerCase() ==
+            AppConstants.esp32StatusCharUuid.toLowerCase(),
       );
       _statusCharacteristic = statusChars.isNotEmpty ? statusChars.first : null;
 
@@ -157,8 +185,11 @@ class ESP32WifiConfigService {
       }
 
       // Suscribirse a notificaciones de estado si está disponible
-      if (_statusCharacteristic != null && _statusCharacteristic!.properties.notify) {
-        _logger.d('🔔 [ESP32] Status characteristic supports NOTIFY, subscribing...');
+      if (_statusCharacteristic != null &&
+          _statusCharacteristic!.properties.notify) {
+        _logger.d(
+          '🔔 [ESP32] Status characteristic supports NOTIFY, subscribing...',
+        );
         await _subscribeToStatus();
       } else if (_statusCharacteristic != null) {
         _logger.w('⚠️  [ESP32] Status characteristic does NOT support NOTIFY');
@@ -180,12 +211,16 @@ class ESP32WifiConfigService {
     try {
       if (_ssidCharacteristic == null || _passwordCharacteristic == null) {
         _logger.e('❌ [WIFI] Characteristics not ready!');
-        throw Exception('Characteristics not ready. Was connectToESP32 called?');
+        throw Exception(
+          'Characteristics not ready. Was connectToESP32 called?',
+        );
       }
 
       _logger.i('📡 [WIFI] Sending WiFi credentials to ESP32...');
       _logger.d('📡 [WIFI] SSID: "$ssid" (${ssid.length} chars)');
-      _logger.d('📡 [WIFI] Password: [${password.isNotEmpty ? '${password.length} chars (hidden)' : 'empty'}]');
+      _logger.d(
+        '📡 [WIFI] Password: [${password.isNotEmpty ? '${password.length} chars (hidden)' : 'empty'}]',
+      );
 
       // Convertir SSID y password a bytes (UTF-8)
       final ssidBytes = utf8.encode(ssid);
@@ -196,10 +231,15 @@ class ESP32WifiConfigService {
 
       // Determinar el modo de escritura basado en las propiedades
       // Solo usar WRITE_WITHOUT_RESPONSE si la característica lo soporta
-      final useWriteWithoutResponse = _ssidCharacteristic!.properties.writeWithoutResponse;
-      _logger.d('📤 [WIFI] Write mode: ${useWriteWithoutResponse ? 'WRITE_WITHOUT_RESPONSE' : 'WRITE'}');
-      _logger.d('📤 [WIFI] Characteristic supports: WRITE=${_ssidCharacteristic!.properties.write}, '
-                'WRITE_NO_RSP=${_ssidCharacteristic!.properties.writeWithoutResponse}');
+      final useWriteWithoutResponse =
+          _ssidCharacteristic!.properties.writeWithoutResponse;
+      _logger.d(
+        '📤 [WIFI] Write mode: ${useWriteWithoutResponse ? 'WRITE_WITHOUT_RESPONSE' : 'WRITE'}',
+      );
+      _logger.d(
+        '📤 [WIFI] Characteristic supports: WRITE=${_ssidCharacteristic!.properties.write}, '
+        'WRITE_NO_RSP=${_ssidCharacteristic!.properties.writeWithoutResponse}',
+      );
 
       // Enviar SSID
       _logger.d('📤 [WIFI] Writing SSID to characteristic...');
@@ -223,7 +263,9 @@ class ESP32WifiConfigService {
       );
       _logger.i('✅ [WIFI] Password sent successfully');
 
-      _logger.i('🎉 [WIFI] WiFi credentials sent successfully! ESP32 should now attempt connection.');
+      _logger.i(
+        '🎉 [WIFI] WiFi credentials sent successfully! ESP32 should now attempt connection.',
+      );
 
       return const ESP32WifiConfigResult(
         success: true,
@@ -248,7 +290,9 @@ class ESP32WifiConfigService {
 
     try {
       _logger.d('📖 [STATUS] Reading WiFi status from ESP32...');
-      final statusBytes = await _bluetoothService.readCharacteristic(_statusCharacteristic!);
+      final statusBytes = await _bluetoothService.readCharacteristic(
+        _statusCharacteristic!,
+      );
 
       if (statusBytes.isEmpty) {
         _logger.w('⚠️  [STATUS] Empty status response');
@@ -275,11 +319,15 @@ class ESP32WifiConfigService {
     try {
       _logger.i('🔔 [STATUS] Subscribing to WiFi status notifications...');
       await _statusCharacteristic!.setNotifyValue(true);
-      _statusSubscription = _statusCharacteristic!.lastValueStream.listen((value) {
+      _statusSubscription = _statusCharacteristic!.lastValueStream.listen((
+        value,
+      ) {
         if (value.isNotEmpty) {
           final statusValue = value[0];
           final status = ESP32WifiStatus.fromValue(statusValue);
-          _logger.i('🔔 [STATUS] ESP32 WiFi status update: $status (value: $statusValue)');
+          _logger.i(
+            '🔔 [STATUS] ESP32 WiFi status update: $status (value: $statusValue)',
+          );
 
           switch (status) {
             case ESP32WifiStatus.idle:

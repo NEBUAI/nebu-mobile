@@ -6,13 +6,12 @@ import '../../core/constants/app_constants.dart';
 import '../../core/utils/env_config.dart';
 
 class ApiService {
-
   ApiService({
     required this.dio,
     required FlutterSecureStorage secureStorage,
     required Logger logger,
-  })  : _secureStorage = secureStorage,
-        _logger = logger {
+  }) : _secureStorage = secureStorage,
+       _logger = logger {
     _setupDio();
   }
   final Dio dio;
@@ -43,12 +42,16 @@ class ApiService {
           return handler.next(options);
         },
         onResponse: (response, handler) {
-          _logger.d('Response: ${response.statusCode} ${response.requestOptions.path}');
+          _logger.d(
+            'Response: ${response.statusCode} ${response.requestOptions.path}',
+          );
           return handler.next(response);
         },
         onError: (error, handler) async {
           _logger
-            ..e('Error: ${error.response?.statusCode} ${error.requestOptions.path}')
+            ..e(
+              'Error: ${error.response?.statusCode} ${error.requestOptions.path}',
+            )
             ..e('Error message: ${error.message}');
 
           // Handle 401 Unauthorized - Try to refresh token
@@ -70,15 +73,19 @@ class ApiService {
                   ),
                 );
 
-                final newAccessToken = refreshResponse.data?['accessToken'] as String;
+                final newAccessToken =
+                    refreshResponse.data?['accessToken'] as String;
                 await _secureStorage.write(
                   key: AppConstants.keyAccessToken,
                   value: newAccessToken,
                 );
 
                 // Retry the original request with new token
-                error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-                final retryResponse = await dio.fetch<dynamic>(error.requestOptions);
+                error.requestOptions.headers['Authorization'] =
+                    'Bearer $newAccessToken';
+                final retryResponse = await dio.fetch<dynamic>(
+                  error.requestOptions,
+                );
                 return handler.resolve(retryResponse);
               } on Exception catch (e) {
                 _logger.e('Token refresh failed: $e');

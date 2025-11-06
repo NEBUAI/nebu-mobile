@@ -11,7 +11,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       body: DecoratedBox(
         decoration: AppTheme.primaryGradientDecoration,
@@ -42,9 +42,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: SvgPicture.asset(
-                        'assets/icon_flow.svg',
-                      ),
+                      child: SvgPicture.asset('assets/icon_flow.svg'),
                     ),
                     const SizedBox(height: 32),
                     Text(

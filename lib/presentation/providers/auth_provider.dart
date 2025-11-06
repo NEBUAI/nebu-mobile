@@ -8,12 +8,15 @@ import '../../data/models/user.dart';
 import '../../data/services/auth_service.dart';
 
 // Providers
-final authServiceProvider = Provider<AuthService>((ref) => throw UnimplementedError());
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) => throw UnimplementedError());
+final authServiceProvider = Provider<AuthService>(
+  (ref) => throw UnimplementedError(),
+);
+final sharedPreferencesProvider = Provider<SharedPreferences>(
+  (ref) => throw UnimplementedError(),
+);
 
 // Auth state
 class AuthState {
-
   AuthState({
     this.user,
     this.isAuthenticated = false,
@@ -31,11 +34,11 @@ class AuthState {
     bool? isLoading,
     String? error,
   }) => AuthState(
-      user: user ?? this.user,
-      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-    );
+    user: user ?? this.user,
+    isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+    isLoading: isLoading ?? this.isLoading,
+    error: error ?? this.error,
+  );
 }
 
 // Auth notifier
@@ -57,20 +60,16 @@ class AuthNotifier extends Notifier<AuthState> {
     if (isAuth) {
       final userJson = _prefs.getString(AppConstants.keyUser);
       if (userJson != null) {
-        final user = User.fromJson(json.decode(userJson) as Map<String, dynamic>);
-        state = state.copyWith(
-          user: user,
-          isAuthenticated: true,
+        final user = User.fromJson(
+          json.decode(userJson) as Map<String, dynamic>,
         );
+        state = state.copyWith(user: user, isAuthenticated: true);
       }
     }
   }
 
   // Login with email/password
-  Future<bool> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<bool> login({required String email, required String password}) async {
     state = state.copyWith(isLoading: true);
 
     try {
@@ -95,10 +94,7 @@ class AuthNotifier extends Notifier<AuthState> {
         return false;
       }
     } on Exception catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
       return false;
     }
   }
@@ -136,10 +132,7 @@ class AuthNotifier extends Notifier<AuthState> {
         return false;
       }
     } on Exception catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
       return false;
     }
   }
@@ -167,10 +160,7 @@ class AuthNotifier extends Notifier<AuthState> {
         return false;
       }
     } on Exception catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
       return false;
     }
   }
@@ -198,10 +188,7 @@ class AuthNotifier extends Notifier<AuthState> {
         return false;
       }
     } on Exception catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
       return false;
     }
   }
@@ -229,10 +216,7 @@ class AuthNotifier extends Notifier<AuthState> {
         return false;
       }
     } on Exception catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
       return false;
     }
   }
@@ -246,10 +230,7 @@ class AuthNotifier extends Notifier<AuthState> {
 
   // Save user to storage
   Future<void> _saveUser(User user) async {
-    await _prefs.setString(
-      AppConstants.keyUser,
-      json.encode(user.toJson()),
-    );
+    await _prefs.setString(AppConstants.keyUser, json.encode(user.toJson()));
   }
 
   // Update user
@@ -260,4 +241,6 @@ class AuthNotifier extends Notifier<AuthState> {
 }
 
 // Provider
-final authProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
+final authProvider = NotifierProvider<AuthNotifier, AuthState>(
+  AuthNotifier.new,
+);

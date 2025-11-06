@@ -32,7 +32,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al cargar juguetes: ${e.toString()}'),
+            content: Text('Error al cargar juguetes: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -46,9 +46,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Eliminar juguete'),
-        content: Text(
-          '¿Estás seguro de que deseas eliminar "${toy.name}"?',
-        ),
+        content: Text('¿Estás seguro de que deseas eliminar "${toy.name}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -56,9 +54,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-            ),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('Eliminar'),
           ),
         ],
@@ -81,7 +77,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al eliminar: ${e.toString()}'),
+            content: Text('Error al eliminar: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -126,7 +122,9 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               child: Icon(
                 Icons.smart_toy,
                 size: 40,
-                color: isOnline ? theme.colorScheme.primary : theme.disabledColor,
+                color: isOnline
+                    ? theme.colorScheme.primary
+                    : theme.disabledColor,
               ),
             ),
             const SizedBox(height: 16),
@@ -146,9 +144,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                isOnline
-                    ? 'toys.online'.tr()
-                    : 'toys.offline'.tr(),
+                isOnline ? 'toys.online'.tr() : 'toys.offline'.tr(),
                 style: TextStyle(
                   color: isOnline ? Colors.green : Colors.red,
                   fontWeight: FontWeight.w600,
@@ -356,7 +352,9 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             'Agrega tu primer juguete para comenzar',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -378,12 +376,14 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     ),
                   ] else ...[
                     // Display toys from API
-                    ...toys.map((toy) => _ToyCard(
-                          toy: toy,
-                          theme: theme,
-                          isDark: isDark,
-                          onTap: () => _showToyDetails(toy, theme, isDark),
-                        )),
+                    ...toys.map(
+                      (toy) => _ToyCard(
+                        toy: toy,
+                        theme: theme,
+                        isDark: isDark,
+                        onTap: () => _showToyDetails(toy, theme, isDark),
+                      ),
+                    ),
                   ],
 
                   if (toys.isNotEmpty) ...[
@@ -411,7 +411,9 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             'toys.add_more_hint'.tr(),
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
                               height: 1.4,
                             ),
                           ),
@@ -456,9 +458,7 @@ class _ToyCard extends StatelessWidget {
       color: theme.colorScheme.surface,
       elevation: isDark ? 4 : 2,
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
@@ -478,7 +478,9 @@ class _ToyCard extends StatelessWidget {
                 child: Icon(
                   Icons.smart_toy,
                   size: 28,
-                  color: isOnline ? theme.colorScheme.primary : theme.disabledColor,
+                  color: isOnline
+                      ? theme.colorScheme.primary
+                      : theme.disabledColor,
                 ),
               ),
               const SizedBox(width: 16),
@@ -497,7 +499,9 @@ class _ToyCard extends StatelessWidget {
                     Text(
                       toy.model ?? 'Nebu Robot',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.6,
+                        ),
                       ),
                     ),
                   ],

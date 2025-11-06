@@ -5,11 +5,9 @@ import '../models/user.dart';
 import 'api_service.dart';
 
 class UserService {
-  UserService({
-    required ApiService apiService,
-    required Logger logger,
-  })  : _apiService = apiService,
-        _logger = logger;
+  UserService({required ApiService apiService, required Logger logger})
+    : _apiService = apiService,
+      _logger = logger;
 
   final ApiService _apiService;
   final Logger _logger;
@@ -90,7 +88,9 @@ class UserService {
       if (username != null) data['username'] = username;
       if (bio != null) data['bio'] = bio;
       if (phone != null) data['phone'] = phone;
-      if (preferredLanguage != null) data['preferredLanguage'] = preferredLanguage;
+      if (preferredLanguage != null) {
+        data['preferredLanguage'] = preferredLanguage;
+      }
 
       final response = await _apiService.patch<Map<String, dynamic>>(
         '/users/me',
@@ -113,7 +113,9 @@ class UserService {
     try {
       _logger.d('Fetching user by ID: $userId');
 
-      final response = await _apiService.get<Map<String, dynamic>>('/users/$userId');
+      final response = await _apiService.get<Map<String, dynamic>>(
+        '/users/$userId',
+      );
 
       _logger.d('User fetched successfully');
       return User.fromJson(response);

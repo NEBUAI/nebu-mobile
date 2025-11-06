@@ -33,23 +33,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       duration: const Duration(milliseconds: 1200),
     );
 
-    _iconScaleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
-      CurvedAnimation(
-        parent: _iconController,
-        curve: Curves.elasticOut,
-      ),
+    _iconScaleAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _iconController, curve: Curves.elasticOut),
     );
 
-    _iconOpacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
+    _iconOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _iconController,
-        curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
+        curve: const Interval(0, 0.5, curve: Curves.easeIn),
       ),
     );
 
@@ -59,25 +50,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       duration: const Duration(milliseconds: 800),
     );
 
-    _textSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1.5),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _textController,
-        curve: Curves.easeOutCubic,
-      ),
-    );
+    _textSlideAnimation =
+        Tween<Offset>(begin: const Offset(0, 1.5), end: Offset.zero).animate(
+          CurvedAnimation(parent: _textController, curve: Curves.easeOutCubic),
+        );
 
     _textOpacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
-      CurvedAnimation(
-        parent: _textController,
-        curve: Curves.easeIn,
-      ),
-    );
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _textController, curve: Curves.easeIn));
 
     // Iniciar secuencia de animaciones
     _startAnimations();
@@ -123,82 +104,82 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      backgroundColor: const Color(0xFF6B4EFF),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Ícono del gatito animado
-              AnimatedBuilder(
-                animation: _iconController,
-                builder: (context, child) => Opacity(
-                  opacity: _iconOpacityAnimation.value,
-                  child: Transform.scale(
-                    scale: _iconScaleAnimation.value,
-                    child: SvgPicture.asset(
-                      'assets/icon_flow.svg',
-                      width: 120,
-                      height: 120,
-                      colorFilter: const ColorFilter.mode(
-                        Colors.white,
-                        BlendMode.srcIn,
-                      ),
+    backgroundColor: const Color(0xFF6B4EFF),
+    body: SafeArea(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Ícono del gatito animado
+            AnimatedBuilder(
+              animation: _iconController,
+              builder: (context, child) => Opacity(
+                opacity: _iconOpacityAnimation.value,
+                child: Transform.scale(
+                  scale: _iconScaleAnimation.value,
+                  child: SvgPicture.asset(
+                    'assets/icon_flow.svg',
+                    width: 120,
+                    height: 120,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
                     ),
                   ),
                 ),
               ),
+            ),
 
-              const SizedBox(height: 32),
+            const SizedBox(height: 32),
 
-              // Texto "FLOW" animado
-              AnimatedBuilder(
-                animation: _textController,
-                builder: (context, child) => SlideTransition(
-                  position: _textSlideAnimation,
-                  child: Opacity(
-                    opacity: _textOpacityAnimation.value,
-                    child: Text(
-                      'FLOW',
-                      style: GoogleFonts.poppins(
-                        fontSize: 64,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        letterSpacing: 6,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withValues(alpha: 0.25),
-                            offset: const Offset(0, 4),
-                            blurRadius: 12,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              // Subtítulo animado
-              AnimatedBuilder(
-                animation: _textController,
-                builder: (context, child) => Opacity(
+            // Texto "FLOW" animado
+            AnimatedBuilder(
+              animation: _textController,
+              builder: (context, child) => SlideTransition(
+                position: _textSlideAnimation,
+                child: Opacity(
                   opacity: _textOpacityAnimation.value,
                   child: Text(
-                    'Powered by Nebu',
+                    'FLOW',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white.withValues(alpha: 0.85),
-                      letterSpacing: 2,
+                      fontSize: 64,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 6,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withValues(alpha: 0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 12,
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 12),
+
+            // Subtítulo animado
+            AnimatedBuilder(
+              animation: _textController,
+              builder: (context, child) => Opacity(
+                opacity: _textOpacityAnimation.value,
+                child: Text(
+                  'Powered by Nebu',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white.withValues(alpha: 0.85),
+                    letterSpacing: 2,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-    );
+    ),
+  );
 }

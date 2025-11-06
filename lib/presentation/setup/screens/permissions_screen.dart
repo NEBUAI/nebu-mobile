@@ -23,7 +23,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
+      backgroundColor: isDark
+          ? AppTheme.backgroundDark
+          : AppTheme.backgroundLight,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -36,19 +38,16 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                 totalSteps: controller.totalSteps,
               ),
               const SizedBox(height: 40),
-              
+
               // Title
               const GradientText(
                 'Permissions',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Subtitle
               Text(
                 'We need a few permissions to provide you with the best experience',
@@ -59,9 +58,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 40),
-              
+
               // Permissions list
               Expanded(
                 child: Column(
@@ -69,7 +68,8 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                     _buildPermissionCard(
                       icon: Icons.mic,
                       title: 'Microphone',
-                      description: 'Required for voice commands and audio features',
+                      description:
+                          'Required for voice commands and audio features',
                       isGranted: controller.microphonePermission.value,
                       onTap: _requestMicrophonePermission,
                       isDark: isDark,
@@ -96,7 +96,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   ],
                 ),
               ),
-              
+
               // Action buttons
               Column(
                 children: [
@@ -122,7 +122,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
             ],
           ),
@@ -140,93 +140,93 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     required bool isDark,
     bool isOptional = false,
   }) => Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isGranted
-              ? AppTheme.primaryLight
-              : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
-          width: 2,
-        ),
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(
+        color: isGranted
+            ? AppTheme.primaryLight
+            : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
+        width: 2,
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: isGranted
-                  ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                  : (isDark ? Colors.grey[700] : Colors.grey[200]),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: isGranted ? AppTheme.primaryLight : Colors.grey[600],
-              size: 24,
-            ),
+    ),
+    child: Row(
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: isGranted
+                ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                : (isDark ? Colors.grey[700] : Colors.grey[200]),
+            borderRadius: BorderRadius.circular(12),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+          child: Icon(
+            icon,
+            color: isGranted ? AppTheme.primaryLight : Colors.grey[600],
+            size: 24,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (isOptional) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
+                        'Optional',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.orange,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                    if (isOptional) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.orange.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text(
-                          'Optional',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.orange,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
                   ],
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          IconButton(
-            onPressed: onTap,
-            icon: Icon(
-              isGranted ? Icons.check_circle : Icons.radio_button_unchecked,
-              color: isGranted ? AppTheme.primaryLight : Colors.grey[600],
-              size: 28,
-            ),
+        ),
+        IconButton(
+          onPressed: onTap,
+          icon: Icon(
+            isGranted ? Icons.check_circle : Icons.radio_button_unchecked,
+            color: isGranted ? AppTheme.primaryLight : Colors.grey[600],
+            size: 28,
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
   Future<void> _requestMicrophonePermission() async {
     setState(() {
@@ -236,7 +236,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     try {
       final status = await Permission.microphone.request();
       controller.microphonePermission.value = status.isGranted;
-      
+
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Microphone');
       }
@@ -257,7 +257,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     try {
       final status = await Permission.notification.request();
       controller.notificationsPermission.value = status.isGranted;
-      
+
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Notifications');
       }
@@ -278,7 +278,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     try {
       final status = await Permission.camera.request();
       controller.cameraPermission.value = status.isGranted;
-      
+
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Camera');
       }

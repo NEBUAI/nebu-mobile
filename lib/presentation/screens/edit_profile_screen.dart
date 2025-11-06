@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../data/services/user_service.dart';
 import '../providers/auth_provider.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -149,16 +147,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                             : Center(
                                 child: Text(
                                   (user?.name ?? 'U')[0].toUpperCase(),
-                                  style: theme.textTheme.displayMedium?.copyWith(
-                                    color: AppTheme.primaryLight,
-                                  ),
+                                  style: theme.textTheme.displayMedium
+                                      ?.copyWith(color: AppTheme.primaryLight),
                                 ),
                               ),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: Container(
+                        child: DecoratedBox(
                           decoration: BoxDecoration(
                             color: AppTheme.primaryLight,
                             shape: BoxShape.circle,
@@ -168,7 +165,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                             ),
                           ),
                           child: IconButton(
-                            icon: const Icon(Icons.camera_alt, color: Colors.white),
+                            icon: const Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                            ),
                             onPressed: () {
                               // TODO: Implement image picker
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -269,8 +269,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value, ThemeData theme) {
-    return Padding(
+  Widget _buildInfoRow(String label, String value, ThemeData theme) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -293,7 +292,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         ],
       ),
     );
-  }
 
   void _showDeleteAccountDialog() {
     showDialog<void>(
@@ -319,9 +317,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Delete'),
           ),
         ],

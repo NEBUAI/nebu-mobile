@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Configuración del agente de voz
 class VoiceAgentConfig {
-
   const VoiceAgentConfig({
     required this.apiKey,
     this.model = 'gpt-4o',
@@ -26,7 +25,6 @@ class VoiceAgentConfig {
 
 /// Mensaje de conversación
 class ConversationMessage {
-
   const ConversationMessage({
     required this.id,
     required this.role,
@@ -40,7 +38,9 @@ class ConversationMessage {
         id: json['id'] as String,
         role: json['role'] as String,
         content: json['content'] as String,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] as int),
+        timestamp: DateTime.fromMillisecondsSinceEpoch(
+          json['timestamp'] as int,
+        ),
         audioUrl: json['audioUrl'] as String?,
       );
   final String id;
@@ -59,24 +59,15 @@ class ConversationMessage {
 }
 
 /// Estados del agente de voz
-enum VoiceAgentStatus {
-  idle,
-  listening,
-  processing,
-  speaking,
-  error,
-}
+enum VoiceAgentStatus { idle, listening, processing, speaking, error }
 
 /// Servicio de OpenAI Voice Agent
 class OpenAIVoiceService {
-
-  OpenAIVoiceService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio,
-       _recorder = AudioRecorder(),
-       _audioPlayer = AudioPlayer();
+  OpenAIVoiceService({required Logger logger, required Dio dio})
+    : _logger = logger,
+      _dio = dio,
+      _recorder = AudioRecorder(),
+      _audioPlayer = AudioPlayer();
   final Logger _logger;
   final Dio _dio;
   final AudioRecorder _recorder;
@@ -86,11 +77,11 @@ class OpenAIVoiceService {
   bool _isInitialized = false;
   VoiceAgentStatus _status = VoiceAgentStatus.idle;
   final List<ConversationMessage> _conversation = [];
-  
+
   // Streams para notificaciones
-  final StreamController<VoiceAgentStatus> _statusController = 
+  final StreamController<VoiceAgentStatus> _statusController =
       StreamController<VoiceAgentStatus>.broadcast();
-  final StreamController<ConversationMessage> _messageController = 
+  final StreamController<ConversationMessage> _messageController =
       StreamController<ConversationMessage>.broadcast();
 
   // Callbacks
@@ -101,17 +92,17 @@ class OpenAIVoiceService {
   Future<void> initialize(VoiceAgentConfig config) async {
     try {
       _config = config;
-      
+
       // Configurar Dio con la API key
       _dio.options.headers['Authorization'] = 'Bearer ${config.apiKey}';
       _dio.options.headers['Content-Type'] = 'application/json';
-      
+
       // Solicitar permisos de audio
       await _requestAudioPermissions();
-      
+
       // Configurar audio player
       await _audioPlayer.setVolume(1);
-      
+
       _isInitialized = true;
       _logger.i('OpenAI Voice Service initialized successfully');
     } catch (e) {
@@ -166,7 +157,10 @@ class OpenAIVoiceService {
         _conversation
           ..clear()
           ..addAll(
-            conversationJson.map((json) => ConversationMessage.fromJson(json as Map<String, dynamic>)),
+            conversationJson.map(
+              (json) =>
+                  ConversationMessage.fromJson(json as Map<String, dynamic>),
+            ),
           );
       }
     } on Exception catch (e) {
@@ -186,7 +180,7 @@ class OpenAIVoiceService {
 
     try {
       _setStatus(VoiceAgentStatus.listening);
-      
+
       // Verificar permisos
       final hasPermission = await _recorder.hasPermission();
       if (!hasPermission) {
@@ -195,10 +189,7 @@ class OpenAIVoiceService {
 
       // Iniciar grabación
       await _recorder.start(
-        const RecordConfig(
-          encoder: AudioEncoder.wav,
-          sampleRate: 16000,
-        ),
+        const RecordConfig(encoder: AudioEncoder.wav, sampleRate: 16000),
         path: '/tmp/voice_input.wav',
       );
 
@@ -218,7 +209,7 @@ class OpenAIVoiceService {
 
     try {
       _setStatus(VoiceAgentStatus.processing);
-      
+
       // Detener grabación
       final audioPath = await _recorder.stop();
       if (audioPath == null) {
@@ -248,10 +239,7 @@ class OpenAIVoiceService {
 
       // Preparar conversación para contexto
       final conversationMessages = _conversation
-          .map((msg) => {
-                'role': msg.role,
-                'content': msg.content,
-              })
+          .map((msg) => {'role': msg.role, 'content': msg.content})
           .toList();
 
       // Llamada a OpenAI API
@@ -262,7 +250,8 @@ class OpenAIVoiceService {
           'messages': [
             {
               'role': 'system',
-              'content': 'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config!.language}.',
+              'content':
+                  'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config!.language}.',
             },
             ...conversationMessages,
             {
@@ -270,14 +259,12 @@ class OpenAIVoiceService {
               'content': [
                 {
                   'type': 'text',
-                  'text': 'Transcribe este audio y responde a la pregunta o comentario.',
+                  'text':
+                      'Transcribe este audio y responde a la pregunta o comentario.',
                 },
                 {
                   'type': 'input_audio',
-                  'input_audio': {
-                    'data': audioBase64,
-                    'format': 'wav',
-                  },
+                  'input_audio': {'data': audioBase64, 'format': 'wav'},
                 },
               ],
             },
@@ -288,13 +275,15 @@ class OpenAIVoiceService {
       );
 
       final data = response.data!;
-      final assistantMessage = data['choices'][0]['message']['content'] as String;
-      
+      final assistantMessage =
+          data['choices'][0]['message']['content'] as String;
+
       // Crear mensaje del usuario (transcripción)
       final userMessage = ConversationMessage(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         role: 'user',
-        content: 'Transcripción de audio', // En una implementación real, obtendrías la transcripción
+        content:
+            'Transcripción de audio', // En una implementación real, obtendrías la transcripción
         timestamp: DateTime.now(),
         audioUrl: audioPath,
       );
@@ -309,13 +298,12 @@ class OpenAIVoiceService {
 
       _addMessage(userMessage);
       _addMessage(assistantMsg);
-      
+
       // Guardar conversación
       await _saveConversation();
-      
+
       // Generar audio de respuesta
       await _generateAndPlayAudio(assistantMessage);
-      
     } catch (e) {
       _logger.e('Error processing audio with OpenAI: $e');
       _setStatus(VoiceAgentStatus.error);
@@ -337,9 +325,7 @@ class OpenAIVoiceService {
           'voice': _config!.voice,
           'response_format': 'mp3',
         },
-        options: Options(
-          responseType: ResponseType.bytes,
-        ),
+        options: Options(responseType: ResponseType.bytes),
       );
 
       // Guardar audio temporal
@@ -374,10 +360,7 @@ class OpenAIVoiceService {
       _setStatus(VoiceAgentStatus.processing);
 
       final conversationMessages = _conversation
-          .map((msg) => {
-                'role': msg.role,
-                'content': msg.content,
-              })
+          .map((msg) => {'role': msg.role, 'content': msg.content})
           .toList();
 
       final response = await _dio.post<Map<String, dynamic>>(
@@ -387,13 +370,11 @@ class OpenAIVoiceService {
           'messages': [
             {
               'role': 'system',
-              'content': 'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config!.language}.',
+              'content':
+                  'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config!.language}.',
             },
             ...conversationMessages,
-            {
-              'role': 'user',
-              'content': text,
-            },
+            {'role': 'user', 'content': text},
           ],
           'max_tokens': 1000,
           'temperature': 0.7,
@@ -401,7 +382,8 @@ class OpenAIVoiceService {
       );
 
       final data = response.data!;
-      final assistantMessage = data['choices'][0]['message']['content'] as String;
+      final assistantMessage =
+          data['choices'][0]['message']['content'] as String;
 
       // Crear mensajes
       final userMessage = ConversationMessage(
@@ -420,12 +402,11 @@ class OpenAIVoiceService {
 
       _addMessage(userMessage);
       _addMessage(assistantMsg);
-      
+
       await _saveConversation();
-      
+
       // Generar audio de respuesta
       await _generateAndPlayAudio(assistantMessage);
-      
     } catch (e) {
       _logger.e('Error sending text message: $e');
       _setStatus(VoiceAgentStatus.error);
@@ -434,7 +415,8 @@ class OpenAIVoiceService {
   }
 
   /// Obtener historial de conversación
-  List<ConversationMessage> get conversation => List.unmodifiable(_conversation);
+  List<ConversationMessage> get conversation =>
+      List.unmodifiable(_conversation);
 
   /// Obtener estado actual
   VoiceAgentStatus get status => _status;
@@ -444,7 +426,6 @@ class OpenAIVoiceService {
 
   /// Stream de mensajes
   Stream<ConversationMessage> get messageStream => _messageController.stream;
-
 
   /// Limpiar conversación
   Future<void> clearConversation() async {

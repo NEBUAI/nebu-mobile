@@ -5,11 +5,9 @@ import '../models/toy.dart';
 import 'api_service.dart';
 
 class ToyService {
-  ToyService({
-    required ApiService apiService,
-    required Logger logger,
-  })  : _apiService = apiService,
-        _logger = logger;
+  ToyService({required ApiService apiService, required Logger logger})
+    : _apiService = apiService,
+      _logger = logger;
 
   final ApiService _apiService;
   final Logger _logger;
@@ -221,9 +219,7 @@ class ToyService {
       if (e.response?.statusCode == 404) {
         throw Exception('Juguete no encontrado');
       } else if (e.response?.statusCode == 409) {
-        throw Exception(
-          'No se puede eliminar el juguete porque está en uso',
-        );
+        throw Exception('No se puede eliminar el juguete porque está en uso');
       }
       throw Exception('Error al eliminar el juguete: ${e.message}');
     } catch (e) {

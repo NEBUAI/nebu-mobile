@@ -4,7 +4,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 /// Red WiFi
 class WiFiNetwork {
-
   const WiFiNetwork({
     required this.ssid,
     required this.rssi,
@@ -13,14 +12,13 @@ class WiFiNetwork {
     this.isConnected = false,
   });
 
-  factory WiFiNetwork.fromJson(Map<String, dynamic> json) =>
-      WiFiNetwork(
-        ssid: json['ssid'] as String,
-        rssi: json['rssi'] as int,
-        security: json['security'] as String,
-        frequency: json['frequency'] as int,
-        isConnected: json['isConnected'] as bool? ?? false,
-      );
+  factory WiFiNetwork.fromJson(Map<String, dynamic> json) => WiFiNetwork(
+    ssid: json['ssid'] as String,
+    rssi: json['rssi'] as int,
+    security: json['security'] as String,
+    frequency: json['frequency'] as int,
+    isConnected: json['isConnected'] as bool? ?? false,
+  );
   final String ssid;
   final int rssi;
   final String security; // 'Open' | 'WPA' | 'WPA2' | 'WPA3' | 'WEP'
@@ -38,11 +36,7 @@ class WiFiNetwork {
 
 /// Credenciales WiFi
 class WiFiCredentials {
-
-  const WiFiCredentials({
-    required this.ssid,
-    required this.password,
-  });
+  const WiFiCredentials({required this.ssid, required this.password});
 
   factory WiFiCredentials.fromJson(Map<String, dynamic> json) =>
       WiFiCredentials(
@@ -52,15 +46,11 @@ class WiFiCredentials {
   final String ssid;
   final String password;
 
-  Map<String, dynamic> toJson() => {
-    'ssid': ssid,
-    'password': password,
-  };
+  Map<String, dynamic> toJson() => {'ssid': ssid, 'password': password};
 }
 
 /// Resultado de conexión WiFi
 class WiFiConnectionResult {
-
   const WiFiConnectionResult({
     required this.success,
     required this.message,
@@ -72,7 +62,9 @@ class WiFiConnectionResult {
         success: json['success'] as bool,
         message: json['message'] as String,
         connectedNetwork: json['connectedNetwork'] != null
-            ? WiFiNetwork.fromJson(json['connectedNetwork'] as Map<String, dynamic>)
+            ? WiFiNetwork.fromJson(
+                json['connectedNetwork'] as Map<String, dynamic>,
+              )
             : null,
       );
   final bool success;
@@ -88,17 +80,16 @@ class WiFiConnectionResult {
 
 /// Servicio WiFi
 class WiFiService {
-
   WiFiService({required Logger logger}) : _logger = logger;
   final Logger _logger;
 
   bool _isScanning = false;
   WiFiNetwork? _currentNetwork;
-  
+
   // Streams para notificaciones
-  final StreamController<List<WiFiNetwork>> _networksController = 
+  final StreamController<List<WiFiNetwork>> _networksController =
       StreamController<List<WiFiNetwork>>.broadcast();
-  final StreamController<WiFiConnectionResult> _connectionController = 
+  final StreamController<WiFiConnectionResult> _connectionController =
       StreamController<WiFiConnectionResult>.broadcast();
 
   /// Escanear redes WiFi disponibles
@@ -128,7 +119,7 @@ class WiFiService {
 
       throw UnimplementedError(
         'WiFi scanning requires a native plugin. '
-        'Please implement using wifi_scan or wifi_iot package.'
+        'Please implement using wifi_scan or wifi_iot package.',
       );
 
       return networks;
@@ -141,7 +132,9 @@ class WiFiService {
   }
 
   /// Conectar a una red WiFi
-  Future<WiFiConnectionResult> connectToNetwork(WiFiCredentials credentials) async {
+  Future<WiFiConnectionResult> connectToNetwork(
+    WiFiCredentials credentials,
+  ) async {
     try {
       _logger.i('Attempting to connect to WiFi: ${credentials.ssid}');
 
@@ -150,16 +143,17 @@ class WiFiService {
 
       _logger.w('WiFi connection not implemented - requires native plugin');
 
-      final result = WiFiConnectionResult(
+      const result = WiFiConnectionResult(
         success: false,
-        message: 'WiFi connection not implemented. Use backend API to configure robot WiFi.',
+        message:
+            'WiFi connection not implemented. Use backend API to configure robot WiFi.',
       );
 
       _connectionController.add(result);
 
       throw UnimplementedError(
         'WiFi connection requires a native plugin or should be handled via backend API. '
-        'For robot WiFi configuration, use RobotService.configureWiFi() instead.'
+        'For robot WiFi configuration, use RobotService.configureWiFi() instead.',
       );
 
       return result;
@@ -179,17 +173,17 @@ class WiFiService {
   Future<void> disconnect() async {
     try {
       _logger.i('Disconnecting from WiFi');
-      
+
       // Simular desconexión
       await Future<void>.delayed(const Duration(seconds: 1));
-      
+
       _currentNetwork = null;
-      
+
       const result = WiFiConnectionResult(
         success: true,
         message: 'Disconnected from WiFi',
       );
-      
+
       _connectionController.add(result);
       _logger.i('WiFi disconnected');
     } catch (e) {
@@ -212,7 +206,7 @@ class WiFiService {
     if (_currentNetwork == null) {
       return null;
     }
-    
+
     return {
       'ssid': _currentNetwork!.ssid,
       'rssi': _currentNetwork!.rssi,
@@ -244,7 +238,8 @@ class WiFiService {
   Stream<List<WiFiNetwork>> get networksStream => _networksController.stream;
 
   /// Stream de resultados de conexión
-  Stream<WiFiConnectionResult> get connectionStream => _connectionController.stream;
+  Stream<WiFiConnectionResult> get connectionStream =>
+      _connectionController.stream;
 
   /// Verificar permisos necesarios
   Future<bool> checkPermissions() async {

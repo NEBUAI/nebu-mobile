@@ -44,17 +44,11 @@ void main() async {
   // Initialize dependencies
   final sharedPreferences = await SharedPreferences.getInstance();
   const secureStorage = FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
   final dio = Dio();
   final logger = Logger(
-    printer: PrettyPrinter(
-      methodCount: 0,
-      errorMethodCount: 5,
-      lineLength: 50,
-    ),
+    printer: PrettyPrinter(methodCount: 0, errorMethodCount: 5, lineLength: 50),
   );
 
   // Initialize services
@@ -82,15 +76,9 @@ void main() async {
     logger: logger,
   );
 
-  final userService = UserService(
-    apiService: apiService,
-    logger: logger,
-  );
+  final userService = UserService(apiService: apiService, logger: logger);
 
-  final toyService = ToyService(
-    apiService: apiService,
-    logger: logger,
-  );
+  final toyService = ToyService(apiService: apiService, logger: logger);
 
   runApp(
     EasyLocalization(
@@ -104,7 +92,9 @@ void main() async {
           authServiceProvider.overrideWithValue(authService),
           bluetoothServiceProvider.overrideWithValue(bluetoothService),
           deviceServiceProvider.overrideWithValue(deviceService),
-          esp32WifiConfigServiceProvider.overrideWithValue(esp32WifiConfigService),
+          esp32WifiConfigServiceProvider.overrideWithValue(
+            esp32WifiConfigService,
+          ),
           userServiceProvider.overrideWithValue(userService),
           toyServiceProvider.overrideWithValue(toyService),
           loggerProvider.overrideWithValue(logger),

@@ -4,20 +4,14 @@ import 'package:logger/logger.dart';
 
 /// Solicitud de token de dispositivo
 class DeviceTokenRequest {
-
-  const DeviceTokenRequest({
-    required this.deviceId,
-  });
+  const DeviceTokenRequest({required this.deviceId});
   final String deviceId;
 
-  Map<String, dynamic> toJson() => {
-    'device_id': deviceId,
-  };
+  Map<String, dynamic> toJson() => {'device_id': deviceId};
 }
 
 /// Respuesta de token de dispositivo
 class DeviceTokenResponse {
-
   const DeviceTokenResponse({
     required this.accessToken,
     required this.roomName,
@@ -43,31 +37,23 @@ class DeviceTokenResponse {
 
 /// Error de token de dispositivo
 class DeviceTokenError {
-
-  const DeviceTokenError({
-    required this.error,
-  });
+  const DeviceTokenError({required this.error});
 
   factory DeviceTokenError.fromJson(Map<String, dynamic> json) =>
-      DeviceTokenError(
-        error: json['error'] as String,
-      );
+      DeviceTokenError(error: json['error'] as String);
   final String error;
 }
 
 /// Servicio de tokens de dispositivo
 class DeviceTokenService {
-
-  DeviceTokenService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio;
+  DeviceTokenService({required Logger logger, required Dio dio})
+    : _logger = logger,
+      _dio = dio;
   final Logger _logger;
   final Dio _dio;
 
   static const String _baseEndpoint = '/livekit/iot/token';
-  
+
   // Cache de tokens
   final Map<String, DeviceTokenResponse> _tokenCache = {};
   final Map<String, DateTime> _tokenExpiry = {};
@@ -94,7 +80,7 @@ class DeviceTokenService {
       );
 
       final tokenResponse = DeviceTokenResponse.fromJson(response.data!);
-      
+
       // Guardar en cache
       _tokenCache[deviceId] = tokenResponse;
       _tokenExpiry[deviceId] = DateTime.now().add(
@@ -105,22 +91,22 @@ class DeviceTokenService {
       return tokenResponse;
     } catch (e) {
       _logger.e('Error requesting device token: $e');
-      
+
       // Si el dispositivo no está vinculado (404)
       if (e is DioException && e.response?.statusCode == 404) {
         throw Exception('Device not linked to user account');
       }
-      
+
       // Si el dispositivo no está autorizado (403)
       if (e is DioException && e.response?.statusCode == 403) {
         throw Exception('Device not authorized');
       }
-      
+
       // Si hay error del servidor (500)
       if (e is DioException && e.response?.statusCode == 500) {
         throw Exception('Server error occurred');
       }
-      
+
       rethrow;
     }
   }
@@ -136,11 +122,11 @@ class DeviceTokenService {
   bool _isTokenValid(String deviceId) {
     final cachedToken = _tokenCache[deviceId];
     final expiry = _tokenExpiry[deviceId];
-    
+
     if (cachedToken == null || expiry == null) {
       return false;
     }
-    
+
     return DateTime.now().isBefore(expiry);
   }
 
@@ -149,7 +135,7 @@ class DeviceTokenService {
     if (_isTokenValid(deviceId)) {
       return _tokenCache[deviceId]!;
     }
-    
+
     return requestDeviceToken(deviceId);
   }
 
@@ -159,11 +145,11 @@ class DeviceTokenService {
       _logger.i('Revoking device token for: $deviceId');
 
       await _dio.delete<void>('$_baseEndpoint/$deviceId');
-      
+
       // Remover del cache
       _tokenCache.remove(deviceId);
       _tokenExpiry.remove(deviceId);
-      
+
       _logger.i('Device token revoked successfully for: $deviceId');
       return true;
     } on Exception catch (e) {
@@ -177,16 +163,18 @@ class DeviceTokenService {
     try {
       _logger.d('Verifying token status for: $deviceId');
 
-      final response = await _dio.get<Map<String, dynamic>>('$_baseEndpoint/$deviceId/status');
+      final response = await _dio.get<Map<String, dynamic>>(
+        '$_baseEndpoint/$deviceId/status',
+      );
 
       final isValid = response.data?['valid'] as bool? ?? false;
-      
+
       if (!isValid) {
         // Remover del cache si no es válido
         _tokenCache.remove(deviceId);
         _tokenExpiry.remove(deviceId);
       }
-      
+
       _logger.d('Token status for $deviceId: ${isValid ? 'valid' : 'invalid'}');
       return isValid;
     } on Exception catch (e) {
@@ -199,18 +187,18 @@ class DeviceTokenService {
   void clearExpiredTokens() {
     final now = DateTime.now();
     final expiredDevices = <String>[];
-    
+
     _tokenExpiry.forEach((deviceId, expiry) {
       if (now.isAfter(expiry)) {
         expiredDevices.add(deviceId);
       }
     });
-    
+
     for (final deviceId in expiredDevices) {
       _tokenCache.remove(deviceId);
       _tokenExpiry.remove(deviceId);
     }
-    
+
     if (expiredDevices.isNotEmpty) {
       _logger.i('Cleared ${expiredDevices.length} expired tokens');
     }
@@ -224,7 +212,8 @@ class DeviceTokenService {
   }
 
   /// Obtener información del token desde cache
-  DeviceTokenResponse? getCachedToken(String deviceId) => _isTokenValid(deviceId) ? _tokenCache[deviceId] : null;
+  DeviceTokenResponse? getCachedToken(String deviceId) =>
+      _isTokenValid(deviceId) ? _tokenCache[deviceId] : null;
 
   /// Obtener tiempo restante del token
   Duration? getTokenTimeRemaining(String deviceId) {
@@ -232,7 +221,7 @@ class DeviceTokenService {
     if (expiry == null) {
       return null;
     }
-    
+
     final remaining = expiry.difference(DateTime.now());
     return remaining.isNegative ? null : remaining;
   }
@@ -242,7 +231,7 @@ class DeviceTokenService {
     final now = DateTime.now();
     int validTokens = 0;
     int expiredTokens = 0;
-    
+
     _tokenExpiry.forEach((deviceId, expiry) {
       if (now.isBefore(expiry)) {
         validTokens++;
@@ -250,7 +239,7 @@ class DeviceTokenService {
         expiredTokens++;
       }
     });
-    
+
     return {
       'totalTokens': _tokenCache.length,
       'validTokens': validTokens,

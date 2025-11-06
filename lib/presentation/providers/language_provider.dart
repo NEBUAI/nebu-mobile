@@ -6,21 +6,15 @@ import '../../presentation/providers/auth_provider.dart' as auth;
 
 // Language state
 class LanguageState {
-
-  LanguageState({
-    this.locale = const Locale('en'),
-    this.languageCode = 'en',
-  });
+  LanguageState({this.locale = const Locale('en'), this.languageCode = 'en'});
   final Locale locale;
   final String languageCode;
 
-  LanguageState copyWith({
-    Locale? locale,
-    String? languageCode,
-  }) => LanguageState(
-      locale: locale ?? this.locale,
-      languageCode: languageCode ?? this.languageCode,
-    );
+  LanguageState copyWith({Locale? locale, String? languageCode}) =>
+      LanguageState(
+        locale: locale ?? this.locale,
+        languageCode: languageCode ?? this.languageCode,
+      );
 }
 
 // Language notifier
@@ -36,7 +30,8 @@ class LanguageNotifier extends Notifier<LanguageState> {
 
   // Load language from storage
   Future<void> _loadLanguage() async {
-    final languageCode = _prefs.getString(AppConstants.keyLanguage) ??
+    final languageCode =
+        _prefs.getString(AppConstants.keyLanguage) ??
         AppConstants.languageEnglish;
 
     if (AppConstants.supportedLanguages.contains(languageCode)) {
@@ -82,4 +77,6 @@ class LanguageNotifier extends Notifier<LanguageState> {
 }
 
 // Provider
-final languageProvider = NotifierProvider<LanguageNotifier, LanguageState>(LanguageNotifier.new);
+final languageProvider = NotifierProvider<LanguageNotifier, LanguageState>(
+  LanguageNotifier.new,
+);

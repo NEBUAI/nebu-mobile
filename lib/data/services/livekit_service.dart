@@ -9,9 +9,10 @@ import '../../core/utils/env_config.dart';
 
 /// Configuración de LiveKit
 class LiveKitConfig {
-
   const LiveKitConfig({
-    required this.roomName, required this.participantName, this.serverUrl,
+    required this.roomName,
+    required this.participantName,
+    this.serverUrl,
     this.token,
   });
   final String? serverUrl;
@@ -22,7 +23,6 @@ class LiveKitConfig {
 
 /// Datos de dispositivo IoT
 class IoTDeviceData {
-
   const IoTDeviceData({
     required this.deviceId,
     required this.deviceType,
@@ -30,13 +30,12 @@ class IoTDeviceData {
     required this.timestamp,
   });
 
-  factory IoTDeviceData.fromJson(Map<String, dynamic> json) =>
-      IoTDeviceData(
-        deviceId: json['deviceId'] as String,
-        deviceType: json['deviceType'] as String,
-        data: json['data'] as Map<String, dynamic>,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] as int),
-      );
+  factory IoTDeviceData.fromJson(Map<String, dynamic> json) => IoTDeviceData(
+    deviceId: json['deviceId'] as String,
+    deviceType: json['deviceType'] as String,
+    data: json['data'] as Map<String, dynamic>,
+    timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] as int),
+  );
   final String deviceId;
   final String deviceType; // 'sensor' | 'actuator' | 'camera' | 'microphone'
   final Map<String, dynamic> data;
@@ -51,21 +50,13 @@ class IoTDeviceData {
 }
 
 /// Estados de conexión
-enum LiveKitConnectionStatus {
-  disconnected,
-  connecting,
-  connected,
-  error,
-}
+enum LiveKitConnectionStatus { disconnected, connecting, connected, error }
 
 /// Servicio de LiveKit para IoT
 class LiveKitService {
-
-  LiveKitService({
-    required Logger logger,
-    required Dio dio,
-  }) : _logger = logger,
-       _dio = dio;
+  LiveKitService({required Logger logger, required Dio dio})
+    : _logger = logger,
+      _dio = dio;
   final Logger _logger;
   final Dio _dio;
 
@@ -74,9 +65,9 @@ class LiveKitService {
   LiveKitConnectionStatus _status = LiveKitConnectionStatus.disconnected;
 
   // Streams para notificaciones
-  final StreamController<LiveKitConnectionStatus> _statusController = 
+  final StreamController<LiveKitConnectionStatus> _statusController =
       StreamController<LiveKitConnectionStatus>.broadcast();
-  final StreamController<IoTDeviceData> _deviceDataController = 
+  final StreamController<IoTDeviceData> _deviceDataController =
       StreamController<IoTDeviceData>.broadcast();
 
   // Callbacks
@@ -90,21 +81,25 @@ class LiveKitService {
       _setStatus(LiveKitConnectionStatus.connecting);
 
       // Usar servidor local en desarrollo, demo server como fallback
-      final serverUrl = config.serverUrl ?? 
-          (EnvConfig.isDevelopment ? 'ws://localhost:7880' : 'wss://livekit-demo.livekit.cloud');
-      
+      final serverUrl =
+          config.serverUrl ??
+          (EnvConfig.isDevelopment
+              ? 'ws://localhost:7880'
+              : 'wss://livekit-demo.livekit.cloud');
+
       final roomName = config.roomName;
       final participantName = config.participantName;
 
       // Generar token demo para LiveKit demo server
-      final token = config.token ?? await _generateDemoToken(participantName, roomName);
+      final token =
+          config.token ?? await _generateDemoToken(participantName, roomName);
 
       _room = Room();
       _setupRoomEventHandlers();
-      
+
       await _room!.connect(serverUrl, token);
       _setStatus(LiveKitConnectionStatus.connected);
-      
+
       _logger.i('Connected to LiveKit room: $roomName');
     } catch (error) {
       _logger.e('Failed to connect to LiveKit: $error');
@@ -143,7 +138,9 @@ class LiveKitService {
   void _handleDataReceived(List<int> data) {
     try {
       final payload = utf8.decode(data);
-      final deviceData = IoTDeviceData.fromJson(jsonDecode(payload) as Map<String, dynamic>);
+      final deviceData = IoTDeviceData.fromJson(
+        jsonDecode(payload) as Map<String, dynamic>,
+      );
 
       _deviceDataController.add(deviceData);
       onDeviceDataCallback?.call(deviceData);
@@ -163,7 +160,10 @@ class LiveKitService {
   }
 
   /// Generar token demo
-  Future<String> _generateDemoToken(String participantName, String roomName) async {
+  Future<String> _generateDemoToken(
+    String participantName,
+    String roomName,
+  ) async {
     try {
       // En desarrollo, usar token demo simple
       if (EnvConfig.isDevelopment) {
@@ -173,10 +173,7 @@ class LiveKitService {
       // En producción, obtener token del servidor
       final response = await _dio.post<Map<String, dynamic>>(
         '${EnvConfig.apiBaseUrl}/livekit/token',
-        data: {
-          'participantName': participantName,
-          'roomName': roomName,
-        },
+        data: {'participantName': participantName, 'roomName': roomName},
       );
 
       return response.data?['token'] as String;
@@ -193,9 +190,11 @@ class LiveKitService {
       'sub': participantName,
       'room': roomName,
       'iss': 'nebu-demo',
-      'exp': DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch ~/ 1000,
+      'exp':
+          DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch ~/
+          1000,
     };
-    
+
     return base64Encode(utf8.encode(jsonEncode(tokenData)));
   }
 
@@ -207,13 +206,13 @@ class LiveKitService {
 
     try {
       final payload = utf8.encode(jsonEncode(deviceData.toJson()));
-      
+
       await _room!.localParticipant?.publishData(
         payload,
         topic: 'iot-device-data',
         reliable: false,
       );
-      
+
       _logger.d('Sent IoT device data: ${deviceData.deviceId}');
     } catch (e) {
       _logger.e('Error sending device data: $e');
@@ -238,15 +237,15 @@ class LiveKitService {
         'parameters': parameters,
         'timestamp': DateTime.now().millisecondsSinceEpoch,
       };
-      
+
       final payload = utf8.encode(jsonEncode(commandData));
-      
+
       await _room!.localParticipant?.publishData(
         payload,
         topic: 'device-command',
         reliable: true,
       );
-      
+
       _logger.d('Sent device command: $command to $deviceId');
     } catch (e) {
       _logger.e('Error sending device command: $e');
@@ -283,7 +282,7 @@ class LiveKitService {
   }
 
   /// Obtener participantes conectados
-  List<RemoteParticipant> get participants => 
+  List<RemoteParticipant> get participants =>
       _room?.remoteParticipants.values.toList() ?? [];
 
   /// Obtener estado de conexión
@@ -294,7 +293,6 @@ class LiveKitService {
 
   /// Stream de datos de dispositivos
   Stream<IoTDeviceData> get deviceDataStream => _deviceDataController.stream;
-
 
   /// Desconectar de LiveKit
   Future<void> disconnect() async {

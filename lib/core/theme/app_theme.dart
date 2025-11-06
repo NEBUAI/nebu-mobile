@@ -54,7 +54,7 @@ class AppTheme {
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    
+
     // Headline styles (Josefin Sans)
     headlineLarge: TextStyle(
       fontSize: 32,
@@ -71,7 +71,7 @@ class AppTheme {
       fontWeight: FontWeight.w600,
       color: textColor,
     ),
-    
+
     // Title styles (Josefin Sans)
     titleLarge: TextStyle(
       fontSize: 22,
@@ -88,7 +88,7 @@ class AppTheme {
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    
+
     // Body styles (Poppins)
     bodyLarge: TextStyle(
       fontSize: 16,
@@ -105,7 +105,7 @@ class AppTheme {
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    
+
     // Label styles (Poppins)
     labelLarge: TextStyle(
       fontSize: 14,
@@ -126,214 +126,190 @@ class AppTheme {
 
   // Light Theme
   static ThemeData get lightTheme => ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.light,
-      primaryColor: primaryLight,
-      scaffoldBackgroundColor: backgroundLight,
-      textTheme: _getTextTheme(onBackgroundLight),
-      colorScheme: const ColorScheme.light(
-        primary: primaryLight,
-        secondary: secondaryLight,
-        error: errorLight,
-        onSurface: onBackgroundLight,
+    useMaterial3: true,
+    brightness: Brightness.light,
+    primaryColor: primaryLight,
+    scaffoldBackgroundColor: backgroundLight,
+    textTheme: _getTextTheme(onBackgroundLight),
+    colorScheme: const ColorScheme.light(
+      primary: primaryLight,
+      secondary: secondaryLight,
+      error: errorLight,
+      onSurface: onBackgroundLight,
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: surfaceLight,
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: onBackgroundLight),
+      titleTextStyle: TextStyle(
+        color: onBackgroundLight,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: surfaceLight,
+    ),
+    cardTheme: const CardThemeData(
+      color: surfaceLight,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryLight,
+        foregroundColor: onPrimaryLight,
         elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: onBackgroundLight),
-        titleTextStyle: TextStyle(
-          color: onBackgroundLight,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
-      cardTheme: const CardThemeData(
-        color: surfaceLight,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: primaryLight,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        side: const BorderSide(color: primaryLight, width: 2),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: primaryLight,
-          foregroundColor: onPrimaryLight,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: surfaceLight,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
       ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: primaryLight,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          side: const BorderSide(color: primaryLight, width: 2),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: surfaceLight,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: primaryLight, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: errorLight),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: TextStyle(
-          color: onBackgroundLight.withAlpha(128),
-        ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: primaryLight, width: 2),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: surfaceLight,
-        selectedItemColor: primaryLight,
-        unselectedItemColor: Color(0xFF9CA3AF),
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: errorLight),
       ),
-    );
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      hintStyle: TextStyle(color: onBackgroundLight.withAlpha(128)),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: surfaceLight,
+      selectedItemColor: primaryLight,
+      unselectedItemColor: Color(0xFF9CA3AF),
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    ),
+  );
 
   // Dark Theme
   static ThemeData get darkTheme => ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      primaryColor: primaryDark,
-      scaffoldBackgroundColor: backgroundDark,
-      textTheme: _getTextTheme(onBackgroundDark),
-      colorScheme: const ColorScheme.dark(
-        primary: primaryDark,
-        secondary: secondaryDark,
-        surface: surfaceDark,
-        error: errorDark,
-        onSurface: onBackgroundDark,
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    primaryColor: primaryDark,
+    scaffoldBackgroundColor: backgroundDark,
+    textTheme: _getTextTheme(onBackgroundDark),
+    colorScheme: const ColorScheme.dark(
+      primary: primaryDark,
+      secondary: secondaryDark,
+      surface: surfaceDark,
+      error: errorDark,
+      onSurface: onBackgroundDark,
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: surfaceDark,
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: onBackgroundDark),
+      titleTextStyle: TextStyle(
+        color: onBackgroundDark,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: surfaceDark,
+    ),
+    cardTheme: const CardThemeData(
+      color: surfaceDark,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryDark,
+        foregroundColor: onPrimaryDark,
         elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: onBackgroundDark),
-        titleTextStyle: TextStyle(
-          color: onBackgroundDark,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
-      cardTheme: const CardThemeData(
-        color: surfaceDark,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: primaryDark,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        side: const BorderSide(color: primaryDark, width: 2),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: primaryDark,
-          foregroundColor: onPrimaryDark,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: surfaceDark,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFF374151)),
       ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: primaryDark,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          side: const BorderSide(color: primaryDark, width: 2),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFF374151)),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: surfaceDark,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF374151)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF374151)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: primaryDark, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: errorDark),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: TextStyle(
-          color: onBackgroundDark.withAlpha(128),
-        ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: primaryDark, width: 2),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: surfaceDark,
-        selectedItemColor: primaryDark,
-        unselectedItemColor: Color(0xFF6B7280),
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: errorDark),
       ),
-    );
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      hintStyle: TextStyle(color: onBackgroundDark.withAlpha(128)),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: surfaceDark,
+      selectedItemColor: primaryDark,
+      unselectedItemColor: Color(0xFF6B7280),
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    ),
+  );
 
   // Gradient Decorations
   static BoxDecoration get primaryGradientDecoration => const BoxDecoration(
-      gradient: LinearGradient(
-        colors: primaryGradient,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-    );
+    gradient: LinearGradient(
+      colors: primaryGradient,
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+  );
 
   static BoxDecoration get secondaryGradientDecoration => const BoxDecoration(
-      gradient: LinearGradient(
-        colors: secondaryGradient,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-    );
+    gradient: LinearGradient(
+      colors: secondaryGradient,
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+  );
 
   // Shadows
   static List<BoxShadow> get cardShadow => [
-      BoxShadow(
-        color: Colors.black.withAlpha(26),
-        blurRadius: 10,
-        offset: const Offset(0, 4),
-      ),
-    ];
+    BoxShadow(
+      color: Colors.black.withAlpha(26),
+      blurRadius: 10,
+      offset: const Offset(0, 4),
+    ),
+  ];
 }

@@ -1,5 +1,5 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/services/bluetooth_service.dart';
 
@@ -9,7 +9,9 @@ final bluetoothServiceProvider = Provider<BluetoothService>((ref) {
 });
 
 // Proveedor que devuelve la lista de dispositivos Bluetooth conectados actualmente.
-final connectedDevicesProvider = FutureProvider<List<fbp.BluetoothDevice>>((ref) {
+final connectedDevicesProvider = FutureProvider<List<fbp.BluetoothDevice>>((
+  ref,
+) {
   final bluetoothService = ref.watch(bluetoothServiceProvider);
   return bluetoothService.getConnectedDevices();
 });

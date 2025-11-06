@@ -7,48 +7,48 @@ part of 'toy.dart';
 // **************************************************************************
 
 _Toy _$ToyFromJson(Map<String, dynamic> json) => _Toy(
-      id: json['id'] as String,
-      iotDeviceId: json['iotDeviceId'] as String,
-      name: json['name'] as String,
-      status: $enumDecode(_$ToyStatusEnumMap, json['status']),
-      userId: json['userId'] as String,
-      model: json['model'] as String?,
-      manufacturer: json['manufacturer'] as String?,
-      firmwareVersion: json['firmwareVersion'] as String?,
-      capabilities: json['capabilities'] as Map<String, dynamic>?,
-      settings: json['settings'] as Map<String, dynamic>?,
-      notes: json['notes'] as String?,
-      batteryLevel: json['batteryLevel'] as String?,
-      signalStrength: json['signalStrength'] as String?,
-      lastConnected: json['lastConnected'] == null
-          ? null
-          : DateTime.parse(json['lastConnected'] as String),
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-    );
+  id: json['id'] as String,
+  iotDeviceId: json['iotDeviceId'] as String,
+  name: json['name'] as String,
+  status: $enumDecode(_$ToyStatusEnumMap, json['status']),
+  userId: json['userId'] as String,
+  model: json['model'] as String?,
+  manufacturer: json['manufacturer'] as String?,
+  firmwareVersion: json['firmwareVersion'] as String?,
+  capabilities: json['capabilities'] as Map<String, dynamic>?,
+  settings: json['settings'] as Map<String, dynamic>?,
+  notes: json['notes'] as String?,
+  batteryLevel: json['batteryLevel'] as String?,
+  signalStrength: json['signalStrength'] as String?,
+  lastConnected: json['lastConnected'] == null
+      ? null
+      : DateTime.parse(json['lastConnected'] as String),
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
+  updatedAt: json['updatedAt'] == null
+      ? null
+      : DateTime.parse(json['updatedAt'] as String),
+);
 
 Map<String, dynamic> _$ToyToJson(_Toy instance) => <String, dynamic>{
-      'id': instance.id,
-      'iotDeviceId': instance.iotDeviceId,
-      'name': instance.name,
-      'status': _$ToyStatusEnumMap[instance.status]!,
-      'userId': instance.userId,
-      'model': instance.model,
-      'manufacturer': instance.manufacturer,
-      'firmwareVersion': instance.firmwareVersion,
-      'capabilities': instance.capabilities,
-      'settings': instance.settings,
-      'notes': instance.notes,
-      'batteryLevel': instance.batteryLevel,
-      'signalStrength': instance.signalStrength,
-      'lastConnected': instance.lastConnected?.toIso8601String(),
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
-    };
+  'id': instance.id,
+  'iotDeviceId': instance.iotDeviceId,
+  'name': instance.name,
+  'status': _$ToyStatusEnumMap[instance.status]!,
+  'userId': instance.userId,
+  'model': instance.model,
+  'manufacturer': instance.manufacturer,
+  'firmwareVersion': instance.firmwareVersion,
+  'capabilities': instance.capabilities,
+  'settings': instance.settings,
+  'notes': instance.notes,
+  'batteryLevel': instance.batteryLevel,
+  'signalStrength': instance.signalStrength,
+  'lastConnected': instance.lastConnected?.toIso8601String(),
+  'createdAt': instance.createdAt?.toIso8601String(),
+  'updatedAt': instance.updatedAt?.toIso8601String(),
+};
 
 const _$ToyStatusEnumMap = {
   ToyStatus.active: 'active',
@@ -115,17 +115,17 @@ Map<String, dynamic> _$AssignToyResponseToJson(_AssignToyResponse instance) =>
     };
 
 _UpdateToyStatusRequest _$UpdateToyStatusRequestFromJson(
-        Map<String, dynamic> json) =>
-    _UpdateToyStatusRequest(
-      status: $enumDecode(_$ToyStatusEnumMap, json['status']),
-      batteryLevel: json['batteryLevel'] as String?,
-      signalStrength: json['signalStrength'] as String?,
-    );
+  Map<String, dynamic> json,
+) => _UpdateToyStatusRequest(
+  status: $enumDecode(_$ToyStatusEnumMap, json['status']),
+  batteryLevel: json['batteryLevel'] as String?,
+  signalStrength: json['signalStrength'] as String?,
+);
 
 Map<String, dynamic> _$UpdateToyStatusRequestToJson(
-        _UpdateToyStatusRequest instance) =>
-    <String, dynamic>{
-      'status': _$ToyStatusEnumMap[instance.status]!,
-      'batteryLevel': instance.batteryLevel,
-      'signalStrength': instance.signalStrength,
-    };
+  _UpdateToyStatusRequest instance,
+) => <String, dynamic>{
+  'status': _$ToyStatusEnumMap[instance.status]!,
+  'batteryLevel': instance.batteryLevel,
+  'signalStrength': instance.signalStrength,
+};

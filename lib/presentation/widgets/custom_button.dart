@@ -4,9 +4,9 @@ import '../../core/theme/app_theme.dart';
 enum ButtonVariant { primary, secondary, outline }
 
 class CustomButton extends StatelessWidget {
-
   const CustomButton({
-    required this.text, super.key,
+    required this.text,
+    super.key,
     this.onPressed,
     this.variant = ButtonVariant.primary,
     this.isLoading = false,
@@ -42,10 +42,7 @@ class CustomButton extends StatelessWidget {
             ),
           )
         else ...[
-          if (icon != null) ...[
-            Icon(icon, size: 20),
-            const SizedBox(width: 8),
-          ],
+          if (icon != null) ...[Icon(icon, size: 20), const SizedBox(width: 8)],
           Text(text),
         ],
       ],
@@ -98,8 +95,12 @@ class CustomButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isLoading ? null : onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
-              foregroundColor: isDark ? AppTheme.primaryDark : AppTheme.primaryLight,
+              backgroundColor: isDark
+                  ? AppTheme.surfaceDark
+                  : AppTheme.surfaceLight,
+              foregroundColor: isDark
+                  ? AppTheme.primaryDark
+                  : AppTheme.primaryLight,
               elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -117,7 +118,9 @@ class CustomButton extends StatelessWidget {
           child: OutlinedButton(
             onPressed: isLoading ? null : onPressed,
             style: OutlinedButton.styleFrom(
-              foregroundColor: isDark ? AppTheme.primaryDark : AppTheme.primaryLight,
+              foregroundColor: isDark
+                  ? AppTheme.primaryDark
+                  : AppTheme.primaryLight,
               side: BorderSide(
                 color: isDark ? AppTheme.primaryDark : AppTheme.primaryLight,
                 width: 2,

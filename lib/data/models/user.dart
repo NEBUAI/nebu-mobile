@@ -5,6 +5,8 @@ part 'user.g.dart';
 
 @freezed
 class User with _$User {
+  const User._();
+  
   const factory User({
     required String id,
     required String email,
@@ -17,6 +19,8 @@ class User with _$User {
 
 @freezed
 class AuthTokens with _$AuthTokens {
+  const AuthTokens._();
+  
   const factory AuthTokens({
     required String accessToken,
     required String refreshToken,
@@ -28,6 +32,8 @@ class AuthTokens with _$AuthTokens {
 
 @freezed
 class AuthResponse with _$AuthResponse {
+  const AuthResponse._();
+  
   const factory AuthResponse({
     required bool success,
     User? user,
@@ -41,12 +47,14 @@ class AuthResponse with _$AuthResponse {
 
 @freezed
 class SocialAuthResult with _$SocialAuthResult {
+  const SocialAuthResult._();
+  
   const factory SocialAuthResult({
     required bool success,
     User? user,
     AuthTokens? tokens,
     String? error,
-    dynamic appleCredential,
+    appleCredential,
   }) = _SocialAuthResult;
 
   factory SocialAuthResult.fromJson(Map<String, dynamic> json) =>

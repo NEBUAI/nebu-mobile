@@ -11,8 +11,8 @@ class DeviceService {
   DeviceService({
     required BluetoothService bluetoothService,
     required Logger logger,
-  })  : _bluetoothService = bluetoothService,
-        _logger = logger;
+  }) : _bluetoothService = bluetoothService,
+       _logger = logger;
 
   final BluetoothService _bluetoothService;
   final Logger _logger;
@@ -26,8 +26,8 @@ class DeviceService {
   Future<int> getBatteryLevel(fbp.BluetoothDevice device) async {
     // Asegurarse de que el dispositivo esté conectado
     final isConnected = await _bluetoothService.getConnectedDevices().then(
-          (devices) => devices.any((d) => d.remoteId == device.remoteId),
-        );
+      (devices) => devices.any((d) => d.remoteId == device.remoteId),
+    );
 
     if (!isConnected) {
       _logger.w(
@@ -40,7 +40,9 @@ class DeviceService {
       _logger.i('Reading battery level for ${device.platformName}...');
 
       // 1. Descubrir servicios (usando el método optimizado con caché)
-      final services = await _bluetoothService.discoverServicesForDevice(device);
+      final services = await _bluetoothService.discoverServicesForDevice(
+        device,
+      );
 
       // 2. Encontrar el servicio de batería
       final batteryService = services.firstWhere(

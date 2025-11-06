@@ -14,7 +14,6 @@ import '../../presentation/screens/main_screen.dart';
 import '../../presentation/screens/my_toys_screen.dart';
 import '../../presentation/screens/profile_screen.dart';
 import '../../presentation/screens/qr_scanner_screen.dart';
-import '../../presentation/screens/toy_settings_screen.dart';
 import '../../presentation/screens/setup/age_setup_screen.dart';
 import '../../presentation/screens/setup/connection_setup_screen.dart';
 import '../../presentation/screens/setup/favorites_setup_screen.dart';
@@ -25,6 +24,7 @@ import '../../presentation/screens/setup/wifi_setup_screen.dart';
 import '../../presentation/screens/setup/world_info_setup_screen.dart';
 import '../../presentation/screens/signup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
+import '../../presentation/screens/toy_settings_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
 
 // Router provider
@@ -43,13 +43,20 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isSetupRoute = state.matchedLocation.startsWith('/setup/');
 
       // Main app routes that can be accessed without authentication
-      final isMainRoute = state.matchedLocation == AppConstants.routeHome ||
+      final isMainRoute =
+          state.matchedLocation == AppConstants.routeHome ||
           state.matchedLocation == AppConstants.routeActivityLog ||
           state.matchedLocation == AppConstants.routeMyToys ||
           state.matchedLocation == AppConstants.routeProfile;
 
       // Allow access to main routes even without authentication (user can skip setup)
-      if (!isAuthenticated && !isWelcome && !isSplash && !isLogin && !isSignUp && !isSetupRoute && !isMainRoute) {
+      if (!isAuthenticated &&
+          !isWelcome &&
+          !isSplash &&
+          !isLogin &&
+          !isSignUp &&
+          !isSetupRoute &&
+          !isMainRoute) {
         return AppConstants.routeWelcome;
       }
 
@@ -98,36 +105,32 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppConstants.routeHome,
             name: 'home',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: HomeScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: HomeScreen()),
           ),
 
           // Activity Log
           GoRoute(
             path: AppConstants.routeActivityLog,
             name: 'activity-log',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: ActivityLogScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                NoTransitionPage(child: ActivityLogScreen()),
           ),
 
           // My Toys
           GoRoute(
             path: AppConstants.routeMyToys,
             name: 'my-toys',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: MyToysScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: MyToysScreen()),
           ),
 
           // Profile
           GoRoute(
             path: AppConstants.routeProfile,
             name: 'profile',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: ProfileScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: ProfileScreen()),
           ),
         ],
       ),
@@ -158,7 +161,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppConstants.routeToySettings,
         name: 'toy-settings',
         builder: (context, state) {
-          final toy = state.extra as Toy;
+          final toy = state.extra! as Toy;
           return ToySettingsScreen(toy: toy);
         },
       ),
@@ -213,9 +216,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
-      body: Center(
-        child: Text('Page not found: ${state.matchedLocation}'),
-      ),
+      body: Center(child: Text('Page not found: ${state.matchedLocation}')),
     ),
   );
 });
