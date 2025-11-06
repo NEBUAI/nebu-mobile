@@ -211,8 +211,8 @@ return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _User extends User {
-  const _User({required this.id, required this.email, required this.name, this.avatar}): super._();
+class _User implements User {
+  const _User({required this.id, required this.email, required this.name, this.avatar});
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override final  String id;
@@ -481,8 +481,8 @@ return $default(_that.accessToken,_that.refreshToken);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _AuthTokens extends AuthTokens {
-  const _AuthTokens({required this.accessToken, required this.refreshToken}): super._();
+class _AuthTokens implements AuthTokens {
+  const _AuthTokens({required this.accessToken, required this.refreshToken});
   factory _AuthTokens.fromJson(Map<String, dynamic> json) => _$AuthTokensFromJson(json);
 
 @override final  String accessToken;
@@ -773,8 +773,8 @@ return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _AuthResponse extends AuthResponse {
-  const _AuthResponse({required this.success, this.user, this.tokens, this.error}): super._();
+class _AuthResponse implements AuthResponse {
+  const _AuthResponse({required this.success, this.user, this.tokens, this.error});
   factory _AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);
 
 @override final  bool success;
@@ -873,7 +873,7 @@ $AuthTokensCopyWith<$Res>? get tokens {
 /// @nodoc
 mixin _$SocialAuthResult {
 
- bool get success; User? get user; AuthTokens? get tokens; String? get error; dynamic get appleCredential;
+ bool get success; User? get user; AuthTokens? get tokens; String? get error; Object? get appleCredential;
 /// Create a copy of SocialAuthResult
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -906,7 +906,7 @@ abstract mixin class $SocialAuthResultCopyWith<$Res>  {
   factory $SocialAuthResultCopyWith(SocialAuthResult value, $Res Function(SocialAuthResult) _then) = _$SocialAuthResultCopyWithImpl;
 @useResult
 $Res call({
- bool success, User? user, AuthTokens? tokens, String? error, dynamic appleCredential
+ bool success, User? user, AuthTokens? tokens, String? error, Object? appleCredential
 });
 
 
@@ -929,8 +929,7 @@ success: null == success ? _self.success : success // ignore: cast_nullable_to_n
 as bool,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,tokens: freezed == tokens ? _self.tokens : tokens // ignore: cast_nullable_to_non_nullable
 as AuthTokens?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,appleCredential: freezed == appleCredential ? _self.appleCredential : appleCredential // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as String?,appleCredential: freezed == appleCredential ? _self.appleCredential : appleCredential ,
   ));
 }
 /// Create a copy of SocialAuthResult
@@ -1039,7 +1038,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  dynamic appleCredential)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  Object? appleCredential)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SocialAuthResult() when $default != null:
 return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCredential);case _:
@@ -1060,7 +1059,7 @@ return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCre
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  dynamic appleCredential)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  Object? appleCredential)  $default,) {final _that = this;
 switch (_that) {
 case _SocialAuthResult():
 return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCredential);case _:
@@ -1080,7 +1079,7 @@ return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCre
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  dynamic appleCredential)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  Object? appleCredential)?  $default,) {final _that = this;
 switch (_that) {
 case _SocialAuthResult() when $default != null:
 return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCredential);case _:
@@ -1094,15 +1093,15 @@ return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCre
 /// @nodoc
 @JsonSerializable()
 
-class _SocialAuthResult extends SocialAuthResult {
-  const _SocialAuthResult({required this.success, this.user, this.tokens, this.error, this.appleCredential}): super._();
+class _SocialAuthResult implements SocialAuthResult {
+  const _SocialAuthResult({required this.success, this.user, this.tokens, this.error, this.appleCredential});
   factory _SocialAuthResult.fromJson(Map<String, dynamic> json) => _$SocialAuthResultFromJson(json);
 
 @override final  bool success;
 @override final  User? user;
 @override final  AuthTokens? tokens;
 @override final  String? error;
-@override final  dynamic appleCredential;
+@override final  Object? appleCredential;
 
 /// Create a copy of SocialAuthResult
 /// with the given fields replaced by the non-null parameter values.
@@ -1137,7 +1136,7 @@ abstract mixin class _$SocialAuthResultCopyWith<$Res> implements $SocialAuthResu
   factory _$SocialAuthResultCopyWith(_SocialAuthResult value, $Res Function(_SocialAuthResult) _then) = __$SocialAuthResultCopyWithImpl;
 @override @useResult
 $Res call({
- bool success, User? user, AuthTokens? tokens, String? error, dynamic appleCredential
+ bool success, User? user, AuthTokens? tokens, String? error, Object? appleCredential
 });
 
 
@@ -1160,8 +1159,7 @@ success: null == success ? _self.success : success // ignore: cast_nullable_to_n
 as bool,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,tokens: freezed == tokens ? _self.tokens : tokens // ignore: cast_nullable_to_non_nullable
 as AuthTokens?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,appleCredential: freezed == appleCredential ? _self.appleCredential : appleCredential // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as String?,appleCredential: freezed == appleCredential ? _self.appleCredential : appleCredential ,
   ));
 }
 

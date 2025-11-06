@@ -270,28 +270,28 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   Widget _buildInfoRow(String label, String value, ThemeData theme) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
+    padding: const EdgeInsets.symmetric(vertical: 8),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.disabledColor,
+          ),
+        ),
+        Flexible(
+          child: Text(
+            value,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.disabledColor,
+              fontWeight: FontWeight.w500,
             ),
+            textAlign: TextAlign.end,
           ),
-          Flexible(
-            child: Text(
-              value,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.end,
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
   void _showDeleteAccountDialog() {
     showDialog<void>(

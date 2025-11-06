@@ -213,8 +213,8 @@ return $default(_that.id,_that.name,_that.type,_that.status,_that.lastSeen,_that
 /// @nodoc
 @JsonSerializable()
 
-class _IoTDevice extends IoTDevice {
-  const _IoTDevice({required this.id, required this.name, required this.type, required this.status, this.lastSeen, final  Map<String, dynamic>? metadata}): _metadata = metadata,super._();
+class _IoTDevice implements IoTDevice {
+  const _IoTDevice({required this.id, required this.name, required this.type, required this.status, this.lastSeen, final  Map<String, dynamic>? metadata}): _metadata = metadata;
   factory _IoTDevice.fromJson(Map<String, dynamic> json) => _$IoTDeviceFromJson(json);
 
 @override final  String id;
@@ -494,8 +494,8 @@ return $default(_that.data);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _IoTMetrics extends IoTMetrics {
-  const _IoTMetrics({final  Map<String, dynamic> data = const {}}): _data = data,super._();
+class _IoTMetrics implements IoTMetrics {
+  const _IoTMetrics({final  Map<String, dynamic> data = const {}}): _data = data;
   factory _IoTMetrics.fromJson(Map<String, dynamic> json) => _$IoTMetricsFromJson(json);
 
  final  Map<String, dynamic> _data;

@@ -12,7 +12,6 @@ enum DeviceStatus {
 
 @freezed
 class IoTDevice with _$IoTDevice {
-
   const factory IoTDevice({
     required String id,
     required String name,
@@ -21,7 +20,6 @@ class IoTDevice with _$IoTDevice {
     String? lastSeen,
     Map<String, dynamic>? metadata,
   }) = _IoTDevice;
-  const IoTDevice._();
 
   factory IoTDevice.fromJson(Map<String, dynamic> json) =>
       _$IoTDeviceFromJson(json);
@@ -29,10 +27,8 @@ class IoTDevice with _$IoTDevice {
 
 @freezed
 class IoTMetrics with _$IoTMetrics {
-
   const factory IoTMetrics({@Default({}) Map<String, dynamic> data}) =
       _IoTMetrics;
-  const IoTMetrics._();
 
   factory IoTMetrics.fromJson(Map<String, dynamic> json) =>
       _$IoTMetricsFromJson(json);

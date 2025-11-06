@@ -345,160 +345,160 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   Widget _buildHeader(BuildContext context) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-        ),
-        const Spacer(),
-        _buildProgressIndicator(2, 7), // This is now step 2
-        const Spacer(),
-        const Opacity(
-          opacity: 0,
-          child: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
-        ),
-      ],
-    );
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      IconButton(
+        onPressed: () => context.pop(),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+      ),
+      const Spacer(),
+      _buildProgressIndicator(2, 7), // This is now step 2
+      const Spacer(),
+      const Opacity(
+        opacity: 0,
+        child: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
+      ),
+    ],
+  );
 
   Widget _buildTitle(ThemeData theme) => Column(
-      children: [
-        Text(
-          'setup.wifi.title'.tr(),
-          style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
-          textAlign: TextAlign.center,
+    children: [
+      Text(
+        'setup.wifi.title'.tr(),
+        style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
+      const SizedBox(height: 12),
+      Text(
+        'setup.wifi.subtitle'.tr(),
+        style: theme.textTheme.bodyLarge?.copyWith(
+          color: Colors.white.withAlpha(230),
         ),
-        const SizedBox(height: 12),
-        Text(
-          'setup.wifi.subtitle'.tr(),
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: Colors.white.withAlpha(230),
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
+        textAlign: TextAlign.center,
+      ),
+    ],
+  );
 
   Widget _buildSsidInput(ThemeData theme) => TextFormField(
-      controller: _ssidController,
-      style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
-      decoration: _buildInputDecoration(theme, 'setup.wifi.ssid_hint'.tr()),
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'setup.wifi.validation_ssid_empty'.tr();
-        }
+    controller: _ssidController,
+    style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+    decoration: _buildInputDecoration(theme, 'setup.wifi.ssid_hint'.tr()),
+    validator: (value) {
+      if (value == null || value.trim().isEmpty) {
+        return 'setup.wifi.validation_ssid_empty'.tr();
+      }
 
-        // Validar longitud máxima del SSID (32 bytes en WiFi)
-        if (value.trim().length > 32) {
-          return 'setup.wifi.validation_ssid_too_long'.tr();
-        }
+      // Validar longitud máxima del SSID (32 bytes en WiFi)
+      if (value.trim().length > 32) {
+        return 'setup.wifi.validation_ssid_too_long'.tr();
+      }
 
-        // Validar caracteres especiales problemáticos
-        if (value.contains('\n') || value.contains('\r')) {
-          return 'setup.wifi.validation_ssid_invalid_chars'.tr();
-        }
+      // Validar caracteres especiales problemáticos
+      if (value.contains('\n') || value.contains('\r')) {
+        return 'setup.wifi.validation_ssid_invalid_chars'.tr();
+      }
 
-        return null;
-      },
-    );
+      return null;
+    },
+  );
 
   Widget _buildPasswordInput(ThemeData theme) => TextFormField(
-      controller: _passwordController,
-      obscureText: !_isPasswordVisible,
-      style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
-      decoration: _buildInputDecoration(
-        theme,
-        'setup.wifi.password_hint'.tr(),
-        suffixIcon: IconButton(
-          icon: Icon(
-            _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-            color: Colors.white.withAlpha(179),
-          ),
-          onPressed: () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible;
-            });
-          },
+    controller: _passwordController,
+    obscureText: !_isPasswordVisible,
+    style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+    decoration: _buildInputDecoration(
+      theme,
+      'setup.wifi.password_hint'.tr(),
+      suffixIcon: IconButton(
+        icon: Icon(
+          _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+          color: Colors.white.withAlpha(179),
         ),
+        onPressed: () {
+          setState(() {
+            _isPasswordVisible = !_isPasswordVisible;
+          });
+        },
       ),
-      validator: (value) {
-        // Validar longitud mínima de WPA2 (8 caracteres) si no está vacío
-        if (value != null && value.isNotEmpty && value.length < 8) {
-          return 'setup.wifi.validation_password_too_short'.tr();
-        }
+    ),
+    validator: (value) {
+      // Validar longitud mínima de WPA2 (8 caracteres) si no está vacío
+      if (value != null && value.isNotEmpty && value.length < 8) {
+        return 'setup.wifi.validation_password_too_short'.tr();
+      }
 
-        // Validar longitud máxima (63 caracteres para WPA2)
-        if (value != null && value.length > 63) {
-          return 'setup.wifi.validation_password_too_long'.tr();
-        }
+      // Validar longitud máxima (63 caracteres para WPA2)
+      if (value != null && value.length > 63) {
+        return 'setup.wifi.validation_password_too_long'.tr();
+      }
 
-        return null;
-      },
-    );
+      return null;
+    },
+  );
 
   InputDecoration _buildInputDecoration(
     ThemeData theme,
     String hintText, {
     Widget? suffixIcon,
   }) => InputDecoration(
-      hintText: hintText,
-      hintStyle: TextStyle(color: Colors.white.withAlpha(128)),
-      filled: true,
-      fillColor: Colors.white.withAlpha(51),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
-      ),
-      contentPadding: const EdgeInsets.all(20),
-      suffixIcon: suffixIcon,
-    );
+    hintText: hintText,
+    hintStyle: TextStyle(color: Colors.white.withAlpha(128)),
+    filled: true,
+    fillColor: Colors.white.withAlpha(51),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide.none,
+    ),
+    contentPadding: const EdgeInsets.all(20),
+    suffixIcon: suffixIcon,
+  );
 
   Widget _buildFooterButtons(BuildContext context, ThemeData theme) => Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ElevatedButton(
-          onPressed: _isConnecting ? null : _connectToWifi,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: AppTheme.primaryLight,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      ElevatedButton(
+        onPressed: _isConnecting ? null : _connectToWifi,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: AppTheme.primaryLight,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: _isConnecting
-              ? const SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    color: AppTheme.primaryLight,
-                  ),
-                )
-              : Text(
-                  'setup.wifi.connect_button'.tr(),
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppTheme.primaryLight,
-                    fontWeight: FontWeight.bold,
-                  ),
+        ),
+        child: _isConnecting
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: AppTheme.primaryLight,
                 ),
-        ),
-        const SizedBox(height: 12),
-        TextButton(
-          onPressed: _isConnecting ? _cancelConnection : _skipWifiSetup,
-          child: Text(
-            _isConnecting
-                ? 'setup.wifi.cancel_button'.tr()
-                : 'setup.wifi.skip_button'.tr(),
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: _isConnecting
-                  ? Colors.red.withAlpha(204)
-                  : Colors.white.withAlpha(204),
-            ),
+              )
+            : Text(
+                'setup.wifi.connect_button'.tr(),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: AppTheme.primaryLight,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+      ),
+      const SizedBox(height: 12),
+      TextButton(
+        onPressed: _isConnecting ? _cancelConnection : _skipWifiSetup,
+        child: Text(
+          _isConnecting
+              ? 'setup.wifi.cancel_button'.tr()
+              : 'setup.wifi.skip_button'.tr(),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: _isConnecting
+                ? Colors.red.withAlpha(204)
+                : Colors.white.withAlpha(204),
           ),
         ),
-      ],
-    );
+      ),
+    ],
+  );
 
   void _cancelConnection() {
     _timeoutTimer?.cancel();

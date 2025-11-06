@@ -7,7 +7,6 @@ import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
 
 class DeviceManagementController extends GetxController {
-
   DeviceManagementController(this.toyProvider);
   final ToyProvider toyProvider;
   final isLoading = false.obs;
@@ -102,35 +101,35 @@ class DeviceManagementScreen extends StatelessWidget {
   }
 
   Widget _buildEmptyState(ThemeData theme) => Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: const LinearGradient(colors: AppTheme.primaryGradient),
-              boxShadow: AppTheme.cardShadow,
-            ),
-            child: const Icon(Icons.devices, size: 60, color: Colors.white),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: const LinearGradient(colors: AppTheme.primaryGradient),
+            boxShadow: AppTheme.cardShadow,
           ),
-          const SizedBox(height: 24),
-          Text('No Devices', style: theme.textTheme.headlineSmall),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 48),
-            child: Text(
-              'Add your first Nebu toy to get started',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.disabledColor,
-              ),
+          child: const Icon(Icons.devices, size: 60, color: Colors.white),
+        ),
+        const SizedBox(height: 24),
+        Text('No Devices', style: theme.textTheme.headlineSmall),
+        const SizedBox(height: 12),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 48),
+          child: Text(
+            'Add your first Nebu toy to get started',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.disabledColor,
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
   Widget _buildDeviceCard(
     Toy toy,
@@ -234,22 +233,20 @@ class DeviceManagementScreen extends StatelessWidget {
   }
 
   Widget _buildInfoRow(String label, String value, ThemeData theme) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.disabledColor,
-          ),
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        label,
+        style: theme.textTheme.bodyMedium?.copyWith(color: theme.disabledColor),
+      ),
+      Text(
+        value,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w500,
         ),
-        Text(
-          value,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
+      ),
+    ],
+  );
 
   void _showDeleteConfirmation(
     DeviceManagementController controller,

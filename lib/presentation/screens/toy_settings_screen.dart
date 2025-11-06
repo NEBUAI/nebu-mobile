@@ -6,7 +6,6 @@ import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
 
 class ToySettingsController extends GetxController {
-
   ToySettingsController(this.toy, this.toyProvider);
   final Toy toy;
   final ToyProvider toyProvider;
@@ -180,16 +179,20 @@ class ToySettingsScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Card(
                         child: Column(
-                          children: controller.personalities.map((p) => RadioListTile<String>(
-                              title: Text(p.capitalize ?? p),
-                              value: p,
-                              groupValue: controller.personality.value,
-                              onChanged: (value) {
-                                if (value != null) {
-                                  controller.personality.value = value;
-                                }
-                              },
-                            )).toList(),
+                          children: controller.personalities
+                              .map(
+                                (p) => RadioListTile<String>(
+                                  title: Text(p.capitalize ?? p),
+                                  value: p,
+                                  groupValue: controller.personality.value,
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      controller.personality.value = value;
+                                    }
+                                  },
+                                ),
+                              )
+                              .toList(),
                         ),
                       ),
 
@@ -271,22 +274,20 @@ class ToySettingsScreen extends StatelessWidget {
   }
 
   Widget _buildStatusRow(String label, String value, ThemeData theme) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.disabledColor,
-          ),
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        label,
+        style: theme.textTheme.bodyMedium?.copyWith(color: theme.disabledColor),
+      ),
+      Text(
+        value,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w500,
         ),
-        Text(
-          value,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
+      ),
+    ],
+  );
 
   void _showDeleteConfirmation(
     BuildContext context,
