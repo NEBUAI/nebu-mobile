@@ -11,7 +11,7 @@ enum DeviceStatus {
 }
 
 @freezed
-class IoTDevice with _$IoTDevice {
+abstract class IoTDevice with _$IoTDevice {
   const factory IoTDevice({
     required String id,
     required String name,
@@ -26,7 +26,7 @@ class IoTDevice with _$IoTDevice {
 }
 
 @freezed
-class IoTMetrics with _$IoTMetrics {
+abstract class IoTMetrics with _$IoTMetrics {
   const factory IoTMetrics({@Default({}) Map<String, dynamic> data}) =
       _IoTMetrics;
 
