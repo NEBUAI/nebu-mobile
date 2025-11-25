@@ -5,7 +5,8 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/ble_constants.dart';
+import '../../core/constants/storage_keys.dart';
 import 'bluetooth_service.dart';
 
 /// Estado de conexión WiFi del ESP32
@@ -134,13 +135,13 @@ class ESP32WifiConfigService {
 
       // Buscar el servicio de configuración WiFi
       _logger.i(
-        '🔍 [ESP32] Searching for WiFi service: ${AppConstants.esp32WifiServiceUuid}',
+        '🔍 [ESP32] Searching for WiFi service: ${BleConstants.esp32WifiServiceUuid}',
       );
 
       final wifiService = services.firstWhere(
         (service) =>
             service.uuid.toString().toLowerCase() ==
-            AppConstants.esp32WifiServiceUuid.toLowerCase(),
+            BleConstants.esp32WifiServiceUuid.toLowerCase(),
         orElse: () {
           _logger.e('❌ [ESP32] WiFi service NOT found!');
           _logger.e(
@@ -154,12 +155,12 @@ class ESP32WifiConfigService {
 
       // Obtener las características
       _logger.d(
-        '🔍 [ESP32] Looking for SSID characteristic: ${AppConstants.esp32SsidCharUuid}',
+        '🔍 [ESP32] Looking for SSID characteristic: ${BleConstants.esp32SsidCharUuid}',
       );
       _ssidCharacteristic = wifiService.characteristics.firstWhere(
         (c) =>
             c.uuid.toString().toLowerCase() ==
-            AppConstants.esp32SsidCharUuid.toLowerCase(),
+            BleConstants.esp32SsidCharUuid.toLowerCase(),
         orElse: () {
           _logger.e('❌ [ESP32] SSID characteristic NOT found!');
           throw Exception('SSID characteristic not found');
@@ -174,12 +175,12 @@ class ESP32WifiConfigService {
       );
 
       _logger.d(
-        '🔍 [ESP32] Looking for Password characteristic: ${AppConstants.esp32PasswordCharUuid}',
+        '🔍 [ESP32] Looking for Password characteristic: ${BleConstants.esp32PasswordCharUuid}',
       );
       _passwordCharacteristic = wifiService.characteristics.firstWhere(
         (c) =>
             c.uuid.toString().toLowerCase() ==
-            AppConstants.esp32PasswordCharUuid.toLowerCase(),
+            BleConstants.esp32PasswordCharUuid.toLowerCase(),
         orElse: () {
           _logger.e('❌ [ESP32] Password characteristic NOT found!');
           throw Exception('Password characteristic not found');
@@ -195,12 +196,12 @@ class ESP32WifiConfigService {
 
       // Status characteristic es opcional
       _logger.d(
-        '🔍 [ESP32] Looking for Status characteristic: ${AppConstants.esp32StatusCharUuid}',
+        '🔍 [ESP32] Looking for Status characteristic: ${BleConstants.esp32StatusCharUuid}',
       );
       final statusChars = wifiService.characteristics.where(
         (c) =>
             c.uuid.toString().toLowerCase() ==
-            AppConstants.esp32StatusCharUuid.toLowerCase(),
+            BleConstants.esp32StatusCharUuid.toLowerCase(),
       );
       _statusCharacteristic = statusChars.isNotEmpty ? statusChars.first : null;
 
@@ -223,12 +224,12 @@ class ESP32WifiConfigService {
 
       // Device ID characteristic
       _logger.d(
-        '🔍 [ESP32] Looking for Device ID characteristic: ${AppConstants.esp32DeviceIdCharUuid}',
+        '🔍 [ESP32] Looking for Device ID characteristic: ${BleConstants.esp32DeviceIdCharUuid}',
       );
       final deviceIdChars = wifiService.characteristics.where(
         (c) =>
             c.uuid.toString().toLowerCase() ==
-            AppConstants.esp32DeviceIdCharUuid.toLowerCase(),
+            BleConstants.esp32DeviceIdCharUuid.toLowerCase(),
       );
       _deviceIdCharacteristic =
           deviceIdChars.isNotEmpty ? deviceIdChars.first : null;
@@ -488,7 +489,7 @@ class ESP32WifiConfigService {
   /// Guardar Device ID en SharedPreferences
   Future<void> _saveDeviceId(String deviceId) async {
     try {
-      await _prefs.setString(AppConstants.keyCurrentDeviceId, deviceId);
+      await _prefs.setString(StorageKeys.currentDeviceId, deviceId);
       _logger.d('💾 [DEVICE_ID] Device ID saved to local storage: "$deviceId"');
     } on Exception catch (e) {
       _logger.e('❌ [DEVICE_ID] Error saving Device ID: $e');
@@ -498,7 +499,7 @@ class ESP32WifiConfigService {
   /// Recuperar Device ID almacenado localmente
   String? getSavedDeviceId() {
     try {
-      final deviceId = _prefs.getString(AppConstants.keyCurrentDeviceId);
+      final deviceId = _prefs.getString(StorageKeys.currentDeviceId);
       if (deviceId != null) {
         _logger.d('📂 [DEVICE_ID] Retrieved saved Device ID: "$deviceId"');
       }
@@ -512,7 +513,7 @@ class ESP32WifiConfigService {
   /// Limpiar Device ID almacenado
   Future<void> clearSavedDeviceId() async {
     try {
-      await _prefs.remove(AppConstants.keyCurrentDeviceId);
+      await _prefs.remove(StorageKeys.currentDeviceId);
       _currentDeviceId = null;
       _logger.d('🗑️  [DEVICE_ID] Device ID cleared from local storage');
     } on Exception catch (e) {

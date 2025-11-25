@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/storage_keys.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../data/models/toy.dart';
+import '../../providers/api_provider.dart';
 import '../../providers/auth_provider.dart';
 
 class ToyNameSetupScreen extends ConsumerStatefulWidget {
@@ -17,6 +20,7 @@ class ToyNameSetupScreen extends ConsumerStatefulWidget {
 class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   final _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isRegistering = false;
 
   @override
   void initState() {
@@ -41,6 +45,110 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   Future<void> _saveToyName() async {
     final prefs = ref.read(sharedPreferencesProvider);
     await prefs.setString('setup_toy_name', _controller.text.trim());
+  }
+
+  /// Registrar dispositivo ESP32 en el backend
+  /// Se ejecuta automáticamente al continuar con el setup si hay un Device ID guardado
+  Future<bool> _registerDeviceIfNeeded() async {
+    final prefs = ref.read(sharedPreferencesProvider);
+    final deviceId = prefs.getString(StorageKeys.currentDeviceId);
+
+    // Si no hay Device ID guardado, el usuario saltó la configuración WiFi
+    if (deviceId == null || deviceId.isEmpty) {
+      ref.read(loggerProvider).d(
+        '📱 [TOY_SETUP] No Device ID found, skipping device registration',
+      );
+      return true; // Continuar sin registrar
+    }
+
+    // Verificar que el usuario esté autenticado
+    final authState = ref.read(authProvider);
+    if (authState.user == null) {
+      ref.read(loggerProvider).w(
+        '⚠️  [TOY_SETUP] User not authenticated, cannot register device',
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('setup.toy_name.error_not_authenticated'.tr()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return false;
+    }
+
+    setState(() {
+      _isRegistering = true;
+    });
+
+    try {
+      final toyProvider = ref.read(toyProviderInstance);
+      final toyName = _controller.text.trim();
+
+      ref.read(loggerProvider).i(
+        '🚀 [TOY_SETUP] Registering device: $deviceId with name: $toyName',
+      );
+
+      // Crear el Toy en el backend
+      await toyProvider.createToy(
+        iotDeviceId: deviceId,
+        name: toyName,
+        userId: authState.user!.id,
+        status: ToyStatus.active,
+        model: 'ESP32', // Modelo detectado del Device ID
+        manufacturer: 'NEBU',
+      );
+
+      ref.read(loggerProvider).i(
+        '✅ [TOY_SETUP] Device registered successfully: $deviceId',
+      );
+
+      // Limpiar el Device ID de SharedPreferences (ya está registrado)
+      await prefs.remove(StorageKeys.currentDeviceId);
+      ref.read(loggerProvider).d(
+        '🗑️  [TOY_SETUP] Cleared Device ID from local storage',
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('setup.toy_name.device_registered'.tr()),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+
+      return true;
+    } catch (e) {
+      ref.read(loggerProvider).e(
+        '❌ [TOY_SETUP] Error registering device: $e',
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('setup.toy_name.error_registering_device'.tr()),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+            action: SnackBarAction(
+              label: 'common.retry'.tr(),
+              textColor: Colors.white,
+              onPressed: () => _registerDeviceIfNeeded(),
+            ),
+          ),
+        );
+      }
+
+      return false;
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRegistering = false;
+        });
+      }
+    }
   }
 
   void _showSkipSetupDialog() {
@@ -177,15 +285,21 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                   // Bottom Buttons
                   // Next button
                   ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        // Save toy name to storage
-                        await _saveToyName();
-                        if (mounted) {
-                          context.push(AppConstants.routeAgeSetup);
-                        }
-                      }
-                    },
+                    onPressed: _isRegistering
+                        ? null
+                        : () async {
+                            if (_formKey.currentState!.validate()) {
+                              // Save toy name to storage
+                              await _saveToyName();
+
+                              // Register device in backend if Device ID exists
+                              final success = await _registerDeviceIfNeeded();
+
+                              if (success && mounted) {
+                                context.push(AppConstants.routeAgeSetup);
+                              }
+                            }
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: AppTheme.primaryLight,
@@ -194,13 +308,22 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: Text(
-                      'setup.toy_name.next'.tr(),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppTheme.primaryLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: _isRegistering
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              color: AppTheme.primaryLight,
+                            ),
+                          )
+                        : Text(
+                            'setup.toy_name.next'.tr(),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: AppTheme.primaryLight,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
 
                   const SizedBox(height: 12),
