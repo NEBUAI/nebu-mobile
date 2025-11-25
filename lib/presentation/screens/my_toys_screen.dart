@@ -28,7 +28,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
   Future<void> _loadToys() async {
     try {
       await ref.read(toyProviderInstance).loadMyToys();
-    } catch (e) {
+    } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -73,7 +73,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           ),
         );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

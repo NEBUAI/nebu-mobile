@@ -46,7 +46,7 @@ class UserService {
         throw Exception('El email ya está registrado');
       }
       throw Exception('Error al crear el usuario: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error creating user: $e');
       throw Exception('Error inesperado al crear el usuario');
     }
@@ -64,7 +64,7 @@ class UserService {
     } on DioException catch (e) {
       _logger.e('Error fetching user profile: ${e.message}');
       throw Exception('Error al obtener el perfil del usuario: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error fetching user profile: $e');
       throw Exception('Error inesperado al obtener el perfil');
     }
@@ -102,7 +102,7 @@ class UserService {
     } on DioException catch (e) {
       _logger.e('Error updating user profile: ${e.message}');
       throw Exception('Error al actualizar el perfil: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error updating user profile: $e');
       throw Exception('Error inesperado al actualizar el perfil');
     }
@@ -125,7 +125,7 @@ class UserService {
         throw Exception('Usuario no encontrado');
       }
       throw Exception('Error al obtener el usuario: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error fetching user: $e');
       throw Exception('Error inesperado al obtener el usuario');
     }

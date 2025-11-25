@@ -23,7 +23,7 @@ class DeviceManagementController extends GetxController {
     try {
       await toyProvider.loadMyToys();
       toys.value = toyProvider.toys;
-    } catch (e) {
+    } on Exception catch (e) {
       Get.snackbar(
         'Error',
         'Failed to load devices: $e',
@@ -47,7 +47,7 @@ class DeviceManagementController extends GetxController {
         'Device removed successfully',
         snackPosition: SnackPosition.BOTTOM,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       Get.snackbar(
         'Error',
         'Failed to remove device: $e',

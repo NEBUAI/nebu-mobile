@@ -38,7 +38,7 @@ class ToySettingsController extends GetxController {
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       Get.snackbar(
         'Error',
         'Failed to update toy settings: $e',
@@ -67,8 +67,7 @@ class ToySettingsController extends GetxController {
 
       // Go back to previous screen
       Get.back<void>();
-      Get.back<void>();
-    } catch (e) {
+    } on Exception catch (e) {
       Get.snackbar(
         'Error',
         'Failed to remove toy: $e',

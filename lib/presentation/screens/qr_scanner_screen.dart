@@ -50,8 +50,7 @@ class QRScannerController extends GetxController {
           ),
           ElevatedButton(
             onPressed: () {
-              Get.back<void>();
-              Get.back<void>(result: code);
+              Get.back(result: code);
             },
             child: const Text('Use Code'),
           ),

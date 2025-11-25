@@ -66,12 +66,11 @@ class OpenAIVoiceService {
   OpenAIVoiceService({required Logger logger, required Dio dio})
     : _logger = logger,
       _dio = dio,
-      _recorder = AudioRecorder(),
-      _audioPlayer = AudioPlayer();
+      _recorder = AudioRecorder();
   final Logger _logger;
   final Dio _dio;
   final AudioRecorder _recorder;
-  final AudioPlayer _audioPlayer;
+  late final AudioPlayer _audioPlayer;
 
   VoiceAgentConfig? _config;
   bool _isInitialized = false;
@@ -92,6 +91,9 @@ class OpenAIVoiceService {
   Future<void> initialize(VoiceAgentConfig config) async {
     try {
       _config = config;
+
+      // Inicializar audio player
+      _audioPlayer = AudioPlayer();
 
       // Configurar Dio con la API key
       _dio.options.headers['Authorization'] = 'Bearer ${config.apiKey}';
