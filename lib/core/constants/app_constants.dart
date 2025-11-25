@@ -13,6 +13,7 @@ class AppConstants {
   static const String keyUser = 'user';
   static const String keyLanguage = 'language';
   static const String keyThemeMode = 'theme_mode';
+  static const String keyCurrentDeviceId = 'current_device_id';
 
   // Languages
   static const String languageEnglish = 'en';
@@ -61,14 +62,21 @@ class AppConstants {
       '00002a19-0000-1000-8000-00805f9b34fb';
 
   // ESP32 WiFi Configuration BLE Protocol
+  // Service UUID: "ESP32-WiFi-Config"
   static const String esp32WifiServiceUuid =
-      '00001234-5678-1234-1234-123456789abc';
+      '0000bc9a-7856-3412-3412-3412-7856-3412';
+  // SSID Characteristic (READ | WRITE_NO_RESPONSE)
   static const String esp32SsidCharUuid =
-      '00001234-5678-1234-1234-123456789abd';
+      '0000bd9a-7856-3412-3412-3412-7856-3412';
+  // Password Characteristic (READ | WRITE_NO_RESPONSE)
   static const String esp32PasswordCharUuid =
-      '00001234-5678-1234-1234-123456789abe';
+      '0000be9a-7856-3412-3412-3412-7856-3412';
+  // Status Characteristic (READ | NOTIFY) - Returns: IDLE, CONNECTING, CONNECTED, FAILED
   static const String esp32StatusCharUuid =
-      '00001234-5678-1234-1234-123456789abf';
+      '0000bf9a-7856-3412-3412-3412-7856-3412';
+  // Device ID Characteristic (READ | NOTIFY) - Format: "ESP32_XXXXXXXXXXXX"
+  static const String esp32DeviceIdCharUuid =
+      '0000c09a-7856-3412-3412-3412-7856-3412';
 
   // Animation Durations
   static const Duration animationShort = Duration(milliseconds: 200);

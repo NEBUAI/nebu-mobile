@@ -74,6 +74,7 @@ void main() async {
   final esp32WifiConfigService = ESP32WifiConfigService(
     bluetoothService: bluetoothService,
     logger: logger,
+    prefs: sharedPreferences,
   );
 
   final userService = UserService(apiService: apiService, logger: logger);

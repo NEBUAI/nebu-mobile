@@ -3,23 +3,25 @@ import 'dart:convert';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/constants/app_constants.dart';
 import 'bluetooth_service.dart';
 
 /// Estado de conexión WiFi del ESP32
 enum ESP32WifiStatus {
-  idle(0),
-  connecting(1),
-  connected(2),
-  failed(3);
+  idle('IDLE'),
+  connecting('CONNECTING'),
+  connected('CONNECTED'),
+  reconnecting('RECONNECTING'),
+  failed('FAILED');
 
   const ESP32WifiStatus(this.value);
-  final int value;
+  final String value;
 
-  static ESP32WifiStatus fromValue(int value) =>
+  static ESP32WifiStatus fromString(String value) =>
       ESP32WifiStatus.values.firstWhere(
-        (status) => status.value == value,
+        (status) => status.value == value.toUpperCase(),
         orElse: () => ESP32WifiStatus.idle,
       );
 }
@@ -42,21 +44,35 @@ class ESP32WifiConfigService {
   ESP32WifiConfigService({
     required BluetoothService bluetoothService,
     required Logger logger,
+    required SharedPreferences prefs,
   }) : _bluetoothService = bluetoothService,
        _logger = logger,
-       _statusController = StreamController<ESP32WifiStatus>.broadcast();
+       _prefs = prefs,
+       _statusController = StreamController<ESP32WifiStatus>.broadcast(),
+       _deviceIdController = StreamController<String>.broadcast();
 
   final BluetoothService _bluetoothService;
   final Logger _logger;
+  final SharedPreferences _prefs;
   final StreamController<ESP32WifiStatus> _statusController;
+  final StreamController<String> _deviceIdController;
 
   fbp.BluetoothCharacteristic? _ssidCharacteristic;
   fbp.BluetoothCharacteristic? _passwordCharacteristic;
   fbp.BluetoothCharacteristic? _statusCharacteristic;
+  fbp.BluetoothCharacteristic? _deviceIdCharacteristic;
   StreamSubscription<List<int>>? _statusSubscription;
+  StreamSubscription<List<int>>? _deviceIdSubscription;
+  String? _currentDeviceId;
 
   /// Stream del estado de conexión WiFi del ESP32
   Stream<ESP32WifiStatus> get statusStream => _statusController.stream;
+
+  /// Stream del Device ID del ESP32
+  Stream<String> get deviceIdStream => _deviceIdController.stream;
+
+  /// Device ID actual del ESP32 (null si no se ha recibido aún)
+  String? get deviceId => _currentDeviceId;
 
   /// Conectar a un ESP32 y preparar las características
   Future<void> connectToESP32(fbp.BluetoothDevice device) async {
@@ -205,6 +221,42 @@ class ESP32WifiConfigService {
         _logger.w('⚠️  [ESP32] Status characteristic does NOT support NOTIFY');
       }
 
+      // Device ID characteristic
+      _logger.d(
+        '🔍 [ESP32] Looking for Device ID characteristic: ${AppConstants.esp32DeviceIdCharUuid}',
+      );
+      final deviceIdChars = wifiService.characteristics.where(
+        (c) =>
+            c.uuid.toString().toLowerCase() ==
+            AppConstants.esp32DeviceIdCharUuid.toLowerCase(),
+      );
+      _deviceIdCharacteristic =
+          deviceIdChars.isNotEmpty ? deviceIdChars.first : null;
+
+      if (_deviceIdCharacteristic != null) {
+        _logger.i('✅ [ESP32] Found Device ID characteristic');
+        _logger.d(
+          '   Properties: READ=${_deviceIdCharacteristic!.properties.read}, '
+          'NOTIFY=${_deviceIdCharacteristic!.properties.notify}',
+        );
+
+        // Suscribirse a notificaciones de Device ID
+        if (_deviceIdCharacteristic!.properties.notify) {
+          _logger.d(
+            '🔔 [ESP32] Device ID characteristic supports NOTIFY, subscribing...',
+          );
+          await _subscribeToDeviceId();
+        }
+
+        // También leer el Device ID inmediatamente
+        if (_deviceIdCharacteristic!.properties.read) {
+          _logger.d('📖 [ESP32] Reading Device ID immediately...');
+          await readDeviceId();
+        }
+      } else {
+        _logger.w('⚠️  [ESP32] Device ID characteristic not found');
+      }
+
       _logger.i('🎉 [ESP32] ESP32 connected and ready for WiFi configuration!');
     } catch (e, stackTrace) {
       _logger.e('❌ [ESP32] Error connecting to ESP32: $e');
@@ -309,9 +361,9 @@ class ESP32WifiConfigService {
         return ESP32WifiStatus.idle;
       }
 
-      final statusValue = statusBytes[0];
-      final status = ESP32WifiStatus.fromValue(statusValue);
-      _logger.i('📖 [STATUS] ESP32 WiFi status: $status (value: $statusValue)');
+      final statusString = utf8.decode(statusBytes, allowMalformed: true).trim();
+      final status = ESP32WifiStatus.fromString(statusString);
+      _logger.i('📖 [STATUS] ESP32 WiFi status: $status (value: "$statusString")');
       return status;
     } on Exception catch (e, stackTrace) {
       _logger.e('❌ [STATUS] Error reading WiFi status: $e');
@@ -333,10 +385,10 @@ class ESP32WifiConfigService {
         value,
       ) {
         if (value.isNotEmpty) {
-          final statusValue = value[0];
-          final status = ESP32WifiStatus.fromValue(statusValue);
+          final statusString = utf8.decode(value, allowMalformed: true).trim();
+          final status = ESP32WifiStatus.fromString(statusString);
           _logger.i(
-            '🔔 [STATUS] ESP32 WiFi status update: $status (value: $statusValue)',
+            '🔔 [STATUS] ESP32 WiFi status update: $status (value: "$statusString")',
           );
 
           switch (status) {
@@ -348,6 +400,9 @@ class ESP32WifiConfigService {
               break;
             case ESP32WifiStatus.connected:
               _logger.i('✅ [STATUS] ESP32 CONNECTED to WiFi successfully!');
+              break;
+            case ESP32WifiStatus.reconnecting:
+              _logger.i('🔄 [STATUS] ESP32 is RECONNECTING to WiFi...');
               break;
             case ESP32WifiStatus.failed:
               _logger.e('❌ [STATUS] ESP32 FAILED to connect to WiFi');
@@ -366,6 +421,105 @@ class ESP32WifiConfigService {
     }
   }
 
+  /// Leer el Device ID del ESP32
+  Future<String?> readDeviceId() async {
+    if (_deviceIdCharacteristic == null) {
+      _logger.w('⚠️  [DEVICE_ID] Device ID characteristic not available');
+      return null;
+    }
+
+    try {
+      _logger.d('📖 [DEVICE_ID] Reading Device ID from ESP32...');
+      final deviceIdBytes = await _bluetoothService.readCharacteristic(
+        _deviceIdCharacteristic!,
+      );
+
+      if (deviceIdBytes.isEmpty) {
+        _logger.w('⚠️  [DEVICE_ID] Empty Device ID response');
+        return null;
+      }
+
+      final deviceId = utf8.decode(deviceIdBytes, allowMalformed: true).trim();
+      _logger.i('📖 [DEVICE_ID] ESP32 Device ID: "$deviceId"');
+
+      // Guardar el Device ID en memoria y persistencia
+      _currentDeviceId = deviceId;
+      await _saveDeviceId(deviceId);
+      _deviceIdController.add(deviceId);
+
+      return deviceId;
+    } on Exception catch (e, stackTrace) {
+      _logger.e('❌ [DEVICE_ID] Error reading Device ID: $e');
+      _logger.e('❌ [DEVICE_ID] Stack trace: $stackTrace');
+      return null;
+    }
+  }
+
+  /// Suscribirse a notificaciones de Device ID del ESP32
+  Future<void> _subscribeToDeviceId() async {
+    if (_deviceIdCharacteristic == null) {
+      return;
+    }
+
+    try {
+      _logger.i('🔔 [DEVICE_ID] Subscribing to Device ID notifications...');
+      await _deviceIdCharacteristic!.setNotifyValue(true);
+      _deviceIdSubscription =
+          _deviceIdCharacteristic!.lastValueStream.listen((value) async {
+        if (value.isNotEmpty) {
+          final deviceId = utf8.decode(value, allowMalformed: true).trim();
+          _logger.i('🔔 [DEVICE_ID] Device ID notification: "$deviceId"');
+
+          // Guardar el Device ID en memoria y persistencia
+          _currentDeviceId = deviceId;
+          await _saveDeviceId(deviceId);
+          _deviceIdController.add(deviceId);
+        } else {
+          _logger.w('⚠️  [DEVICE_ID] Received empty Device ID notification');
+        }
+      });
+      _logger.i('✅ [DEVICE_ID] Subscribed to Device ID notifications');
+    } on Exception catch (e, stackTrace) {
+      _logger.e('❌ [DEVICE_ID] Error subscribing to Device ID: $e');
+      _logger.e('❌ [DEVICE_ID] Stack trace: $stackTrace');
+    }
+  }
+
+  /// Guardar Device ID en SharedPreferences
+  Future<void> _saveDeviceId(String deviceId) async {
+    try {
+      await _prefs.setString(AppConstants.keyCurrentDeviceId, deviceId);
+      _logger.d('💾 [DEVICE_ID] Device ID saved to local storage: "$deviceId"');
+    } on Exception catch (e) {
+      _logger.e('❌ [DEVICE_ID] Error saving Device ID: $e');
+    }
+  }
+
+  /// Recuperar Device ID almacenado localmente
+  String? getSavedDeviceId() {
+    try {
+      final deviceId = _prefs.getString(AppConstants.keyCurrentDeviceId);
+      if (deviceId != null) {
+        _logger.d('📂 [DEVICE_ID] Retrieved saved Device ID: "$deviceId"');
+      }
+      return deviceId;
+    } on Exception catch (e) {
+      _logger.e('❌ [DEVICE_ID] Error retrieving Device ID: $e');
+      return null;
+    }
+  }
+
+  /// Limpiar Device ID almacenado
+  Future<void> clearSavedDeviceId() async {
+    try {
+      await _prefs.remove(AppConstants.keyCurrentDeviceId);
+      _currentDeviceId = null;
+      _logger.d('🗑️  [DEVICE_ID] Device ID cleared from local storage');
+    } on Exception catch (e) {
+      _logger.e('❌ [DEVICE_ID] Error clearing Device ID: $e');
+    }
+  }
+
   /// Desconectar del ESP32
   Future<void> disconnect() async {
     try {
@@ -374,9 +528,14 @@ class ESP32WifiConfigService {
       await _statusSubscription?.cancel();
       _statusSubscription = null;
 
+      await _deviceIdSubscription?.cancel();
+      _deviceIdSubscription = null;
+
       _ssidCharacteristic = null;
       _passwordCharacteristic = null;
       _statusCharacteristic = null;
+      _deviceIdCharacteristic = null;
+      _currentDeviceId = null;
 
       await _bluetoothService.disconnect();
       _logger.i('✅ [ESP32] Disconnected from ESP32');
@@ -389,6 +548,8 @@ class ESP32WifiConfigService {
   /// Limpiar recursos
   void dispose() {
     _statusSubscription?.cancel();
+    _deviceIdSubscription?.cancel();
     _statusController.close();
+    _deviceIdController.close();
   }
 }

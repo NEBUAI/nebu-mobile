@@ -58,6 +58,16 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             );
             break;
 
+          case ESP32WifiStatus.reconnecting:
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text('setup.wifi.status_reconnecting'.tr()),
+                backgroundColor: Colors.orange,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+            break;
+
           case ESP32WifiStatus.connected:
             // Cancelar timeout si existe
             _timeoutTimer?.cancel();
