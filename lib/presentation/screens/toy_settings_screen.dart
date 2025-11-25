@@ -25,7 +25,8 @@ class ToySettingsController extends GetxController {
     try {
       await toyProvider.updateToy(
         id: toy.id,
-        updates: {'name': newName, if (settings != null) 'settings': settings},
+        name: newName,
+        settings: settings,
       );
 
       name.value = newName;
@@ -124,17 +125,16 @@ class ToySettingsScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                toy.model,
+                                toy.model ?? 'Unknown Model',
                                 style: theme.textTheme.titleLarge,
                               ),
                               const SizedBox(height: 8),
-                              if (toy.macAddress != null)
-                                Text(
-                                  'MAC: ${toy.macAddress}',
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.disabledColor,
-                                  ),
+                              Text(
+                                'ID: ${toy.iotDeviceId}',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.disabledColor,
                                 ),
+                              ),
                             ],
                           ),
                         ),
@@ -169,35 +169,6 @@ class ToySettingsScreen extends StatelessWidget {
 
                       const SizedBox(height: 24),
 
-                      // Personality Setting
-                      Text(
-                        'Personality',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Card(
-                        child: Column(
-                          children: controller.personalities
-                              .map(
-                                (p) => RadioListTile<String>(
-                                  title: Text(p.capitalize ?? p),
-                                  value: p,
-                                  groupValue: controller.personality.value,
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      controller.personality.value = value;
-                                    }
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
                       // Device Status
                       Text(
                         'Device Status',
@@ -212,19 +183,23 @@ class ToySettingsScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               _buildStatusRow(
-                                'Connection',
-                                toy.connectionStatus,
+                                'Status',
+                                toy.status.toString().split('.').last,
                                 theme,
                               ),
                               const Divider(),
                               if (toy.batteryLevel != null)
                                 _buildStatusRow(
                                   'Battery',
-                                  '${toy.batteryLevel}%',
+                                  toy.batteryLevel!,
                                   theme,
                                 ),
                               if (toy.batteryLevel != null) const Divider(),
-                              _buildStatusRow('Model', toy.model, theme),
+                              _buildStatusRow(
+                                'Model',
+                                toy.model ?? 'Unknown',
+                                theme,
+                              ),
                             ],
                           ),
                         ),
@@ -238,7 +213,6 @@ class ToySettingsScreen extends StatelessWidget {
                           if (formKey.currentState!.validate()) {
                             controller.updateToySettings(
                               newName: nameController.text,
-                              newPersonality: controller.personality.value,
                             );
                           }
                         },

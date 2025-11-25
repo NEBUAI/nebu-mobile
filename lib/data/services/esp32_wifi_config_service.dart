@@ -96,11 +96,21 @@ class ESP32WifiConfigService {
           );
           for (final char in service.characteristics) {
             final props = <String>[];
-            if (char.properties.read) props.add('READ');
-            if (char.properties.write) props.add('WRITE');
-            if (char.properties.writeWithoutResponse) props.add('WRITE_NO_RSP');
-            if (char.properties.notify) props.add('NOTIFY');
-            if (char.properties.indicate) props.add('INDICATE');
+            if (char.properties.read) {
+              props.add('READ');
+            }
+            if (char.properties.write) {
+              props.add('WRITE');
+            }
+            if (char.properties.writeWithoutResponse) {
+              props.add('WRITE_NO_RSP');
+            }
+            if (char.properties.notify) {
+              props.add('NOTIFY');
+            }
+            if (char.properties.indicate) {
+              props.add('INDICATE');
+            }
             _logger.i('        • ${char.uuid} [${props.join(', ')}]');
           }
         }

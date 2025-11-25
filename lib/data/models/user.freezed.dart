@@ -211,8 +211,8 @@ return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _User implements User {
-  const _User({required this.id, required this.email, required this.name, this.avatar});
+class _User extends User {
+  const _User({required this.id, required this.email, required this.name, this.avatar}): super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override final  String id;
@@ -481,8 +481,8 @@ return $default(_that.accessToken,_that.refreshToken);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _AuthTokens implements AuthTokens {
-  const _AuthTokens({required this.accessToken, required this.refreshToken});
+class _AuthTokens extends AuthTokens {
+  const _AuthTokens({required this.accessToken, required this.refreshToken}): super._();
   factory _AuthTokens.fromJson(Map<String, dynamic> json) => _$AuthTokensFromJson(json);
 
 @override final  String accessToken;
@@ -773,8 +773,8 @@ return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _AuthResponse implements AuthResponse {
-  const _AuthResponse({required this.success, this.user, this.tokens, this.error});
+class _AuthResponse extends AuthResponse {
+  const _AuthResponse({required this.success, this.user, this.tokens, this.error}): super._();
   factory _AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);
 
 @override final  bool success;
@@ -1093,8 +1093,8 @@ return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCre
 /// @nodoc
 @JsonSerializable()
 
-class _SocialAuthResult implements SocialAuthResult {
-  const _SocialAuthResult({required this.success, this.user, this.tokens, this.error, this.appleCredential});
+class _SocialAuthResult extends SocialAuthResult {
+  const _SocialAuthResult({required this.success, this.user, this.tokens, this.error, this.appleCredential}): super._();
   factory _SocialAuthResult.fromJson(Map<String, dynamic> json) => _$SocialAuthResultFromJson(json);
 
 @override final  bool success;

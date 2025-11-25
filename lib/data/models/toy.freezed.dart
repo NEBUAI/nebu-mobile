@@ -223,8 +223,8 @@ return $default(_that.id,_that.iotDeviceId,_that.name,_that.status,_that.userId,
 /// @nodoc
 @JsonSerializable()
 
-class _Toy implements Toy {
-  const _Toy({required this.id, required this.iotDeviceId, required this.name, required this.status, required this.userId, this.model, this.manufacturer, this.firmwareVersion, final  Map<String, dynamic>? capabilities, final  Map<String, dynamic>? settings, this.notes, this.batteryLevel, this.signalStrength, this.lastConnected, this.createdAt, this.updatedAt}): _capabilities = capabilities,_settings = settings;
+class _Toy extends Toy {
+  const _Toy({required this.id, required this.iotDeviceId, required this.name, required this.status, required this.userId, this.model, this.manufacturer, this.firmwareVersion, final  Map<String, dynamic>? capabilities, final  Map<String, dynamic>? settings, this.notes, this.batteryLevel, this.signalStrength, this.lastConnected, this.createdAt, this.updatedAt}): _capabilities = capabilities,_settings = settings,super._();
   factory _Toy.fromJson(Map<String, dynamic> json) => _$ToyFromJson(json);
 
 @override final  String id;
@@ -541,8 +541,8 @@ return $default(_that.iotDeviceId,_that.name,_that.userId,_that.model,_that.manu
 /// @nodoc
 @JsonSerializable()
 
-class _CreateToyRequest implements CreateToyRequest {
-  const _CreateToyRequest({required this.iotDeviceId, required this.name, required this.userId, this.model, this.manufacturer, this.status, this.firmwareVersion, final  Map<String, dynamic>? capabilities, final  Map<String, dynamic>? settings, this.notes}): _capabilities = capabilities,_settings = settings;
+class _CreateToyRequest extends CreateToyRequest {
+  const _CreateToyRequest({required this.iotDeviceId, required this.name, required this.userId, this.model, this.manufacturer, this.status, this.firmwareVersion, final  Map<String, dynamic>? capabilities, final  Map<String, dynamic>? settings, this.notes}): _capabilities = capabilities,_settings = settings,super._();
   factory _CreateToyRequest.fromJson(Map<String, dynamic> json) => _$CreateToyRequestFromJson(json);
 
 @override final  String iotDeviceId;
@@ -840,8 +840,8 @@ return $default(_that.macAddress,_that.userId,_that.toyName);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _AssignToyRequest implements AssignToyRequest {
-  const _AssignToyRequest({required this.macAddress, required this.userId, this.toyName});
+class _AssignToyRequest extends AssignToyRequest {
+  const _AssignToyRequest({required this.macAddress, required this.userId, this.toyName}): super._();
   factory _AssignToyRequest.fromJson(Map<String, dynamic> json) => _$AssignToyRequestFromJson(json);
 
 @override final  String macAddress;
@@ -1121,8 +1121,8 @@ return $default(_that.success,_that.message,_that.toy);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _AssignToyResponse implements AssignToyResponse {
-  const _AssignToyResponse({required this.success, this.message, this.toy});
+class _AssignToyResponse extends AssignToyResponse {
+  const _AssignToyResponse({required this.success, this.message, this.toy}): super._();
   factory _AssignToyResponse.fromJson(Map<String, dynamic> json) => _$AssignToyResponseFromJson(json);
 
 @override final  bool success;
@@ -1402,8 +1402,8 @@ return $default(_that.status,_that.batteryLevel,_that.signalStrength);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _UpdateToyStatusRequest implements UpdateToyStatusRequest {
-  const _UpdateToyStatusRequest({required this.status, this.batteryLevel, this.signalStrength});
+class _UpdateToyStatusRequest extends UpdateToyStatusRequest {
+  const _UpdateToyStatusRequest({required this.status, this.batteryLevel, this.signalStrength}): super._();
   factory _UpdateToyStatusRequest.fromJson(Map<String, dynamic> json) => _$UpdateToyStatusRequestFromJson(json);
 
 @override final  ToyStatus status;
