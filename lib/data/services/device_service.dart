@@ -87,6 +87,6 @@ class DeviceService {
     }
   }
 
-  // TODO: Implementar la obtención del estado de carga (si el ESP32 lo soporta)
-  // Esto normalmente requiere una característica BLE personalizada.
+  /// TODO: Implement battery level retrieval (if ESP32 supports it)
+  /// This typically requires a custom BLE characteristic.
 }

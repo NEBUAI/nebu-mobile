@@ -108,9 +108,9 @@ class WiFiService {
         throw Exception('Location permission required for WiFi scanning');
       }
 
-      // TODO: Implementar escaneo real de redes WiFi usando un plugin nativo
-      // Por ahora, retornar lista vacía hasta que se implemente
-      // Se necesita un plugin como 'wifi_scan' o 'wifi_iot' para funcionalidad real
+      /// TODO: Implement actual WiFi network scanning using a native plugin
+      /// For now, return empty list until implemented
+      /// Need a plugin like 'wifi_scan' or 'wifi_iot' for real functionality
 
       _logger.w('WiFi scanning not implemented - requires native plugin');
 
@@ -136,8 +136,8 @@ class WiFiService {
     try {
       _logger.i('Attempting to connect to WiFi: ${credentials.ssid}');
 
-      // TODO: Implementar conexión real a WiFi usando un plugin nativo
-      // Esta funcionalidad requiere permisos de sistema y un plugin adecuado
+      /// TODO: Implement actual WiFi connection using a native plugin
+      /// This functionality requires system permissions and appropriate plugin
 
       _logger.w('WiFi connection not implemented - requires native plugin');
 
