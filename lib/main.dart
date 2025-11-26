@@ -48,7 +48,12 @@ void main() async {
   );
   final dio = Dio();
   final logger = Logger(
-    printer: PrettyPrinter(methodCount: 0, errorMethodCount: 5, lineLength: 50),
+    printer: PrettyPrinter(
+      methodCount: 1, // show method name
+      errorMethodCount: 3, // show 3 stacktrace lines on error
+      lineLength: 80, // width of the log print
+      printTime: true, // Should each log print contain a timestamp
+    ),
   );
 
   // Initialize services
