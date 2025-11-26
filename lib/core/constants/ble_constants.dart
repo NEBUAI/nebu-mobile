@@ -36,12 +36,12 @@ class BleConstants {
   /// UUID del servicio principal de configuración WiFi del ESP32
   ///
   /// Nombre visible en escaneo BLE: "ESP32-WiFi-Config"
-  /// Base UUID: 0000bc9a-7856-3412-3412-xxxxxxxxxxxx
+  /// Base UUID: bc9a-7856-3412-3412-xxxxxxxxxxxx
   ///
   /// Este servicio permite configurar credenciales WiFi y obtener información
   /// del dispositivo ESP32 via BLE.
   static const String esp32WifiServiceUuid =
-      '0000bc9a-7856-3412-3412-341278563412';
+      '00001234-5678-1234-1234-123456789abc';
 
   /// Característica SSID - Enviar nombre de red WiFi
   ///
@@ -52,7 +52,7 @@ class BleConstants {
   ///
   /// Envía el nombre de la red WiFi a la que el ESP32 debe conectarse.
   static const String esp32SsidCharUuid =
-      '0000bd9a-7856-3412-3412-341278563412';
+      '00001234-5678-1234-1234-123456789abd';
 
   /// Característica Password - Enviar contraseña WiFi
   ///
@@ -63,7 +63,7 @@ class BleConstants {
   ///
   /// Envía la contraseña de la red WiFi. Para redes abiertas, enviar string vacío.
   static const String esp32PasswordCharUuid =
-      '0000be9a-7856-3412-3412-341278563412';
+      '00001234-5678-1234-1234-123456789abe';
 
   /// Característica Status - Monitorear estado de conexión WiFi
   ///
@@ -78,7 +78,7 @@ class BleConstants {
   ///
   /// El ESP32 notifica automáticamente cambios de estado.
   static const String esp32StatusCharUuid =
-      '0000bf9a-7856-3412-3412-341278563412';
+      '00001234-5678-1234-1234-123456789abf';
 
   /// Característica Device ID - Identificador único del ESP32
   ///
@@ -98,7 +98,7 @@ class BleConstants {
   /// **Importante:** Este ID es permanente y único - usarlo para vincular
   /// el dispositivo físico con la cuenta del usuario.
   static const String esp32DeviceIdCharUuid =
-      '0000c09a-7856-3412-3412-341278563412';
+      '00001234-5678-1234-1234-123456789ac0';
 
   // ============================================================================
   // NOMBRES DE DISPOSITIVOS
