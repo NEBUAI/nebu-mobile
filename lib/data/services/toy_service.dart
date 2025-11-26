@@ -49,7 +49,7 @@ class ToyService {
     } on DioException catch (e) {
       _logger.e('Error creating toy: ${e.message}');
       throw Exception('Error al registrar el juguete: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error creating toy: $e');
       throw Exception('Error inesperado al registrar el juguete');
     }
@@ -69,7 +69,7 @@ class ToyService {
     } on DioException catch (e) {
       _logger.e('Error fetching toys: ${e.message}');
       throw Exception('Error al obtener los juguetes: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error fetching toys: $e');
       throw Exception('Error inesperado al obtener los juguetes');
     }
@@ -103,7 +103,7 @@ class ToyService {
         throw Exception('Este juguete ya está asignado a otro usuario');
       }
       throw Exception('Error al asignar el juguete: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error assigning toy: $e');
       throw Exception('Error inesperado al asignar el juguete');
     }
@@ -136,7 +136,7 @@ class ToyService {
         throw Exception('Juguete no encontrado');
       }
       throw Exception('Error al actualizar el estado: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error updating toy status: $e');
       throw Exception('Error inesperado al actualizar el estado');
     }
@@ -157,7 +157,7 @@ class ToyService {
         throw Exception('Juguete no encontrado');
       }
       throw Exception('Error al obtener el juguete: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error fetching toy: $e');
       throw Exception('Error inesperado al obtener el juguete');
     }
@@ -200,7 +200,7 @@ class ToyService {
         throw Exception('Juguete no encontrado');
       }
       throw Exception('Error al actualizar el juguete: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error updating toy: $e');
       throw Exception('Error inesperado al actualizar el juguete');
     }
@@ -222,7 +222,7 @@ class ToyService {
         throw Exception('No se puede eliminar el juguete porque está en uso');
       }
       throw Exception('Error al eliminar el juguete: ${e.message}');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error deleting toy: $e');
       throw Exception('Error inesperado al eliminar el juguete');
     }

@@ -81,7 +81,7 @@ class _SimpleUserRegistrationScreenState
       if (mounted) {
         context.push(AppRoutes.connectionSetup.path);
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Error creating user: $e');
       setState(() {
         _errorMessage = e.toString().replaceAll('Exception: ', '');

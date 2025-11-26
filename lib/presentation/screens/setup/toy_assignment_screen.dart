@@ -79,7 +79,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
           _isLoading = false;
         });
       }
-    } catch (e) {
+    } on Exception catch (e) {
       widget.logger.e('Error assigning toy: $e');
       setState(() {
         _errorMessage = e.toString().replaceAll('Exception: ', '');

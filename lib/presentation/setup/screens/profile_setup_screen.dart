@@ -54,7 +54,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           );
         }
       }
-    } catch (e) {
+    } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
@@ -82,7 +82,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           );
         }
       }
-    } catch (e) {
+    } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
