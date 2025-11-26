@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'core/constants/app_constants.dart';
+import 'core/constants/app_config.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'data/services/api_service.dart';
@@ -119,7 +119,7 @@ class NebuApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: AppConstants.appName,
+      title: AppConfig.appName,
       debugShowCheckedModeBanner: false,
 
       // Localization

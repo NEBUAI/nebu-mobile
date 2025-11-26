@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 
 class VoiceSetupScreen extends StatefulWidget {
@@ -81,7 +81,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                 Text(
                   'setup.voice.subtitle'.tr(),
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: Colors.white.withOpacity(0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -110,7 +110,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? Colors.white
-                                  : Colors.white.withValues(alpha: 0.2),
+                                  : Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isSelected
@@ -125,10 +125,9 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AppTheme.primaryLight.withValues(
-                                            alpha: 0.1,
-                                          )
-                                        : Colors.white.withValues(alpha: 0.1),
+                                        ? AppTheme.primaryLight
+                                            .withOpacity(0.1)
+                                        : Colors.white.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Icon(
@@ -162,10 +161,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                             ?.copyWith(
                                               color: isSelected
                                                   ? AppTheme.primaryLight
-                                                        .withValues(alpha: 0.7)
-                                                  : Colors.white.withValues(
-                                                      alpha: 0.7,
-                                                    ),
+                                                      .withOpacity(0.7)
+                                                  : Colors.white.withOpacity(0.7),
                                             ),
                                       ),
                                     ],
@@ -190,17 +187,13 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                 // Next button
                 ElevatedButton(
                   onPressed: _selectedVoice != null
-                      ? () => context.go(AppConstants.routeFavoritesSetup)
+                      ? () => context.go(AppRoutes.favoritesSetup.path)
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AppTheme.primaryLight,
-                    disabledBackgroundColor: Colors.white.withValues(
-                      alpha: 0.3,
-                    ),
-                    disabledForegroundColor: Colors.white.withValues(
-                      alpha: 0.5,
-                    ),
+                    disabledBackgroundColor: Colors.white.withOpacity(0.3),
+                    disabledForegroundColor: Colors.white.withOpacity(0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -219,11 +212,11 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
 
                 // Skip button
                 TextButton(
-                  onPressed: () => context.go(AppConstants.routeHome),
+                  onPressed: () => context.go(AppRoutes.home.path),
                   child: Text(
                     'setup.connection.skip_setup'.tr(),
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.8),
+                      color: Colors.white.withOpacity(0.8),
                     ),
                   ),
                 ),
@@ -248,7 +241,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
         decoration: BoxDecoration(
           color: index < current
               ? Colors.white
-              : Colors.white.withValues(alpha: 0.3),
+              : Colors.white.withOpacity(0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

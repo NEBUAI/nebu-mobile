@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/storage_keys.dart';
 import '../../presentation/providers/auth_provider.dart' as auth;
 
 // Theme state
@@ -29,7 +29,7 @@ class ThemeNotifier extends Notifier<ThemeState> {
 
   // Load theme from storage
   Future<void> _loadTheme() async {
-    final themeModeString = _prefs.getString(AppConstants.keyThemeMode);
+    final themeModeString = _prefs.getString(StorageKeys.themeMode);
 
     ThemeMode themeMode;
     bool isDarkMode;
@@ -106,7 +106,7 @@ class ThemeNotifier extends Notifier<ThemeState> {
         break;
     }
 
-    await _prefs.setString(AppConstants.keyThemeMode, themeModeString);
+    await _prefs.setString(StorageKeys.themeMode, themeModeString);
   }
 }
 

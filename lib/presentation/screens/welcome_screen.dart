@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -36,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.15),
+                            color: Colors.black.withOpacity(0.15),
                             blurRadius: 20,
                             offset: const Offset(0, 8),
                           ),
@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                         'welcome.subtitle'.tr(),
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
+                          color: Colors.white.withOpacity(0.9),
                           height: 1.4,
                         ),
                       ),
@@ -78,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                         'welcome.auth_section_title'.tr(),
                         textAlign: TextAlign.center,
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.85),
+                          color: Colors.white.withOpacity(0.85),
                           letterSpacing: 0.3,
                         ),
                       ),
@@ -89,7 +89,7 @@ class WelcomeScreen extends StatelessWidget {
                     // Sign In Button
                     ElevatedButton(
                       onPressed: () {
-                        context.push(AppConstants.routeLogin);
+                        context.push(AppRoutes.login.path);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -114,7 +114,7 @@ class WelcomeScreen extends StatelessWidget {
                     // Sign Up Button
                     OutlinedButton(
                       onPressed: () {
-                        context.push(AppConstants.routeSignUp);
+                        context.push(AppRoutes.signUp.path);
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -140,7 +140,7 @@ class WelcomeScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Divider(
-                            color: Colors.white.withValues(alpha: 0.4),
+                            color: Colors.white.withOpacity(0.4),
                             thickness: 1.5,
                           ),
                         ),
@@ -149,14 +149,14 @@ class WelcomeScreen extends StatelessWidget {
                           child: Text(
                             'welcome.or'.tr(),
                             style: theme.textTheme.labelMedium?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.8),
+                              color: Colors.white.withOpacity(0.8),
                               letterSpacing: 1,
                             ),
                           ),
                         ),
                         Expanded(
                           child: Divider(
-                            color: Colors.white.withValues(alpha: 0.4),
+                            color: Colors.white.withOpacity(0.4),
                             thickness: 1.5,
                           ),
                         ),
@@ -168,7 +168,7 @@ class WelcomeScreen extends StatelessWidget {
                     // Continue Without Account Button
                     TextButton(
                       onPressed: () {
-                        context.push(AppConstants.routeConnectionSetup);
+                        context.push(AppRoutes.connectionSetup.path);
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,

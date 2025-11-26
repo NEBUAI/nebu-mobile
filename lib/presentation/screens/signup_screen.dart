@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
@@ -58,7 +58,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
       if (mounted) {
         if (success) {
-          context.go(AppConstants.routeHome);
+          context.go(AppRoutes.home.path);
         } else {
           setState(() {
             _errorMessage = 'auth.registration_error'.tr();
@@ -105,7 +105,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
       if (mounted) {
         if (success) {
-          context.go(AppConstants.routeHome);
+          context.go(AppRoutes.home.path);
         } else {
           setState(() {
             _errorMessage = 'auth.google_signup_error'.tr();

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/esp32_wifi_config_service.dart';
 import '../../providers/esp32_provider.dart';
@@ -86,7 +86,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             // Continuar al siguiente paso
             Future<void>.delayed(const Duration(seconds: 1), () {
               if (mounted) {
-                context.push(AppConstants.routeToyNameSetup);
+                context.push(AppRoutes.toyNameSetup.path);
               }
             });
             break;
@@ -273,7 +273,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       setState(() {
         _isConnecting = false;
       });
-      await context.push(AppConstants.routeToyNameSetup);
+      await context.push(AppRoutes.toyNameSetup.path);
     }
   }
 
@@ -524,7 +524,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   void _skipWifiSetup() {
-    context.push(AppConstants.routeToyNameSetup);
+    context.push(AppRoutes.toyNameSetup.path);
   }
 
   Widget _buildProgressIndicator(int current, int total) => Row(

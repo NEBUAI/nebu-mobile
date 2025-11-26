@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/constants/storage_keys.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/toy.dart';
@@ -165,7 +165,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              context.go(AppConstants.routeHome);
+              context.go(AppRoutes.home.path);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryLight,
@@ -296,7 +296,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                               final success = await _registerDeviceIfNeeded();
 
                               if (success && mounted) {
-                                context.push(AppConstants.routeAgeSetup);
+                                context.push(AppRoutes.ageSetup.path);
                               }
                             }
                           },

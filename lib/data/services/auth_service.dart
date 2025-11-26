@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/storage_keys.dart';
 import '../../core/utils/env_config.dart';
 import '../models/user.dart';
 
@@ -185,20 +185,20 @@ class AuthService {
   // Token Management
   Future<void> _storeTokens(AuthTokens tokens) async {
     await _secureStorage.write(
-      key: AppConstants.keyAccessToken,
+      key: StorageKeys.accessToken,
       value: tokens.accessToken,
     );
     await _secureStorage.write(
-      key: AppConstants.keyRefreshToken,
+      key: StorageKeys.refreshToken,
       value: tokens.refreshToken,
     );
   }
 
   Future<String?> getAccessToken() async =>
-      _secureStorage.read(key: AppConstants.keyAccessToken);
+      _secureStorage.read(key: StorageKeys.accessToken);
 
   Future<String?> getRefreshToken() async =>
-      _secureStorage.read(key: AppConstants.keyRefreshToken);
+      _secureStorage.read(key: StorageKeys.refreshToken);
 
   Future<String?> refreshAccessToken() async {
     try {
@@ -214,7 +214,7 @@ class AuthService {
 
       final newAccessToken = response.data?['accessToken'] as String;
       await _secureStorage.write(
-        key: AppConstants.keyAccessToken,
+        key: StorageKeys.accessToken,
         value: newAccessToken,
       );
 
@@ -226,9 +226,9 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    await _secureStorage.delete(key: AppConstants.keyAccessToken);
-    await _secureStorage.delete(key: AppConstants.keyRefreshToken);
-    await _prefs.remove(AppConstants.keyUser);
+    await _secureStorage.delete(key: StorageKeys.accessToken);
+    await _secureStorage.delete(key: StorageKeys.refreshToken);
+    await _prefs.remove(StorageKeys.user);
   }
 
   Future<bool> isAuthenticated() async {

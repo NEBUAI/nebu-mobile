@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../providers/api_provider.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_input.dart';
@@ -79,7 +79,7 @@ class _SimpleUserRegistrationScreenState
       // para asignar el juguete al usuario
       await Future<void>.delayed(const Duration(seconds: 1));
       if (mounted) {
-        context.push(AppConstants.routeConnectionSetup);
+        context.push(AppRoutes.connectionSetup.path);
       }
     } catch (e) {
       _logger.e('Error creating user: $e');
@@ -241,9 +241,7 @@ class _SimpleUserRegistrationScreenState
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer.withValues(
-                      alpha: 0.3,
-                    ),
+                    color: theme.colorScheme.primaryContainer.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(

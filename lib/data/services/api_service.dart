@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/storage_keys.dart';
 import '../../core/utils/env_config.dart';
 
 class ApiService {
@@ -28,7 +28,7 @@ class ApiService {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await _secureStorage.read(
-            key: AppConstants.keyAccessToken,
+            key: StorageKeys.accessToken,
           );
 
           if (token != null && token.isNotEmpty) {
@@ -57,7 +57,7 @@ class ApiService {
           // Handle 401 Unauthorized - Try to refresh token
           if (error.response?.statusCode == 401) {
             final refreshToken = await _secureStorage.read(
-              key: AppConstants.keyRefreshToken,
+              key: StorageKeys.refreshToken,
             );
 
             if (refreshToken != null && refreshToken.isNotEmpty) {
@@ -76,7 +76,7 @@ class ApiService {
                 final newAccessToken =
                     refreshResponse.data?['accessToken'] as String;
                 await _secureStorage.write(
-                  key: AppConstants.keyAccessToken,
+                  key: StorageKeys.accessToken,
                   value: newAccessToken,
                 );
 
@@ -90,8 +90,8 @@ class ApiService {
               } on Exception catch (e) {
                 _logger.e('Token refresh failed: $e');
                 // Clear tokens and redirect to login
-                await _secureStorage.delete(key: AppConstants.keyAccessToken);
-                await _secureStorage.delete(key: AppConstants.keyRefreshToken);
+                await _secureStorage.delete(key: StorageKeys.accessToken);
+                await _secureStorage.delete(key: StorageKeys.refreshToken);
               }
             }
           }

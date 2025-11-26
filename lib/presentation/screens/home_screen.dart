@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../providers/bluetooth_provider.dart';
 import '../providers/device_provider.dart';
 
@@ -34,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   TextButton.icon(
                     onPressed: () =>
-                        context.push(AppConstants.routeConnectionSetup),
+                        context.push(AppRoutes.connectionSetup.path),
                     icon: const Icon(Icons.add),
                     label: Text('home.add_toy'.tr()),
                   ),
@@ -65,23 +65,23 @@ class HomeScreen extends ConsumerWidget {
                     _QuickActionCard(
                       icon: Icons.qr_code_scanner,
                       title: 'home.scan_qr'.tr(),
-                      onTap: () => context.push(AppConstants.routeQRScanner),
+                      onTap: () => context.push(AppRoutes.qrScanner.path),
                     ),
                     _QuickActionCard(
                       icon: Icons.devices,
                       title: 'home.devices'.tr(),
                       onTap: () =>
-                          context.push(AppConstants.routeDeviceManagement),
+                          context.push(AppRoutes.deviceManagement.path),
                     ),
                     _QuickActionCard(
                       icon: Icons.dashboard,
                       title: 'home.my_toys'.tr(),
-                      onTap: () => context.go(AppConstants.routeMyToys),
+                      onTap: () => context.go(AppRoutes.myToys.path),
                     ),
                     _QuickActionCard(
                       icon: Icons.history,
                       title: 'home.activity_log'.tr(),
-                      onTap: () => context.go(AppConstants.routeActivityLog),
+                      onTap: () => context.go(AppRoutes.activityLog.path),
                     ),
                   ],
                 ),
