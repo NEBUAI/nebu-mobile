@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../providers/esp32_provider.dart';
 
@@ -264,7 +264,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
             onPressed: () {
               _logger.i('User skipped setup');
               Navigator.pop(context);
-              context.go(AppConstants.routeHome);
+              context.go(AppRoutes.home.path);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryLight,
@@ -327,7 +327,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
                 ),
                 ElevatedButton(
                   onPressed: canProceed && !_isConnecting
-                      ? () => context.push(AppConstants.routeWifiSetup)
+                      ? () => context.push(AppRoutes.wifiSetup.path)
                       : () {
                           if (_isScanning) return;
                           if (!_isBluetoothEnabled) {

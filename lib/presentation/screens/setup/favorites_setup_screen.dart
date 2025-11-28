@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 
 class FavoritesSetupScreen extends StatefulWidget {
@@ -69,7 +69,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                 'setup.favorites.subtitle'.tr(),
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withOpacity(0.9),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -109,7 +109,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? Colors.white
-                              : Colors.white.withValues(alpha: 0.2),
+                              : Colors.white.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
                             color: isSelected
@@ -160,13 +160,13 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
               // Next button
               ElevatedButton(
                 onPressed: _selectedFavorites.length >= 2
-                    ? () => context.go(AppConstants.routeWorldInfoSetup)
+                    ? () => context.go(AppRoutes.worldInfoSetup.path)
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AppTheme.primaryLight,
-                  disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
-                  disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+                  disabledBackgroundColor: Colors.white.withOpacity(0.3),
+                  disabledForegroundColor: Colors.white.withOpacity(0.5),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -189,11 +189,11 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
 
               // Skip button
               TextButton(
-                onPressed: () => context.go(AppConstants.routeHome),
+                onPressed: () => context.go(AppRoutes.home.path),
                 child: Text(
                   'setup.connection.skip_setup'.tr(),
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: Colors.white.withOpacity(0.8),
                     fontSize: 16,
                   ),
                 ),
@@ -218,7 +218,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
         decoration: BoxDecoration(
           color: index < current
               ? Colors.white
-              : Colors.white.withValues(alpha: 0.3),
+              : Colors.white.withOpacity(0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

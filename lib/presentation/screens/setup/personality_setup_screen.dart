@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 
 class PersonalitySetupScreen extends StatefulWidget {
@@ -81,7 +81,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                 'setup.personality.subtitle'.tr(),
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withOpacity(0.9),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -111,7 +111,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Colors.white
-                                : Colors.white.withValues(alpha: 0.2),
+                                : Colors.white.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: isSelected
@@ -147,12 +147,9 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: isSelected
-                                            ? AppTheme.primaryLight.withValues(
-                                                alpha: 0.7,
-                                              )
-                                            : Colors.white.withValues(
-                                                alpha: 0.7,
-                                              ),
+                                            ? AppTheme.primaryLight
+                                                .withOpacity(0.7)
+                                            : Colors.white.withOpacity(0.7),
                                       ),
                                     ),
                                   ],
@@ -177,13 +174,13 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
               // Next button
               ElevatedButton(
                 onPressed: _selectedPersonality != null
-                    ? () => context.go(AppConstants.routeVoiceSetup)
+                    ? () => context.go(AppRoutes.voiceSetup.path)
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AppTheme.primaryLight,
-                  disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
-                  disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+                  disabledBackgroundColor: Colors.white.withOpacity(0.3),
+                  disabledForegroundColor: Colors.white.withOpacity(0.5),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -202,11 +199,11 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
 
               // Skip button
               TextButton(
-                onPressed: () => context.go(AppConstants.routeHome),
+                onPressed: () => context.go(AppRoutes.home.path),
                 child: Text(
                   'setup.connection.skip_setup'.tr(),
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: Colors.white.withOpacity(0.8),
                     fontSize: 16,
                   ),
                 ),
@@ -231,7 +228,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
         decoration: BoxDecoration(
           color: index < current
               ? Colors.white
-              : Colors.white.withValues(alpha: 0.3),
+              : Colors.white.withOpacity(0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

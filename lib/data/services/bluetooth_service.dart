@@ -6,7 +6,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/ble_constants.dart';
 
 class BluetoothService {
   BluetoothService({required Logger logger})
@@ -107,7 +107,7 @@ class BluetoothService {
 
       // Start scanning
       await fbp.FlutterBluePlus.startScan(
-        timeout: timeout ?? AppConstants.scanTimeout,
+        timeout: timeout ?? BleConstants.scanTimeout,
       );
 
       // Listen to scan results
@@ -151,7 +151,7 @@ class BluetoothService {
       // Connect to the device
       await device.connect(
         license: fbp.License.free,
-        timeout: AppConstants.connectionTimeout,
+        timeout: BleConstants.connectionTimeout,
       );
 
       _connectedDevice = device;

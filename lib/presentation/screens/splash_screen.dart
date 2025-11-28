@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -89,9 +89,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     final authState = ref.read(authProvider);
 
     if (authState.isAuthenticated) {
-      context.go(AppConstants.routeHome);
+      context.go(AppRoutes.home.path);
     } else {
-      context.go(AppConstants.routeWelcome);
+      context.go(AppRoutes.welcome.path);
     }
   }
 
@@ -148,7 +148,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       letterSpacing: 6,
                       shadows: [
                         Shadow(
-                          color: Colors.black.withValues(alpha: 0.25),
+                          color: Colors.black.withOpacity(0.25),
                           offset: const Offset(0, 4),
                           blurRadius: 12,
                         ),
@@ -171,7 +171,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white.withValues(alpha: 0.85),
+                    color: Colors.white.withOpacity(0.85),
                     letterSpacing: 2,
                   ),
                 ),

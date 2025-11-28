@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
@@ -49,7 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       if (mounted) {
         if (success) {
-          context.go(AppConstants.routeHome);
+          context.go(AppRoutes.home.path);
         } else {
           setState(() {
             _errorMessage = 'auth.invalid_credentials'.tr();
@@ -96,7 +96,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       if (mounted) {
         if (success) {
-          context.go(AppConstants.routeHome);
+          context.go(AppRoutes.home.path);
         } else {
           setState(() {
             _errorMessage = 'auth.google_login_error'.tr();
@@ -428,7 +428,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.push(AppConstants.routeSignUp),
+                      onPressed: () => context.push(AppRoutes.signUp.path),
                       child: Text('auth.sign_up'.tr()),
                     ),
                   ],

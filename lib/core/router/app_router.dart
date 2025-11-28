@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../../data/models/toy.dart';
 import '../../presentation/providers/auth_provider.dart';
 import '../../presentation/screens/activity_log_screen.dart';
@@ -32,22 +32,22 @@ final routerProvider = Provider<GoRouter>((ref) {
   final AuthState authState = ref.watch(authProvider);
 
   return GoRouter(
-    initialLocation: AppConstants.routeSplash,
+    initialLocation: AppRoutes.splash.path,
     debugLogDiagnostics: true,
     redirect: (context, state) {
       final isAuthenticated = authState.isAuthenticated;
-      final isSplash = state.matchedLocation == AppConstants.routeSplash;
-      final isWelcome = state.matchedLocation == AppConstants.routeWelcome;
-      final isLogin = state.matchedLocation == AppConstants.routeLogin;
-      final isSignUp = state.matchedLocation == AppConstants.routeSignUp;
+      final isSplash = state.matchedLocation == AppRoutes.splash.path;
+      final isWelcome = state.matchedLocation == AppRoutes.welcome.path;
+      final isLogin = state.matchedLocation == AppRoutes.login.path;
+      final isSignUp = state.matchedLocation == AppRoutes.signUp.path;
       final isSetupRoute = state.matchedLocation.startsWith('/setup/');
 
       // Main app routes that can be accessed without authentication
       final isMainRoute =
-          state.matchedLocation == AppConstants.routeHome ||
-          state.matchedLocation == AppConstants.routeActivityLog ||
-          state.matchedLocation == AppConstants.routeMyToys ||
-          state.matchedLocation == AppConstants.routeProfile;
+          state.matchedLocation == AppRoutes.home.path ||
+          state.matchedLocation == AppRoutes.activityLog.path ||
+          state.matchedLocation == AppRoutes.myToys.path ||
+          state.matchedLocation == AppRoutes.profile.path;
 
       // Allow access to main routes even without authentication (user can skip setup)
       if (!isAuthenticated &&
@@ -57,12 +57,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           !isSignUp &&
           !isSetupRoute &&
           !isMainRoute) {
-        return AppConstants.routeWelcome;
+        return AppRoutes.welcome.path;
       }
 
       // If authenticated and on welcome, redirect to home
       if (isAuthenticated && isWelcome) {
-        return AppConstants.routeHome;
+        return AppRoutes.home.path;
       }
 
       // No redirect needed
@@ -71,28 +71,28 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       // Splash Screen
       GoRoute(
-        path: AppConstants.routeSplash,
+        path: AppRoutes.splash.path,
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
       ),
 
       // Welcome Screen (unauthenticated)
       GoRoute(
-        path: AppConstants.routeWelcome,
+        path: AppRoutes.welcome.path,
         name: 'welcome',
         builder: (context, state) => const WelcomeScreen(),
       ),
 
       // Login Screen
       GoRoute(
-        path: AppConstants.routeLogin,
+        path: AppRoutes.login.path,
         name: 'login',
         builder: (context, state) => const LoginScreen(),
       ),
 
       // Sign Up Screen
       GoRoute(
-        path: AppConstants.routeSignUp,
+        path: AppRoutes.signUp.path,
         name: 'signup',
         builder: (context, state) => const SignUpScreen(),
       ),
@@ -103,7 +103,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           // Home
           GoRoute(
-            path: AppConstants.routeHome,
+            path: AppRoutes.home.path,
             name: 'home',
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: HomeScreen()),
@@ -111,7 +111,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
           // Activity Log
           GoRoute(
-            path: AppConstants.routeActivityLog,
+            path: AppRoutes.activityLog.path,
             name: 'activity-log',
             pageBuilder: (context, state) =>
                 NoTransitionPage(child: ActivityLogScreen()),
@@ -119,7 +119,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
           // My Toys
           GoRoute(
-            path: AppConstants.routeMyToys,
+            path: AppRoutes.myToys.path,
             name: 'my-toys',
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: MyToysScreen()),
@@ -127,7 +127,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
           // Profile
           GoRoute(
-            path: AppConstants.routeProfile,
+            path: AppRoutes.profile.path,
             name: 'profile',
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: ProfileScreen()),
@@ -137,28 +137,28 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // Device Management (full screen)
       GoRoute(
-        path: AppConstants.routeDeviceManagement,
+        path: AppRoutes.deviceManagement.path,
         name: 'device-management',
         builder: (context, state) => const DeviceManagementScreen(),
       ),
 
       // QR Scanner (full screen)
       GoRoute(
-        path: AppConstants.routeQRScanner,
+        path: AppRoutes.qrScanner.path,
         name: 'qr-scanner',
         builder: (context, state) => QRScannerScreen(),
       ),
 
       // Edit Profile (full screen)
       GoRoute(
-        path: AppConstants.routeEditProfile,
+        path: AppRoutes.editProfile.path,
         name: 'edit-profile',
         builder: (context, state) => const EditProfileScreen(),
       ),
 
       // Toy Settings (full screen)
       GoRoute(
-        path: AppConstants.routeToySettings,
+        path: AppRoutes.toySettings.path,
         name: 'toy-settings',
         builder: (context, state) {
           final toy = state.extra! as Toy;
@@ -168,49 +168,49 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // Setup Flow Routes
       GoRoute(
-        path: AppConstants.routeConnectionSetup,
+        path: AppRoutes.connectionSetup.path,
         name: 'connection-setup',
         builder: (context, state) => const ConnectionSetupScreen(),
       ),
 
       GoRoute(
-        path: AppConstants.routeToyNameSetup,
+        path: AppRoutes.toyNameSetup.path,
         name: 'toy-name-setup',
         builder: (context, state) => const ToyNameSetupScreen(),
       ),
 
       GoRoute(
-        path: AppConstants.routeWifiSetup,
+        path: AppRoutes.wifiSetup.path,
         name: 'wifi-setup',
         builder: (context, state) => const WifiSetupScreen(),
       ),
 
       GoRoute(
-        path: AppConstants.routeAgeSetup,
+        path: AppRoutes.ageSetup.path,
         name: 'age-setup',
         builder: (context, state) => const AgeSetupScreen(),
       ),
 
       GoRoute(
-        path: AppConstants.routePersonalitySetup,
+        path: AppRoutes.personalitySetup.path,
         name: 'personality-setup',
         builder: (context, state) => const PersonalitySetupScreen(),
       ),
 
       GoRoute(
-        path: AppConstants.routeVoiceSetup,
+        path: AppRoutes.voiceSetup.path,
         name: 'voice-setup',
         builder: (context, state) => const VoiceSetupScreen(),
       ),
 
       GoRoute(
-        path: AppConstants.routeFavoritesSetup,
+        path: AppRoutes.favoritesSetup.path,
         name: 'favorites-setup',
         builder: (context, state) => const FavoritesSetupScreen(),
       ),
 
       GoRoute(
-        path: AppConstants.routeWorldInfoSetup,
+        path: AppRoutes.worldInfoSetup.path,
         name: 'world-info-setup',
         builder: (context, state) => const WorldInfoSetupScreen(),
       ),

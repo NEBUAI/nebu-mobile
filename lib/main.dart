@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'core/constants/app_constants.dart';
+import 'core/constants/app_config.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'data/services/api_service.dart';
@@ -48,7 +48,12 @@ void main() async {
   );
   final dio = Dio();
   final logger = Logger(
-    printer: PrettyPrinter(methodCount: 0, errorMethodCount: 5, lineLength: 50),
+    printer: PrettyPrinter(
+      methodCount: 1, // show method name
+      errorMethodCount: 3, // show 3 stacktrace lines on error
+      lineLength: 80, // width of the log print
+      printTime: true, // Should each log print contain a timestamp
+    ),
   );
 
   // Initialize services
@@ -74,6 +79,7 @@ void main() async {
   final esp32WifiConfigService = ESP32WifiConfigService(
     bluetoothService: bluetoothService,
     logger: logger,
+    prefs: sharedPreferences,
   );
 
   final userService = UserService(apiService: apiService, logger: logger);
@@ -118,7 +124,7 @@ class NebuApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: AppConstants.appName,
+      title: AppConfig.appName,
       debugShowCheckedModeBanner: false,
 
       // Localization

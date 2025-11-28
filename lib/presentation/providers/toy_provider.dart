@@ -42,6 +42,56 @@ class ToyProvider extends ChangeNotifier {
     }
   }
 
+  /// Crear/registrar un nuevo juguete
+  Future<Toy> createToy({
+    required String iotDeviceId,
+    required String name,
+    required String userId,
+    String? model,
+    String? manufacturer,
+    ToyStatus? status,
+    String? firmwareVersion,
+    Map<String, dynamic>? capabilities,
+    Map<String, dynamic>? settings,
+    String? notes,
+  }) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final toy = await _toyService.createToy(
+        iotDeviceId: iotDeviceId,
+        name: name,
+        userId: userId,
+        model: model,
+        manufacturer: manufacturer,
+        status: status,
+        firmwareVersion: firmwareVersion,
+        capabilities: capabilities,
+        settings: settings,
+        notes: notes,
+      );
+
+      _logger.d('Toy created successfully: ${toy.name}');
+
+      // Agregar a la lista de juguetes
+      _toys.add(toy);
+      _currentToy = toy;
+
+      _isLoading = false;
+      notifyListeners();
+
+      return toy;
+    } catch (e) {
+      _logger.e('Error creating toy: $e');
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
   /// Asignar juguete a la cuenta del usuario
   Future<AssignToyResponse> assignToy({
     required String macAddress,

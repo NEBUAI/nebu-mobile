@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/storage_keys.dart';
 import '../../data/models/user.dart';
 import '../../data/services/auth_service.dart';
 
@@ -58,7 +58,7 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> _loadUser() async {
     final isAuth = await _authService.isAuthenticated();
     if (isAuth) {
-      final userJson = _prefs.getString(AppConstants.keyUser);
+      final userJson = _prefs.getString(StorageKeys.user);
       if (userJson != null) {
         final user = User.fromJson(
           json.decode(userJson) as Map<String, dynamic>,
@@ -224,13 +224,13 @@ class AuthNotifier extends Notifier<AuthState> {
   // Logout
   Future<void> logout() async {
     await _authService.logout();
-    await _prefs.remove(AppConstants.keyUser);
+    await _prefs.remove(StorageKeys.user);
     state = AuthState();
   }
 
   // Save user to storage
   Future<void> _saveUser(User user) async {
-    await _prefs.setString(AppConstants.keyUser, json.encode(user.toJson()));
+    await _prefs.setString(StorageKeys.user, json.encode(user.toJson()));
   }
 
   // Update user
