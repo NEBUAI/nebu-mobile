@@ -131,11 +131,10 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
           SnackBar(
             content: Text('setup.toy_name.error_registering_device'.tr()),
             backgroundColor: Colors.red,
-            duration: const Duration(seconds: 4),
             action: SnackBarAction(
               label: 'common.retry'.tr(),
               textColor: Colors.white,
-              onPressed: () => _registerDeviceIfNeeded(),
+              onPressed: _registerDeviceIfNeeded,
             ),
           ),
         );
