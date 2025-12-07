@@ -250,27 +250,36 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen> {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Skip Device Setup?'),
+        title: const Text('Setup Options'),
         content: const Text(
-          'You can set up your Nebu device later from the home screen.\n\n'
-          'Are you sure you want to skip the setup now?',
+          'Choose how you want to proceed:\n\n'
+          '• Configure Locally: Set up child info without a device\n'
+          '• Skip Setup: Continue to home (you can set up later)',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          OutlinedButton(
             onPressed: () {
-              _logger.i('User skipped setup');
+              _logger.i('User chose to skip setup entirely');
               Navigator.pop(context);
               context.go(AppRoutes.home.path);
+            },
+            child: const Text('Skip Setup'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              _logger.i('User chose local configuration');
+              Navigator.pop(context);
+              context.push(AppRoutes.localChildSetup.path);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryLight,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Skip Setup'),
+            child: const Text('Configure Locally'),
           ),
         ],
       ),

@@ -23,6 +23,7 @@ import '../../presentation/screens/setup/toy_name_setup_screen.dart';
 import '../../presentation/screens/setup/voice_setup_screen.dart';
 import '../../presentation/screens/setup/wifi_setup_screen.dart';
 import '../../presentation/screens/setup/world_info_setup_screen.dart';
+import '../../presentation/screens/setup/local_child_setup_screen.dart';
 import '../../presentation/screens/signup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
 import '../../presentation/screens/toy_settings_screen.dart';
@@ -221,6 +222,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.worldInfoSetup.path,
         name: 'world-info-setup',
         builder: (context, state) => const WorldInfoSetupScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.localChildSetup.path,
+        name: 'local-child-setup',
+        builder: (context, state) => const LocalChildSetupScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
