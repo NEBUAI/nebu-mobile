@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/services/api_service.dart';
 import '../../data/services/local_child_data_service.dart';
 import '../../data/services/toy_service.dart';
 import '../../data/services/user_service.dart';
+import 'auth_provider.dart' as auth;
 import 'toy_provider.dart';
 
 // This provider is meant to be overridden in the main.dart file
@@ -35,13 +35,8 @@ final toyProviderInstance = Provider<ToyProvider>((ref) {
   return ToyProvider(toyService: toyService, logger: logger);
 });
 
-// SharedPreferences provider
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError();
-});
-
 // Local child data service provider
 final localChildDataServiceProvider = Provider<LocalChildDataService>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
+  final prefs = ref.watch(auth.sharedPreferencesProvider);
   return LocalChildDataService(prefs);
 });

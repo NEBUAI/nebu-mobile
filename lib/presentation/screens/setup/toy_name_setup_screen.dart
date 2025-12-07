@@ -8,7 +8,7 @@ import '../../../core/constants/storage_keys.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/toy.dart';
 import '../../providers/api_provider.dart';
-import '../../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart' as auth_provider;
 
 class ToyNameSetupScreen extends ConsumerStatefulWidget {
   const ToyNameSetupScreen({super.key});
@@ -35,22 +35,22 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   }
 
   Future<void> _loadSavedName() async {
-    final prefs = ref.read(sharedPreferencesProvider);
-    final String? savedName = prefs.getString('setup_toy_name');
+    final prefs = ref.read(auth_provider.sharedPreferencesProvider);
+    final savedName = prefs.getString('setup_toy_name');
     if (savedName != null && savedName.isNotEmpty) {
       _controller.text = savedName;
     }
   }
 
   Future<void> _saveToyName() async {
-    final prefs = ref.read(sharedPreferencesProvider);
+    final prefs = ref.read(auth_provider.sharedPreferencesProvider);
     await prefs.setString('setup_toy_name', _controller.text.trim());
   }
 
   /// Registrar dispositivo ESP32 en el backend
   /// Se ejecuta automáticamente al continuar con el setup si hay un Device ID guardado
   Future<bool> _registerDeviceIfNeeded() async {
-    final prefs = ref.read(sharedPreferencesProvider);
+    final prefs = ref.read(auth_provider.sharedPreferencesProvider);
     final deviceId = prefs.getString(StorageKeys.currentDeviceId);
 
     // Si no hay Device ID guardado, el usuario saltó la configuración WiFi
@@ -62,7 +62,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
     }
 
     // Verificar que el usuario esté autenticado
-    final authState = ref.read(authProvider);
+    final authState = ref.read(auth_provider.authProvider);
     if (authState.user == null) {
       ref.read(loggerProvider).w(
         '⚠️  [TOY_SETUP] User not authenticated, cannot register device',

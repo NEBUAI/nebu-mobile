@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../providers/api_provider.dart';
+import '../../providers/auth_provider.dart' as auth;
 
 /// Screen for local child configuration (without device connection)
 /// Allows users to set up child information and custom prompts locally
@@ -55,7 +56,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
   }
 
   Future<void> _loadSavedData() async {
-    final prefs = ref.read(sharedPreferencesProvider);
+    final prefs = ref.read(auth.sharedPreferencesProvider);
 
     final savedName = prefs.getString('local_child_name');
     final savedAge = prefs.getString('local_child_age');
@@ -101,7 +102,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
     });
 
     try {
-      final prefs = ref.read(sharedPreferencesProvider);
+      final prefs = ref.read(auth.sharedPreferencesProvider);
 
       // Save child information
       await prefs.setString('local_child_name', _childNameController.text.trim());
