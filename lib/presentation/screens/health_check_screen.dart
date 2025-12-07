@@ -38,13 +38,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
   }
 
   // Helper methods - replace with actual dependency injection
-  Dio getDio() {
-    return Dio();
-  }
+  Dio getDio() => Dio();
 
-  FlutterSecureStorage getSecureStorage() {
-    return const FlutterSecureStorage();
-  }
+  FlutterSecureStorage getSecureStorage() => const FlutterSecureStorage();
 
   Future<void> _checkHealth() async {
     setState(() {
@@ -68,14 +64,13 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('Backend Health Check'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -103,7 +98,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
               Card(
                 color: Colors.red.shade50,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -134,7 +129,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
               Expanded(
                 child: Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +153,6 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         ),
       ),
     );
-  }
 
   Widget _buildStatusHeader() {
     final status = _healthStatus!;
@@ -212,7 +206,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         _buildInfoRow('Environment', status.environment),
         _buildInfoRow(
           'Uptime',
-          '${_formatUptime(status.uptime)}',
+          _formatUptime(status.uptime),
         ),
         _buildInfoRow('Timestamp', status.timestamp),
       ],
@@ -280,8 +274,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
+  Widget _buildInfoRow(String label, String value) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
@@ -298,10 +291,8 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         ],
       ),
     );
-  }
 
-  Widget _buildProgressRow(String label, int percent) {
-    return Padding(
+  Widget _buildProgressRow(String label, int percent) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,7 +320,6 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         ],
       ),
     );
-  }
 
   Widget _buildCheckRow(String label, CheckStatus check) {
     final isHealthy = check.status == 'ok';

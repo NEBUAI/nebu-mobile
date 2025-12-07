@@ -102,8 +102,7 @@ class HealthStatus {
     this.performance,
   });
 
-  factory HealthStatus.fromJson(Map<String, dynamic> json) {
-    return HealthStatus(
+  factory HealthStatus.fromJson(Map<String, dynamic> json) => HealthStatus(
       status: json['status'] as String,
       timestamp: json['timestamp'] as String,
       service: json['service'] as String,
@@ -122,7 +121,6 @@ class HealthStatus {
             )
           : null,
     );
-  }
 
   final String status;
   final String timestamp;
@@ -134,8 +132,7 @@ class HealthStatus {
   final HealthChecks? checks;
   final PerformanceMetrics? performance;
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson() => {
       'status': status,
       'timestamp': timestamp,
       'service': service,
@@ -146,7 +143,6 @@ class HealthStatus {
       if (checks != null) 'checks': checks!.toJson(),
       if (performance != null) 'performance': performance!.toJson(),
     };
-  }
 }
 
 class MemoryMetrics {
@@ -156,25 +152,21 @@ class MemoryMetrics {
     required this.heapUsedPercent,
   });
 
-  factory MemoryMetrics.fromJson(Map<String, dynamic> json) {
-    return MemoryMetrics(
+  factory MemoryMetrics.fromJson(Map<String, dynamic> json) => MemoryMetrics(
       heapUsed: (json['heapUsed'] as num).toDouble(),
       heapTotal: (json['heapTotal'] as num).toDouble(),
       heapUsedPercent: json['heapUsedPercent'] as int,
     );
-  }
 
   final double heapUsed;
   final double heapTotal;
   final int heapUsedPercent;
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson() => {
       'heapUsed': heapUsed,
       'heapTotal': heapTotal,
       'heapUsedPercent': heapUsedPercent,
     };
-  }
 }
 
 class HealthChecks {
@@ -184,26 +176,22 @@ class HealthChecks {
     required this.configuration,
   });
 
-  factory HealthChecks.fromJson(Map<String, dynamic> json) {
-    return HealthChecks(
+  factory HealthChecks.fromJson(Map<String, dynamic> json) => HealthChecks(
       database: CheckStatus.fromJson(json['database'] as Map<String, dynamic>),
       redis: CheckStatus.fromJson(json['redis'] as Map<String, dynamic>),
       configuration:
           CheckStatus.fromJson(json['configuration'] as Map<String, dynamic>),
     );
-  }
 
   final CheckStatus database;
   final CheckStatus redis;
   final CheckStatus configuration;
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson() => {
       'database': database.toJson(),
       'redis': redis.toJson(),
       'configuration': configuration.toJson(),
     };
-  }
 }
 
 class CheckStatus {
@@ -212,22 +200,18 @@ class CheckStatus {
     required this.connected,
   });
 
-  factory CheckStatus.fromJson(Map<String, dynamic> json) {
-    return CheckStatus(
+  factory CheckStatus.fromJson(Map<String, dynamic> json) => CheckStatus(
       status: json['status'] as String,
       connected: json['connected'] as bool,
     );
-  }
 
   final String status;
   final bool connected;
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson() => {
       'status': status,
       'connected': connected,
     };
-  }
 }
 
 class PerformanceMetrics {
@@ -238,26 +222,22 @@ class PerformanceMetrics {
     required this.nodeVersion,
   });
 
-  factory PerformanceMetrics.fromJson(Map<String, dynamic> json) {
-    return PerformanceMetrics(
+  factory PerformanceMetrics.fromJson(Map<String, dynamic> json) => PerformanceMetrics(
       responseTime: json['responseTime'] as int,
       pid: json['pid'] as int,
       platform: json['platform'] as String,
       nodeVersion: json['nodeVersion'] as String,
     );
-  }
 
   final int responseTime;
   final int pid;
   final String platform;
   final String nodeVersion;
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson() => {
       'responseTime': responseTime,
       'pid': pid,
       'platform': platform,
       'nodeVersion': nodeVersion,
     };
-  }
 }

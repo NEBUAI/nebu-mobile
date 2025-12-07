@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -207,7 +206,7 @@ Communication style:
 
               // Content
               Expanded(
-                child: Container(
+                child: DecoratedBox(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -249,7 +248,7 @@ Communication style:
                             controller: _childNameController,
                             decoration: InputDecoration(
                               labelText: "Child's Name",
-                              hintText: 'Enter your child\'s name',
+                              hintText: "Enter your child's name",
                               prefixIcon: const Icon(Icons.person),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -388,7 +387,7 @@ Communication style:
                                         ),
                                       ),
                                       if (isSelected)
-                                        Icon(
+                                        const Icon(
                                           Icons.check_circle,
                                           color: AppTheme.primaryLight,
                                         ),

@@ -50,21 +50,17 @@ class LocalChildDataService {
   bool isSetupCompleted() => _prefs.getBool(_keySetupCompleted) ?? false;
 
   /// Get all child data as a map
-  Map<String, String?> getChildData() {
-    return {
+  Map<String, String?> getChildData() => {
       'name': getChildName(),
       'age': getChildAge(),
       'personality': getChildPersonality(),
       'customPrompt': getCustomPrompt(),
     };
-  }
 
   /// Check if child data exists
-  bool hasChildData() {
-    return getChildName() != null &&
+  bool hasChildData() => getChildName() != null &&
         getChildAge() != null &&
         getChildPersonality() != null;
-  }
 
   /// Generate a system prompt based on stored child data
   String generateSystemPrompt() {
@@ -117,8 +113,8 @@ Communication style:
 - Address the child as $name when appropriate''';
   }
 
-  String _getDefaultPrompt() {
-    return '''You are Nebu, a friendly AI companion for children.
+  String _getDefaultPrompt() => '''
+You are Nebu, a friendly AI companion for children.
 
 Your role:
 - Be supportive, encouraging, and age-appropriate
@@ -132,7 +128,6 @@ Communication style:
 - Be friendly and cheerful
 - Encourage curiosity and learning
 - Always maintain a positive, supportive tone''';
-  }
 
   /// Clear all local child data
   Future<void> clearChildData() async {
@@ -168,8 +163,7 @@ Communication style:
   }
 
   /// Export child data as JSON-compatible map
-  Map<String, dynamic> exportData() {
-    return {
+  Map<String, dynamic> exportData() => {
       'childName': getChildName(),
       'childAge': getChildAge(),
       'childPersonality': getChildPersonality(),
@@ -177,5 +171,4 @@ Communication style:
       'systemPrompt': generateSystemPrompt(),
       'setupCompleted': isSetupCompleted(),
     };
-  }
 }
