@@ -127,6 +127,19 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   _SettingsTile(
                     theme: theme,
+                    icon: Icons.child_care,
+                    title: 'Child Profile',
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    ),
+                    onTap: () {
+                      context.push(AppRoutes.childProfile.path);
+                    },
+                  ),
+                  Divider(height: 1, indent: 56, color: theme.dividerColor),
+                  _SettingsTile(
+                    theme: theme,
                     icon: Icons.receipt_long_outlined,
                     title: 'Your orders',
                     trailing: const Icon(

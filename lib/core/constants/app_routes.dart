@@ -24,7 +24,8 @@ enum AppRoutes {
   voiceSetup('/setup/voice'),
   favoritesSetup('/setup/favorites'),
   worldInfoSetup('/setup/world-info'),
-  localChildSetup('/setup/local-child');
+  localChildSetup('/setup/local-child'),
+  childProfile('/child-profile');
 
   const AppRoutes(this.path);
   final String path;

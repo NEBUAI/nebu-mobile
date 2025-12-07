@@ -24,6 +24,7 @@ import '../../presentation/screens/setup/toy_name_setup_screen.dart';
 import '../../presentation/screens/setup/voice_setup_screen.dart';
 import '../../presentation/screens/setup/wifi_setup_screen.dart';
 import '../../presentation/screens/setup/world_info_setup_screen.dart';
+import '../../presentation/screens/child_profile_screen.dart';
 import '../../presentation/screens/signup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
 import '../../presentation/screens/toy_settings_screen.dart';
@@ -228,6 +229,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.localChildSetup.path,
         name: 'local-child-setup',
         builder: (context, state) => const LocalChildSetupScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.childProfile.path,
+        name: 'child-profile',
+        builder: (context, state) => const ChildProfileScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
