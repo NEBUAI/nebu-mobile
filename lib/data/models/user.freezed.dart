@@ -573,6 +573,7 @@ as String,
 
 }
 
+
 /// @nodoc
 mixin _$AuthResponse {
 
@@ -583,6 +584,8 @@ mixin _$AuthResponse {
 @pragma('vm:prefer-inline')
 $AuthResponseCopyWith<AuthResponse> get copyWith => _$AuthResponseCopyWithImpl<AuthResponse>(this as AuthResponse, _$identity);
 
+  /// Serializes this AuthResponse to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -590,7 +593,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,success,user,tokens,error,expiresIn);
 
@@ -793,11 +796,11 @@ return $default(_that.success,_that.user,_that.tokens,_that.error,_that.expiresI
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _AuthResponse implements AuthResponse {
   const _AuthResponse({required this.success, this.user, this.tokens, this.error, this.expiresIn});
-  
+  factory _AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);
 
 @override final  bool success;
 @override final  User? user;
@@ -811,14 +814,17 @@ class _AuthResponse implements AuthResponse {
 @pragma('vm:prefer-inline')
 _$AuthResponseCopyWith<_AuthResponse> get copyWith => __$AuthResponseCopyWithImpl<_AuthResponse>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$AuthResponseToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,success,user,tokens,error,expiresIn);
 
@@ -890,6 +896,7 @@ $AuthTokensCopyWith<$Res>? get tokens {
 }
 }
 
+
 /// @nodoc
 mixin _$SocialAuthResult {
 
@@ -900,6 +907,8 @@ mixin _$SocialAuthResult {
 @pragma('vm:prefer-inline')
 $SocialAuthResultCopyWith<SocialAuthResult> get copyWith => _$SocialAuthResultCopyWithImpl<SocialAuthResult>(this as SocialAuthResult, _$identity);
 
+  /// Serializes this SocialAuthResult to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -907,7 +916,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is SocialAuthResult&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&const DeepCollectionEquality().equals(other.appleCredential, appleCredential));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,success,user,tokens,error,const DeepCollectionEquality().hash(appleCredential));
 
@@ -1109,11 +1118,11 @@ return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCre
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _SocialAuthResult implements SocialAuthResult {
   const _SocialAuthResult({required this.success, this.user, this.tokens, this.error, this.appleCredential});
-  
+  factory _SocialAuthResult.fromJson(Map<String, dynamic> json) => _$SocialAuthResultFromJson(json);
 
 @override final  bool success;
 @override final  User? user;
@@ -1127,14 +1136,17 @@ class _SocialAuthResult implements SocialAuthResult {
 @pragma('vm:prefer-inline')
 _$SocialAuthResultCopyWith<_SocialAuthResult> get copyWith => __$SocialAuthResultCopyWithImpl<_SocialAuthResult>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$SocialAuthResultToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _SocialAuthResult&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&const DeepCollectionEquality().equals(other.appleCredential, appleCredential));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,success,user,tokens,error,const DeepCollectionEquality().hash(appleCredential));
 

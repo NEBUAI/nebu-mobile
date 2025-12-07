@@ -5,6 +5,8 @@ part 'user.g.dart';
 
 @freezed
 abstract class User with _$User {
+  const User._();
+
   const factory User({
     required String id,
     required String email,
@@ -21,6 +23,11 @@ abstract class User with _$User {
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  // Getter para compatibilidad con código existente
+  String? get name => fullName ?? (firstName != null || lastName != null
+      ? '${firstName ?? ''} ${lastName ?? ''}'.trim()
+      : username);
 }
 
 @freezed
@@ -44,10 +51,12 @@ abstract class AuthResponse with _$AuthResponse {
     int? expiresIn,
   }) = _AuthResponse;
 
-  factory AuthResponse.fromJson(Map<String, dynamic> json) {
-    // Adaptador para la respuesta del backend NestJS
+  factory AuthResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthResponseFromJson(json);
+
+  // Método helper para crear desde respuesta del backend NestJS
+  factory AuthResponse.fromBackend(Map<String, dynamic> json) {
     if (json.containsKey('accessToken')) {
-      // Formato del backend: { accessToken, refreshToken, user, expiresIn }
       return AuthResponse(
         success: true,
         user: json['user'] != null ? User.fromJson(json['user'] as Map<String, dynamic>) : null,
@@ -58,8 +67,7 @@ abstract class AuthResponse with _$AuthResponse {
         expiresIn: json['expiresIn'] as int?,
       );
     }
-    // Formato con error
-    return _$AuthResponseFromJson(json);
+    return AuthResponse.fromJson(json);
   }
 }
 
@@ -73,8 +81,11 @@ abstract class SocialAuthResult with _$SocialAuthResult {
     Object? appleCredential,
   }) = _SocialAuthResult;
 
-  factory SocialAuthResult.fromJson(Map<String, dynamic> json) {
-    // Adaptador para la respuesta del backend NestJS
+  factory SocialAuthResult.fromJson(Map<String, dynamic> json) =>
+      _$SocialAuthResultFromJson(json);
+
+  // Método helper para crear desde respuesta del backend NestJS
+  factory SocialAuthResult.fromBackend(Map<String, dynamic> json) {
     if (json.containsKey('accessToken')) {
       return SocialAuthResult(
         success: true,
@@ -85,6 +96,6 @@ abstract class SocialAuthResult with _$SocialAuthResult {
         ),
       );
     }
-    return _$SocialAuthResultFromJson(json);
+    return SocialAuthResult.fromJson(json);
   }
 }

@@ -127,7 +127,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             break;
         }
       },
-      onError: (error) {
+      onError: (Object error) {
         debugPrint('❌ [WIFI_SCREEN] Stream error: $error');
 
         if (!mounted) {

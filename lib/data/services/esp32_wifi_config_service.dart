@@ -441,7 +441,7 @@ class ESP32WifiConfigService {
           _logger.w('⚠️  [STATUS] This might indicate ESP32 firmware issue');
         }
       },
-      onError: (error) {
+      onError: (Object error) {
         _logger.e('❌ [STATUS] Error in status stream: $error');
       },
       onDone: () {

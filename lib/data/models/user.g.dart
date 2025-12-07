@@ -48,3 +48,47 @@ Map<String, dynamic> _$AuthTokensToJson(_AuthTokens instance) =>
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
     };
+
+_AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) =>
+    _AuthResponse(
+      success: json['success'] as bool,
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
+      tokens: json['tokens'] == null
+          ? null
+          : AuthTokens.fromJson(json['tokens'] as Map<String, dynamic>),
+      error: json['error'] as String?,
+      expiresIn: (json['expiresIn'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$AuthResponseToJson(_AuthResponse instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'user': instance.user,
+      'tokens': instance.tokens,
+      'error': instance.error,
+      'expiresIn': instance.expiresIn,
+    };
+
+_SocialAuthResult _$SocialAuthResultFromJson(Map<String, dynamic> json) =>
+    _SocialAuthResult(
+      success: json['success'] as bool,
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
+      tokens: json['tokens'] == null
+          ? null
+          : AuthTokens.fromJson(json['tokens'] as Map<String, dynamic>),
+      error: json['error'] as String?,
+      appleCredential: json['appleCredential'],
+    );
+
+Map<String, dynamic> _$SocialAuthResultToJson(_SocialAuthResult instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'user': instance.user,
+      'tokens': instance.tokens,
+      'error': instance.error,
+      'appleCredential': instance.appleCredential,
+    };
