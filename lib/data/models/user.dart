@@ -8,8 +8,16 @@ abstract class User with _$User {
   const factory User({
     required String id,
     required String email,
-    required String name,
+    String? firstName,
+    String? lastName,
+    String? username,
     String? avatar,
+    String? role,
+    String? status,
+    bool? emailVerified,
+    String? preferredLanguage,
+    DateTime? createdAt,
+    String? fullName,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -33,10 +41,26 @@ abstract class AuthResponse with _$AuthResponse {
     User? user,
     AuthTokens? tokens,
     String? error,
+    int? expiresIn,
   }) = _AuthResponse;
 
-  factory AuthResponse.fromJson(Map<String, dynamic> json) =>
-      _$AuthResponseFromJson(json);
+  factory AuthResponse.fromJson(Map<String, dynamic> json) {
+    // Adaptador para la respuesta del backend NestJS
+    if (json.containsKey('accessToken')) {
+      // Formato del backend: { accessToken, refreshToken, user, expiresIn }
+      return AuthResponse(
+        success: true,
+        user: json['user'] != null ? User.fromJson(json['user'] as Map<String, dynamic>) : null,
+        tokens: AuthTokens(
+          accessToken: json['accessToken'] as String,
+          refreshToken: json['refreshToken'] as String,
+        ),
+        expiresIn: json['expiresIn'] as int?,
+      );
+    }
+    // Formato con error
+    return _$AuthResponseFromJson(json);
+  }
 }
 
 @freezed
@@ -49,6 +73,18 @@ abstract class SocialAuthResult with _$SocialAuthResult {
     Object? appleCredential,
   }) = _SocialAuthResult;
 
-  factory SocialAuthResult.fromJson(Map<String, dynamic> json) =>
-      _$SocialAuthResultFromJson(json);
+  factory SocialAuthResult.fromJson(Map<String, dynamic> json) {
+    // Adaptador para la respuesta del backend NestJS
+    if (json.containsKey('accessToken')) {
+      return SocialAuthResult(
+        success: true,
+        user: json['user'] != null ? User.fromJson(json['user'] as Map<String, dynamic>) : null,
+        tokens: AuthTokens(
+          accessToken: json['accessToken'] as String,
+          refreshToken: json['refreshToken'] as String,
+        ),
+      );
+    }
+    return _$SocialAuthResultFromJson(json);
+  }
 }

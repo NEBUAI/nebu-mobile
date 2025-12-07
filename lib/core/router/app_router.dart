@@ -9,6 +9,7 @@ import '../../presentation/screens/activity_log_screen.dart';
 import '../../presentation/screens/device_management_screen.dart';
 import '../../presentation/screens/edit_profile_screen.dart';
 import '../../presentation/screens/home_screen.dart';
+import '../../presentation/screens/iot_devices_screen.dart';
 import '../../presentation/screens/login_screen.dart';
 import '../../presentation/screens/main_screen.dart';
 import '../../presentation/screens/my_toys_screen.dart';
@@ -140,6 +141,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.deviceManagement.path,
         name: 'device-management',
         builder: (context, state) => const DeviceManagementScreen(),
+      ),
+
+      // IoT Devices (full screen)
+      GoRoute(
+        path: AppRoutes.iotDevices.path,
+        name: 'iot-devices',
+        builder: (context, state) => const IoTDevicesScreen(),
       ),
 
       // QR Scanner (full screen)

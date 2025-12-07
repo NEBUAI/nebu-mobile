@@ -15,6 +15,7 @@ import 'data/services/auth_service.dart';
 import 'data/services/bluetooth_service.dart';
 import 'data/services/device_service.dart';
 import 'data/services/esp32_wifi_config_service.dart';
+import 'data/services/iot_service.dart';
 import 'data/services/toy_service.dart';
 import 'data/services/user_service.dart';
 import 'presentation/providers/api_provider.dart';
@@ -22,6 +23,7 @@ import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/bluetooth_provider.dart';
 import 'presentation/providers/device_provider.dart';
 import 'presentation/providers/esp32_provider.dart';
+import 'presentation/providers/iot_provider.dart';
 import 'presentation/providers/language_provider.dart';
 import 'presentation/providers/theme_provider.dart';
 
@@ -86,6 +88,8 @@ void main() async {
 
   final toyService = ToyService(apiService: apiService, logger: logger);
 
+  final iotService = IoTService(apiService: apiService, logger: logger);
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('es')],
@@ -103,9 +107,11 @@ void main() async {
           ),
           userServiceProvider.overrideWithValue(userService),
           toyServiceProvider.overrideWithValue(toyService),
+          iotServiceProvider.overrideWithValue(iotService),
           loggerProvider.overrideWithValue(logger),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           authProvider.overrideWith(AuthNotifier.new),
+          iotDevicesProvider.overrideWith(IoTDevicesNotifier.new),
           themeProvider.overrideWith(ThemeNotifier.new),
           languageProvider.overrideWith(LanguageNotifier.new),
         ],

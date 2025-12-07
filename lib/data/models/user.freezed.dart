@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- String get id; String get email; String get name; String? get avatar;
+ String get id; String get email; String? get firstName; String? get lastName; String? get username; String? get avatar; String? get role; String? get status; bool? get emailVerified; String? get preferredLanguage; DateTime? get createdAt; String? get fullName;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.name, name) || other.name == name)&&(identical(other.avatar, avatar) || other.avatar == avatar));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.username, username) || other.username == username)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.preferredLanguage, preferredLanguage) || other.preferredLanguage == preferredLanguage)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.fullName, fullName) || other.fullName == fullName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,name,avatar);
+int get hashCode => Object.hash(runtimeType,id,email,firstName,lastName,username,avatar,role,status,emailVerified,preferredLanguage,createdAt,fullName);
 
 @override
 String toString() {
-  return 'User(id: $id, email: $email, name: $name, avatar: $avatar)';
+  return 'User(id: $id, email: $email, firstName: $firstName, lastName: $lastName, username: $username, avatar: $avatar, role: $role, status: $status, emailVerified: $emailVerified, preferredLanguage: $preferredLanguage, createdAt: $createdAt, fullName: $fullName)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- String id, String email, String name, String? avatar
+ String id, String email, String? firstName, String? lastName, String? username, String? avatar, String? role, String? status, bool? emailVerified, String? preferredLanguage, DateTime? createdAt, String? fullName
 });
 
 
@@ -65,12 +65,20 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? name = null,Object? avatar = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? firstName = freezed,Object? lastName = freezed,Object? username = freezed,Object? avatar = freezed,Object? role = freezed,Object? status = freezed,Object? emailVerified = freezed,Object? preferredLanguage = freezed,Object? createdAt = freezed,Object? fullName = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
+as String,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
+as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
+as String?,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String?,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
+as String?,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String?,emailVerified: freezed == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as bool?,preferredLanguage: freezed == preferredLanguage ? _self.preferredLanguage : preferredLanguage // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -156,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String email,  String name,  String? avatar)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String email,  String? firstName,  String? lastName,  String? username,  String? avatar,  String? role,  String? status,  bool? emailVerified,  String? preferredLanguage,  DateTime? createdAt,  String? fullName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
+return $default(_that.id,_that.email,_that.firstName,_that.lastName,_that.username,_that.avatar,_that.role,_that.status,_that.emailVerified,_that.preferredLanguage,_that.createdAt,_that.fullName);case _:
   return orElse();
 
 }
@@ -177,10 +185,10 @@ return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String email,  String name,  String? avatar)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String email,  String? firstName,  String? lastName,  String? username,  String? avatar,  String? role,  String? status,  bool? emailVerified,  String? preferredLanguage,  DateTime? createdAt,  String? fullName)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
+return $default(_that.id,_that.email,_that.firstName,_that.lastName,_that.username,_that.avatar,_that.role,_that.status,_that.emailVerified,_that.preferredLanguage,_that.createdAt,_that.fullName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +205,10 @@ return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String email,  String name,  String? avatar)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String email,  String? firstName,  String? lastName,  String? username,  String? avatar,  String? role,  String? status,  bool? emailVerified,  String? preferredLanguage,  DateTime? createdAt,  String? fullName)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
+return $default(_that.id,_that.email,_that.firstName,_that.lastName,_that.username,_that.avatar,_that.role,_that.status,_that.emailVerified,_that.preferredLanguage,_that.createdAt,_that.fullName);case _:
   return null;
 
 }
@@ -212,13 +220,21 @@ return $default(_that.id,_that.email,_that.name,_that.avatar);case _:
 @JsonSerializable()
 
 class _User implements User {
-  const _User({required this.id, required this.email, required this.name, this.avatar});
+  const _User({required this.id, required this.email, this.firstName, this.lastName, this.username, this.avatar, this.role, this.status, this.emailVerified, this.preferredLanguage, this.createdAt, this.fullName});
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override final  String id;
 @override final  String email;
-@override final  String name;
+@override final  String? firstName;
+@override final  String? lastName;
+@override final  String? username;
 @override final  String? avatar;
+@override final  String? role;
+@override final  String? status;
+@override final  bool? emailVerified;
+@override final  String? preferredLanguage;
+@override final  DateTime? createdAt;
+@override final  String? fullName;
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +249,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.name, name) || other.name == name)&&(identical(other.avatar, avatar) || other.avatar == avatar));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.username, username) || other.username == username)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.preferredLanguage, preferredLanguage) || other.preferredLanguage == preferredLanguage)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.fullName, fullName) || other.fullName == fullName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,name,avatar);
+int get hashCode => Object.hash(runtimeType,id,email,firstName,lastName,username,avatar,role,status,emailVerified,preferredLanguage,createdAt,fullName);
 
 @override
 String toString() {
-  return 'User(id: $id, email: $email, name: $name, avatar: $avatar)';
+  return 'User(id: $id, email: $email, firstName: $firstName, lastName: $lastName, username: $username, avatar: $avatar, role: $role, status: $status, emailVerified: $emailVerified, preferredLanguage: $preferredLanguage, createdAt: $createdAt, fullName: $fullName)';
 }
 
 
@@ -253,7 +269,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String email, String name, String? avatar
+ String id, String email, String? firstName, String? lastName, String? username, String? avatar, String? role, String? status, bool? emailVerified, String? preferredLanguage, DateTime? createdAt, String? fullName
 });
 
 
@@ -270,12 +286,20 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? name = null,Object? avatar = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? firstName = freezed,Object? lastName = freezed,Object? username = freezed,Object? avatar = freezed,Object? role = freezed,Object? status = freezed,Object? emailVerified = freezed,Object? preferredLanguage = freezed,Object? createdAt = freezed,Object? fullName = freezed,}) {
   return _then(_User(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
+as String,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
+as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
+as String?,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String?,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
+as String?,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String?,emailVerified: freezed == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as bool?,preferredLanguage: freezed == preferredLanguage ? _self.preferredLanguage : preferredLanguage // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -549,33 +573,30 @@ as String,
 
 }
 
-
 /// @nodoc
 mixin _$AuthResponse {
 
- bool get success; User? get user; AuthTokens? get tokens; String? get error;
+ bool get success; User? get user; AuthTokens? get tokens; String? get error; int? get expiresIn;
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $AuthResponseCopyWith<AuthResponse> get copyWith => _$AuthResponseCopyWithImpl<AuthResponse>(this as AuthResponse, _$identity);
 
-  /// Serializes this AuthResponse to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,success,user,tokens,error);
+int get hashCode => Object.hash(runtimeType,success,user,tokens,error,expiresIn);
 
 @override
 String toString() {
-  return 'AuthResponse(success: $success, user: $user, tokens: $tokens, error: $error)';
+  return 'AuthResponse(success: $success, user: $user, tokens: $tokens, error: $error, expiresIn: $expiresIn)';
 }
 
 
@@ -586,7 +607,7 @@ abstract mixin class $AuthResponseCopyWith<$Res>  {
   factory $AuthResponseCopyWith(AuthResponse value, $Res Function(AuthResponse) _then) = _$AuthResponseCopyWithImpl;
 @useResult
 $Res call({
- bool success, User? user, AuthTokens? tokens, String? error
+ bool success, User? user, AuthTokens? tokens, String? error, int? expiresIn
 });
 
 
@@ -603,13 +624,14 @@ class _$AuthResponseCopyWithImpl<$Res>
 
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? success = null,Object? user = freezed,Object? tokens = freezed,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? success = null,Object? user = freezed,Object? tokens = freezed,Object? error = freezed,Object? expiresIn = freezed,}) {
   return _then(_self.copyWith(
 success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
 as bool,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,tokens: freezed == tokens ? _self.tokens : tokens // ignore: cast_nullable_to_non_nullable
 as AuthTokens?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,expiresIn: freezed == expiresIn ? _self.expiresIn : expiresIn // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 /// Create a copy of AuthResponse
@@ -718,10 +740,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  int? expiresIn)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthResponse() when $default != null:
-return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
+return $default(_that.success,_that.user,_that.tokens,_that.error,_that.expiresIn);case _:
   return orElse();
 
 }
@@ -739,10 +761,10 @@ return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  int? expiresIn)  $default,) {final _that = this;
 switch (_that) {
 case _AuthResponse():
-return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
+return $default(_that.success,_that.user,_that.tokens,_that.error,_that.expiresIn);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -759,10 +781,10 @@ return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool success,  User? user,  AuthTokens? tokens,  String? error)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool success,  User? user,  AuthTokens? tokens,  String? error,  int? expiresIn)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthResponse() when $default != null:
-return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
+return $default(_that.success,_that.user,_that.tokens,_that.error,_that.expiresIn);case _:
   return null;
 
 }
@@ -771,16 +793,17 @@ return $default(_that.success,_that.user,_that.tokens,_that.error);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _AuthResponse implements AuthResponse {
-  const _AuthResponse({required this.success, this.user, this.tokens, this.error});
-  factory _AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);
+  const _AuthResponse({required this.success, this.user, this.tokens, this.error, this.expiresIn});
+  
 
 @override final  bool success;
 @override final  User? user;
 @override final  AuthTokens? tokens;
 @override final  String? error;
+@override final  int? expiresIn;
 
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -788,23 +811,20 @@ class _AuthResponse implements AuthResponse {
 @pragma('vm:prefer-inline')
 _$AuthResponseCopyWith<_AuthResponse> get copyWith => __$AuthResponseCopyWithImpl<_AuthResponse>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$AuthResponseToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,success,user,tokens,error);
+int get hashCode => Object.hash(runtimeType,success,user,tokens,error,expiresIn);
 
 @override
 String toString() {
-  return 'AuthResponse(success: $success, user: $user, tokens: $tokens, error: $error)';
+  return 'AuthResponse(success: $success, user: $user, tokens: $tokens, error: $error, expiresIn: $expiresIn)';
 }
 
 
@@ -815,7 +835,7 @@ abstract mixin class _$AuthResponseCopyWith<$Res> implements $AuthResponseCopyWi
   factory _$AuthResponseCopyWith(_AuthResponse value, $Res Function(_AuthResponse) _then) = __$AuthResponseCopyWithImpl;
 @override @useResult
 $Res call({
- bool success, User? user, AuthTokens? tokens, String? error
+ bool success, User? user, AuthTokens? tokens, String? error, int? expiresIn
 });
 
 
@@ -832,13 +852,14 @@ class __$AuthResponseCopyWithImpl<$Res>
 
 /// Create a copy of AuthResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? success = null,Object? user = freezed,Object? tokens = freezed,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? success = null,Object? user = freezed,Object? tokens = freezed,Object? error = freezed,Object? expiresIn = freezed,}) {
   return _then(_AuthResponse(
 success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
 as bool,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,tokens: freezed == tokens ? _self.tokens : tokens // ignore: cast_nullable_to_non_nullable
 as AuthTokens?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,expiresIn: freezed == expiresIn ? _self.expiresIn : expiresIn // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -869,7 +890,6 @@ $AuthTokensCopyWith<$Res>? get tokens {
 }
 }
 
-
 /// @nodoc
 mixin _$SocialAuthResult {
 
@@ -880,8 +900,6 @@ mixin _$SocialAuthResult {
 @pragma('vm:prefer-inline')
 $SocialAuthResultCopyWith<SocialAuthResult> get copyWith => _$SocialAuthResultCopyWithImpl<SocialAuthResult>(this as SocialAuthResult, _$identity);
 
-  /// Serializes this SocialAuthResult to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -889,7 +907,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is SocialAuthResult&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&const DeepCollectionEquality().equals(other.appleCredential, appleCredential));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,success,user,tokens,error,const DeepCollectionEquality().hash(appleCredential));
 
@@ -1091,11 +1109,11 @@ return $default(_that.success,_that.user,_that.tokens,_that.error,_that.appleCre
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _SocialAuthResult implements SocialAuthResult {
   const _SocialAuthResult({required this.success, this.user, this.tokens, this.error, this.appleCredential});
-  factory _SocialAuthResult.fromJson(Map<String, dynamic> json) => _$SocialAuthResultFromJson(json);
+  
 
 @override final  bool success;
 @override final  User? user;
@@ -1109,17 +1127,14 @@ class _SocialAuthResult implements SocialAuthResult {
 @pragma('vm:prefer-inline')
 _$SocialAuthResultCopyWith<_SocialAuthResult> get copyWith => __$SocialAuthResultCopyWithImpl<_SocialAuthResult>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$SocialAuthResultToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _SocialAuthResult&&(identical(other.success, success) || other.success == success)&&(identical(other.user, user) || other.user == user)&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.error, error) || other.error == error)&&const DeepCollectionEquality().equals(other.appleCredential, appleCredential));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,success,user,tokens,error,const DeepCollectionEquality().hash(appleCredential));
 
