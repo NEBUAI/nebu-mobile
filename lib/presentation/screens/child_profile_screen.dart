@@ -35,7 +35,7 @@ class ChildProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfileView(BuildContext context, dynamic childDataService) {
+  Widget _buildProfileView(BuildContext context, childDataService) {
     final theme = Theme.of(context);
     final childName = childDataService.getChildName() ?? 'Unknown';
     final childAge = childDataService.getChildAge() ?? 'Not set';
@@ -108,7 +108,7 @@ class ChildProfileScreen extends ConsumerWidget {
                     child: Center(
                       child: Text(
                         childName.isNotEmpty ? childName[0].toUpperCase() : '?',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 48,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.primaryLight,
@@ -187,7 +187,7 @@ class ChildProfileScreen extends ConsumerWidget {
                 dividerColor: Colors.transparent,
               ),
               child: ExpansionTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.smart_toy,
                   color: AppTheme.primaryLight,
                 ),
@@ -238,7 +238,7 @@ class ChildProfileScreen extends ConsumerWidget {
                   label: const Text('Edit Profile'),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: BorderSide(color: AppTheme.primaryLight),
+                    side: const BorderSide(color: AppTheme.primaryLight),
                     foregroundColor: AppTheme.primaryLight,
                   ),
                 ),
@@ -275,7 +275,7 @@ class ChildProfileScreen extends ConsumerWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'This data is stored locally on your device. It will be used to personalize Nebu\'s interactions.',
+                    "This data is stored locally on your device. It will be used to personalize Nebu's interactions.",
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.blue[900],
@@ -290,8 +290,7 @@ class ChildProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildNoDataView(BuildContext context) {
-    return Center(
+  Widget _buildNoDataView(BuildContext context) => Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
@@ -312,7 +311,7 @@ class ChildProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Create a profile to personalize Nebu\'s interactions with your child',
+              "Create a profile to personalize Nebu's interactions with your child",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -339,7 +338,6 @@ class ChildProfileScreen extends ConsumerWidget {
         ),
       ),
     );
-  }
 
   Widget _buildInfoCard({
     required ThemeData theme,
@@ -347,8 +345,7 @@ class ChildProfileScreen extends ConsumerWidget {
     required IconData icon,
     required String content,
     int? maxLines = 2,
-  }) {
-    return Card(
+  }) => Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -385,7 +382,6 @@ class ChildProfileScreen extends ConsumerWidget {
         ),
       ),
     );
-  }
 
   void _showClearDataDialog(BuildContext context) {
     showDialog<void>(
