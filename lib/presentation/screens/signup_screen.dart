@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../core/constants/app_routes.dart';
-import '../../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
 
@@ -38,9 +37,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   }
 
   Future<void> _handleEmailSignUp() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
@@ -84,11 +81,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
     try {
       final googleSignIn = ref.read(googleSignInProvider);
-
-      // Initialize with scopes
       await googleSignIn.initialize();
 
-      // Authenticate using v7 API
       final GoogleSignInAccount googleUser = await googleSignIn.authenticate(
         scopeHint: ['email', 'profile'],
       );
@@ -131,306 +125,498 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: Colors.grey[50],
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 16),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
 
-              // Back button
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.grey[800]),
-                  onPressed: () => context.pop(),
-                ),
-              ),
+                  // Back button
+                  _BackButton(onPressed: () => context.pop()),
 
-              const SizedBox(height: 16),
+                  const SizedBox(height: 32),
 
-              // Title
-              Text(
-                'auth.sign_up'.tr(),
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              Text(
-                'auth.sign_up_subtitle'.tr(),
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Error message
-              if (_errorMessage != null)
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.red[50],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red[200]!),
+                  // Header
+                  const Text(
+                    'Create account',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.5,
+                    ),
                   ),
-                  child: Row(
+                  const SizedBox(height: 8),
+                  Text(
+                    'Start your journey with us today',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+
+                  const SizedBox(height: 36),
+
+                  // Error message
+                  if (_errorMessage != null) ...[
+                    _ErrorBanner(message: _errorMessage!),
+                    const SizedBox(height: 20),
+                  ],
+
+                  // Name row
+                  Row(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red[700]),
-                      const SizedBox(width: 8),
                       Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: TextStyle(color: Colors.red[700]),
+                        child: _CustomTextField(
+                          controller: _firstNameController,
+                          label: 'First name',
+                          prefixIcon: Icons.person_outline_rounded,
+                          textCapitalization: TextCapitalization.words,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _CustomTextField(
+                          controller: _lastNameController,
+                          label: 'Last name',
+                          prefixIcon: Icons.person_outline_rounded,
+                          textCapitalization: TextCapitalization.words,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Required';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],
                   ),
-                ),
 
-              // First Name field
-              TextFormField(
-                controller: _firstNameController,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  labelText: 'auth.first_name'.tr(),
-                  prefixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'auth.first_name_required'.tr();
-                  }
-                  return null;
-                },
-              ),
+                  const SizedBox(height: 20),
 
-              const SizedBox(height: 16),
-
-              // Last Name field
-              TextFormField(
-                controller: _lastNameController,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  labelText: 'auth.last_name'.tr(),
-                  prefixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'auth.last_name_required'.tr();
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Email field
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'auth.email'.tr(),
-                  prefixIcon: const Icon(Icons.email_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'auth.email_required'.tr();
-                  }
-                  if (!value.contains('@')) {
-                    return 'auth.email_invalid'.tr();
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Password field
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  labelText: 'auth.password'.tr(),
-                  prefixIcon: const Icon(Icons.lock_outlined),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
+                  // Email field
+                  _CustomTextField(
+                    controller: _emailController,
+                    label: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: Icons.mail_outline_rounded,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'auth.email_required'.tr();
+                      }
+                      if (!value.contains('@')) {
+                        return 'auth.email_invalid'.tr();
+                      }
+                      return null;
                     },
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'auth.password_required'.tr();
-                  }
-                  if (value.length < 6) {
-                    return 'auth.password_short'.tr();
-                  }
-                  return null;
-                },
-              ),
 
-              const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
-              // Confirm Password field
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: _obscureConfirmPassword,
-                decoration: InputDecoration(
-                  labelText: 'auth.confirm_password'.tr(),
-                  prefixIcon: const Icon(Icons.lock_outlined),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirmPassword
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
+                  // Password field
+                  _CustomTextField(
+                    controller: _passwordController,
+                    label: 'Password',
+                    obscureText: _obscurePassword,
+                    prefixIcon: Icons.lock_outline_rounded,
+                    suffixIcon: _obscurePassword
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    onSuffixTap: () {
+                      setState(() => _obscurePassword = !_obscurePassword);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'auth.password_required'.tr();
+                      }
+                      if (value.length < 6) {
+                        return 'auth.password_short'.tr();
+                      }
+                      return null;
                     },
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'auth.confirm_password_required'.tr();
-                  }
-                  if (value != _passwordController.text) {
-                    return 'auth.passwords_dont_match'.tr();
-                  }
-                  return null;
-                },
-              ),
 
-              const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
-              // Sign up button
-              ElevatedButton(
-                onPressed: _isLoading ? null : _handleEmailSignUp,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryLight,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  // Confirm Password field
+                  _CustomTextField(
+                    controller: _confirmPasswordController,
+                    label: 'Confirm password',
+                    obscureText: _obscureConfirmPassword,
+                    prefixIcon: Icons.lock_outline_rounded,
+                    suffixIcon: _obscureConfirmPassword
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    onSuffixTap: () {
+                      setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'auth.confirm_password_required'.tr();
+                      }
+                      if (value != _passwordController.text) {
+                        return 'auth.passwords_dont_match'.tr();
+                      }
+                      return null;
+                    },
                   ),
-                ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
+
+                  const SizedBox(height: 32),
+
+                  // Sign up button
+                  _PrimaryButton(
+                    text: 'Create Account',
+                    isLoading: _isLoading,
+                    onPressed: _handleEmailSignUp,
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Divider
+                  _OrDivider(),
+
+                  const SizedBox(height: 24),
+
+                  // Google button
+                  _GoogleButton(
+                    text: 'Continue with Google',
+                    isLoading: _isLoading,
+                    onPressed: _handleGoogleSignUp,
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Sign in link
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an account? ',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 15,
                           ),
                         ),
-                      )
-                    : Text(
-                        'auth.sign_up'.tr(),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () => context.pop(),
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(
+                              color: Color(0xFF6B4EFF),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
+                          ),
                         ),
-                      ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Divider
-              Row(
-                children: [
-                  const Expanded(child: Divider()),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'auth.or_continue_with'.tr(),
-                      style: TextStyle(color: Colors.grey[600]),
+                      ],
                     ),
                   ),
-                  const Expanded(child: Divider()),
+
+                  const SizedBox(height: 24),
                 ],
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-              const SizedBox(height: 24),
+// ============ Reusable Components ============
 
-              // Google Sign Up button
-              OutlinedButton.icon(
-                onPressed: _isLoading ? null : _handleGoogleSignUp,
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  side: BorderSide(color: Colors.grey[300]!),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                icon: Image.asset(
-                  'assets/images/google_logo.png',
-                  height: 24,
-                  width: 24,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.g_mobiledata, size: 24),
-                ),
-                label: Text(
-                  'auth.sign_up_google'.tr(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
+class _BackButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const _BackButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: 18,
+          color: Colors.grey[800],
+        ),
+      ),
+    );
+  }
+}
+
+class _CustomTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final IconData prefixIcon;
+  final IconData? suffixIcon;
+  final VoidCallback? onSuffixTap;
+  final String? Function(String?)? validator;
+  final TextCapitalization textCapitalization;
+
+  const _CustomTextField({
+    required this.controller,
+    required this.label,
+    required this.prefixIcon,
+    this.keyboardType,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.validator,
+    this.textCapitalization = TextCapitalization.none,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      validator: validator,
+      textCapitalization: textCapitalization,
+      style: const TextStyle(fontSize: 16),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          color: Colors.grey[500],
+          fontSize: 15,
+        ),
+        floatingLabelStyle: TextStyle(
+          color: const Color(0xFF6B4EFF),
+          fontWeight: FontWeight.w500,
+        ),
+        prefixIcon: Icon(
+          prefixIcon,
+          color: Colors.grey[400],
+          size: 22,
+        ),
+        suffixIcon: suffixIcon != null
+            ? GestureDetector(
+          onTap: onSuffixTap,
+          child: Icon(
+            suffixIcon,
+            color: Colors.grey[400],
+            size: 22,
+          ),
+        )
+            : null,
+        filled: true,
+        fillColor: Colors.grey[50],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.grey[200]!, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFF6B4EFF), width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.red[300]!, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.red[400]!, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      ),
+    );
+  }
+}
+
+class _PrimaryButton extends StatelessWidget {
+  final String text;
+  final bool isLoading;
+  final VoidCallback onPressed;
+
+  const _PrimaryButton({
+    required this.text,
+    required this.onPressed,
+    this.isLoading = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: isLoading ? null : onPressed,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF8B6FFF), Color(0xFF6B4EFF)],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF6B4EFF).withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Center(
+            child: isLoading
+                ? const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            )
+                : Text(
+              text,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GoogleButton extends StatelessWidget {
+  final String text;
+  final bool isLoading;
+  final VoidCallback onPressed;
+
+  const _GoogleButton({
+    required this.text,
+    required this.onPressed,
+    this.isLoading = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: isLoading ? null : onPressed,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey[200]!, width: 1.5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/google_logo.png',
+                height: 22,
+                width: 22,
+                errorBuilder: (context, error, stackTrace) => Icon(
+                  Icons.g_mobiledata,
+                  size: 28,
+                  color: Colors.grey[700],
                 ),
               ),
-
-              const SizedBox(height: 24),
-
-              // Sign in link
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'auth.already_have_account'.tr(),
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                  TextButton(
-                    onPressed: () => context.pop(),
-                    child: Text('auth.sign_in'.tr()),
-                  ),
-                ],
+              const SizedBox(width: 12),
+              Text(
+                text,
+                style: TextStyle(
+                  color: Colors.grey[800],
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
+}
+
+class _OrDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'or',
+            style: TextStyle(
+              color: Colors.grey[500],
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
+      ],
+    );
+  }
+}
+
+class _ErrorBanner extends StatelessWidget {
+  final String message;
+
+  const _ErrorBanner({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.red[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.red[100]!),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.error_outline_rounded, color: Colors.red[400], size: 22),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                color: Colors.red[700],
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
