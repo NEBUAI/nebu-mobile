@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/services/activity_service.dart';
 import '../../data/services/api_service.dart';
 import '../../data/services/auth_service.dart';
 import '../../data/services/bluetooth_service.dart';
@@ -13,17 +14,20 @@ import '../../data/services/iot_service.dart';
 import '../../data/services/local_child_data_service.dart';
 import '../../data/services/toy_service.dart';
 import '../../data/services/user_service.dart';
+import '../../data/services/user_setup_service.dart';
 import 'toy_provider.dart';
 
 // Low-level dependency providers
 
-final sharedPreferencesProvider =
-    FutureProvider<SharedPreferences>((ref) => SharedPreferences.getInstance());
+final sharedPreferencesProvider = FutureProvider<SharedPreferences>(
+  (ref) => SharedPreferences.getInstance(),
+);
 
 final secureStorageProvider = Provider<FlutterSecureStorage>(
-    (ref) => const FlutterSecureStorage(
-          aOptions: AndroidOptions(encryptedSharedPreferences: true),
-        ));
+  (ref) => const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  ),
+);
 
 final dioProvider = Provider<Dio>((ref) => Dio());
 
@@ -65,13 +69,17 @@ final deviceServiceProvider = Provider<DeviceService>((ref) {
   return DeviceService(bluetoothService: bluetoothService, logger: logger);
 });
 
-final esp32WifiConfigServiceProvider =
-    FutureProvider<ESP32WifiConfigService>((ref) async {
+final esp32WifiConfigServiceProvider = FutureProvider<ESP32WifiConfigService>((
+  ref,
+) async {
   final bluetoothService = ref.watch(bluetoothServiceProvider);
   final logger = ref.watch(loggerProvider);
   final prefs = await ref.watch(sharedPreferencesProvider.future);
   return ESP32WifiConfigService(
-      bluetoothService: bluetoothService, logger: logger, prefs: prefs);
+    bluetoothService: bluetoothService,
+    logger: logger,
+    prefs: prefs,
+  );
 });
 
 final userServiceProvider = Provider<UserService>((ref) {
@@ -92,7 +100,21 @@ final iotServiceProvider = Provider<IoTService>((ref) {
   return IoTService(apiService: apiService, logger: logger);
 });
 
-final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((ref) async {
+final activityServiceProvider = Provider<ActivityService>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return ActivityService(apiService: apiService, logger: logger);
+});
+
+final userSetupServiceProvider = Provider<UserSetupService>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return UserSetupService(apiService: apiService, logger: logger);
+});
+
+final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((
+  ref,
+) async {
   final prefs = await ref.watch(sharedPreferencesProvider.future);
   return LocalChildDataService(prefs);
 });
