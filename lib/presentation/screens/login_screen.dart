@@ -159,7 +159,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Enter your email and we\'ll send you a reset link.',
+                  "Enter your email and we'll send you a reset link.",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
@@ -213,8 +213,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -307,10 +306,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: _handleForgotPassword,
-                      child: Text(
+                      child: const Text(
                         'Forgot password?',
                         style: TextStyle(
-                          color: const Color(0xFF6B4EFF),
+                          color: Color(0xFF6B4EFF),
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
@@ -378,19 +377,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
     );
-  }
 }
 
 // ============ Reusable Components ============
 
 class _BackButton extends StatelessWidget {
-  final VoidCallback onPressed;
 
   const _BackButton({required this.onPressed});
+  final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: onPressed,
       child: Container(
         width: 44,
@@ -406,18 +403,9 @@ class _BackButton extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class _CustomTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final String label;
-  final TextInputType? keyboardType;
-  final bool obscureText;
-  final IconData prefixIcon;
-  final IconData? suffixIcon;
-  final VoidCallback? onSuffixTap;
-  final String? Function(String?)? validator;
 
   const _CustomTextField({
     required this.controller,
@@ -429,10 +417,17 @@ class _CustomTextField extends StatelessWidget {
     this.onSuffixTap,
     this.validator,
   });
+  final TextEditingController controller;
+  final String label;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final IconData prefixIcon;
+  final IconData? suffixIcon;
+  final VoidCallback? onSuffixTap;
+  final String? Function(String?)? validator;
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
+  Widget build(BuildContext context) => TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
@@ -444,8 +439,8 @@ class _CustomTextField extends StatelessWidget {
           color: Colors.grey[500],
           fontSize: 15,
         ),
-        floatingLabelStyle: TextStyle(
-          color: const Color(0xFF6B4EFF),
+        floatingLabelStyle: const TextStyle(
+          color: Color(0xFF6B4EFF),
           fontWeight: FontWeight.w500,
         ),
         prefixIcon: Icon(
@@ -471,7 +466,7 @@ class _CustomTextField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey[200]!, width: 1),
+          borderSide: BorderSide(color: Colors.grey[200]!),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -479,7 +474,7 @@ class _CustomTextField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.red[300]!, width: 1),
+          borderSide: BorderSide(color: Colors.red[300]!),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -488,23 +483,21 @@ class _CustomTextField extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       ),
     );
-  }
 }
 
 class _PrimaryButton extends StatelessWidget {
-  final String text;
-  final bool isLoading;
-  final VoidCallback onPressed;
 
   const _PrimaryButton({
     required this.text,
     required this.onPressed,
     this.isLoading = false,
   });
+  final String text;
+  final bool isLoading;
+  final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
+  Widget build(BuildContext context) => Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
@@ -547,23 +540,21 @@ class _PrimaryButton extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class _GoogleButton extends StatelessWidget {
-  final String text;
-  final bool isLoading;
-  final VoidCallback onPressed;
 
   const _GoogleButton({
     required this.text,
     required this.onPressed,
     this.isLoading = false,
   });
+  final String text;
+  final bool isLoading;
+  final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
+  Widget build(BuildContext context) => Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
@@ -602,13 +593,11 @@ class _GoogleButton extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class _OrDivider extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context) => Row(
       children: [
         Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
         Padding(
@@ -625,17 +614,15 @@ class _OrDivider extends StatelessWidget {
         Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
       ],
     );
-  }
 }
 
 class _ErrorBanner extends StatelessWidget {
-  final String message;
 
   const _ErrorBanner({required this.message});
+  final String message;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.red[50],
@@ -659,5 +646,4 @@ class _ErrorBanner extends StatelessWidget {
         ],
       ),
     );
-  }
 }

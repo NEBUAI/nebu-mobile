@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_routes.dart';
-import '../../core/theme/app_theme.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -141,17 +140,16 @@ class WelcomeScreen extends StatelessWidget {
 
 // Botón primario con efecto glass
 class _PrimaryButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
 
   const _PrimaryButton({
     required this.text,
     required this.onPressed,
   });
+  final String text;
+  final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
+  Widget build(BuildContext context) => Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onPressed,
@@ -183,22 +181,20 @@ class _PrimaryButton extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 // Botón secundario con borde
 class _SecondaryButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
 
   const _SecondaryButton({
     required this.text,
     required this.onPressed,
   });
+  final String text;
+  final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
+  Widget build(BuildContext context) => Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onPressed,
@@ -227,5 +223,4 @@ class _SecondaryButton extends StatelessWidget {
         ),
       ),
     );
-  }
 }
