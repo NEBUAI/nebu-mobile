@@ -234,12 +234,13 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeState = ref.watch(themeProvider);
-    final isDark = themeState.isDarkMode;
+    final themeAsync = ref.watch(themeProvider);
+    final themeState = themeAsync.value;
+    final isDark = themeState?.isDarkMode ?? false;
     final theme = Theme.of(context);
     final toyProvider = ref.watch(toyProviderInstance);
-    final List<Toy> toys = toyProvider.toys;
-    final bool isLoading = toyProvider.isLoading;
+    final toys = toyProvider.toys;
+    final isLoading = toyProvider.isLoading;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,

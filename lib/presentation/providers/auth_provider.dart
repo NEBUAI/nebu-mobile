@@ -1,246 +1,140 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/constants/storage_keys.dart';
 import '../../data/models/user.dart';
-import '../../data/services/auth_service.dart';
+import 'api_provider.dart';
 
-// Providers
-final authServiceProvider = Provider<AuthService>(
-  (ref) => throw UnimplementedError(),
+// Re-export sharedPreferencesProvider for use in other files
+export 'api_provider.dart' show sharedPreferencesProvider;
+
+// Auth provider using AsyncNotifier for cleaner state management
+final authProvider = AsyncNotifierProvider<AuthNotifier, User?>(
+  AuthNotifier.new,
 );
-final sharedPreferencesProvider = Provider<SharedPreferences>(
-  (ref) => throw UnimplementedError(),
-);
 
-// Auth state
-class AuthState {
-  AuthState({
-    this.user,
-    this.isAuthenticated = false,
-    this.isLoading = false,
-    this.error,
-  });
-  final User? user;
-  final bool isAuthenticated;
-  final bool isLoading;
-  final String? error;
-
-  AuthState copyWith({
-    User? user,
-    bool? isAuthenticated,
-    bool? isLoading,
-    String? error,
-  }) => AuthState(
-    user: user ?? this.user,
-    isAuthenticated: isAuthenticated ?? this.isAuthenticated,
-    isLoading: isLoading ?? this.isLoading,
-    error: error ?? this.error,
-  );
-}
-
-// Auth notifier
-class AuthNotifier extends Notifier<AuthState> {
-  late AuthService _authService;
-  late SharedPreferences _prefs;
-
+class AuthNotifier extends AsyncNotifier<User?> {
   @override
-  AuthState build() {
-    _authService = ref.watch(authServiceProvider);
-    _prefs = ref.watch(sharedPreferencesProvider);
-    Future.microtask(_loadUser);
-    return AuthState(isLoading: true);
+  Future<User?> build() async {
+    // On startup, check if the user is already authenticated and load user data
+    return _loadUserFromStorage();
   }
 
-  // Load user from storage
-  Future<void> _loadUser() async {
-    final isAuth = await _authService.isAuthenticated();
-    if (isAuth) {
-      final userJson = _prefs.getString(StorageKeys.user);
-      if (userJson != null) {
-        final user = User.fromJson(
-          json.decode(userJson) as Map<String, dynamic>,
-        );
-        state = state.copyWith(user: user, isAuthenticated: true);
-      }
-    }
-  }
-
-  // Login with email/password
-  Future<bool> login({required String email, required String password}) async {
-    state = state.copyWith(isLoading: true);
-
+  Future<User?> _loadUserFromStorage() async {
     try {
-      final response = await _authService.login(
-        email: email,
-        password: password,
-      );
+      final authService = await ref.watch(authServiceProvider.future);
+      final prefs = await ref.watch(sharedPreferencesProvider.future);
 
+      final isAuthenticated = await authService.isAuthenticated();
+      if (isAuthenticated) {
+        final userJson = prefs.getString(StorageKeys.user);
+        if (userJson != null) {
+          return User.fromJson(json.decode(userJson) as Map<String, dynamic>);
+        }
+      }
+    } catch (e, st) {
+      // If loading fails, treat as unauthenticated
+      ref.read(loggerProvider).e('Failed to load user from storage', error: e, stackTrace: st);
+    }
+    return null;
+  }
+
+  Future<void> _saveUser(User user) async {
+    final prefs = await ref.read(sharedPreferencesProvider.future);
+    await prefs.setString(StorageKeys.user, json.encode(user.toJson()));
+  }
+
+  Future<void> login({required String email, required String password}) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final authService = await ref.read(authServiceProvider.future);
+      final response = await authService.login(email: email, password: password);
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
-        state = state.copyWith(
-          user: response.user,
-          isAuthenticated: true,
-          isLoading: false,
-        );
-        return true;
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          error: response.error ?? 'Login failed',
-        );
-        return false;
+        return response.user;
       }
-    } on Exception catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-      return false;
-    }
+      throw Exception(response.error ?? 'Login failed');
+    });
   }
 
-  // Register
-  Future<bool> register({
+  Future<void> register({
     required String email,
     required String password,
     String? firstName,
     String? lastName,
   }) async {
-    state = state.copyWith(isLoading: true);
-
-    try {
-      final response = await _authService.register(
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final authService = await ref.read(authServiceProvider.future);
+      final response = await authService.register(
         email: email,
         password: password,
         firstName: firstName,
         lastName: lastName,
       );
-
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
-        state = state.copyWith(
-          user: response.user,
-          isAuthenticated: true,
-          isLoading: false,
-        );
-        return true;
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          error: response.error ?? 'Registration failed',
-        );
-        return false;
+        return response.user;
       }
-    } on Exception catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-      return false;
-    }
+      throw Exception(response.error ?? 'Registration failed');
+    });
   }
 
-  // Google login
-  Future<bool> loginWithGoogle(String googleToken) async {
-    state = state.copyWith(isLoading: true);
-
-    try {
-      final response = await _authService.googleLogin(googleToken);
-
+  Future<void> loginWithGoogle(String googleToken) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final authService = await ref.read(authServiceProvider.future);
+      final response = await authService.googleLogin(googleToken);
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
-        state = state.copyWith(
-          user: response.user,
-          isAuthenticated: true,
-          isLoading: false,
-        );
-        return true;
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          error: response.error ?? 'Google login failed',
-        );
-        return false;
+        return response.user;
       }
-    } on Exception catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-      return false;
-    }
+      throw Exception(response.error ?? 'Google login failed');
+    });
   }
 
-  // Facebook login
-  Future<bool> loginWithFacebook(String facebookToken) async {
-    state = state.copyWith(isLoading: true);
-
-    try {
-      final response = await _authService.facebookLogin(facebookToken);
-
+  Future<void> loginWithFacebook(String facebookToken) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final authService = await ref.read(authServiceProvider.future);
+      final response = await authService.facebookLogin(facebookToken);
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
-        state = state.copyWith(
-          user: response.user,
-          isAuthenticated: true,
-          isLoading: false,
-        );
-        return true;
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          error: response.error ?? 'Facebook login failed',
-        );
-        return false;
+        return response.user;
       }
-    } on Exception catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-      return false;
-    }
+      throw Exception(response.error ?? 'Facebook login failed');
+    });
   }
 
-  // Apple login
-  Future<bool> loginWithApple(String appleToken) async {
-    state = state.copyWith(isLoading: true);
-
-    try {
-      final response = await _authService.appleLogin(appleToken);
-
+  Future<void> loginWithApple(String appleToken) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final authService = await ref.read(authServiceProvider.future);
+      final response = await authService.appleLogin(appleToken);
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
-        state = state.copyWith(
-          user: response.user,
-          isAuthenticated: true,
-          isLoading: false,
-        );
-        return true;
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          error: response.error ?? 'Apple login failed',
-        );
-        return false;
+        return response.user;
       }
-    } on Exception catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-      return false;
-    }
+      throw Exception(response.error ?? 'Apple login failed');
+    });
   }
 
-  // Logout
   Future<void> logout() async {
-    await _authService.logout();
-    await _prefs.remove(StorageKeys.user);
-    state = AuthState();
+    state = const AsyncValue.loading();
+    try {
+      final authService = await ref.read(authServiceProvider.future);
+      final prefs = await ref.read(sharedPreferencesProvider.future);
+      await authService.logout();
+      await prefs.remove(StorageKeys.user);
+      state = const AsyncValue.data(null);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
   }
 
-  // Save user to storage
-  Future<void> _saveUser(User user) async {
-    await _prefs.setString(StorageKeys.user, json.encode(user.toJson()));
-  }
-
-  // Update user
   Future<void> updateUser(User user) async {
     await _saveUser(user);
-    state = state.copyWith(user: user);
+    state = AsyncValue.data(user);
   }
 }
-
-// Provider
-final authProvider = NotifierProvider<AuthNotifier, AuthState>(
-  AuthNotifier.new,
-);

@@ -15,10 +15,13 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AuthState authState = ref.watch(authProvider);
-    final ThemeState themeState = ref.watch(themeProvider);
-    final LanguageState languageState = ref.watch(languageProvider);
-    final isDark = themeState.isDarkMode;
+    final authState = ref.watch(authProvider);
+    final user = authState.value;
+    final themeAsync = ref.watch(themeProvider);
+    final languageAsync = ref.watch(languageProvider);
+    final themeState = themeAsync.value;
+    final languageState = languageAsync.value;
+    final isDark = themeState?.isDarkMode ?? false;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -66,10 +69,10 @@ class ProfileScreen extends ConsumerWidget {
                         color: AppTheme.primaryLight.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: authState.user?.avatar != null
+                      child: user?.avatar != null
                           ? ClipOval(
                               child: Image.network(
-                                authState.user!.avatar!,
+                                user!.avatar!,
                                 width: 64,
                                 height: 64,
                                 fit: BoxFit.cover,
@@ -77,7 +80,7 @@ class ProfileScreen extends ConsumerWidget {
                             )
                           : Center(
                               child: Text(
-                                (authState.user?.name ?? 'U')[0].toUpperCase(),
+                                (user?.name ?? 'U')[0].toUpperCase(),
                                 style: theme.textTheme.headlineMedium?.copyWith(
                                   color: AppTheme.primaryLight,
                                 ),
@@ -91,7 +94,7 @@ class ProfileScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            authState.user?.name ?? 'profile.user'.tr(),
+                            user?.name ?? 'profile.user'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: theme.colorScheme.onSurface,
                             ),
@@ -211,7 +214,7 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.dark_mode_outlined,
                     title: 'profile.dark_mode'.tr(),
                     trailing: Switch(
-                      value: themeState.isDarkMode,
+                      value: themeState?.isDarkMode ?? false,
                       onChanged: (value) {
                         ref.read(themeProvider.notifier).toggleDarkMode();
                       },
@@ -230,7 +233,7 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.language_outlined,
                     title: 'profile.language'.tr(),
                     trailing: DropdownButton<String>(
-                      value: languageState.languageCode,
+                      value: languageState?.languageCode ?? 'en',
                       underline: const SizedBox(),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface,

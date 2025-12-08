@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class AppConfig {
   AppConfig._();
 
@@ -11,4 +13,9 @@ class AppConfig {
   static const Duration animationShort = Duration(milliseconds: 200);
   static const Duration animationMedium = Duration(milliseconds: 300);
   static const Duration animationLong = Duration(milliseconds: 500);
+
+  // Environment variables
+  static String get apiBaseUrl =>
+      dotenv.env['API_BASE_URL'] ?? 'https://default-api.com';
+  static String get apiKey => dotenv.env['API_KEY'] ?? 'default-api-key';
 }

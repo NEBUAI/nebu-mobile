@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../../core/constants/app_routes.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
@@ -18,9 +17,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
   bool _obscurePassword = true;
-  String? _errorMessage;
 
   @override
   void dispose() {
@@ -32,191 +29,51 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _handleEmailLogin() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      final authNotifier = ref.read(authProvider.notifier);
-      final success = await authNotifier.login(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-
-      if (mounted) {
-        if (success) {
-          context.go(AppRoutes.home.path);
-        } else {
-          setState(() {
-            _errorMessage = 'auth.invalid_credentials'.tr();
-            _isLoading = false;
-          });
-        }
-      }
-    } on Exception {
-      if (mounted) {
-        setState(() {
-          _errorMessage = 'auth.login_error'.tr();
-          _isLoading = false;
-        });
-      }
-    }
+    await ref.read(authProvider.notifier).login(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
   }
 
   Future<void> _handleGoogleSignIn() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
     try {
       final googleSignIn = ref.read(googleSignInProvider);
-      await googleSignIn.initialize();
+      final googleUser = await googleSignIn.authenticate();
 
-      final GoogleSignInAccount googleUser = await googleSignIn.authenticate(
-        scopeHint: ['email', 'profile'],
-      );
-
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-      final String? idToken = googleAuth.idToken;
+      final googleAuth = googleUser.authentication;
+      final idToken = googleAuth.idToken;
 
       if (idToken == null) {
         throw Exception('No ID token received from Google');
       }
 
-      final authNotifier = ref.read(authProvider.notifier);
-      final success = await authNotifier.loginWithGoogle(idToken);
-
+      await ref.read(authProvider.notifier).loginWithGoogle(idToken);
+    } on Exception catch (e) {
       if (mounted) {
-        if (success) {
-          context.go(AppRoutes.home.path);
-        } else {
-          setState(() {
-            _errorMessage = 'auth.google_login_error'.tr();
-            _isLoading = false;
-          });
-        }
-      }
-    } on GoogleSignInException {
-      if (mounted) {
-        setState(() {
-          _errorMessage = 'auth.google_login_cancelled'.tr();
-          _isLoading = false;
-        });
-      }
-    } on Exception {
-      if (mounted) {
-        setState(() {
-          _errorMessage = 'auth.google_login_error'.tr();
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  Future<void> _handleForgotPassword() async {
-    final emailController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-
-    final result = await showModalBottomSheet<bool>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        final textTheme = Theme.of(context).textTheme;
-        return Container(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'auth.forgot_password'.tr(),
-                    style: textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Enter your email and we'll send you a reset link.",
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  _CustomTextField(
-                    controller: emailController,
-                    label: 'Email',
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.mail_outline_rounded,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  _PrimaryButton(
-                    text: 'Send Reset Link',
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        Navigator.pop(context, true);
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            ),
-          ),
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Google Sign-In failed: $e')),
         );
-      },
-    );
-
-    if ((result ?? false) && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Reset link sent to ${emailController.text}'),
-          backgroundColor: const Color(0xFF6B4EFF),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        ),
-      );
+      }
     }
-
-    emailController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    ref.listen(authProvider, (previous, next) {
+      if (next.hasError && !next.isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(next.error.toString())),
+        );
+      }
+      if (next.hasValue && next.value != null) {
+        context.go(AppRoutes.home.path);
+      }
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -229,13 +86,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
-
-                  // Back button
                   _BackButton(onPressed: () => context.pop()),
-
                   const SizedBox(height: 32),
-
-                  // Header
                   Text(
                     'Welcome back',
                     style: textTheme.displaySmall?.copyWith(
@@ -251,16 +103,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       color: Colors.grey[600],
                     ),
                   ),
-
                   const SizedBox(height: 40),
-
-                  // Error message
-                  if (_errorMessage != null) ...[
-                    _ErrorBanner(message: _errorMessage!),
-                    const SizedBox(height: 20),
-                  ],
-
-                  // Email field
+                  if (authState.hasError && !authState.isLoading)
+                    _ErrorBanner(message: authState.error.toString()),
+                  const SizedBox(height: 20),
                   _CustomTextField(
                     controller: _emailController,
                     label: 'Email',
@@ -276,10 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return null;
                     },
                   ),
-
                   const SizedBox(height: 20),
-
-                  // Password field
                   _CustomTextField(
                     controller: _passwordController,
                     label: 'Password',
@@ -301,50 +144,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return null;
                     },
                   ),
-
                   const SizedBox(height: 12),
-
-                  // Forgot password
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: _handleForgotPassword,
+                      onTap: () {},
                       child: Text(
                         'Forgot password?',
                         style: textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF6B4EFF),
+                          color: colorScheme.primary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 32),
-
-                  // Sign in button
                   _PrimaryButton(
                     text: 'Sign In',
-                    isLoading: _isLoading,
+                    isLoading: authState.isLoading,
                     onPressed: _handleEmailLogin,
                   ),
-
                   const SizedBox(height: 24),
-
-                  // Divider
                   _OrDivider(),
-
                   const SizedBox(height: 24),
-
-                  // Google button
                   _GoogleButton(
                     text: 'Continue with Google',
-                    isLoading: _isLoading,
+                    isLoading: authState.isLoading,
                     onPressed: _handleGoogleSignIn,
                   ),
-
                   const SizedBox(height: 32),
-
-                  // Sign up link
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -360,7 +188,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: Text(
                             'Sign Up',
                             style: textTheme.bodyMedium?.copyWith(
-                              color: const Color(0xFF6B4EFF),
+                              color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -368,7 +196,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 24),
                 ],
               ),
@@ -379,6 +206,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
+
 
 // ============ Reusable Components ============
 
@@ -439,7 +267,7 @@ class _CustomTextField extends StatelessWidget {
         labelText: label,
         labelStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
         floatingLabelStyle: textTheme.bodySmall?.copyWith(
-          color: const Color(0xFF6B4EFF),
+          color: Theme.of(context).colorScheme.primary,
           fontWeight: FontWeight.w500,
         ),
         prefixIcon: Icon(
@@ -469,7 +297,7 @@ class _CustomTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFF6B4EFF), width: 1.5),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -494,7 +322,7 @@ class _PrimaryButton extends StatelessWidget {
   });
   final String text;
   final bool isLoading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -514,7 +342,7 @@ class _PrimaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF6B4EFF).withValues(alpha: 0.3),
+                color: const Color(0xFF6B4EFF).withOpacity(0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -553,7 +381,7 @@ class _GoogleButton extends StatelessWidget {
   });
   final String text;
   final bool isLoading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

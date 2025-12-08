@@ -35,7 +35,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   }
 
   Future<void> _loadSavedName() async {
-    final prefs = ref.read(auth_provider.sharedPreferencesProvider);
+    final prefs = await ref.read(auth_provider.sharedPreferencesProvider.future);
     final savedName = prefs.getString('setup_toy_name');
     if (savedName != null && savedName.isNotEmpty) {
       _controller.text = savedName;
@@ -43,14 +43,14 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   }
 
   Future<void> _saveToyName() async {
-    final prefs = ref.read(auth_provider.sharedPreferencesProvider);
+    final prefs = await ref.read(auth_provider.sharedPreferencesProvider.future);
     await prefs.setString('setup_toy_name', _controller.text.trim());
   }
 
   /// Registrar dispositivo ESP32 en el backend
   /// Se ejecuta automáticamente al continuar con el setup si hay un Device ID guardado
   Future<bool> _registerDeviceIfNeeded() async {
-    final prefs = ref.read(auth_provider.sharedPreferencesProvider);
+    final prefs = await ref.read(auth_provider.sharedPreferencesProvider.future);
     final deviceId = prefs.getString(StorageKeys.currentDeviceId);
 
     // Si no hay Device ID guardado, el usuario saltó la configuración WiFi
@@ -63,7 +63,8 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
 
     // Verificar que el usuario esté autenticado
     final authState = ref.read(auth_provider.authProvider);
-    if (authState.user == null) {
+    final user = authState.value;
+    if (user == null) {
       ref.read(loggerProvider).w(
         '⚠️  [TOY_SETUP] User not authenticated, cannot register device',
       );
@@ -94,7 +95,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
       await toyProvider.createToy(
         iotDeviceId: deviceId,
         name: toyName,
-        userId: authState.user!.id,
+        userId: user.id,
         status: ToyStatus.active,
         model: 'ESP32', // Modelo detectado del Device ID
         manufacturer: 'NEBU',

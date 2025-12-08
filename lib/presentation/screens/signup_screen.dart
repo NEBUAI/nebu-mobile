@@ -46,7 +46,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
     try {
       final authNotifier = ref.read(authProvider.notifier);
-      final success = await authNotifier.register(
+      await authNotifier.register(
         email: _emailController.text.trim(),
         password: _passwordController.text,
         firstName: _firstNameController.text.trim(),
@@ -54,7 +54,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       );
 
       if (mounted) {
-        if (success) {
+        final authState = ref.read(authProvider);
+        if (authState.value != null) {
           context.go(AppRoutes.home.path);
         } else {
           setState(() {
@@ -95,10 +96,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       }
 
       final authNotifier = ref.read(authProvider.notifier);
-      final success = await authNotifier.loginWithGoogle(idToken);
+      await authNotifier.loginWithGoogle(idToken);
 
       if (mounted) {
-        if (success) {
+        final authState = ref.read(authProvider);
+        if (authState.value != null) {
           context.go(AppRoutes.home.path);
         } else {
           setState(() {

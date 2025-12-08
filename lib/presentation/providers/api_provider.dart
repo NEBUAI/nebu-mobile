@@ -1,42 +1,104 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/services/api_service.dart';
+import '../../data/services/auth_service.dart';
+import '../../data/services/bluetooth_service.dart';
+import '../../data/services/device_service.dart';
+import '../../data/services/esp32_wifi_config_service.dart';
+import '../../data/services/iot_service.dart';
 import '../../data/services/local_child_data_service.dart';
 import '../../data/services/toy_service.dart';
 import '../../data/services/user_service.dart';
-import 'auth_provider.dart' as auth;
 import 'toy_provider.dart';
 
-// This provider is meant to be overridden in the main.dart file
+// Low-level dependency providers
+
+final sharedPreferencesProvider =
+    FutureProvider<SharedPreferences>((ref) => SharedPreferences.getInstance());
+
+final secureStorageProvider = Provider<FlutterSecureStorage>(
+    (ref) => const FlutterSecureStorage(
+          aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        ));
+
+final dioProvider = Provider<Dio>((ref) => Dio());
+
+final loggerProvider = Provider<Logger>(
+  (ref) => Logger(
+    printer: PrettyPrinter(
+      methodCount: 1,
+      errorMethodCount: 3,
+      lineLength: 80,
+      printTime: true,
+    ),
+  ),
+);
+
+// Service providers
+
 final apiServiceProvider = Provider<ApiService>((ref) {
-  throw UnimplementedError();
+  final dio = ref.watch(dioProvider);
+  final secureStorage = ref.watch(secureStorageProvider);
+  final logger = ref.watch(loggerProvider);
+  return ApiService(dio: dio, secureStorage: secureStorage, logger: logger);
 });
 
-// User service provider
+final authServiceProvider = FutureProvider<AuthService>((ref) async {
+  final dio = ref.watch(dioProvider);
+  final prefs = await ref.watch(sharedPreferencesProvider.future);
+  final secureStorage = ref.watch(secureStorageProvider);
+  return AuthService(dio: dio, prefs: prefs, secureStorage: secureStorage);
+});
+
+final bluetoothServiceProvider = Provider<BluetoothService>((ref) {
+  final logger = ref.watch(loggerProvider);
+  return BluetoothService(logger: logger);
+});
+
+final deviceServiceProvider = Provider<DeviceService>((ref) {
+  final bluetoothService = ref.watch(bluetoothServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return DeviceService(bluetoothService: bluetoothService, logger: logger);
+});
+
+final esp32WifiConfigServiceProvider =
+    FutureProvider<ESP32WifiConfigService>((ref) async {
+  final bluetoothService = ref.watch(bluetoothServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  final prefs = await ref.watch(sharedPreferencesProvider.future);
+  return ESP32WifiConfigService(
+      bluetoothService: bluetoothService, logger: logger, prefs: prefs);
+});
+
 final userServiceProvider = Provider<UserService>((ref) {
-  throw UnimplementedError();
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return UserService(apiService: apiService, logger: logger);
 });
 
-// Toy service provider
 final toyServiceProvider = Provider<ToyService>((ref) {
-  throw UnimplementedError();
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return ToyService(apiService: apiService, logger: logger);
 });
 
-// Logger provider
-final loggerProvider = Provider<Logger>((ref) {
-  throw UnimplementedError();
+final iotServiceProvider = Provider<IoTService>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return IoTService(apiService: apiService, logger: logger);
 });
 
-// Toy provider instance
-final toyProviderInstance = Provider<ToyProvider>((ref) {
-  final ToyService toyService = ref.watch(toyServiceProvider);
-  final Logger logger = ref.watch(loggerProvider);
-  return ToyProvider(toyService: toyService, logger: logger);
-});
-
-// Local child data service provider
-final localChildDataServiceProvider = Provider<LocalChildDataService>((ref) {
-  final prefs = ref.watch(auth.sharedPreferencesProvider);
+final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((ref) async {
+  final prefs = await ref.watch(sharedPreferencesProvider.future);
   return LocalChildDataService(prefs);
+});
+
+final toyProviderInstance = Provider<ToyProvider>((ref) {
+  final toyService = ref.watch(toyServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return ToyProvider(toyService: toyService, logger: logger);
 });

@@ -19,28 +19,28 @@ class LanguageState {
 }
 
 // Language notifier
-class LanguageNotifier extends Notifier<LanguageState> {
-  late SharedPreferences _prefs;
+class LanguageNotifier extends AsyncNotifier<LanguageState> {
+  SharedPreferences? _prefs;
 
   @override
-  LanguageState build() {
-    _prefs = ref.watch(auth.sharedPreferencesProvider);
-    Future.microtask(_loadLanguage);
-    return LanguageState();
+  Future<LanguageState> build() async {
+    _prefs = await ref.read(auth.sharedPreferencesProvider.future);
+    return _loadLanguage();
   }
 
   // Load language from storage
-  Future<void> _loadLanguage() async {
+  Future<LanguageState> _loadLanguage() async {
     final languageCode =
-        _prefs.getString(StorageKeys.language) ??
+        _prefs?.getString(StorageKeys.language) ??
         AppConfig.languageEnglish;
 
     if (AppConfig.supportedLanguages.contains(languageCode)) {
-      state = state.copyWith(
+      return LanguageState(
         locale: Locale(languageCode),
         languageCode: languageCode,
       );
     }
+    return LanguageState();
   }
 
   // Set language
@@ -49,11 +49,13 @@ class LanguageNotifier extends Notifier<LanguageState> {
       return;
     }
 
-    await _prefs.setString(StorageKeys.language, languageCode);
+    await _prefs?.setString(StorageKeys.language, languageCode);
 
-    state = state.copyWith(
-      locale: Locale(languageCode),
-      languageCode: languageCode,
+    state = AsyncValue.data(
+      LanguageState(
+        locale: Locale(languageCode),
+        languageCode: languageCode,
+      ),
     );
   }
 
@@ -69,7 +71,8 @@ class LanguageNotifier extends Notifier<LanguageState> {
 
   // Toggle between EN and ES
   Future<void> toggleLanguage() async {
-    final newLanguage = state.languageCode == AppConfig.languageEnglish
+    final currentState = state.value;
+    final newLanguage = currentState?.languageCode == AppConfig.languageEnglish
         ? AppConfig.languageSpanish
         : AppConfig.languageEnglish;
 
@@ -78,6 +81,6 @@ class LanguageNotifier extends Notifier<LanguageState> {
 }
 
 // Provider
-final languageProvider = NotifierProvider<LanguageNotifier, LanguageState>(
+final languageProvider = AsyncNotifierProvider<LanguageNotifier, LanguageState>(
   LanguageNotifier.new,
 );

@@ -55,7 +55,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
   }
 
   Future<void> _loadSavedData() async {
-    final prefs = ref.read(auth.sharedPreferencesProvider);
+    final prefs = await ref.read(auth.sharedPreferencesProvider.future);
 
     final savedName = prefs.getString('local_child_name');
     final savedAge = prefs.getString('local_child_age');
@@ -65,10 +65,12 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
     if (savedName != null) _childNameController.text = savedName;
     if (savedPrompt != null) _customPromptController.text = savedPrompt;
 
-    setState(() {
-      _selectedAge = savedAge;
-      _selectedPersonality = savedPersonality;
-    });
+    if (mounted) {
+      setState(() {
+        _selectedAge = savedAge;
+        _selectedPersonality = savedPersonality;
+      });
+    }
   }
 
   Future<void> _saveData() async {
@@ -101,7 +103,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
     });
 
     try {
-      final prefs = ref.read(auth.sharedPreferencesProvider);
+      final prefs = await ref.read(auth.sharedPreferencesProvider.future);
 
       // Save child information
       await prefs.setString('local_child_name', _childNameController.text.trim());

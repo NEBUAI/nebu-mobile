@@ -95,7 +95,7 @@ class IoTDevicesNotifier extends Notifier<IoTDevicesState> {
   // Fetch devices for current user
   Future<void> fetchUserDevices() async {
     final authState = ref.read(authProvider);
-    final userId = authState.user?.id;
+    final userId = authState.value?.id;
 
     if (userId == null) {
       state = state.copyWith(

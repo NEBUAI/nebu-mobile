@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_routes.dart';
 import '../../data/models/toy.dart';
+import '../../data/models/user.dart';
 import '../../presentation/providers/auth_provider.dart';
 import '../../presentation/screens/activity_log_screen.dart';
 import '../../presentation/screens/child_profile_screen.dart';
@@ -30,215 +31,188 @@ import '../../presentation/screens/splash_screen.dart';
 import '../../presentation/screens/toy_settings_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
 
-// Router provider
+// Router provider that exposes the GoRouter instance
 final routerProvider = Provider<GoRouter>((ref) {
-  final AuthState authState = ref.watch(authProvider);
+  final authState = ref.watch(authProvider);
+  return AppRouter(authState).router;
+});
 
-  return GoRouter(
-    initialLocation: AppRoutes.splash.path,
-    debugLogDiagnostics: true,
-    redirect: (context, state) {
-      final isAuthenticated = authState.isAuthenticated;
-      final isSplash = state.matchedLocation == AppRoutes.splash.path;
-      final isWelcome = state.matchedLocation == AppRoutes.welcome.path;
-      final isLogin = state.matchedLocation == AppRoutes.login.path;
-      final isSignUp = state.matchedLocation == AppRoutes.signUp.path;
-      final isSetupRoute = state.matchedLocation.startsWith('/setup/');
+class AppRouter {
+  AppRouter(AsyncValue<User?> authState)
+      : router = GoRouter(
+          initialLocation: AppRoutes.splash.path,
+          debugLogDiagnostics: true,
+          redirect: (context, state) => _redirectLogic(authState, state),
+          routes: _getRoutesStatic(),
+          errorBuilder: (context, state) => Scaffold(
+            body: Center(
+              child: Text('Page not found: ${state.error?.message}'),
+            ),
+          ),
+        );
 
-      // Main app routes that can be accessed without authentication
-      final isMainRoute =
-          state.matchedLocation == AppRoutes.home.path ||
-          state.matchedLocation == AppRoutes.activityLog.path ||
-          state.matchedLocation == AppRoutes.myToys.path ||
-          state.matchedLocation == AppRoutes.profile.path;
+  final GoRouter router;
 
-      // Allow access to main routes even without authentication (user can skip setup)
-      if (!isAuthenticated &&
-          !isWelcome &&
-          !isSplash &&
-          !isLogin &&
-          !isSignUp &&
-          !isSetupRoute &&
-          !isMainRoute) {
-        return AppRoutes.welcome.path;
-      }
+  static String? _redirectLogic(AsyncValue<User?> authState, GoRouterState state) {
+    final isAuthenticated = authState.value != null;
+    final location = state.matchedLocation;
 
-      // If authenticated and on welcome, redirect to home
-      if (isAuthenticated && isWelcome) {
+    // Allow splash screen to be shown
+    if (location == AppRoutes.splash.path) {
+      return null;
+    }
+
+    // Routes accessible only when not authenticated
+    final unauthenticatedRoutes = [
+      AppRoutes.welcome.path,
+      AppRoutes.login.path,
+      AppRoutes.signUp.path,
+    ];
+
+    if (isAuthenticated) {
+      // If authenticated, redirect from unauthenticated-only routes to home
+      if (unauthenticatedRoutes.contains(location)) {
         return AppRoutes.home.path;
       }
+    } else {
+      // For unauthenticated users, only a specific set of routes are allowed.
+      // All other routes will redirect to the welcome screen.
+      final allowedUnauthRoutes = [
+        ...unauthenticatedRoutes,
+        AppRoutes.home.path,
+        AppRoutes.activityLog.path,
+        AppRoutes.myToys.path,
+        AppRoutes.profile.path,
+      ];
 
-      // No redirect needed
-      return null;
-    },
-    routes: [
-      // Splash Screen
-      GoRoute(
-        path: AppRoutes.splash.path,
-        name: 'splash',
-        builder: (context, state) => const SplashScreen(),
-      ),
+      final isSetupRoute = location.startsWith('/setup');
 
-      // Welcome Screen (unauthenticated)
-      GoRoute(
-        path: AppRoutes.welcome.path,
-        name: 'welcome',
-        builder: (context, state) => const WelcomeScreen(),
-      ),
+      if (!allowedUnauthRoutes.contains(location) && !isSetupRoute) {
+        return AppRoutes.welcome.path;
+      }
+    }
 
-      // Login Screen
-      GoRoute(
-        path: AppRoutes.login.path,
-        name: 'login',
-        builder: (context, state) => const LoginScreen(),
-      ),
+    return null; // No redirection needed
+  }
 
-      // Sign Up Screen
-      GoRoute(
-        path: AppRoutes.signUp.path,
-        name: 'signup',
-        builder: (context, state) => const SignUpScreen(),
-      ),
+  static List<RouteBase> _getRoutesStatic() => [
+        GoRoute(
+          path: AppRoutes.splash.path,
+          builder: (_, __) => const SplashScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.welcome.path,
+          builder: (_, __) => const WelcomeScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.login.path,
+          builder: (_, __) => const LoginScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.signUp.path,
+          builder: (_, __) => const SignUpScreen(),
+        ),
 
-      // Main Screen with Bottom Navigation
-      ShellRoute(
-        builder: (context, state, child) => MainScreen(child: child),
-        routes: [
-          // Home
-          GoRoute(
-            path: AppRoutes.home.path,
-            name: 'home',
-            pageBuilder: (context, state) =>
-                const NoTransitionPage(child: HomeScreen()),
-          ),
+        // Main application shell
+        ShellRoute(
+          builder: (context, state, child) => MainScreen(child: child),
+          routes: [
+            GoRoute(
+              path: AppRoutes.home.path,
+              pageBuilder: (_, __) => const NoTransitionPage(child: HomeScreen()),
+            ),
+            GoRoute(
+              path: AppRoutes.activityLog.path,
+              pageBuilder: (_, __) => NoTransitionPage(child: ActivityLogScreen()),
+            ),
+            GoRoute(
+              path: AppRoutes.myToys.path,
+              pageBuilder: (_, __) => const NoTransitionPage(child: MyToysScreen()),
+            ),
+            GoRoute(
+              path: AppRoutes.profile.path,
+              pageBuilder: (_, __) => const NoTransitionPage(child: ProfileScreen()),
+            ),
+          ],
+        ),
 
-          // Activity Log
-          GoRoute(
-            path: AppRoutes.activityLog.path,
-            name: 'activity-log',
-            pageBuilder: (context, state) =>
-                NoTransitionPage(child: ActivityLogScreen()),
-          ),
+        // Other top-level screens
+        GoRoute(
+          path: AppRoutes.deviceManagement.path,
+          builder: (_, __) => const DeviceManagementScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.iotDevices.path,
+          builder: (_, __) => const IoTDevicesScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.qrScanner.path,
+          builder: (_, __) => QRScannerScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.editProfile.path,
+          builder: (_, __) => const EditProfileScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.toySettings.path,
+          builder: (context, state) {
+            final toy = state.extra as Toy?;
+            if (toy == null) {
+              return Scaffold(
+                appBar: AppBar(title: const Text('Error')),
+                body: const Center(
+                  child: Text('Toy data is missing or invalid.'),
+                ),
+              );
+            }
+            return ToySettingsScreen(toy: toy);
+          },
+        ),
+        GoRoute(
+          path: AppRoutes.childProfile.path,
+          builder: (_, __) => const ChildProfileScreen(),
+        ),
 
-          // My Toys
-          GoRoute(
-            path: AppRoutes.myToys.path,
-            name: 'my-toys',
-            pageBuilder: (context, state) =>
-                const NoTransitionPage(child: MyToysScreen()),
-          ),
+        // Setup flow
+        ..._getSetupRoutesStatic(),
+      ];
 
-          // Profile
-          GoRoute(
-            path: AppRoutes.profile.path,
-            name: 'profile',
-            pageBuilder: (context, state) =>
-                const NoTransitionPage(child: ProfileScreen()),
-          ),
-        ],
-      ),
-
-      // Device Management (full screen)
-      GoRoute(
-        path: AppRoutes.deviceManagement.path,
-        name: 'device-management',
-        builder: (context, state) => const DeviceManagementScreen(),
-      ),
-
-      // IoT Devices (full screen)
-      GoRoute(
-        path: AppRoutes.iotDevices.path,
-        name: 'iot-devices',
-        builder: (context, state) => const IoTDevicesScreen(),
-      ),
-
-      // QR Scanner (full screen)
-      GoRoute(
-        path: AppRoutes.qrScanner.path,
-        name: 'qr-scanner',
-        builder: (context, state) => QRScannerScreen(),
-      ),
-
-      // Edit Profile (full screen)
-      GoRoute(
-        path: AppRoutes.editProfile.path,
-        name: 'edit-profile',
-        builder: (context, state) => const EditProfileScreen(),
-      ),
-
-      // Toy Settings (full screen)
-      GoRoute(
-        path: AppRoutes.toySettings.path,
-        name: 'toy-settings',
-        builder: (context, state) {
-          final toy = state.extra! as Toy;
-          return ToySettingsScreen(toy: toy);
-        },
-      ),
-
-      // Setup Flow Routes
-      GoRoute(
-        path: AppRoutes.connectionSetup.path,
-        name: 'connection-setup',
-        builder: (context, state) => const ConnectionSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.toyNameSetup.path,
-        name: 'toy-name-setup',
-        builder: (context, state) => const ToyNameSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.wifiSetup.path,
-        name: 'wifi-setup',
-        builder: (context, state) => const WifiSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.ageSetup.path,
-        name: 'age-setup',
-        builder: (context, state) => const AgeSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.personalitySetup.path,
-        name: 'personality-setup',
-        builder: (context, state) => const PersonalitySetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.voiceSetup.path,
-        name: 'voice-setup',
-        builder: (context, state) => const VoiceSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.favoritesSetup.path,
-        name: 'favorites-setup',
-        builder: (context, state) => const FavoritesSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.worldInfoSetup.path,
-        name: 'world-info-setup',
-        builder: (context, state) => const WorldInfoSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.localChildSetup.path,
-        name: 'local-child-setup',
-        builder: (context, state) => const LocalChildSetupScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoutes.childProfile.path,
-        name: 'child-profile',
-        builder: (context, state) => const ChildProfileScreen(),
-      ),
-    ],
-    errorBuilder: (context, state) => Scaffold(
-      body: Center(child: Text('Page not found: ${state.matchedLocation}')),
-    ),
-  );
-});
+  static List<RouteBase> _getSetupRoutesStatic() => [
+        GoRoute(
+          path: AppRoutes.connectionSetup.path,
+          builder: (_, __) => const ConnectionSetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.toyNameSetup.path,
+          builder: (_, __) => const ToyNameSetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.wifiSetup.path,
+          builder: (_, __) => const WifiSetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.ageSetup.path,
+          builder: (_, __) => const AgeSetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.personalitySetup.path,
+          builder: (_, __) => const PersonalitySetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.voiceSetup.path,
+          builder: (_, __) => const VoiceSetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.favoritesSetup.path,
+          builder: (_, __) => const FavoritesSetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.worldInfoSetup.path,
+          builder: (_, __) => const WorldInfoSetupScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.localChildSetup.path,
+          builder: (_, __) => const LocalChildSetupScreen(),
+        ),
+      ];
+}
