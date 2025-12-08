@@ -35,10 +35,14 @@ class ToyProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _logger.e('Error loading toys: $e');
-      _error = e.toString();
+      // Don't throw, just set empty list and log warning
+      // This allows the app to continue working even if backend is unavailable
+      _toys = [];
+      _error =
+          'No se pudieron cargar los juguetes. Verifica que el backend esté funcionando.';
       _isLoading = false;
       notifyListeners();
-      rethrow;
+      _logger.w('Toys could not be loaded, continuing with empty list');
     }
   }
 
