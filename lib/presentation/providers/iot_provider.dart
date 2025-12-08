@@ -63,52 +63,44 @@ class IoTDevicesNotifier extends Notifier<IoTDevicesState> {
     DeviceType? deviceType,
     String? location,
   }) async {
-    try {
-      state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true);
 
+    try {
       final devices = await _iotService.getAllDevices(
         status: status,
         deviceType: deviceType,
         location: location,
       );
 
-      state = state.copyWith(devices: devices, isLoading: false, error: null);
-    } catch (e) {
+      state = state.copyWith(devices: devices, isLoading: false);
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
-        devices: [],
-        error:
-            'No se pudieron cargar los dispositivos. Verifica que el backend esté funcionando.',
+        error: 'Error al cargar dispositivos: $e',
       );
     }
   }
 
   // Fetch devices for current user
   Future<void> fetchUserDevices() async {
+    final authState = ref.read(authProvider);
+    final userId = authState.value?.id;
+
+    if (userId == null) {
+      state = state.copyWith(isLoading: false, error: 'Usuario no autenticado');
+      return;
+    }
+
+    state = state.copyWith(isLoading: true);
+
     try {
-      final authState = ref.read(authProvider);
-      final userId = authState.value?.id;
-
-      if (userId == null) {
-        state = state.copyWith(
-          isLoading: false,
-          error: 'User not authenticated',
-        );
-        return;
-      }
-
-      state = state.copyWith(isLoading: true, error: null);
-
       final devices = await _iotService.getDevicesByUser(userId);
 
-      state = state.copyWith(devices: devices, isLoading: false, error: null);
-    } catch (e) {
-      // Log the error but don't crash the app
+      state = state.copyWith(devices: devices, isLoading: false);
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
-        devices: [], // Return empty list instead of crashing
-        error:
-            'No se pudieron cargar los dispositivos. Verifica que el backend esté funcionando.',
+        error: 'Error al cargar dispositivos del usuario: $e',
       );
     }
   }

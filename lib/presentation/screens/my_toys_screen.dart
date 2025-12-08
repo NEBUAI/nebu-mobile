@@ -152,35 +152,68 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              'toys.type'.tr(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              toy.model ?? 'Nebu Robot',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            if (toy.batteryLevel != null) ...[
-              const SizedBox(height: 16),
-              Text(
-                'Batería',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            // Device info section
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest
+                    .withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.dividerColor.withValues(alpha: 0.2),
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                toy.batteryLevel!,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.memory,
+                        size: 20,
+                        color: theme.colorScheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Dispositivo IoT',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _InfoRow(
+                    label: 'ID',
+                    value: '${toy.iotDeviceId.substring(0, 12)}...',
+                    theme: theme,
+                  ),
+                  if (toy.model != null)
+                    _InfoRow(
+                      label: 'Modelo',
+                      value: toy.model!,
+                      theme: theme,
+                    ),
+                  if (toy.firmwareVersion != null)
+                    _InfoRow(
+                      label: 'Firmware',
+                      value: toy.firmwareVersion!,
+                      theme: theme,
+                    ),
+                  if (toy.batteryLevel != null)
+                    _InfoRow(
+                      label: 'Batería',
+                      value: toy.batteryLevel!,
+                      theme: theme,
+                    ),
+                  if (toy.signalStrength != null)
+                    _InfoRow(
+                      label: 'Señal',
+                      value: toy.signalStrength!,
+                      theme: theme,
+                    ),
+                ],
               ),
-            ],
+            ),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
@@ -548,4 +581,38 @@ class _ToyCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.label,
+    required this.value,
+    required this.theme,
+  });
+
+  final String label;
+  final String value;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
+          ),
+          Text(
+            value,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
 }

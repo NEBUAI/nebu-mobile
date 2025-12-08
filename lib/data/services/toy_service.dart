@@ -66,11 +66,16 @@ class ToyService {
       return response
           .map((json) => Toy.fromJson(json as Map<String, dynamic>))
           .toList();
-    } catch (e) {
-      _logger.e('Error fetching toys: $e');
-      // Return empty list instead of throwing, so the app doesn't crash
-      // if the backend is not available or the endpoint is not implemented
-      return [];
+    } on DioException catch (e) {
+      _logger.e('Error fetching toys: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        // No toys found, return empty list
+        return [];
+      }
+      throw Exception('Error al obtener los juguetes: ${e.message}');
+    } on Exception catch (e) {
+      _logger.e('Unexpected error fetching toys: $e');
+      throw Exception('Error inesperado al obtener los juguetes');
     }
   }
 
