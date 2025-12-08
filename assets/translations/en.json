@@ -188,7 +188,23 @@
   "activity_log": {
     "title": "Activity Log",
     "view_history": "View Usage History",
-    "coming_soon": "Activity log functionality coming soon!"
+    "coming_soon": "Activity log functionality coming soon!",
+    "error": "Error loading activities",
+    "no_activities": "No activities found",
+    "empty_title": "No Activities Yet",
+    "empty_message": "Your toy interactions and activities will appear here",
+    "just_now": "Just now",
+    "minutes_ago": "{0}m ago",
+    "hours_ago": "{0}h ago",
+    "days_ago": "{0}d ago",
+    "voice_command": "Voice Command",
+    "connection": "Connection",
+    "interaction": "Interaction",
+    "update": "Update",
+    "play": "Play",
+    "sleep": "Sleep",
+    "wake": "Wake",
+    "chat": "Chat"
   },
   "iot_dashboard": {
     "title": "IoT Dashboard",
@@ -267,6 +283,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "done": "Done",
+    "retry": "Retry",
     "skip": "Skip",
     "continue": "Continue",
     "yes": "Yes",

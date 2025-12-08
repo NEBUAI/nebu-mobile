@@ -1,100 +1,154 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide Trans;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../data/models/activity.dart';
+import '../providers/activity_provider.dart';
+import '../providers/auth_provider.dart';
 
-class ActivityLogController extends GetxController {
-  final activities = <ActivityLog>[].obs;
-  final isLoading = false.obs;
-  final selectedFilter = 'all'.obs;
+class ActivityLogScreen extends ConsumerStatefulWidget {
+  const ActivityLogScreen({super.key});
 
   @override
-  void onInit() {
-    super.onInit();
-    loadActivities();
-  }
+  ConsumerState<ActivityLogScreen> createState() => _ActivityLogScreenState();
+}
 
-  void loadActivities() {
-    isLoading.value = true;
+class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
+  final ScrollController _scrollController = ScrollController();
 
-    // TODO: Implement API call to fetch activities
-    // For now, show empty state or cached data
-    Future.delayed(const Duration(seconds: 1), () {
-      activities.value = [];
-      isLoading.value = false;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadActivities();
     });
+    _scrollController.addListener(_onScroll);
   }
 
-  void filterActivities(String filter) {
-    selectedFilter.value = filter;
-    loadActivities();
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
-  void refreshActivities() {
-    loadActivities();
+  Future<void> _loadActivities() async {
+    final authState = ref.read(authProvider);
+    final userId = authState.maybeWhen(
+      data: (user) => user?.id,
+      orElse: () => null,
+    );
+    if (userId == null) return;
+
+    await ref
+        .read(activityNotifierProvider.notifier)
+        .loadActivities(userId: userId);
   }
-}
 
-class ActivityLog {
-  const ActivityLog({
-    required this.id,
-    required this.toyName,
-    required this.action,
-    required this.timestamp,
-    required this.icon,
-    this.details,
-  });
-  final String id;
-  final String toyName;
-  final String action;
-  final DateTime timestamp;
-  final IconData icon;
-  final String? details;
-}
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * 0.8) {
+      final state = ref.read(activityNotifierProvider);
+      if (!state.isLoading && state.hasMore) {
+        final authState = ref.read(authProvider);
+        final userId = authState.maybeWhen(
+          data: (user) => user?.id,
+          orElse: () => null,
+        );
+        if (userId != null) {
+          ref.read(activityNotifierProvider.notifier).loadMore(userId: userId);
+        }
+      }
+    }
+  }
 
-class ActivityLogScreen extends StatelessWidget {
-  ActivityLogScreen({super.key});
+  Future<void> _refreshActivities() async {
+    final authState = ref.read(authProvider);
+    final userId = authState.maybeWhen(
+      data: (user) => user?.id,
+      orElse: () => null,
+    );
+    if (userId == null) return;
 
-  final ActivityLogController controller = Get.put(ActivityLogController());
+    await ref.read(activityNotifierProvider.notifier).refresh(userId: userId);
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final state = ref.watch(activityNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('activity_log.title'.tr()),
+        title: const Text('Activity Log'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: () => _showFilterDialog(context),
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshActivities,
           ),
         ],
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+      body: _buildBody(state, theme),
+    );
+  }
 
-        if (controller.activities.isEmpty) {
-          return _buildEmptyState(theme);
-        }
+  Widget _buildBody(ActivityState state, ThemeData theme) {
+    if (state.error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 64, color: theme.colorScheme.error),
+            const SizedBox(height: 16),
+            Text(
+              'Error loading activities',
+              style: theme.textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              state.error!,
+              style: theme.textTheme.bodySmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: _loadActivities,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
 
-        return RefreshIndicator(
-          onRefresh: () async {
-            controller.refreshActivities();
-          },
-          child: ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: controller.activities.length,
-            itemBuilder: (context, index) {
-              final activity = controller.activities[index];
-              return _buildActivityCard(activity, theme);
-            },
-          ),
-        );
-      }),
+    if (state.isLoading && state.activities.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.activities.isEmpty) {
+      return _buildEmptyState(theme);
+    }
+
+    return RefreshIndicator(
+      onRefresh: _refreshActivities,
+      child: ListView.builder(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(16),
+        itemCount: state.activities.length + (state.isLoading ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index >= state.activities.length) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          final activity = state.activities[index];
+          return _buildActivityCard(activity, theme);
+        },
+      ),
     );
   }
 
@@ -107,13 +161,21 @@ class ActivityLogScreen extends StatelessWidget {
             height: 150,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: const LinearGradient(colors: AppTheme.primaryGradient),
-              boxShadow: AppTheme.cardShadow,
+              color: theme.colorScheme.surfaceContainerHighest,
             ),
-            child: const Icon(Icons.history, size: 80, color: Colors.white),
+            child: Icon(
+              Icons.history,
+              size: 80,
+              color: theme.colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 32),
-          Text('No Activity Yet', style: theme.textTheme.headlineSmall),
+          Text(
+            'No Activities',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
@@ -121,7 +183,7 @@ class ActivityLogScreen extends StatelessWidget {
               'Your toy interactions and activities will appear here',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.disabledColor,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -129,39 +191,83 @@ class ActivityLogScreen extends StatelessWidget {
       ),
     );
 
-  Widget _buildActivityCard(ActivityLog activity, ThemeData theme) => Card(
+  Widget _buildActivityCard(Activity activity, ThemeData theme) {
+    final icon = _getIconForActivityType(activity.type);
+
+    return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: AppTheme.primaryLight.withValues(alpha: 0.2),
-          child: Icon(activity.icon, color: AppTheme.primaryLight),
+          backgroundColor: _getColorForActivityType(
+            activity.type,
+          ).withValues(alpha: 0.2),
+          child: Icon(icon, color: _getColorForActivityType(activity.type)),
         ),
         title: Text(
-          activity.action,
+          _getActivityTitle(activity.type),
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text(activity.toyName),
-            if (activity.details != null) ...[
-              const SizedBox(height: 2),
-              Text(
-                activity.details!,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.disabledColor,
-                ),
+            Text(
+              activity.description,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
               ),
-            ],
+            ),
           ],
         ),
-        trailing: Text(
-          _formatTimestamp(activity.timestamp),
-          style: theme.textTheme.bodySmall,
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              _formatTimestamp(activity.timestamp),
+              style: theme.textTheme.bodySmall,
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  IconData _getIconForActivityType(ActivityType type) => switch (type) {
+      ActivityType.voiceCommand => Icons.mic,
+      ActivityType.connection => Icons.link,
+      ActivityType.interaction => Icons.touch_app,
+      ActivityType.update => Icons.system_update,
+      ActivityType.error => Icons.error,
+      ActivityType.play => Icons.play_circle,
+      ActivityType.sleep => Icons.bedtime,
+      ActivityType.wake => Icons.wb_sunny,
+      ActivityType.chat => Icons.chat,
+    };
+
+  Color _getColorForActivityType(ActivityType type) => switch (type) {
+      ActivityType.voiceCommand => Colors.blue,
+      ActivityType.connection => Colors.green,
+      ActivityType.interaction => AppTheme.primaryLight,
+      ActivityType.update => Colors.orange,
+      ActivityType.error => Colors.red,
+      ActivityType.play => Colors.purple,
+      ActivityType.sleep => Colors.indigo,
+      ActivityType.wake => Colors.amber,
+      ActivityType.chat => Colors.teal,
+    };
+
+  String _getActivityTitle(ActivityType type) => switch (type) {
+      ActivityType.voiceCommand => 'Voice Command',
+      ActivityType.connection => 'Connection',
+      ActivityType.interaction => 'Interaction',
+      ActivityType.update => 'Update',
+      ActivityType.error => 'Error',
+      ActivityType.play => 'Play',
+      ActivityType.sleep => 'Sleep',
+      ActivityType.wake => 'Wake',
+      ActivityType.chat => 'Chat',
+    };
 
   String _formatTimestamp(DateTime timestamp) {
     final now = DateTime.now();
@@ -179,41 +285,4 @@ class ActivityLogScreen extends StatelessWidget {
       return DateFormat('MMM d').format(timestamp);
     }
   }
-
-  void _showFilterDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Filter Activities'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildFilterOption('All Activities', 'all'),
-            _buildFilterOption('Connections', 'connection'),
-            _buildFilterOption('Play Sessions', 'play'),
-            _buildFilterOption('Updates', 'update'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterOption(String label, String value) => Obx(
-      () => RadioListTile<String>(
-        title: Text(label),
-        value: value,
-        groupValue: controller.selectedFilter.value,
-        onChanged: (val) {
-          if (val != null) {
-            controller.filterActivities(val);
-          }
-        },
-      ),
-    );
 }

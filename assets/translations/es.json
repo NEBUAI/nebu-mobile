@@ -186,9 +186,25 @@
     "coming_soon": "¡La funcionalidad del agente de voz estará disponible pronto!"
   },
   "activity_log": {
-    "title": "Registro de actividad",
+    "title": "Registro de Actividad",
     "view_history": "Ver historial de uso",
-    "coming_soon": "¡La funcionalidad del registro de actividad estará disponible pronto!"
+    "coming_soon": "¡La funcionalidad del registro de actividad estará disponible pronto!",
+    "error": "Error al cargar actividades",
+    "no_activities": "No se encontraron actividades",
+    "empty_title": "Sin Actividades",
+    "empty_message": "Las interacciones y actividades con tus juguetes aparecerán aquí",
+    "just_now": "Ahora mismo",
+    "minutes_ago": "Hace {0}m",
+    "hours_ago": "Hace {0}h",
+    "days_ago": "Hace {0}d",
+    "voice_command": "Comando de Voz",
+    "connection": "Conexión",
+    "interaction": "Interacción",
+    "update": "Actualización",
+    "play": "Jugar",
+    "sleep": "Dormir",
+    "wake": "Despertar",
+    "chat": "Chat"
   },
   "iot_dashboard": {
     "title": "Panel IoT",
@@ -267,6 +283,7 @@
     "delete": "Eliminar",
     "edit": "Editar",
     "done": "Listo",
+    "retry": "Reintentar",
     "skip": "Omitir",
     "continue": "Continuar",
     "yes": "Sí",
