@@ -81,7 +81,7 @@ class ChildProfileScreen extends ConsumerWidget {
                 gradient: LinearGradient(
                   colors: [
                     AppTheme.primaryLight,
-                    AppTheme.primaryLight.withOpacity(0.7),
+                    AppTheme.primaryLight.withValues(alpha: 0.7),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -100,7 +100,7 @@ class ChildProfileScreen extends ConsumerWidget {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -135,7 +135,7 @@ class ChildProfileScreen extends ConsumerWidget {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(

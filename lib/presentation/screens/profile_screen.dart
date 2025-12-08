@@ -50,7 +50,7 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(isDark ? 0.3 : 0.08),
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -63,7 +63,7 @@ class ProfileScreen extends ConsumerWidget {
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryLight.withOpacity(0.1),
+                        color: AppTheme.primaryLight.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: authState.user?.avatar != null
@@ -100,7 +100,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             'View Profile',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
                         ],
@@ -109,7 +109,7 @@ class ProfileScreen extends ConsumerWidget {
                     // Settings Icon
                     IconButton(
                       icon: const Icon(Icons.settings_outlined),
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       onPressed: () {
                         context.push(AppRoutes.editProfile.path);
                       },
@@ -215,7 +215,7 @@ class ProfileScreen extends ConsumerWidget {
                       onChanged: (value) {
                         ref.read(themeProvider.notifier).toggleDarkMode();
                       },
-                      activeTrackColor: AppTheme.primaryLight.withOpacity(0.5),
+                      activeTrackColor: AppTheme.primaryLight.withValues(alpha: 0.5),
                       thumbColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.selected)) {
                           return AppTheme.primaryLight;
@@ -324,7 +324,7 @@ class ProfileScreen extends ConsumerWidget {
                     trailing: Text(
                       'v${AppConfig.appVersion}',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.5),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                       ),
                     ),
                     onTap: () {
@@ -342,7 +342,7 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.red.withOpacity(isDark ? 0.4 : 0.2),
+                      color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -493,7 +493,7 @@ class _SettingsCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(isDark ? 0.3 : 0.08),
+          color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
           blurRadius: 10,
           offset: const Offset(0, 2),
         ),
@@ -524,7 +524,7 @@ class _SettingsTile extends StatelessWidget {
     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
     leading: Icon(
       icon,
-      color: theme.colorScheme.onSurface.withOpacity(0.8),
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
       size: 24,
     ),
     title: Text(

@@ -123,79 +123,81 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
+      builder: (context) {
+        final textTheme = Theme.of(context).textTheme;
+        return Container(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'auth.forgot_password'.tr(),
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
+                  const SizedBox(height: 24),
+                  Text(
+                    'auth.forgot_password'.tr(),
+                    style: textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "Enter your email and we'll send you a reset link.",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey[600],
+                  const SizedBox(height: 8),
+                  Text(
+                    "Enter your email and we'll send you a reset link.",
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                _CustomTextField(
-                  controller: emailController,
-                  label: 'Email',
-                  keyboardType: TextInputType.emailAddress,
-                  prefixIcon: Icons.mail_outline_rounded,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                _PrimaryButton(
-                  text: 'Send Reset Link',
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      Navigator.pop(context, true);
-                    }
-                  },
-                ),
-                const SizedBox(height: 16),
-              ],
+                  const SizedBox(height: 24),
+                  _CustomTextField(
+                    controller: emailController,
+                    label: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: Icons.mail_outline_rounded,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!value.contains('@')) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  _PrimaryButton(
+                    text: 'Send Reset Link',
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        Navigator.pop(context, true);
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
 
     if ((result ?? false) && mounted) {
@@ -213,7 +215,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -232,20 +236,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 32),
 
                   // Header
-                  const Text(
+                  Text(
                     'Welcome back',
-                    style: TextStyle(
-                      fontSize: 32,
+                    style: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.5,
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Sign in to continue your adventure',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[500],
+                    style: textTheme.titleMedium?.copyWith(
+                      color: Colors.grey[600],
                     ),
                   ),
 
@@ -306,12 +309,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: _handleForgotPassword,
-                      child: const Text(
+                      child: Text(
                         'Forgot password?',
-                        style: TextStyle(
-                          color: Color(0xFF6B4EFF),
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFF6B4EFF),
                           fontWeight: FontWeight.w600,
-                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -349,19 +351,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       children: [
                         Text(
                           "Don't have an account? ",
-                          style: TextStyle(
+                          style: textTheme.bodyMedium?.copyWith(
                             color: Colors.grey[600],
-                            fontSize: 15,
                           ),
                         ),
                         GestureDetector(
                           onTap: () => context.push(AppRoutes.signUp.path),
-                          child: const Text(
+                          child: Text(
                             'Sign Up',
-                            style: TextStyle(
-                              color: Color(0xFF6B4EFF),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: const Color(0xFF6B4EFF),
                               fontWeight: FontWeight.w600,
-                              fontSize: 15,
                             ),
                           ),
                         ),
@@ -377,36 +377,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
     );
+  }
 }
 
 // ============ Reusable Components ============
 
 class _BackButton extends StatelessWidget {
-
   const _BackButton({required this.onPressed});
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+        onTap: onPressed,
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 18,
+            color: Colors.grey[800],
+          ),
         ),
-        child: Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 18,
-          color: Colors.grey[800],
-        ),
-      ),
-    );
+      );
 }
 
 class _CustomTextField extends StatelessWidget {
-
   const _CustomTextField({
     required this.controller,
     required this.label,
@@ -427,20 +426,20 @@ class _CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
 
   @override
-  Widget build(BuildContext context) => TextFormField(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
-      style: const TextStyle(fontSize: 16),
+      style: textTheme.bodyLarge?.copyWith(color: Colors.black87),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(
-          color: Colors.grey[500],
-          fontSize: 15,
-        ),
-        floatingLabelStyle: const TextStyle(
-          color: Color(0xFF6B4EFF),
+        labelStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+        floatingLabelStyle: textTheme.bodySmall?.copyWith(
+          color: const Color(0xFF6B4EFF),
           fontWeight: FontWeight.w500,
         ),
         prefixIcon: Icon(
@@ -450,13 +449,13 @@ class _CustomTextField extends StatelessWidget {
         ),
         suffixIcon: suffixIcon != null
             ? GestureDetector(
-          onTap: onSuffixTap,
-          child: Icon(
-            suffixIcon,
-            color: Colors.grey[400],
-            size: 22,
-          ),
-        )
+                onTap: onSuffixTap,
+                child: Icon(
+                  suffixIcon,
+                  color: Colors.grey[400],
+                  size: 22,
+                ),
+              )
             : null,
         filled: true,
         fillColor: Colors.grey[50],
@@ -480,13 +479,14 @@ class _CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: Colors.red[400]!, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       ),
     );
+  }
 }
 
 class _PrimaryButton extends StatelessWidget {
-
   const _PrimaryButton({
     required this.text,
     required this.onPressed,
@@ -497,7 +497,10 @@ class _PrimaryButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => Material(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
@@ -511,7 +514,7 @@ class _PrimaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF6B4EFF).withOpacity(0.3),
+                color: const Color(0xFF6B4EFF).withValues(alpha: 0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -520,30 +523,29 @@ class _PrimaryButton extends StatelessWidget {
           child: Center(
             child: isLoading
                 ? const SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            )
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
                 : Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.3,
-              ),
-            ),
+                    text,
+                    style: textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
           ),
         ),
       ),
     );
+  }
 }
 
 class _GoogleButton extends StatelessWidget {
-
   const _GoogleButton({
     required this.text,
     required this.onPressed,
@@ -554,7 +556,10 @@ class _GoogleButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => Material(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
@@ -582,9 +587,8 @@ class _GoogleButton extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 text,
-                style: TextStyle(
+                style: textTheme.titleMedium?.copyWith(
                   color: Colors.grey[800],
-                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -593,20 +597,23 @@ class _GoogleButton extends StatelessWidget {
         ),
       ),
     );
+  }
 }
 
 class _OrDivider extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Row(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
       children: [
         Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'or',
-            style: TextStyle(
+            style: textTheme.bodySmall?.copyWith(
               color: Colors.grey[500],
-              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -614,15 +621,18 @@ class _OrDivider extends StatelessWidget {
         Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
       ],
     );
+  }
 }
 
 class _ErrorBanner extends StatelessWidget {
-
   const _ErrorBanner({required this.message});
   final String message;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.red[50],
@@ -636,9 +646,8 @@ class _ErrorBanner extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: TextStyle(
+              style: textTheme.bodyMedium?.copyWith(
                 color: Colors.red[700],
-                fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -646,4 +655,5 @@ class _ErrorBanner extends StatelessWidget {
         ],
       ),
     );
+  }
 }

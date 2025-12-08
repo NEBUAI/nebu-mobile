@@ -81,7 +81,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                 Text(
                   'setup.voice.subtitle'.tr(),
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -110,7 +110,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? Colors.white
-                                  : Colors.white.withOpacity(0.2),
+                                  : Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isSelected
@@ -126,8 +126,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                   decoration: BoxDecoration(
                                     color: isSelected
                                         ? AppTheme.primaryLight
-                                            .withOpacity(0.1)
-                                        : Colors.white.withOpacity(0.1),
+                                            .withValues(alpha: 0.1)
+                                        : Colors.white.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Icon(
@@ -161,8 +161,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                             ?.copyWith(
                                               color: isSelected
                                                   ? AppTheme.primaryLight
-                                                      .withOpacity(0.7)
-                                                  : Colors.white.withOpacity(0.7),
+                                                      .withValues(alpha: 0.7)
+                                                  : Colors.white.withValues(alpha: 0.7),
                                             ),
                                       ),
                                     ],
@@ -192,8 +192,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AppTheme.primaryLight,
-                    disabledBackgroundColor: Colors.white.withOpacity(0.3),
-                    disabledForegroundColor: Colors.white.withOpacity(0.5),
+                    disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
+                    disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -216,7 +216,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   child: Text(
                     'setup.connection.skip_setup'.tr(),
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                     ),
                   ),
                 ),
@@ -241,7 +241,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
         decoration: BoxDecoration(
           color: index < current
               ? Colors.white
-              : Colors.white.withOpacity(0.3),
+              : Colors.white.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

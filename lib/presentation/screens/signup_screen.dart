@@ -125,7 +125,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -144,20 +146,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   const SizedBox(height: 32),
 
                   // Header
-                  const Text(
+                  Text(
                     'Create account',
-                    style: TextStyle(
-                      fontSize: 32,
+                    style: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.5,
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Start your journey with us today',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[500],
+                    style: textTheme.titleMedium?.copyWith(
+                      color: Colors.grey[600],
                     ),
                   ),
 
@@ -260,7 +261,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
                     onSuffixTap: () {
-                      setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
+                      setState(() =>
+                          _obscureConfirmPassword = !_obscureConfirmPassword);
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -305,19 +307,17 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       children: [
                         Text(
                           'Already have an account? ',
-                          style: TextStyle(
+                          style: textTheme.bodyMedium?.copyWith(
                             color: Colors.grey[600],
-                            fontSize: 15,
                           ),
                         ),
                         GestureDetector(
                           onTap: () => context.pop(),
-                          child: const Text(
+                          child: Text(
                             'Sign In',
-                            style: TextStyle(
-                              color: Color(0xFF6B4EFF),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: const Color(0xFF6B4EFF),
                               fontWeight: FontWeight.w600,
-                              fontSize: 15,
                             ),
                           ),
                         ),
@@ -333,36 +333,35 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
       ),
     );
+  }
 }
 
 // ============ Reusable Components ============
 
 class _BackButton extends StatelessWidget {
-
   const _BackButton({required this.onPressed});
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+        onTap: onPressed,
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 18,
+            color: Colors.grey[800],
+          ),
         ),
-        child: Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 18,
-          color: Colors.grey[800],
-        ),
-      ),
-    );
+      );
 }
 
 class _CustomTextField extends StatelessWidget {
-
   const _CustomTextField({
     required this.controller,
     required this.label,
@@ -385,21 +384,21 @@ class _CustomTextField extends StatelessWidget {
   final TextCapitalization textCapitalization;
 
   @override
-  Widget build(BuildContext context) => TextFormField(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
       textCapitalization: textCapitalization,
-      style: const TextStyle(fontSize: 16),
+      style: textTheme.bodyLarge?.copyWith(color: Colors.black87),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(
-          color: Colors.grey[500],
-          fontSize: 15,
-        ),
-        floatingLabelStyle: const TextStyle(
-          color: Color(0xFF6B4EFF),
+        labelStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+        floatingLabelStyle: textTheme.bodySmall?.copyWith(
+          color: const Color(0xFF6B4EFF),
           fontWeight: FontWeight.w500,
         ),
         prefixIcon: Icon(
@@ -409,13 +408,13 @@ class _CustomTextField extends StatelessWidget {
         ),
         suffixIcon: suffixIcon != null
             ? GestureDetector(
-          onTap: onSuffixTap,
-          child: Icon(
-            suffixIcon,
-            color: Colors.grey[400],
-            size: 22,
-          ),
-        )
+                onTap: onSuffixTap,
+                child: Icon(
+                  suffixIcon,
+                  color: Colors.grey[400],
+                  size: 22,
+                ),
+              )
             : null,
         filled: true,
         fillColor: Colors.grey[50],
@@ -439,13 +438,14 @@ class _CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: Colors.red[400]!, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       ),
     );
+  }
 }
 
 class _PrimaryButton extends StatelessWidget {
-
   const _PrimaryButton({
     required this.text,
     required this.onPressed,
@@ -456,7 +456,10 @@ class _PrimaryButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => Material(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
@@ -470,7 +473,7 @@ class _PrimaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF6B4EFF).withOpacity(0.3),
+                color: const Color(0xFF6B4EFF).withValues(alpha: 0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -479,30 +482,29 @@ class _PrimaryButton extends StatelessWidget {
           child: Center(
             child: isLoading
                 ? const SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            )
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
                 : Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.3,
-              ),
-            ),
+                    text,
+                    style: textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
           ),
         ),
       ),
     );
+  }
 }
 
 class _GoogleButton extends StatelessWidget {
-
   const _GoogleButton({
     required this.text,
     required this.onPressed,
@@ -513,7 +515,10 @@ class _GoogleButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => Material(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
@@ -541,9 +546,8 @@ class _GoogleButton extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 text,
-                style: TextStyle(
+                style: textTheme.titleMedium?.copyWith(
                   color: Colors.grey[800],
-                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -552,20 +556,22 @@ class _GoogleButton extends StatelessWidget {
         ),
       ),
     );
+  }
 }
 
 class _OrDivider extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Row(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Row(
       children: [
         Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'or',
-            style: TextStyle(
+            style: textTheme.bodySmall?.copyWith(
               color: Colors.grey[500],
-              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -573,15 +579,17 @@ class _OrDivider extends StatelessWidget {
         Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
       ],
     );
+  }
 }
 
 class _ErrorBanner extends StatelessWidget {
-
   const _ErrorBanner({required this.message});
   final String message;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.red[50],
@@ -595,9 +603,8 @@ class _ErrorBanner extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: TextStyle(
+              style: textTheme.bodyMedium?.copyWith(
                 color: Colors.red[700],
-                fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -605,4 +612,5 @@ class _ErrorBanner extends StatelessWidget {
         ],
       ),
     );
+  }
 }

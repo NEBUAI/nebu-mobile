@@ -355,7 +355,7 @@ Communication style:
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AppTheme.primaryLight.withOpacity(0.1)
+                                        ? AppTheme.primaryLight.withValues(alpha: 0.1)
                                         : Colors.grey[50],
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(

@@ -47,7 +47,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withValues(alpha: 0.2),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -77,7 +77,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                 Text(
                   'setup.world_info.ready_message'.tr(),
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -155,7 +155,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: index < current
               ? Colors.white
-              : Colors.white.withOpacity(0.3),
+              : Colors.white.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

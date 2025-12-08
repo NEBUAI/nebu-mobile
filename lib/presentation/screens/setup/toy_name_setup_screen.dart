@@ -237,7 +237,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                           Text(
                             'setup.toy_name.subtitle'.tr(),
                             style: theme.textTheme.bodyLarge?.copyWith(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -254,10 +254,10 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                             decoration: InputDecoration(
                               hintText: 'setup.toy_name.hint'.tr(),
                               hintStyle: TextStyle(
-                                color: Colors.white.withOpacity(0.5),
+                                color: Colors.white.withValues(alpha: 0.5),
                               ),
                               filled: true,
-                              fillColor: Colors.white.withOpacity(0.2),
+                              fillColor: Colors.white.withValues(alpha: 0.2),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
@@ -333,7 +333,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                     child: Text(
                       'setup.connection.skip_setup'.tr(),
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                       ),
                     ),
                   ),
@@ -357,7 +357,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
         width: index < current ? 24 : 8,
         height: 8,
         decoration: BoxDecoration(
-          color: index < current ? Colors.white : Colors.white.withOpacity(0.3),
+          color: index < current ? Colors.white : Colors.white.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

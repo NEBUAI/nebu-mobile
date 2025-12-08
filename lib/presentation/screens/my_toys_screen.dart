@@ -105,7 +105,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               height: 4,
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                color: theme.dividerColor.withOpacity(0.3),
+                color: theme.dividerColor.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -115,8 +115,8 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               height: 80,
               decoration: BoxDecoration(
                 color: isOnline
-                    ? theme.colorScheme.primary.withOpacity(0.1)
-                    : theme.disabledColor.withOpacity(0.1),
+                    ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                    : theme.disabledColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
@@ -139,8 +139,8 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: isOnline
-                    ? Colors.green.withOpacity(0.1)
-                    : Colors.red.withOpacity(0.1),
+                    ? Colors.green.withValues(alpha: 0.1)
+                    : Colors.red.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
@@ -155,7 +155,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
             Text(
               'toys.type'.tr(),
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
             const SizedBox(height: 4),
@@ -170,7 +170,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               Text(
                 'Batería',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 4),
@@ -329,7 +329,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                         color: theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: theme.dividerColor.withOpacity(0.3),
+                          color: theme.dividerColor.withValues(alpha: 0.3),
                           width: 2,
                         ),
                       ),
@@ -352,7 +352,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             'Agrega tu primer juguete para comenzar',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -393,7 +393,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                         color: theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: theme.dividerColor.withOpacity(0.3),
+                          color: theme.dividerColor.withValues(alpha: 0.3),
                           width: 2,
                         ),
                       ),
@@ -409,7 +409,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             'toys.add_more_hint'.tr(),
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                               height: 1.4,
                             ),
                           ),
@@ -467,8 +467,8 @@ class _ToyCard extends StatelessWidget {
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: isOnline
-                      ? theme.colorScheme.primary.withOpacity(0.15)
-                      : theme.disabledColor.withOpacity(0.15),
+                      ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                      : theme.disabledColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
@@ -495,7 +495,7 @@ class _ToyCard extends StatelessWidget {
                     Text(
                       toy.model ?? 'Nebu Robot',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -509,8 +509,8 @@ class _ToyCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: isOnline
-                      ? Colors.green.withOpacity(0.1)
-                      : Colors.red.withOpacity(0.1),
+                      ? Colors.green.withValues(alpha: 0.1)
+                      : Colors.red.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -539,7 +539,7 @@ class _ToyCard extends StatelessWidget {
               const SizedBox(width: 8),
               Icon(
                 Icons.chevron_right,
-                color: theme.iconTheme.color?.withOpacity(0.4),
+                color: theme.iconTheme.color?.withValues(alpha: 0.4),
               ),
             ],
           ),

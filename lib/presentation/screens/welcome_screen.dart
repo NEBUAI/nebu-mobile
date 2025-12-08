@@ -44,13 +44,13 @@ class WelcomeScreen extends StatelessWidget {
                     boxShadow: [
                       // Sombra oscura
                       BoxShadow(
-                        color: const Color(0xFF3D2E99).withOpacity(0.4),
+                        color: const Color(0xFF3D2E99).withValues(alpha: 0.4),
                         blurRadius: 30,
                         offset: const Offset(8, 12),
                       ),
                       // Luz superior
                       BoxShadow(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         blurRadius: 20,
                         offset: const Offset(-4, -4),
                       ),
@@ -83,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                   'welcome.subtitle'.tr(),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w400,
                     height: 1.5,
                   ),
@@ -121,7 +121,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: Text(
                       'welcome.continue_without_account'.tr(),
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -161,7 +161,7 @@ class _PrimaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withValues(alpha: 0.15),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -202,10 +202,10 @@ class _SecondaryButton extends StatelessWidget {
         child: Container(
           height: 56,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: Colors.white.withOpacity(0.4),
+              color: Colors.white.withValues(alpha: 0.4),
               width: 1.5,
             ),
           ),
@@ -213,7 +213,7 @@ class _SecondaryButton extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.95),
+                color: Colors.white.withValues(alpha: 0.95),
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.3,

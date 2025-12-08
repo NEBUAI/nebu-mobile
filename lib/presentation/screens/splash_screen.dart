@@ -148,7 +148,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       letterSpacing: 6,
                       shadows: [
                         Shadow(
-                          color: Colors.black.withOpacity(0.25),
+                          color: Colors.black.withValues(alpha: 0.25),
                           offset: const Offset(0, 4),
                           blurRadius: 12,
                         ),
@@ -171,7 +171,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.85),
+                    color: Colors.white.withValues(alpha: 0.85),
                     letterSpacing: 2,
                   ),
                 ),
