@@ -515,7 +515,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: colorScheme.surfaceVariant.withOpacity(0.5),
+              color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Icon(
@@ -619,7 +619,7 @@ class _BackButton extends StatelessWidget {
         width: 44,
         height: 44,
         decoration: BoxDecoration(
-          color: colorScheme.surfaceVariant.withOpacity(0.5),
+          color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(
@@ -747,7 +747,7 @@ class _DeviceCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? const Color(0xFF6B4EFF).withOpacity(0.08)
-              : colorScheme.surfaceVariant.withOpacity(0.3),
+              : colorScheme.surfaceContainerHighest.withOpacity(0.3),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color:
@@ -763,7 +763,7 @@ class _DeviceCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isSelected
                     ? const Color(0xFF6B4EFF).withOpacity(0.15)
-                    : colorScheme.surfaceVariant,
+                    : colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: isConnecting
