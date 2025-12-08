@@ -25,7 +25,7 @@ enum ActivityType {
 }
 
 @freezed
-class Activity with _$Activity {
+abstract class Activity with _$Activity {
   const factory Activity({
     required String id,
     required String userId,
@@ -42,7 +42,7 @@ class Activity with _$Activity {
 }
 
 @freezed
-class CreateActivityRequest with _$CreateActivityRequest {
+abstract class CreateActivityRequest with _$CreateActivityRequest {
   const factory CreateActivityRequest({
     required String userId,
     required ActivityType type,
@@ -57,7 +57,7 @@ class CreateActivityRequest with _$CreateActivityRequest {
 }
 
 @freezed
-class ActivityListResponse with _$ActivityListResponse {
+abstract class ActivityListResponse with _$ActivityListResponse {
   const factory ActivityListResponse({
     required List<Activity> activities,
     required int total,
@@ -70,7 +70,7 @@ class ActivityListResponse with _$ActivityListResponse {
 }
 
 @freezed
-class ActivityStats with _$ActivityStats {
+abstract class ActivityStats with _$ActivityStats {
   const factory ActivityStats({
     required int totalActivities,
     required Map<String, int> byType,

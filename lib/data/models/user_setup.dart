@@ -4,7 +4,7 @@ part 'user_setup.freezed.dart';
 part 'user_setup.g.dart';
 
 @freezed
-class UserProfile with _$UserProfile {
+abstract class UserProfile with _$UserProfile {
   const factory UserProfile({
     required String name,
     required String email,
@@ -16,7 +16,7 @@ class UserProfile with _$UserProfile {
 }
 
 @freezed
-class UserPreferences with _$UserPreferences {
+abstract class UserPreferences with _$UserPreferences {
   const factory UserPreferences({
     required String language,
     required String theme,
@@ -30,7 +30,7 @@ class UserPreferences with _$UserPreferences {
 }
 
 @freezed
-class NotificationSettings with _$NotificationSettings {
+abstract class NotificationSettings with _$NotificationSettings {
   const factory NotificationSettings({
     @Default(true) bool push,
     @Default(true) bool reminders,
@@ -46,7 +46,7 @@ class NotificationSettings with _$NotificationSettings {
 }
 
 @freezed
-class VoiceSettings with _$VoiceSettings {
+abstract class VoiceSettings with _$VoiceSettings {
   const factory VoiceSettings({
     @Default(true) bool enabled,
     String? voiceModel,
@@ -58,7 +58,7 @@ class VoiceSettings with _$VoiceSettings {
 }
 
 @freezed
-class UserSetup with _$UserSetup {
+abstract class UserSetup with _$UserSetup {
   const factory UserSetup({
     required UserProfile profile,
     required UserPreferences preferences,
@@ -72,7 +72,7 @@ class UserSetup with _$UserSetup {
 }
 
 @freezed
-class SetupResponse with _$SetupResponse {
+abstract class SetupResponse with _$SetupResponse {
   const factory SetupResponse({
     required bool success,
     required String message,
