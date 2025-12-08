@@ -105,8 +105,6 @@ flutter:
   assets:
     - assets/images/
     - assets/translations/
-    - assets/logo_flow.svg
-    - assets/icon_flow.svg
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
