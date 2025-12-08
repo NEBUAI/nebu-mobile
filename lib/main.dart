@@ -20,7 +20,11 @@ import 'data/services/toy_service.dart';
 import 'data/services/user_service.dart';
 import 'presentation/providers/api_provider.dart';
 import 'presentation/providers/auth_provider.dart'
-    show authServiceProvider, sharedPreferencesProvider, authProvider, AuthNotifier;
+    show
+        authServiceProvider,
+        sharedPreferencesProvider,
+        authProvider,
+        AuthNotifier;
 import 'presentation/providers/bluetooth_provider.dart';
 import 'presentation/providers/device_provider.dart';
 import 'presentation/providers/esp32_provider.dart';
