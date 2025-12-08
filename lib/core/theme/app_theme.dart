@@ -187,11 +187,11 @@ class AppTheme {
         fillColor: colorScheme.surface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: colorScheme.onSurface.withOpacity(0.12)),
+          borderSide: BorderSide(color: colorScheme.onSurface.withValues(alpha: 0.12)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: colorScheme.onSurface.withOpacity(0.12)),
+          borderSide: BorderSide(color: colorScheme.onSurface.withValues(alpha: 0.12)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -203,7 +203,7 @@ class AppTheme {
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.5)),
+        hintStyle: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5)),
       );
 
   // ----------------- Decorations & Shadows -----------------
@@ -226,7 +226,7 @@ class AppTheme {
 
   static List<BoxShadow> get cardShadow => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.05),
+          color: Colors.black.withValues(alpha: 0.05),
           blurRadius: 10,
           offset: const Offset(0, 4),
         ),
