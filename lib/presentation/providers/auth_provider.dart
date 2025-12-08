@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/storage_keys.dart';
 import '../../data/models/user.dart';
+import '../../data/services/activity_migration_service.dart';
 import 'api_provider.dart';
 
 // Re-export sharedPreferencesProvider for use in other files
@@ -35,7 +36,9 @@ class AuthNotifier extends AsyncNotifier<User?> {
       }
     } catch (e, st) {
       // If loading fails, treat as unauthenticated
-      ref.read(loggerProvider).e('Failed to load user from storage', error: e, stackTrace: st);
+      ref
+          .read(loggerProvider)
+          .e('Failed to load user from storage', error: e, stackTrace: st);
     }
     return null;
   }
@@ -45,13 +48,44 @@ class AuthNotifier extends AsyncNotifier<User?> {
     await prefs.setString(StorageKeys.user, json.encode(user.toJson()));
   }
 
+  /// Migrate activities from local UUID to authenticated user
+  /// This is called automatically after successful login/register
+  Future<void> _migrateActivities(String newUserId) async {
+    try {
+      final migrationService = ref.read(activityMigrationServiceProvider);
+      final migratedCount = await migrationService.migrateIfNeeded(newUserId);
+
+      if (migratedCount != null && migratedCount > 0) {
+        ref
+            .read(loggerProvider)
+            .i(
+              '✅ [AUTH] Successfully migrated $migratedCount activities for user $newUserId',
+            );
+      }
+    } catch (e) {
+      // Log error but don't fail the login/register process
+      ref
+          .read(loggerProvider)
+          .e(
+            '⚠️ [AUTH] Failed to migrate activities, but authentication succeeded: $e',
+          );
+    }
+  }
+
   Future<void> login({required String email, required String password}) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final authService = await ref.read(authServiceProvider.future);
-      final response = await authService.login(email: email, password: password);
+      final response = await authService.login(
+        email: email,
+        password: password,
+      );
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
+
+        // Migrate activities if needed
+        await _migrateActivities(response.user!.id);
+
         return response.user;
       }
       throw Exception(response.error ?? 'Login failed');
@@ -75,6 +109,10 @@ class AuthNotifier extends AsyncNotifier<User?> {
       );
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
+
+        // Migrate activities if needed
+        await _migrateActivities(response.user!.id);
+
         return response.user;
       }
       throw Exception(response.error ?? 'Registration failed');
@@ -88,6 +126,10 @@ class AuthNotifier extends AsyncNotifier<User?> {
       final response = await authService.googleLogin(googleToken);
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
+
+        // Migrate activities if needed
+        await _migrateActivities(response.user!.id);
+
         return response.user;
       }
       throw Exception(response.error ?? 'Google login failed');
@@ -101,6 +143,10 @@ class AuthNotifier extends AsyncNotifier<User?> {
       final response = await authService.facebookLogin(facebookToken);
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
+
+        // Migrate activities if needed
+        await _migrateActivities(response.user!.id);
+
         return response.user;
       }
       throw Exception(response.error ?? 'Facebook login failed');
@@ -114,6 +160,10 @@ class AuthNotifier extends AsyncNotifier<User?> {
       final response = await authService.appleLogin(appleToken);
       if (response.success && response.user != null) {
         await _saveUser(response.user!);
+
+        // Migrate activities if needed
+        await _migrateActivities(response.user!.id);
+
         return response.user;
       }
       throw Exception(response.error ?? 'Apple login failed');

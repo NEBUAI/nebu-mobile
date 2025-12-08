@@ -105,4 +105,34 @@ class ActivityService {
       throw Exception('Error inesperado al obtener estadísticas');
     }
   }
+
+  /// Migrate activities from local UUID to authenticated user ID
+  Future<Map<String, dynamic>> migrateActivities({
+    required String localUserId,
+    required String newUserId,
+  }) async {
+    try {
+      _logger.i(
+        '🔄 [MIGRATION] Migrating activities from $localUserId to $newUserId',
+      );
+
+      final response = await _apiService.post<Map<String, dynamic>>(
+        '/activities/migrate',
+        data: {'localUserId': localUserId, 'newUserId': newUserId},
+      );
+
+      final migratedCount = response['migratedCount'] as int? ?? 0;
+      _logger.i(
+        '✅ [MIGRATION] Successfully migrated $migratedCount activities',
+      );
+
+      return response;
+    } on DioException catch (e) {
+      _logger.e('❌ [MIGRATION] Error migrating activities: ${e.message}');
+      throw Exception('Error al migrar actividades: ${e.message}');
+    } on Exception catch (e) {
+      _logger.e('❌ [MIGRATION] Unexpected error migrating activities: $e');
+      throw Exception('Error inesperado al migrar actividades');
+    }
+  }
 }
