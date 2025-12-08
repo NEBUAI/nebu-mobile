@@ -72,12 +72,12 @@ class AuthNotifier extends AsyncNotifier<User?> {
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({required String identifier, required String password}) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final authService = await ref.read(authServiceProvider.future);
       final response = await authService.login(
-        email: email,
+        identifier: identifier,
         password: password,
       );
       if (response.success && response.user != null) {

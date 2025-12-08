@@ -15,13 +15,13 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _identifierController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -30,7 +30,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     await ref.read(authProvider.notifier).login(
-          email: _emailController.text.trim(),
+          identifier: _identifierController.text.trim(),
           password: _passwordController.text,
         );
   }
@@ -108,16 +108,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     _ErrorBanner(message: authState.error.toString()),
                   const SizedBox(height: 20),
                   _CustomTextField(
-                    controller: _emailController,
-                    label: 'Email',
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.mail_outline_rounded,
+                    controller: _identifierController,
+                    label: 'Username or Email',
+                    hintText: 'Enter your username or email',
+                    keyboardType: TextInputType.text,
+                    prefixIcon: Icons.person_outline_rounded,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'auth.email_required'.tr();
-                      }
-                      if (!value.contains('@')) {
-                        return 'auth.email_invalid'.tr();
+                        return 'Please enter your username or email';
                       }
                       return null;
                     },
@@ -238,6 +236,7 @@ class _CustomTextField extends StatelessWidget {
     required this.controller,
     required this.label,
     required this.prefixIcon,
+    this.hintText,
     this.keyboardType,
     this.obscureText = false,
     this.suffixIcon,
@@ -246,6 +245,7 @@ class _CustomTextField extends StatelessWidget {
   });
   final TextEditingController controller;
   final String label;
+  final String? hintText;
   final TextInputType? keyboardType;
   final bool obscureText;
   final IconData prefixIcon;
@@ -265,6 +265,8 @@ class _CustomTextField extends StatelessWidget {
       style: textTheme.bodyLarge?.copyWith(color: Colors.black87),
       decoration: InputDecoration(
         labelText: label,
+        hintText: hintText,
+        hintStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
         labelStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
         floatingLabelStyle: textTheme.bodySmall?.copyWith(
           color: Theme.of(context).colorScheme.primary,

@@ -24,13 +24,13 @@ class AuthService {
 
   // Email/Password Authentication
   Future<AuthResponse> login({
-    required String email,
+    required String identifier,
     required String password,
   }) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
         '/auth/login',
-        data: {'email': email, 'password': password},
+        data: {'identifier': identifier, 'password': password},
       );
 
       final authResponse = AuthResponse.fromJson(response.data!);
