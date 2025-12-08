@@ -46,7 +46,7 @@ class IoTDevicesScreen extends ConsumerWidget {
                           child: ListTile(
                             contentPadding: const EdgeInsets.all(16),
                             leading: CircleAvatar(
-                              backgroundColor: colorScheme.primary.withOpacity(0.1),
+                              backgroundColor: colorScheme.primary.withValues(alpha: 0.1),
                               child: Icon(Icons.devices_other, color: colorScheme.primary),
                             ),
                             title: Text(

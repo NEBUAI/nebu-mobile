@@ -80,7 +80,7 @@ class ChildProfileScreen extends ConsumerWidget {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundColor: colorScheme.primary.withOpacity(0.1),
+                  backgroundColor: colorScheme.primary.withValues(alpha: 0.1),
                   child: Text(
                     childName[0].toUpperCase(),
                     style: TextStyle(fontSize: 40, color: colorScheme.primary),
@@ -141,9 +141,9 @@ class ChildProfileScreen extends ConsumerWidget {
   Widget _buildInfoChip(String label, IconData icon, ColorScheme colorScheme) => Chip(
       avatar: Icon(icon, color: colorScheme.primary, size: 18),
       label: Text(label),
-      backgroundColor: colorScheme.primary.withOpacity(0.08),
+      backgroundColor: colorScheme.primary.withValues(alpha: 0.08),
       labelStyle: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.w600),
-      shape: StadiumBorder(side: BorderSide(color: colorScheme.primary.withOpacity(0.2))),
+      shape: StadiumBorder(side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2))),
     );
 
   void _confirmDelete(BuildContext context, LocalChildDataService service, ColorScheme colorScheme) {

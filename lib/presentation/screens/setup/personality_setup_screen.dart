@@ -83,7 +83,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   'setup.personality.subtitle'.tr(),
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -113,7 +113,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? Colors.white
-                                  : Colors.white.withOpacity(0.2),
+                                  : Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isSelected
@@ -150,8 +150,8 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                           fontSize: 14,
                                           color: isSelected
                                               ? colorScheme.primary
-                                                  .withOpacity(0.7)
-                                              : Colors.white.withOpacity(0.7),
+                                                  .withValues(alpha: 0.7)
+                                              : Colors.white.withValues(alpha: 0.7),
                                         ),
                                       ),
                                     ],
@@ -181,8 +181,8 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: colorScheme.primary,
-                    disabledBackgroundColor: Colors.white.withOpacity(0.3),
-                    disabledForegroundColor: Colors.white.withOpacity(0.5),
+                    disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
+                    disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -205,7 +205,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   child: Text(
                     'setup.connection.skip_setup'.tr(),
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       fontSize: 16,
                     ),
                   ),
@@ -231,7 +231,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
             decoration: BoxDecoration(
               color: index < current
                   ? Colors.white
-                  : Colors.white.withOpacity(0.3),
+                  : Colors.white.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(4),
             ),
           ),

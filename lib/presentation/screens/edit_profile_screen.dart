@@ -131,7 +131,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
         filled: true,
-        fillColor: enabled ? colorScheme.surface : colorScheme.surface.withOpacity(0.5),
+        fillColor: enabled ? colorScheme.surface : colorScheme.surface.withValues(alpha: 0.5),
       ),
     );
 }

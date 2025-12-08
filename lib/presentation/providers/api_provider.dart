@@ -33,7 +33,7 @@ final loggerProvider = Provider<Logger>(
       methodCount: 1,
       errorMethodCount: 3,
       lineLength: 80,
-      printTime: true,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
     ),
   ),
 );
