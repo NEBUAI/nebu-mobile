@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../data/models/activity.dart';
 import '../../presentation/providers/activity_provider.dart';
 import '../../presentation/providers/api_provider.dart';
+import '../../presentation/providers/auth_provider.dart';
 import '../models/toy.dart';
 
 /// Servicio para rastrear y crear actividades automáticamente
@@ -18,11 +19,19 @@ class ActivityTrackerService {
   /// Si el usuario está autenticado, usa su ID
   /// Si no, genera/recupera un UUID local
   Future<String> _getUserId() async {
-    // TODO: Integrar con authProvider para obtener userId autenticado
-    // final authState = _ref.read(authProvider);
-    // if (authState has userId) return userId;
+    // ✅ Integrado con authProvider para obtener userId autenticado
+    final authState = _ref.read(authProvider);
 
-    // Por ahora, generar UUID si no hay userId
+    // Si el usuario está autenticado, usar su ID real
+    if (authState.hasValue && authState.value != null) {
+      final user = authState.value!;
+      _ref
+          .read(loggerProvider)
+          .d('🆔 [ACTIVITY_TRACKER] Using authenticated userId: ${user.id}');
+      return user.id;
+    }
+
+    // Si no está autenticado, generar/recuperar UUID local
     final prefs = await _ref.read(sharedPreferencesProvider.future);
     var localUserId = prefs.getString('local_user_id');
 
@@ -32,6 +41,10 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('🆔 [ACTIVITY_TRACKER] Generated new local userId: $localUserId');
+    } else {
+      _ref
+          .read(loggerProvider)
+          .d('🆔 [ACTIVITY_TRACKER] Using local userId: $localUserId');
     }
 
     return localUserId;
@@ -346,4 +359,6 @@ class ActivityTrackerService {
 }
 
 // Provider para el servicio de tracking
-final activityTrackerServiceProvider = Provider<ActivityTrackerService>(ActivityTrackerService.new);
+final activityTrackerServiceProvider = Provider<ActivityTrackerService>(
+  ActivityTrackerService.new,
+);
