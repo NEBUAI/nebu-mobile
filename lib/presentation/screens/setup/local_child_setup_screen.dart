@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../data/services/activity_tracker_service.dart';
 import '../../providers/api_provider.dart';
 import '../../providers/auth_provider.dart' as auth;
 
@@ -106,7 +107,10 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       final prefs = await ref.read(auth.sharedPreferencesProvider.future);
 
       // Save child information
-      await prefs.setString('local_child_name', _childNameController.text.trim());
+      await prefs.setString(
+        'local_child_name',
+        _childNameController.text.trim(),
+      );
       await prefs.setString('local_child_age', _selectedAge!);
       await prefs.setString('local_child_personality', _selectedPersonality!);
 
@@ -123,11 +127,23 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       // Mark setup as completed locally
       await prefs.setBool('setup_completed_locally', true);
 
-      ref.read(loggerProvider).i(
-        '✅ [LOCAL_SETUP] Child data saved locally: '
-        'name=${_childNameController.text}, age=$_selectedAge, '
-        'personality=$_selectedPersonality',
-      );
+      ref
+          .read(loggerProvider)
+          .i(
+            '✅ [LOCAL_SETUP] Child data saved locally: '
+            'name=${_childNameController.text}, age=$_selectedAge, '
+            'personality=$_selectedPersonality',
+          );
+
+      // Registrar la actividad de setup completado
+      await ref
+          .read(activityTrackerServiceProvider)
+          .trackSetupCompleted(
+            childName: _childNameController.text.trim(),
+            ageGroup: _selectedAge!,
+            personality: _selectedPersonality!,
+            isLocalSetup: true,
+          );
 
       if (!mounted) return;
 
@@ -163,11 +179,10 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
   String _generateDefaultPrompt() {
     final childName = _childNameController.text.trim();
     final age = _selectedAge ?? 'young';
-    final personality = _personalities
-        .firstWhere(
-          (p) => p['value'] == _selectedPersonality,
-          orElse: () => _personalities[0],
-        )['label'];
+    final personality = _personalities.firstWhere(
+      (p) => p['value'] == _selectedPersonality,
+      orElse: () => _personalities[0],
+    )['label'];
 
     return '''You are Nebu, a friendly AI companion for children.
 
@@ -357,7 +372,9 @@ Communication style:
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                                        ? AppTheme.primaryLight.withValues(
+                                            alpha: 0.1,
+                                          )
                                         : Colors.grey[50],
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
@@ -457,10 +474,11 @@ Communication style:
                                   )
                                 : Text(
                                     'Save & Continue',
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                           ),
 
@@ -479,20 +497,20 @@ Communication style:
   }
 
   Widget _buildHeader(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: () => context.pop(),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-          ),
-          Text(
-            'Local Setup',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(width: 48), // Balance the back button
-        ],
-      );
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      IconButton(
+        onPressed: () => context.pop(),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+      ),
+      Text(
+        'Local Setup',
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const SizedBox(width: 48), // Balance the back button
+    ],
+  );
 }
