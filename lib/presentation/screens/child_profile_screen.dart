@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
+import '../../data/services/local_child_data_service.dart';
 import '../providers/api_provider.dart';
 
 /// Screen to view and manage child profile information
@@ -35,13 +36,13 @@ class ChildProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfileView(BuildContext context, childDataService) {
+  Widget _buildProfileView(BuildContext context, LocalChildDataService childDataService) {
     final theme = Theme.of(context);
-    final childName = childDataService.getChildName() ?? 'Unknown';
-    final childAge = childDataService.getChildAge() ?? 'Not set';
-    final childPersonality = childDataService.getChildPersonality() ?? 'Not set';
-    final customPrompt = childDataService.getCustomPrompt();
-    final systemPrompt = childDataService.generateSystemPrompt();
+    final String childName = childDataService.getChildName() ?? 'Unknown';
+    final String childAge = childDataService.getChildAge() ?? 'Not set';
+    final String childPersonality = childDataService.getChildPersonality() ?? 'Not set';
+    final String? customPrompt = childDataService.getCustomPrompt();
+    final String systemPrompt = childDataService.generateSystemPrompt();
 
     // Map personality values to labels
     final personalityLabels = {
