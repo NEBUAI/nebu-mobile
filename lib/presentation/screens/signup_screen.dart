@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import '../../core/constants/app_routes.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
 
