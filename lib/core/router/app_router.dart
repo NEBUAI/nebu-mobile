@@ -7,6 +7,7 @@ import '../../data/models/toy.dart';
 import '../../data/models/user.dart';
 import '../../presentation/providers/auth_provider.dart';
 import '../../presentation/screens/activity_log_screen.dart';
+import '../../presentation/screens/all_devices_screen.dart';
 import '../../presentation/screens/child_profile_screen.dart';
 import '../../presentation/screens/device_management_screen.dart';
 import '../../presentation/screens/edit_profile_screen.dart';
@@ -153,6 +154,10 @@ class AppRouter {
     GoRoute(
       path: AppRoutes.iotDevices.path,
       builder: (_, __) => const IoTDevicesScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.allDevices.path,
+      builder: (_, __) => const AllDevicesScreen(),
     ),
     GoRoute(
       path: AppRoutes.qrScanner.path,

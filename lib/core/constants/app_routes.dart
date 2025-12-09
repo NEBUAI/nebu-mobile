@@ -9,6 +9,7 @@ enum AppRoutes {
   myToys('/my-toys'),
   deviceManagement('/device-management'),
   iotDevices('/iot-devices'),
+  allDevices('/all-devices'),
   qrScanner('/qr-scanner'),
   editProfile('/edit-profile'),
   toySettings('/toy-settings'),

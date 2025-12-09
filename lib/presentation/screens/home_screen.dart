@@ -68,16 +68,9 @@ class HomeScreen extends ConsumerWidget {
                       onTap: () => context.push(AppRoutes.qrScanner.path),
                     ),
                     _QuickActionCard(
-                      icon: Icons.router,
-                      title: 'IoT Devices',
-                      onTap: () =>
-                          context.push(AppRoutes.iotDevices.path),
-                    ),
-                    _QuickActionCard(
-                      icon: Icons.devices,
-                      title: 'home.devices'.tr(),
-                      onTap: () =>
-                          context.push(AppRoutes.deviceManagement.path),
+                      icon: Icons.devices_other,
+                      title: 'All Devices',
+                      onTap: () => context.push(AppRoutes.allDevices.path),
                     ),
                     _QuickActionCard(
                       icon: Icons.dashboard,
