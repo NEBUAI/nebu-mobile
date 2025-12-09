@@ -84,7 +84,6 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
     });
 
     try {
-      final toyProvider = ref.read(toyProviderInstance);
       final toyName = _controller.text.trim();
 
       ref.read(loggerProvider).i(
@@ -92,7 +91,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
       );
 
       // Crear el Toy en el backend
-      await toyProvider.createToy(
+      await ref.read(toyProvider.notifier).createToy(
         iotDeviceId: deviceId,
         name: toyName,
         userId: user.id,

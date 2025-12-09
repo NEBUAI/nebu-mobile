@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/toy.dart';
 import '../../data/services/activity_tracker_service.dart';
 import 'api_provider.dart';
+import 'toy_provider.dart';
 
 /// Provider que escucha los cambios de conexión Bluetooth
 /// y registra actividades automáticamente
@@ -16,9 +17,10 @@ final bluetoothConnectionListenerProvider = Provider<void>((ref) {
   bluetoothService.connectionState.listen((connectionState) {
     logger.d('🔵 [BT_LISTENER] Connection state changed: $connectionState');
 
-    // Obtener el toy actual del provider
-    final toyProvider = ref.read(toyProviderInstance);
-    final currentToy = toyProvider.currentToy;
+    // Obtener toys del provider
+    final toysAsync = ref.read(toyProvider);
+    final toys = toysAsync.value ?? [];
+    final currentToy = toys.isNotEmpty ? toys.first : null;
 
     if (connectionState == fbp.BluetoothConnectionState.connected) {
       logger.i('🔵 [BT_LISTENER] Device connected - tracking activity');

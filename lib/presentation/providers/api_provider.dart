@@ -15,7 +15,6 @@ import '../../data/services/local_child_data_service.dart';
 import '../../data/services/toy_service.dart';
 import '../../data/services/user_service.dart';
 import '../../data/services/user_setup_service.dart';
-import 'toy_provider.dart';
 
 // Low-level dependency providers
 
@@ -117,10 +116,4 @@ final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((
 ) async {
   final prefs = await ref.watch(sharedPreferencesProvider.future);
   return LocalChildDataService(prefs);
-});
-
-final toyProviderInstance = Provider<ToyProvider>((ref) {
-  final toyService = ref.watch(toyServiceProvider);
-  final logger = ref.watch(loggerProvider);
-  return ToyProvider(toyService: toyService, logger: logger);
 });

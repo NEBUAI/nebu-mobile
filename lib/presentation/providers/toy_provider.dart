@@ -1,48 +1,34 @@
-import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/toy.dart';
 import '../../data/services/toy_service.dart';
+import 'api_provider.dart';
 
-class ToyProvider extends ChangeNotifier {
-  ToyProvider({required ToyService toyService, required Logger logger})
-    : _toyService = toyService,
-      _logger = logger;
+// Toy state provider using AsyncNotifier
+final toyProvider = AsyncNotifierProvider<ToyNotifier, List<Toy>>(
+  ToyNotifier.new,
+);
 
-  final ToyService _toyService;
-  final Logger _logger;
-
-  List<Toy> _toys = [];
-  bool _isLoading = false;
-  String? _error;
-  Toy? _currentToy;
-
-  List<Toy> get toys => _toys;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
-  Toy? get currentToy => _currentToy;
-
-  /// Cargar juguetes del usuario
-  Future<void> loadMyToys() async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
-      _toys = await _toyService.getMyToys();
-      _logger.d('Loaded ${_toys.length} toys');
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _logger.e('Error loading toys: $e');
-      _error = e.toString();
-      _toys = [];
-      _isLoading = false;
-      notifyListeners();
-    }
+class ToyNotifier extends AsyncNotifier<List<Toy>> {
+  @override
+  Future<List<Toy>> build() async {
+    // Initialize with empty list, will be loaded when needed
+    return [];
   }
 
-  /// Crear/registrar un nuevo juguete
+  ToyService get _toyService => ref.read(toyServiceProvider);
+
+  /// Load user's toys
+  Future<void> loadMyToys() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final toys = await _toyService.getMyToys();
+      ref.read(loggerProvider).d('Loaded ${toys.length} toys');
+      return toys;
+    });
+  }
+
+  /// Create/register a new toy
   Future<Toy> createToy({
     required String iotDeviceId,
     required String name,
@@ -55,10 +41,6 @@ class ToyProvider extends ChangeNotifier {
     Map<String, dynamic>? settings,
     String? notes,
   }) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
     try {
       final toy = await _toyService.createToy(
         iotDeviceId: iotDeviceId,
@@ -73,35 +55,26 @@ class ToyProvider extends ChangeNotifier {
         notes: notes,
       );
 
-      _logger.d('Toy created successfully: ${toy.name}');
+      ref.read(loggerProvider).d('Toy created successfully: ${toy.name}');
 
-      // Agregar a la lista de juguetes
-      _toys.add(toy);
-      _currentToy = toy;
-
-      _isLoading = false;
-      notifyListeners();
+      // Add to the list
+      final currentState = state.value ?? [];
+      state = AsyncValue.data([...currentState, toy]);
 
       return toy;
-    } catch (e) {
-      _logger.e('Error creating toy: $e');
-      _error = e.toString();
-      _isLoading = false;
-      notifyListeners();
+    } catch (e, st) {
+      ref.read(loggerProvider).e('Error creating toy: $e');
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
-  /// Asignar juguete a la cuenta del usuario
+  /// Assign toy to user account
   Future<AssignToyResponse> assignToy({
     required String macAddress,
     required String userId,
     String? toyName,
   }) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
     try {
       final response = await _toyService.assignToy(
         macAddress: macAddress,
@@ -109,28 +82,23 @@ class ToyProvider extends ChangeNotifier {
         toyName: toyName,
       );
 
-      _logger.d('Toy assigned successfully: ${response.toy?.name}');
+      ref.read(loggerProvider).d('Toy assigned successfully: ${response.toy?.name}');
 
-      // Actualizar la lista de juguetes
+      // Update the toy list
       if (response.toy != null) {
-        _toys.add(response.toy!);
-        _currentToy = response.toy;
+        final currentState = state.value ?? [];
+        state = AsyncValue.data([...currentState, response.toy!]);
       }
 
-      _isLoading = false;
-      notifyListeners();
-
       return response;
-    } catch (e) {
-      _logger.e('Error assigning toy: $e');
-      _error = e.toString();
-      _isLoading = false;
-      notifyListeners();
+    } catch (e, st) {
+      ref.read(loggerProvider).e('Error assigning toy: $e');
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
-  /// Actualizar estado de conexión del juguete
+  /// Update toy connection status
   Future<void> updateToyConnectionStatus({
     required String macAddress,
     required ToyStatus status,
@@ -145,58 +113,50 @@ class ToyProvider extends ChangeNotifier {
         signalStrength: signalStrength,
       );
 
-      _logger.d('Toy status updated: ${updatedToy.name}');
+      ref.read(loggerProvider).d('Toy status updated: ${updatedToy.name}');
 
-      // Actualizar en la lista
-      final index = _toys.indexWhere((toy) => toy.id == updatedToy.id);
+      // Update in list
+      final currentState = state.value ?? [];
+      final index = currentState.indexWhere((toy) => toy.id == updatedToy.id);
       if (index != -1) {
-        _toys[index] = updatedToy;
-        if (_currentToy?.id == updatedToy.id) {
-          _currentToy = updatedToy;
-        }
-        notifyListeners();
+        final newList = [...currentState];
+        newList[index] = updatedToy;
+        state = AsyncValue.data(newList);
       }
-    } catch (e) {
-      _logger.e('Error updating toy status: $e');
-      _error = e.toString();
-      notifyListeners();
+    } catch (e, st) {
+      ref.read(loggerProvider).e('Error updating toy status: $e');
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
-  /// Obtener un juguete por su ID
+  /// Get a toy by ID
   Future<Toy> getToyById(String id) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
     try {
       final toy = await _toyService.getToyById(id);
-      _logger.d('Loaded toy: ${toy.name}');
+      ref.read(loggerProvider).d('Loaded toy: ${toy.name}');
 
-      // Actualizar currentToy si es necesario
-      _currentToy = toy;
-
-      // Actualizar en la lista si ya existe
-      final index = _toys.indexWhere((t) => t.id == toy.id);
+      // Update in list if already exists
+      final currentState = state.value ?? [];
+      final index = currentState.indexWhere((t) => t.id == toy.id);
       if (index != -1) {
-        _toys[index] = toy;
+        final newList = [...currentState];
+        newList[index] = toy;
+        state = AsyncValue.data(newList);
+      } else {
+        // Add to list if not exists
+        state = AsyncValue.data([...currentState, toy]);
       }
 
-      _isLoading = false;
-      notifyListeners();
-
       return toy;
-    } catch (e) {
-      _logger.e('Error loading toy: $e');
-      _error = e.toString();
-      _isLoading = false;
-      notifyListeners();
+    } catch (e, st) {
+      ref.read(loggerProvider).e('Error loading toy: $e');
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
-  /// Actualizar información de un juguete
+  /// Update toy information
   Future<Toy> updateToy({
     required String id,
     String? name,
@@ -208,10 +168,6 @@ class ToyProvider extends ChangeNotifier {
     Map<String, dynamic>? settings,
     String? notes,
   }) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
     try {
       final updatedToy = await _toyService.updateToy(
         id: id,
@@ -225,79 +181,45 @@ class ToyProvider extends ChangeNotifier {
         notes: notes,
       );
 
-      _logger.d('Toy updated: ${updatedToy.name}');
+      ref.read(loggerProvider).d('Toy updated: ${updatedToy.name}');
 
-      // Actualizar en la lista
-      final index = _toys.indexWhere((toy) => toy.id == updatedToy.id);
+      // Update in list
+      final currentState = state.value ?? [];
+      final index = currentState.indexWhere((toy) => toy.id == updatedToy.id);
       if (index != -1) {
-        _toys[index] = updatedToy;
+        final newList = [...currentState];
+        newList[index] = updatedToy;
+        state = AsyncValue.data(newList);
       }
-
-      // Actualizar currentToy si es el mismo
-      if (_currentToy?.id == updatedToy.id) {
-        _currentToy = updatedToy;
-      }
-
-      _isLoading = false;
-      notifyListeners();
 
       return updatedToy;
-    } catch (e) {
-      _logger.e('Error updating toy: $e');
-      _error = e.toString();
-      _isLoading = false;
-      notifyListeners();
+    } catch (e, st) {
+      ref.read(loggerProvider).e('Error updating toy: $e');
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
-  /// Eliminar un juguete
+  /// Delete a toy
   Future<void> deleteToy(String id) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
     try {
       await _toyService.deleteToy(id);
-      _logger.d('Toy deleted: $id');
+      ref.read(loggerProvider).d('Toy deleted: $id');
 
-      // Eliminar de la lista
-      _toys.removeWhere((toy) => toy.id == id);
-
-      // Limpiar currentToy si es el mismo
-      if (_currentToy?.id == id) {
-        _currentToy = null;
-      }
-
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _logger.e('Error deleting toy: $e');
-      _error = e.toString();
-      _isLoading = false;
-      notifyListeners();
+      // Remove from list
+      final currentState = state.value ?? [];
+      state = AsyncValue.data(
+        currentState.where((toy) => toy.id != id).toList(),
+      );
+    } catch (e, st) {
+      ref.read(loggerProvider).e('Error deleting toy: $e');
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
-  /// Establecer el juguete actual
-  void setCurrentToy(Toy? toy) {
-    _currentToy = toy;
-    notifyListeners();
-  }
-
-  /// Limpiar el error
-  void clearError() {
-    _error = null;
-    notifyListeners();
-  }
-
-  /// Limpiar todo
+  /// Clear all toys
   void clear() {
-    _toys = [];
-    _currentToy = null;
-    _error = null;
-    _isLoading = false;
-    notifyListeners();
+    state = const AsyncValue.data([]);
   }
 }

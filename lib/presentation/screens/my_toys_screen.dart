@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_routes.dart';
 import '../../data/models/toy.dart';
-import '../providers/api_provider.dart';
 import '../providers/theme_provider.dart';
+import '../providers/toy_provider.dart';
 
 class MyToysScreen extends ConsumerStatefulWidget {
   const MyToysScreen({super.key});
@@ -26,18 +26,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
   }
 
   Future<void> _loadToys() async {
-    try {
-      await ref.read(toyProviderInstance).loadMyToys();
-    } on Exception catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error al cargar juguetes: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+    await ref.read(toyProvider.notifier).loadMyToys();
   }
 
   Future<void> _deleteToy(Toy toy) async {
@@ -64,7 +53,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     if (confirmed != true || !mounted) return;
 
     try {
-      await ref.read(toyProviderInstance).deleteToy(toy.id);
+      await ref.read(toyProvider.notifier).deleteToy(toy.id);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -271,9 +260,19 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     final themeState = themeAsync.value;
     final isDark = themeState?.isDarkMode ?? false;
     final theme = Theme.of(context);
-    final toyProvider = ref.watch(toyProviderInstance);
-    final toys = toyProvider.toys;
-    final isLoading = toyProvider.isLoading;
+    final toysAsync = ref.watch(toyProvider);
+
+    // Handle errors
+    ref.listen(toyProvider, (previous, next) {
+      if (next.hasError && !next.isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading devices: ${next.error}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    });
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -287,7 +286,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           ),
         ),
         actions: [
-          if (!isLoading)
+          if (!toysAsync.isLoading)
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _loadToys,
@@ -295,11 +294,10 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
             ),
         ],
       ),
-      body: isLoading && toys.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _loadToys,
-              child: ListView(
+      body: toysAsync.when(
+        data: (toys) => RefreshIndicator(
+          onRefresh: _loadToys,
+          child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
                   // Header
@@ -355,7 +353,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   const SizedBox(height: 20),
 
                   // Toy Cards from API
-                  if (toys.isEmpty && !isLoading) ...[
+                  if (toys.isEmpty) ...[
                     // Empty state
                     Container(
                       padding: const EdgeInsets.all(32),
@@ -463,6 +461,28 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 ],
               ),
             ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 64, color: theme.colorScheme.error),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading devices: $error',
+                style: theme.textTheme.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: _loadToys,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
