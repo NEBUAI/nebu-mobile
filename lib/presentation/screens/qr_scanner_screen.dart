@@ -7,27 +7,25 @@ import '../../core/theme/app_theme.dart';
 
 // State
 class QRScannerState {
-  final String scannedCode;
-  final bool isProcessing;
-  final MobileScannerController scannerController;
 
   QRScannerState({
     required this.scannedCode,
     required this.isProcessing,
     required this.scannerController,
   });
+  final String scannedCode;
+  final bool isProcessing;
+  final MobileScannerController scannerController;
 
   QRScannerState copyWith({
     String? scannedCode,
     bool? isProcessing,
     MobileScannerController? scannerController,
-  }) {
-    return QRScannerState(
+  }) => QRScannerState(
       scannedCode: scannedCode ?? this.scannedCode,
       isProcessing: isProcessing ?? this.isProcessing,
       scannerController: scannerController ?? this.scannerController,
     );
-  }
 }
 
 // Notifier
@@ -148,8 +146,7 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
     );
   }
 
-  Widget _buildScannerOverlay() {
-    return Center(
+  Widget _buildScannerOverlay() => Center(
       child: Container(
         width: 250,
         height: 250,
@@ -168,10 +165,8 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
         ),
       ),
     );
-  }
 
-  Widget _buildCorner(bool top, bool left) {
-    return Container(
+  Widget _buildCorner(bool top, bool left) => Container(
       width: 30,
       height: 30,
       decoration: BoxDecoration(
@@ -191,10 +186,8 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
         ),
       ),
     );
-  }
 
-  Widget _buildInstructions() {
-    return Positioned(
+  Widget _buildInstructions() => Positioned(
       bottom: 50,
       left: 0,
       right: 0,
@@ -212,5 +205,4 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
         ),
       ),
     );
-  }
 }

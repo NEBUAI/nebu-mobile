@@ -206,7 +206,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                         label: 'Full Name',
                         hint: 'Enter your full name',
                         controller: _nameController,
-                        onChanged: (value) => notifier.updateUserName(value),
+                        onChanged: notifier.updateUserName,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your name';
@@ -226,7 +226,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                         label: 'Email Address',
                         hint: 'Enter your email address',
                         controller: _emailController,
-                        onChanged: (value) => notifier.updateUserEmail(value),
+                        onChanged: notifier.updateUserEmail,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your email';

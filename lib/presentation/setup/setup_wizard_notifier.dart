@@ -51,8 +51,7 @@ class SetupWizardState {
     bool? microphonePermission,
     bool? cameraPermission,
     bool? notificationsPermission,
-  }) {
-    return SetupWizardState(
+  }) => SetupWizardState(
       currentStep: currentStep ?? this.currentStep,
       isCompleted: isCompleted ?? this.isCompleted,
       userName: userName ?? this.userName,
@@ -67,7 +66,6 @@ class SetupWizardState {
       notificationsPermission:
           notificationsPermission ?? this.notificationsPermission,
     );
-  }
 
   double get progress => (currentStep + 1) / totalSteps;
 

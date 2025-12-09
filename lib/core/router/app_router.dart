@@ -166,7 +166,7 @@ class AppRouter {
     ),
     GoRoute(
       path: AppRoutes.qrScanner.path,
-      builder: (_, __) => QRScannerScreen(),
+      builder: (_, __) => const QRScannerScreen(),
     ),
     GoRoute(
       path: AppRoutes.editProfile.path,
