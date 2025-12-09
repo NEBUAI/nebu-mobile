@@ -58,24 +58,54 @@ class ToyService {
   /// Obtener juguetes del usuario actual
   Future<List<Toy>> getMyToys() async {
     try {
-      _logger.d('Fetching my toys');
+      _logger.d('🎮 [TOY_SERVICE] Fetching my toys from /toys/my-toys');
 
       final response = await _apiService.get<List<dynamic>>('/toys/my-toys');
 
-      _logger.d('Toys fetched successfully: ${response.length} toys');
-      return response
-          .map((json) => Toy.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } on DioException catch (e) {
-      _logger.e('Error fetching toys: ${e.message}');
-      if (e.response?.statusCode == 404) {
-        // No toys found, return empty list
+      _logger.d('🎮 [TOY_SERVICE] Raw response type: ${response.runtimeType}');
+      _logger.d('🎮 [TOY_SERVICE] Response length: ${response.length}');
+
+      if (response.isEmpty) {
+        _logger.i('🎮 [TOY_SERVICE] No toys found, returning empty list');
         return [];
       }
+
+      _logger.d('🎮 [TOY_SERVICE] First toy raw data: ${response.first}');
+
+      final toys = <Toy>[];
+      for (var i = 0; i < response.length; i++) {
+        try {
+          final json = response[i] as Map<String, dynamic>;
+          _logger.d('🎮 [TOY_SERVICE] Parsing toy $i: ${json['name'] ?? 'unknown'}');
+          final toy = Toy.fromJson(json);
+          toys.add(toy);
+        } catch (e, stack) {
+          _logger.e('🎮 [TOY_SERVICE] Error parsing toy $i: $e');
+          _logger.e('🎮 [TOY_SERVICE] Stack trace: $stack');
+          _logger.e('🎮 [TOY_SERVICE] Raw data: ${response[i]}');
+          // Continue parsing other toys instead of failing completely
+        }
+      }
+
+      _logger.i('🎮 [TOY_SERVICE] Successfully parsed ${toys.length} toys');
+      return toys;
+    } on DioException catch (e) {
+      _logger.e('🎮 [TOY_SERVICE] DioException: ${e.message}');
+      _logger.e('🎮 [TOY_SERVICE] Status code: ${e.response?.statusCode}');
+      _logger.e('🎮 [TOY_SERVICE] Response data: ${e.response?.data}');
+
+      if (e.response?.statusCode == 404) {
+        _logger.i('🎮 [TOY_SERVICE] 404 - No toys found, returning empty list');
+        return [];
+      }
+      if (e.response?.statusCode == 401) {
+        throw Exception('No autorizado. Por favor, inicia sesión nuevamente.');
+      }
       throw Exception('Error al obtener los juguetes: ${e.message}');
-    } on Exception catch (e) {
-      _logger.e('Unexpected error fetching toys: $e');
-      throw Exception('Error inesperado al obtener los juguetes');
+    } catch (e, stack) {
+      _logger.e('🎮 [TOY_SERVICE] Unexpected error: $e');
+      _logger.e('🎮 [TOY_SERVICE] Stack trace: $stack');
+      throw Exception('Error inesperado al obtener los juguetes: $e');
     }
   }
 
