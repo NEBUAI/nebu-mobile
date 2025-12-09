@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_config.dart';
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
+import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/theme_provider.dart';
@@ -17,6 +18,18 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final user = authState.value;
+
+    // Debug logging
+    if (user != null) {
+      ref.read(loggerProvider).d('📱 [PROFILE] User data: ${user.toJson()}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.name: ${user.name}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.username: ${user.username}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.firstName: ${user.firstName}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.lastName: ${user.lastName}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.fullName: ${user.fullName}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.email: ${user.email}');
+    }
+
     final themeAsync = ref.watch(themeProvider);
     final languageAsync = ref.watch(languageProvider);
     final themeState = themeAsync.value;

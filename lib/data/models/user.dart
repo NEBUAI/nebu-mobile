@@ -25,9 +25,32 @@ abstract class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   // Getter para compatibilidad con código existente
-  String? get name => fullName ?? (firstName != null || lastName != null
-      ? '${firstName ?? ''} ${lastName ?? ''}'.trim()
-      : username);
+  String? get name {
+    // Try username first
+    if (username != null && username!.isNotEmpty) {
+      return username;
+    }
+
+    // Try fullName (skip if it's "Unknown")
+    if (fullName != null && fullName!.isNotEmpty && fullName != 'Unknown') {
+      return fullName;
+    }
+
+    // Try firstName + lastName
+    if (firstName != null || lastName != null) {
+      final combined = '${firstName ?? ''} ${lastName ?? ''}'.trim();
+      if (combined.isNotEmpty) {
+        return combined;
+      }
+    }
+
+    // Last resort: use email prefix
+    if (email.isNotEmpty) {
+      return email.split('@').first;
+    }
+
+    return null;
+  }
 }
 
 @freezed

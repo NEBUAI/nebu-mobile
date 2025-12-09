@@ -31,7 +31,10 @@ class AuthNotifier extends AsyncNotifier<User?> {
       if (isAuthenticated) {
         final userJson = prefs.getString(StorageKeys.user);
         if (userJson != null) {
-          return User.fromJson(json.decode(userJson) as Map<String, dynamic>);
+          final user = User.fromJson(json.decode(userJson) as Map<String, dynamic>);
+          ref.read(loggerProvider).d('👤 [AUTH] Loaded user from storage: ${user.toJson()}');
+          ref.read(loggerProvider).d('👤 [AUTH] User.name getter returns: ${user.name}');
+          return user;
         }
       }
     } catch (e, st) {
@@ -45,6 +48,8 @@ class AuthNotifier extends AsyncNotifier<User?> {
 
   Future<void> _saveUser(User user) async {
     final prefs = await ref.read(sharedPreferencesProvider.future);
+    ref.read(loggerProvider).d('💾 [AUTH] Saving user to storage: ${user.toJson()}');
+    ref.read(loggerProvider).d('💾 [AUTH] User.name getter returns: ${user.name}');
     await prefs.setString(StorageKeys.user, json.encode(user.toJson()));
   }
 
