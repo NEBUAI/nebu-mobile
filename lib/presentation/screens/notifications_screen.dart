@@ -96,8 +96,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
-    return Center(
+  Widget _buildEmptyState(ThemeData theme) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -124,7 +123,6 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         ],
       ),
     );
-  }
 
   void _markAllAsRead() {
     setState(() {
@@ -369,12 +367,6 @@ class _NotificationCard extends StatelessWidget {
 
 // Mock model
 class _Notification {
-  final String id;
-  final String title;
-  final String message;
-  final String type;
-  final DateTime timestamp;
-  bool isRead;
 
   _Notification({
     required this.id,
@@ -384,4 +376,10 @@ class _Notification {
     required this.timestamp,
     required this.isRead,
   });
+  final String id;
+  final String title;
+  final String message;
+  final String type;
+  final DateTime timestamp;
+  bool isRead;
 }

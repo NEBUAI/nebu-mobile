@@ -184,8 +184,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSection(ThemeData theme, String title, String content) {
-    return Padding(
+  Widget _buildSection(ThemeData theme, String title, String content) => Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,10 +205,8 @@ class TermsOfServiceScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
 
-  Widget _buildBulletPoint(ThemeData theme, String text) {
-    return Padding(
+  Widget _buildBulletPoint(ThemeData theme, String text) => Padding(
       padding: const EdgeInsets.only(left: 16, bottom: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,10 +226,8 @@ class TermsOfServiceScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
 
-  Widget _buildContactRow(ThemeData theme, IconData icon, String text) {
-    return Row(
+  Widget _buildContactRow(ThemeData theme, IconData icon, String text) => Row(
       children: [
         Icon(icon, size: 18, color: theme.colorScheme.primary),
         const SizedBox(width: 8),
@@ -242,5 +237,4 @@ class TermsOfServiceScreen extends ConsumerWidget {
         ),
       ],
     );
-  }
 }

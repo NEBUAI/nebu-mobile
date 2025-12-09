@@ -22,7 +22,6 @@ import '../../presentation/screens/privacy_policy_screen.dart';
 import '../../presentation/screens/privacy_settings_screen.dart';
 import '../../presentation/screens/profile_screen.dart';
 import '../../presentation/screens/qr_scanner_screen.dart';
-import '../../presentation/screens/terms_of_service_screen.dart';
 import '../../presentation/screens/setup/age_setup_screen.dart';
 import '../../presentation/screens/setup/connection_setup_screen.dart';
 import '../../presentation/screens/setup/favorites_setup_screen.dart';
@@ -34,6 +33,7 @@ import '../../presentation/screens/setup/wifi_setup_screen.dart';
 import '../../presentation/screens/setup/world_info_setup_screen.dart';
 import '../../presentation/screens/signup_screen.dart';
 import '../../presentation/screens/splash_screen.dart';
+import '../../presentation/screens/terms_of_service_screen.dart';
 import '../../presentation/screens/toy_settings_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
 

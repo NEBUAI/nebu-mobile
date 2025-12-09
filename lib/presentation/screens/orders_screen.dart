@@ -30,8 +30,7 @@ class OrdersScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
-    return Center(
+  Widget _buildEmptyState(ThemeData theme) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -58,7 +57,6 @@ class OrdersScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
 
   List<_Order> _getMockOrders() {
     // TODO: Replace with actual API call
@@ -292,8 +290,7 @@ class _OrderDetailsSheet extends StatelessWidget {
       maxChildSize: 0.95,
       minChildSize: 0.5,
       expand: false,
-      builder: (context, scrollController) {
-        return Padding(
+      builder: (context, scrollController) => Padding(
           padding: const EdgeInsets.all(24),
           child: ListView(
             controller: scrollController,
@@ -395,13 +392,11 @@ class _OrderDetailsSheet extends StatelessWidget {
               ),
             ],
           ),
-        );
-      },
+        ),
     );
   }
 
-  Widget _buildStatusTimeline(ThemeData theme) {
-    return Container(
+  Widget _buildStatusTimeline(ThemeData theme) => Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
@@ -426,7 +421,6 @@ class _OrderDetailsSheet extends StatelessWidget {
         ],
       ),
     );
-  }
 
   Widget _buildTimelineItem(
     String label,
@@ -434,8 +428,7 @@ class _OrderDetailsSheet extends StatelessWidget {
     ThemeData theme, {
     bool isFirst = false,
     bool isLast = false,
-  }) {
-    return Row(
+  }) => Row(
       children: [
         Column(
           children: [
@@ -476,10 +469,8 @@ class _OrderDetailsSheet extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  Widget _buildItemRow(_OrderItem item, ThemeData theme) {
-    return Padding(
+  Widget _buildItemRow(_OrderItem item, ThemeData theme) => Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -510,15 +501,13 @@ class _OrderDetailsSheet extends StatelessWidget {
         ],
       ),
     );
-  }
 
   Widget _buildSummaryRow(
     String label,
     double amount,
     ThemeData theme, {
     bool bold = false,
-  }) {
-    return Padding(
+  }) => Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -538,15 +527,10 @@ class _OrderDetailsSheet extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 // Mock models
 class _Order {
-  final String id;
-  final DateTime date;
-  final String status;
-  final List<_OrderItem> items;
 
   _Order({
     required this.id,
@@ -554,16 +538,20 @@ class _Order {
     required this.status,
     required this.items,
   });
+  final String id;
+  final DateTime date;
+  final String status;
+  final List<_OrderItem> items;
 }
 
 class _OrderItem {
-  final String name;
-  final int quantity;
-  final double price;
 
   _OrderItem({
     required this.name,
     required this.quantity,
     required this.price,
   });
+  final String name;
+  final int quantity;
+  final double price;
 }

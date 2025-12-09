@@ -160,8 +160,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSection(ThemeData theme, String title, String content) {
-    return Padding(
+  Widget _buildSection(ThemeData theme, String title, String content) => Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,10 +181,8 @@ class PrivacyPolicyScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
 
-  Widget _buildBulletPoint(ThemeData theme, String text) {
-    return Padding(
+  Widget _buildBulletPoint(ThemeData theme, String text) => Padding(
       padding: const EdgeInsets.only(left: 16, bottom: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,5 +202,4 @@ class PrivacyPolicyScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
 }

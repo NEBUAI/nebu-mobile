@@ -127,7 +127,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
                 title: Text('privacy.download_data'.tr()),
                 subtitle: Text('privacy.download_data_desc'.tr()),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => _showDownloadDataDialog(),
+                onTap: _showDownloadDataDialog,
               ),
               const Divider(),
               ListTile(
@@ -135,7 +135,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
                 title: Text('privacy.login_history'.tr()),
                 subtitle: Text('privacy.login_history_desc'.tr()),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => _showLoginHistoryDialog(),
+                onTap: _showLoginHistoryDialog,
               ),
             ],
           ),
@@ -182,7 +182,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
                 ),
                 subtitle: Text('privacy.delete_account_desc'.tr()),
                 trailing: const Icon(Icons.chevron_right, color: Colors.red),
-                onTap: () => _showDeleteAccountDialog(),
+                onTap: _showDeleteAccountDialog,
               ),
             ],
           ),
@@ -193,8 +193,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title, ThemeData theme) {
-    return Padding(
+  Widget _buildSectionHeader(String title, ThemeData theme) => Padding(
       padding: const EdgeInsets.only(left: 4, bottom: 12),
       child: Text(
         title,
@@ -204,10 +203,8 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
         ),
       ),
     );
-  }
 
-  Widget _buildCard(ThemeData theme, {required List<Widget> children}) {
-    return Container(
+  Widget _buildCard(ThemeData theme, {required List<Widget> children}) => DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
@@ -221,7 +218,6 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
       ),
       child: Column(children: children),
     );
-  }
 
   Widget _buildPermissionTile(
     ThemeData theme,
@@ -229,8 +225,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
     String title,
     String subtitle,
     bool granted,
-  ) {
-    return ListTile(
+  ) => ListTile(
       leading: Icon(icon, color: theme.colorScheme.primary),
       title: Text(title),
       subtitle: Text(subtitle),
@@ -260,7 +255,6 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
         );
       },
     );
-  }
 
   void _showDownloadDataDialog() {
     showDialog<void>(
@@ -330,8 +324,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
     String location,
     String time,
     bool current,
-  ) {
-    return ListTile(
+  ) => ListTile(
       leading: Icon(
         Icons.phone_android,
         color: current ? Colors.green : Colors.grey,
@@ -348,7 +341,6 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             )
           : null,
     );
-  }
 
   void _showDeleteAccountDialog() {
     showDialog<void>(
@@ -369,10 +361,10 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('• ${('privacy.consequence_1'.tr())}'),
-            Text('• ${('privacy.consequence_2'.tr())}'),
-            Text('• ${('privacy.consequence_3'.tr())}'),
-            Text('• ${('privacy.consequence_4'.tr())}'),
+            Text('• ${'privacy.consequence_1'.tr()}'),
+            Text('• ${'privacy.consequence_2'.tr()}'),
+            Text('• ${'privacy.consequence_3'.tr()}'),
+            Text('• ${'privacy.consequence_4'.tr()}'),
           ],
         ),
         actions: [
@@ -384,7 +376,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             onPressed: () async {
               Navigator.pop(context);
               final confirmed = await _confirmDeleteAccount();
-              if (confirmed == true && mounted) {
+              if (confirmed ?? false && mounted) {
                 // TODO: Implement account deletion
                 await ref.read(authProvider.notifier).logout();
                 if (mounted) {
@@ -416,9 +408,9 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             const SizedBox(height: 16),
             TextField(
               controller: controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'DELETE',
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
               ),
             ),
           ],
