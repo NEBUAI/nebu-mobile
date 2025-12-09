@@ -116,8 +116,35 @@ class HomeScreen extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) =>
-          Center(child: Text('Error loading devices: $error')),
+      error: (error, stack) => Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: theme.colorScheme.error.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 32,
+              color: theme.colorScheme.error,
+            ),
+            const SizedBox(height: 8),
+            SelectableText(
+              '$error',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onErrorContainer,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 3,
+            ),
+          ],
+        ),
+      ),
     );
   }
 

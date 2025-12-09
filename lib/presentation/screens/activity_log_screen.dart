@@ -94,29 +94,63 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
 
   Widget _buildBody(ActivityState state, ThemeData theme) {
     if (state.error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error_outline, size: 64, color: theme.colorScheme.error),
-            const SizedBox(height: 16),
-            Text(
-              'Error loading activities',
-              style: theme.textTheme.titleMedium,
+      return RefreshIndicator(
+        onRefresh: _refreshActivities,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(24),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 64,
+                  color: theme.colorScheme.error,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'activity.error_loading'.tr(),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: theme.colorScheme.error.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: SelectableText(
+                    state.error!,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onErrorContainer,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: _loadActivities,
+                  icon: const Icon(Icons.refresh),
+                  label: Text('common.retry'.tr()),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              state.error!,
-              style: theme.textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: _loadActivities,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
-            ),
-          ],
+          ),
         ),
       );
     }

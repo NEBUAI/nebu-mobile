@@ -30,7 +30,39 @@ class ChildProfileScreen extends ConsumerWidget {
           return _buildChildProfileState(context, service, colorScheme);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+        error: (error, stackTrace) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: colorScheme.errorContainer.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: colorScheme.error.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: colorScheme.error,
+                  ),
+                  const SizedBox(height: 12),
+                  SelectableText(
+                    '$error',
+                    style: TextStyle(
+                      color: colorScheme.onErrorContainer,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
