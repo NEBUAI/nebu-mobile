@@ -9,7 +9,6 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/models/toy.dart';
 import '../../providers/api_provider.dart';
 import '../../providers/auth_provider.dart' as auth_provider;
-import '../../providers/toy_provider.dart';
 
 class ToyNameSetupScreen extends ConsumerStatefulWidget {
   const ToyNameSetupScreen({super.key});
@@ -36,7 +35,9 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   }
 
   Future<void> _loadSavedName() async {
-    final prefs = await ref.read(auth_provider.sharedPreferencesProvider.future);
+    final prefs = await ref.read(
+      auth_provider.sharedPreferencesProvider.future,
+    );
     final savedName = prefs.getString('setup_toy_name');
     if (savedName != null && savedName.isNotEmpty) {
       _controller.text = savedName;
@@ -44,21 +45,25 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   }
 
   Future<void> _saveToyName() async {
-    final prefs = await ref.read(auth_provider.sharedPreferencesProvider.future);
+    final prefs = await ref.read(
+      auth_provider.sharedPreferencesProvider.future,
+    );
     await prefs.setString('setup_toy_name', _controller.text.trim());
   }
 
   /// Registrar dispositivo ESP32 en el backend
   /// Se ejecuta automáticamente al continuar con el setup si hay un Device ID guardado
   Future<bool> _registerDeviceIfNeeded() async {
-    final prefs = await ref.read(auth_provider.sharedPreferencesProvider.future);
+    final prefs = await ref.read(
+      auth_provider.sharedPreferencesProvider.future,
+    );
     final deviceId = prefs.getString(StorageKeys.currentDeviceId);
 
     // Si no hay Device ID guardado, el usuario saltó la configuración WiFi
     if (deviceId == null || deviceId.isEmpty) {
-      ref.read(loggerProvider).d(
-        '📱 [TOY_SETUP] No Device ID found, skipping device registration',
-      );
+      ref
+          .read(loggerProvider)
+          .d('📱 [TOY_SETUP] No Device ID found, skipping device registration');
       return true; // Continuar sin registrar
     }
 
@@ -66,9 +71,9 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
     final authState = ref.read(auth_provider.authProvider);
     final user = authState.value;
     if (user == null) {
-      ref.read(loggerProvider).w(
-        '⚠️  [TOY_SETUP] User not authenticated, cannot register device',
-      );
+      ref
+          .read(loggerProvider)
+          .w('⚠️  [TOY_SETUP] User not authenticated, cannot register device');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -85,14 +90,17 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
     });
 
     try {
+      final toyService = ref.read(toyServiceProvider);
       final toyName = _controller.text.trim();
 
-      ref.read(loggerProvider).i(
-        '🚀 [TOY_SETUP] Registering device: $deviceId with name: $toyName',
-      );
+      ref
+          .read(loggerProvider)
+          .i(
+            '🚀 [TOY_SETUP] Registering device: $deviceId with name: $toyName',
+          );
 
       // Crear el Toy en el backend
-      await ref.read(toyProvider.notifier).createToy(
+      await toyService.createToy(
         iotDeviceId: deviceId,
         name: toyName,
         userId: user.id,
@@ -101,15 +109,15 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
         manufacturer: 'NEBU',
       );
 
-      ref.read(loggerProvider).i(
-        '✅ [TOY_SETUP] Device registered successfully: $deviceId',
-      );
+      ref
+          .read(loggerProvider)
+          .i('✅ [TOY_SETUP] Device registered successfully: $deviceId');
 
       // Limpiar el Device ID de SharedPreferences (ya está registrado)
       await prefs.remove(StorageKeys.currentDeviceId);
-      ref.read(loggerProvider).d(
-        '🗑️  [TOY_SETUP] Cleared Device ID from local storage',
-      );
+      ref
+          .read(loggerProvider)
+          .d('🗑️  [TOY_SETUP] Cleared Device ID from local storage');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -122,10 +130,8 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
       }
 
       return true;
-    } catch (e) {
-      ref.read(loggerProvider).e(
-        '❌ [TOY_SETUP] Error registering device: $e',
-      );
+    } on Exception catch (e) {
+      ref.read(loggerProvider).e('❌ [TOY_SETUP] Error registering device: $e');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -296,7 +302,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                               final success = await _registerDeviceIfNeeded();
 
                               if (success && mounted) {
-                                context.push(AppRoutes.ageSetup.path);
+                                await context.push(AppRoutes.ageSetup.path);
                               }
                             }
                           },
@@ -358,7 +364,9 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
         width: index < current ? 24 : 8,
         height: 8,
         decoration: BoxDecoration(
-          color: index < current ? Colors.white : Colors.white.withValues(alpha: 0.3),
+          color: index < current
+              ? Colors.white
+              : Colors.white.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

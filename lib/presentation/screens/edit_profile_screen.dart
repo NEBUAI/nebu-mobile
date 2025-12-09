@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -47,9 +48,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
     if (mounted) {
       context.pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('profile.update_success'.tr())));
     }
   }
 
@@ -61,23 +62,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
     if (user == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Edit Profile')),
-        body: const Center(child: Text('User not found')),
+        appBar: AppBar(title: Text('profile.edit_profile'.tr())),
+        body: Center(child: Text('profile.user_not_found'.tr())),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: Text('profile.edit_profile'.tr()),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), 
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.check), 
-            onPressed: _updateProfile, 
-          ),
+          IconButton(icon: const Icon(Icons.check), onPressed: _updateProfile),
         ],
       ),
       body: Padding(
@@ -86,21 +84,21 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           children: [
             _buildTextField(
               controller: _firstNameController,
-              label: 'First Name',
+              label: 'auth.first_name'.tr(),
               icon: Icons.person,
               colorScheme: colorScheme,
             ),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _lastNameController,
-              label: 'Last Name',
+              label: 'auth.last_name'.tr(),
               icon: Icons.person_outline,
               colorScheme: colorScheme,
             ),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _emailController,
-              label: 'Email',
+              label: 'auth.email'.tr(),
               icon: Icons.email,
               colorScheme: colorScheme,
               enabled: false,
@@ -118,20 +116,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     required ColorScheme colorScheme,
     bool enabled = true,
   }) => TextField(
-      controller: controller,
-      enabled: enabled,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: colorScheme.primary),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: colorScheme.primary, width: 2),
-        ),
-        filled: true,
-        fillColor: enabled ? colorScheme.surface : colorScheme.surface.withValues(alpha: 0.5),
+    controller: controller,
+    enabled: enabled,
+    decoration: InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: colorScheme.primary),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: colorScheme.primary, width: 2),
       ),
-    );
+      filled: true,
+      fillColor: enabled
+          ? colorScheme.surface
+          : colorScheme.surface.withValues(alpha: 0.5),
+    ),
+  );
 }
