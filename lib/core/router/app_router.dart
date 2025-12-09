@@ -58,9 +58,14 @@ class AppRouter {
     final isAuthenticated = authState.value != null;
     final location = state.matchedLocation;
 
-    // Allow splash screen to be shown
+    // Allow splash screen to be shown only on initial load
+    // If we're coming from login/signup, skip splash
     if (location == AppRoutes.splash.path) {
-      return null;
+      // If auth state is loaded (not initial app startup), redirect appropriately
+      if (!authState.isLoading) {
+        return isAuthenticated ? AppRoutes.home.path : AppRoutes.welcome.path;
+      }
+      return null; // Allow splash on initial load
     }
 
     // Routes accessible only when not authenticated
@@ -71,7 +76,8 @@ class AppRouter {
     ];
 
     if (isAuthenticated) {
-      // If authenticated, redirect from unauthenticated-only routes to home
+      // If authenticated, redirect from unauthenticated-only routes directly to home
+      // This will NOT go through splash
       if (unauthenticatedRoutes.contains(location)) {
         return AppRoutes.home.path;
       }

@@ -21,10 +21,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  bool _isLoading = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-  String? _errorMessage;
 
   @override
   void dispose() {
@@ -39,96 +37,45 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   Future<void> _handleEmailSignUp() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      final authNotifier = ref.read(authProvider.notifier);
-      await authNotifier.register(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-        firstName: _firstNameController.text.trim(),
-        lastName: _lastNameController.text.trim(),
-      );
-
-      if (mounted) {
-        final authState = ref.read(authProvider);
-        if (authState.value != null) {
-          context.go(AppRoutes.home.path);
-        } else {
-          setState(() {
-            _errorMessage = 'auth.registration_error'.tr();
-            _isLoading = false;
-          });
-        }
-      }
-    } on Exception {
-      if (mounted) {
-        setState(() {
-          _errorMessage = 'auth.registration_error'.tr();
-          _isLoading = false;
-        });
-      }
-    }
+    await ref.read(authProvider.notifier).register(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+    );
   }
 
   Future<void> _handleGoogleSignUp() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
     try {
       final googleSignIn = ref.read(googleSignInProvider);
-      await googleSignIn.initialize();
+      final googleUser = await googleSignIn.authenticate();
 
-      final GoogleSignInAccount googleUser = await googleSignIn.authenticate(
-        scopeHint: ['email', 'profile'],
-      );
-
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-      final String? idToken = googleAuth.idToken;
+      final googleAuth = googleUser.authentication;
+      final idToken = googleAuth.idToken;
 
       if (idToken == null) {
         throw Exception('No ID token received from Google');
       }
 
-      final authNotifier = ref.read(authProvider.notifier);
-      await authNotifier.loginWithGoogle(idToken);
-
+      await ref.read(authProvider.notifier).loginWithGoogle(idToken);
+    } on Exception catch (e) {
       if (mounted) {
-        final authState = ref.read(authProvider);
-        if (authState.value != null) {
-          context.go(AppRoutes.home.path);
-        } else {
-          setState(() {
-            _errorMessage = 'auth.google_signup_error'.tr();
-            _isLoading = false;
-          });
-        }
-      }
-    } on GoogleSignInException {
-      if (mounted) {
-        setState(() {
-          _errorMessage = 'auth.google_signup_cancelled'.tr();
-          _isLoading = false;
-        });
-      }
-    } on Exception {
-      if (mounted) {
-        setState(() {
-          _errorMessage = 'auth.google_signup_error'.tr();
-          _isLoading = false;
-        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Google Sign-Up failed: $e')),
+        );
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    // Note: Navigation is handled automatically by the router's redirect logic
+    // We only need to show error messages here
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -167,8 +114,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   const SizedBox(height: 36),
 
                   // Error message
-                  if (_errorMessage != null) ...[
-                    _ErrorBanner(message: _errorMessage!),
+                  if (authState.hasError && !authState.isLoading) ...[
+                    _ErrorBanner(message: authState.error.toString()),
                     const SizedBox(height: 20),
                   ],
 
@@ -282,7 +229,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   // Sign up button
                   _PrimaryButton(
                     text: 'Create Account',
-                    isLoading: _isLoading,
+                    isLoading: authState.isLoading,
                     onPressed: _handleEmailSignUp,
                   ),
 
@@ -296,7 +243,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   // Google button
                   _GoogleButton(
                     text: 'Continue with Google',
-                    isLoading: _isLoading,
+                    isLoading: authState.isLoading,
                     onPressed: _handleGoogleSignUp,
                   ),
 

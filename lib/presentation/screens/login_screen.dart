@@ -63,16 +63,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    ref.listen(authProvider, (previous, next) {
-      if (next.hasError && !next.isLoading) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error.toString())),
-        );
-      }
-      if (next.hasValue && next.value != null) {
-        context.go(AppRoutes.home.path);
-      }
-    });
+    // Note: Navigation is handled automatically by the router's redirect logic
+    // We only need to show error messages here
 
     return Scaffold(
       backgroundColor: Colors.white,
