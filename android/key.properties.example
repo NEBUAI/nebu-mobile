@@ -1,0 +1,7 @@
+# IMPORTANTE: Este archivo contiene información sensible
+# Nunca lo subas a Git
+
+storePassword=YOUR_STORE_PASSWORD_HERE
+keyPassword=YOUR_KEY_PASSWORD_HERE
+keyAlias=upload
+storeFile=upload-keystore.jks
