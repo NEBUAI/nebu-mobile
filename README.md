@@ -18,6 +18,43 @@ La aplicación tiene como propósito principal:
 
 ---
 
+## ⚙️ Configuración Inicial
+
+### 1. Setup de Secretos y Variables de Entorno
+
+```bash
+# Copiar el archivo de ejemplo
+cp .env.example .env
+
+# Editar con tus valores reales
+nano .env
+```
+
+Ver **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)** para instrucciones detalladas sobre:
+- Configuración de desarrollo con `.env`
+- Builds de producción con `--dart-define`
+- Scripts de build automáticos
+- Manejo seguro de secretos
+- CI/CD setup
+
+### 2. Instalar Dependencias
+
+```bash
+flutter pub get
+```
+
+### 3. Ejecutar en Desarrollo
+
+```bash
+# Opción 1: Script recomendado
+./scripts/run_dev.sh
+
+# Opción 2: Comando Flutter
+flutter run --dart-define=ENV=development
+```
+
+---
+
 ## 🚀 Características Principales
 
 ### ✅ Implementadas

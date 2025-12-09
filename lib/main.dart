@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/config/config_loader.dart';
 import 'core/constants/app_config.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
@@ -14,11 +14,14 @@ void main() async {
   // Initialize Easy Localization
   await EasyLocalization.ensureInitialized();
 
-  // Load environment variables
+  // Load configuration (from .env in dev, dart-define in prod)
   try {
-    await dotenv.load();
+    await ConfigLoader.initialize();
   } on Exception catch (e) {
-    debugPrint('Error loading .env file: $e');
+    debugPrint('❌ Error loading configuration: $e');
+    debugPrint('⚠️  Make sure .env exists (copy from .env.example)');
+    // En desarrollo, podemos continuar con valores por defecto
+    // En producción, esto fallará si no hay dart-define
   }
 
   runApp(
@@ -26,9 +29,7 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('es')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: const ProviderScope(
-        child: NebuApp(),
-      ),
+      child: const ProviderScope(child: NebuApp()),
     ),
   );
 }
@@ -62,16 +63,12 @@ class NebuApp extends ConsumerWidget {
       loading: () => const MaterialApp(
         title: AppConfig.appName,
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
       error: (_, __) => const MaterialApp(
         title: AppConfig.appName,
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(child: Text('Error loading theme')),
-        ),
+        home: Scaffold(body: Center(child: Text('Error loading theme'))),
       ),
     );
   }
