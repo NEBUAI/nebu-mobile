@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -88,10 +88,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
     final authState = ref.read(authProvider);
 
-    if (authState.isAuthenticated) {
-      context.go(AppConstants.routeHome);
+    if (authState.value != null) {
+      context.go(AppRoutes.home.path);
     } else {
-      context.go(AppConstants.routeWelcome);
+      context.go(AppRoutes.welcome.path);
     }
   }
 

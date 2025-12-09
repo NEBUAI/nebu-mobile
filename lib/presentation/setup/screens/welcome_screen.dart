@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
-import '../setup_wizard_controller.dart';
+import '../setup_wizard_notifier.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<SetupWizardController>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final SetupWizardState state = ref.watch(setupWizardProvider);
+    final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -26,8 +28,8 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 40),
               // Progress indicator
               SetupProgressIndicator(
-                currentStep: controller.currentStep.value + 1,
-                totalSteps: controller.totalSteps,
+                currentStep: state.currentStep + 1,
+                totalSteps: SetupWizardState.totalSteps,
               ),
               const SizedBox(height: 60),
 
@@ -114,13 +116,13 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   CustomButton(
                     text: 'Get Started',
-                    onPressed: controller.nextStep,
+                    onPressed: notifier.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: controller.skipSetup,
+                    onPressed: () => context.go('/main'),
                     child: Text(
                       'Skip Setup',
                       style: TextStyle(

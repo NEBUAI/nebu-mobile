@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 
 class FavoritesSetupScreen extends StatefulWidget {
@@ -160,7 +160,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
               // Next button
               ElevatedButton(
                 onPressed: _selectedFavorites.length >= 2
-                    ? () => context.go(AppConstants.routeWorldInfoSetup)
+                    ? () => context.go(AppRoutes.worldInfoSetup.path)
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -189,7 +189,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
 
               // Skip button
               TextButton(
-                onPressed: () => context.go(AppConstants.routeHome),
+                onPressed: () => context.go(AppRoutes.home.path),
                 child: Text(
                   'setup.connection.skip_setup'.tr(),
                   style: TextStyle(

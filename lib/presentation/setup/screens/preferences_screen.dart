@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
-import '../setup_wizard_controller.dart';
+import '../setup_wizard_notifier.dart';
 
-class PreferencesScreen extends StatefulWidget {
+class PreferencesScreen extends ConsumerStatefulWidget {
   const PreferencesScreen({super.key});
 
   @override
-  State<PreferencesScreen> createState() => _PreferencesScreenState();
+  ConsumerState<PreferencesScreen> createState() => _PreferencesScreenState();
 }
 
-class _PreferencesScreenState extends State<PreferencesScreen> {
-  final controller = Get.find<SetupWizardController>();
-
+class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
   final List<Map<String, dynamic>> languages = [
     {'code': 'en', 'name': 'English', 'flag': '🇺🇸'},
     {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
@@ -33,6 +31,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final SetupWizardState state = ref.watch(setupWizardProvider);
+    final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -47,8 +47,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
               const SizedBox(height: 40),
               // Progress indicator
               SetupProgressIndicator(
-                currentStep: controller.currentStep.value + 1,
-                totalSteps: controller.totalSteps,
+                currentStep: state.currentStep + 1,
+                totalSteps: SetupWizardState.totalSteps,
               ),
               const SizedBox(height: 40),
 
@@ -117,13 +117,13 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 children: [
                   CustomButton(
                     text: 'Continue',
-                    onPressed: controller.nextStep,
+                    onPressed: notifier.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: controller.previousStep,
+                    onPressed: notifier.previousStep,
                     child: Text(
                       'Back',
                       style: TextStyle(
@@ -182,126 +182,136 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     ),
   );
 
-  Widget _buildLanguageSelector(bool isDark) => Column(
-    children: languages.map((language) {
-      final isSelected = controller.selectedLanguage.value == language['code'];
+  Widget _buildLanguageSelector(bool isDark) {
+    final state = ref.watch(setupWizardProvider);
+    final notifier = ref.read(setupWizardProvider.notifier);
 
-      return Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12),
-            onTap: () =>
-                controller.selectedLanguage.value = language['code'] as String,
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
+    return Column(
+      children: languages.map((language) {
+        final isSelected = state.selectedLanguage == language['code'];
+
+        return Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () =>
+                  notifier.updateSelectedLanguage(language['code'] as String),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
                   color: isSelected
-                      ? AppTheme.primaryLight
-                      : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    language['flag'] as String,
-                    style: const TextStyle(fontSize: 24),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      language['name'] as String,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: isSelected
-                            ? FontWeight.w600
-                            : FontWeight.normal,
-                        color: isSelected ? AppTheme.primaryLight : null,
-                      ),
-                    ),
-                  ),
-                  if (isSelected)
-                    const Icon(
-                      Icons.check_circle,
-                      color: AppTheme.primaryLight,
-                      size: 20,
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    }).toList(),
-  );
-
-  Widget _buildThemeSelector(bool isDark) => Column(
-    children: themes.map((theme) {
-      final isSelected = controller.selectedTheme.value == theme['code'];
-
-      return Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12),
-            onTap: () =>
-                controller.selectedTheme.value = theme['code'] as String,
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: isSelected
-                      ? AppTheme.primaryLight
-                      : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    theme['icon'] as IconData?,
+                      ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
                     color: isSelected
                         ? AppTheme.primaryLight
-                        : Colors.grey[600],
-                    size: 20,
+                        : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      theme['name'] as String,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: isSelected
-                            ? FontWeight.w600
-                            : FontWeight.normal,
-                        color: isSelected ? AppTheme.primaryLight : null,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      language['flag'] as String,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        language['name'] as String,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.normal,
+                          color: isSelected ? AppTheme.primaryLight : null,
+                        ),
                       ),
                     ),
-                  ),
-                  if (isSelected)
-                    const Icon(
-                      Icons.check_circle,
-                      color: AppTheme.primaryLight,
-                      size: 20,
-                    ),
-                ],
+                    if (isSelected)
+                      const Icon(
+                        Icons.check_circle,
+                        color: AppTheme.primaryLight,
+                        size: 20,
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      );
-    }).toList(),
-  );
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildThemeSelector(bool isDark) {
+    final state = ref.watch(setupWizardProvider);
+    final notifier = ref.read(setupWizardProvider.notifier);
+
+    return Column(
+      children: themes.map((theme) {
+        final isSelected = state.selectedTheme == theme['code'];
+
+        return Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () =>
+                  notifier.updateSelectedTheme(theme['code'] as String),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isSelected
+                        ? AppTheme.primaryLight
+                        : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      theme['icon'] as IconData?,
+                      color: isSelected
+                          ? AppTheme.primaryLight
+                          : Colors.grey[600],
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        theme['name'] as String,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.normal,
+                          color: isSelected ? AppTheme.primaryLight : null,
+                        ),
+                      ),
+                    ),
+                    if (isSelected)
+                      const Icon(
+                        Icons.check_circle,
+                        color: AppTheme.primaryLight,
+                        size: 20,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
 
   Widget _buildAdditionalSettings(bool isDark) => Column(
     children: [

@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
-import '../setup_wizard_controller.dart';
+import '../setup_wizard_notifier.dart';
 
-class PermissionsScreen extends StatefulWidget {
+class PermissionsScreen extends ConsumerStatefulWidget {
   const PermissionsScreen({super.key});
 
   @override
-  State<PermissionsScreen> createState() => _PermissionsScreenState();
+  ConsumerState<PermissionsScreen> createState() => _PermissionsScreenState();
 }
 
-class _PermissionsScreenState extends State<PermissionsScreen> {
-  final controller = Get.find<SetupWizardController>();
+class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    final SetupWizardState state = ref.watch(setupWizardProvider);
+    final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -34,8 +35,8 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
               const SizedBox(height: 40),
               // Progress indicator
               SetupProgressIndicator(
-                currentStep: controller.currentStep.value + 1,
-                totalSteps: controller.totalSteps,
+                currentStep: state.currentStep + 1,
+                totalSteps: SetupWizardState.totalSteps,
               ),
               const SizedBox(height: 40),
 
@@ -70,7 +71,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       title: 'Microphone',
                       description:
                           'Required for voice commands and audio features',
-                      isGranted: controller.microphonePermission.value,
+                      isGranted: state.microphonePermission,
                       onTap: _requestMicrophonePermission,
                       isDark: isDark,
                     ),
@@ -79,7 +80,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       icon: Icons.notifications,
                       title: 'Notifications',
                       description: 'Send you important updates and reminders',
-                      isGranted: controller.notificationsPermission.value,
+                      isGranted: state.notificationsPermission,
                       onTap: _requestNotificationPermission,
                       isDark: isDark,
                     ),
@@ -88,7 +89,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       icon: Icons.camera_alt,
                       title: 'Camera (Optional)',
                       description: 'For photo capture and video features',
-                      isGranted: controller.cameraPermission.value,
+                      isGranted: state.cameraPermission,
                       onTap: _requestCameraPermission,
                       isDark: isDark,
                       isOptional: true,
@@ -102,8 +103,8 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                 children: [
                   CustomButton(
                     text: 'Continue',
-                    onPressed: controller.canProceed() && !isLoading
-                        ? controller.nextStep
+                    onPressed: state.canProceed() && !isLoading
+                        ? notifier.nextStep
                         : null,
                     isFullWidth: true,
                     isLoading: isLoading,
@@ -111,7 +112,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: controller.previousStep,
+                    onPressed: notifier.previousStep,
                     child: Text(
                       'Back',
                       style: TextStyle(
@@ -235,7 +236,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
 
     try {
       final status = await Permission.microphone.request();
-      controller.microphonePermission.value = status.isGranted;
+      ref
+          .read<SetupWizardNotifier>(setupWizardProvider.notifier)
+          .updateMicrophonePermission(status.isGranted);
 
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Microphone');
@@ -256,7 +259,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
 
     try {
       final status = await Permission.notification.request();
-      controller.notificationsPermission.value = status.isGranted;
+      ref
+          .read<SetupWizardNotifier>(setupWizardProvider.notifier)
+          .updateNotificationsPermission(status.isGranted);
 
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Notifications');
@@ -277,7 +282,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
 
     try {
       final status = await Permission.camera.request();
-      controller.cameraPermission.value = status.isGranted;
+      ref
+          .read<SetupWizardNotifier>(setupWizardProvider.notifier)
+          .updateCameraPermission(status.isGranted);
 
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Camera');

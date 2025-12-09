@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_config.dart';
+import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
+import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/theme_provider.dart';
@@ -14,10 +16,25 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AuthState authState = ref.watch(authProvider);
-    final ThemeState themeState = ref.watch(themeProvider);
-    final LanguageState languageState = ref.watch(languageProvider);
-    final isDark = themeState.isDarkMode;
+    final authState = ref.watch(authProvider);
+    final user = authState.value;
+
+    // Debug logging
+    if (user != null) {
+      ref.read(loggerProvider).d('📱 [PROFILE] User data: ${user.toJson()}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.name: ${user.name}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.username: ${user.username}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.firstName: ${user.firstName}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.lastName: ${user.lastName}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.fullName: ${user.fullName}');
+      ref.read(loggerProvider).d('📱 [PROFILE] user.email: ${user.email}');
+    }
+
+    final themeAsync = ref.watch(themeProvider);
+    final languageAsync = ref.watch(languageProvider);
+    final themeState = themeAsync.value;
+    final languageState = languageAsync.value;
+    final isDark = themeState?.isDarkMode ?? false;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -49,9 +66,7 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(
-                        alpha: isDark ? 0.3 : 0.08,
-                      ),
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -67,10 +82,10 @@ class ProfileScreen extends ConsumerWidget {
                         color: AppTheme.primaryLight.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: authState.user?.avatar != null
+                      child: user?.avatar != null
                           ? ClipOval(
                               child: Image.network(
-                                authState.user!.avatar!,
+                                user!.avatar!,
                                 width: 64,
                                 height: 64,
                                 fit: BoxFit.cover,
@@ -78,7 +93,7 @@ class ProfileScreen extends ConsumerWidget {
                             )
                           : Center(
                               child: Text(
-                                (authState.user?.name ?? 'U')[0].toUpperCase(),
+                                (user?.name ?? 'U')[0].toUpperCase(),
                                 style: theme.textTheme.headlineMedium?.copyWith(
                                   color: AppTheme.primaryLight,
                                 ),
@@ -92,18 +107,16 @@ class ProfileScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            authState.user?.name ?? 'profile.user'.tr(),
+                            user?.name ?? 'profile.user'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: theme.colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'View Profile',
+                            'profile.view_profile'.tr(),
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.6,
-                              ),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
                         ],
@@ -114,7 +127,7 @@ class ProfileScreen extends ConsumerWidget {
                       icon: const Icon(Icons.settings_outlined),
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       onPressed: () {
-                        context.push(AppConstants.routeEditProfile);
+                        context.push(AppRoutes.editProfile.path);
                       },
                     ),
                   ],
@@ -130,16 +143,29 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   _SettingsTile(
                     theme: theme,
+                    icon: Icons.child_care,
+                    title: 'profile.child_profile'.tr(),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    ),
+                    onTap: () {
+                      context.push(AppRoutes.childProfile.path);
+                    },
+                  ),
+                  Divider(height: 1, indent: 56, color: theme.dividerColor),
+                  _SettingsTile(
+                    theme: theme,
                     icon: Icons.receipt_long_outlined,
-                    title: 'Your orders',
+                    title: 'profile.your_orders'.tr(),
                     trailing: const Icon(
                       Icons.chevron_right,
                       color: Colors.grey,
                     ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Orders feature coming soon'),
+                        SnackBar(
+                          content: Text('profile.orders_coming_soon'.tr()),
                         ),
                       );
                     },
@@ -166,8 +192,8 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Notifications feature coming soon'),
+                        SnackBar(
+                          content: Text('profile.notifications_coming_soon'.tr()),
                         ),
                       );
                     },
@@ -183,7 +209,7 @@ class ProfileScreen extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 4, bottom: 12),
                   child: Text(
-                    'Settings',
+                    'profile.settings'.tr(),
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
@@ -201,13 +227,11 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.dark_mode_outlined,
                     title: 'profile.dark_mode'.tr(),
                     trailing: Switch(
-                      value: themeState.isDarkMode,
+                      value: themeState?.isDarkMode ?? false,
                       onChanged: (value) {
                         ref.read(themeProvider.notifier).toggleDarkMode();
                       },
-                      activeTrackColor: AppTheme.primaryLight.withValues(
-                        alpha: 0.5,
-                      ),
+                      activeTrackColor: AppTheme.primaryLight.withValues(alpha: 0.5),
                       thumbColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.selected)) {
                           return AppTheme.primaryLight;
@@ -222,7 +246,7 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.language_outlined,
                     title: 'profile.language'.tr(),
                     trailing: DropdownButton<String>(
-                      value: languageState.languageCode,
+                      value: languageState?.languageCode ?? 'en',
                       underline: const SizedBox(),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface,
@@ -266,7 +290,7 @@ class ProfileScreen extends ConsumerWidget {
                       color: Colors.grey,
                     ),
                     onTap: () {
-                      context.push(AppConstants.routeEditProfile);
+                      context.push(AppRoutes.editProfile.path);
                     },
                   ),
                   Divider(height: 1, indent: 56, color: theme.dividerColor),
@@ -279,11 +303,7 @@ class ProfileScreen extends ConsumerWidget {
                       color: Colors.grey,
                     ),
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Privacy settings coming soon'),
-                        ),
-                      );
+                      context.push(AppRoutes.privacySettings.path);
                     },
                   ),
                 ],
@@ -314,11 +334,9 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.info_outline,
                     title: 'profile.about'.tr(),
                     trailing: Text(
-                      'v${AppConstants.appVersion}',
+                      'v${AppConfig.appVersion}',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
-                        ),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                       ),
                     ),
                     onTap: () {
@@ -351,7 +369,7 @@ class ProfileScreen extends ConsumerWidget {
                       if (shouldLogout ?? false) {
                         await ref.read(authProvider.notifier).logout();
                         if (context.mounted) {
-                          context.go(AppConstants.routeWelcome);
+                          context.go(AppRoutes.welcome.path);
                         }
                       }
                     },
@@ -405,24 +423,24 @@ void _showHelpDialog(BuildContext context) {
   showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Help & Support'),
+      title: Text('profile.help_support_title'.tr()),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Need help with your Nebu toys?'),
+          Text('profile.help_need_help'.tr()),
           const SizedBox(height: 16),
-          _buildHelpOption(Icons.email, 'Email Support', 'support@nebu.ai'),
+          _buildHelpOption(Icons.email, 'profile.help_email'.tr(), 'support@nebu.ai'),
           const SizedBox(height: 8),
-          _buildHelpOption(Icons.phone, 'Phone', '+1 (555) 123-4567'),
+          _buildHelpOption(Icons.phone, 'profile.help_phone'.tr(), '+1 (555) 123-4567'),
           const SizedBox(height: 8),
-          _buildHelpOption(Icons.chat, 'Live Chat', 'Available 9AM-5PM EST'),
+          _buildHelpOption(Icons.chat, 'profile.help_chat'.tr(), 'profile.help_chat_hours'.tr()),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: Text('profile.help_close'.tr()),
         ),
       ],
     ),
@@ -446,8 +464,8 @@ Widget _buildHelpOption(IconData icon, String title, String subtitle) => Row(
 void _showAboutDialog(BuildContext context) {
   showAboutDialog(
     context: context,
-    applicationName: AppConstants.appName,
-    applicationVersion: AppConstants.appVersion,
+    applicationName: AppConfig.appName,
+    applicationVersion: AppConfig.appVersion,
     applicationIcon: Container(
       width: 64,
       height: 64,
@@ -459,11 +477,11 @@ void _showAboutDialog(BuildContext context) {
     ),
     children: [
       const SizedBox(height: 16),
-      const Text(
-        'Nebu Mobile brings your interactive toys to life with AI-powered conversations and personalized experiences.',
+      Text(
+        'profile.about_description'.tr(),
       ),
       const SizedBox(height: 8),
-      const Text('© 2025 Nebu AI. All rights reserved.'),
+      Text('profile.about_copyright'.tr()),
     ],
   );
 }

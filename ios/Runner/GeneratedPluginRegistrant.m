@@ -12,12 +12,6 @@
 @import audio_session;
 #endif
 
-#if __has_include(<audioplayers_darwin/AudioplayersDarwinPlugin.h>)
-#import <audioplayers_darwin/AudioplayersDarwinPlugin.h>
-#else
-@import audioplayers_darwin;
-#endif
-
 #if __has_include(<camera_avfoundation/CameraPlugin.h>)
 #import <camera_avfoundation/CameraPlugin.h>
 #else
@@ -40,12 +34,6 @@
 #import <flutter_blue_plus_darwin/FlutterBluePlusPlugin.h>
 #else
 @import flutter_blue_plus_darwin;
-#endif
-
-#if __has_include(<flutter_facebook_auth/FlutterFacebookAuthPlugin.h>)
-#import <flutter_facebook_auth/FlutterFacebookAuthPlugin.h>
-#else
-@import flutter_facebook_auth;
 #endif
 
 #if __has_include(<flutter_secure_storage/FlutterSecureStoragePlugin.h>)
@@ -114,12 +102,6 @@
 @import shared_preferences_foundation;
 #endif
 
-#if __has_include(<sign_in_with_apple/SignInWithApplePlugin.h>)
-#import <sign_in_with_apple/SignInWithApplePlugin.h>
-#else
-@import sign_in_with_apple;
-#endif
-
 #if __has_include(<sqflite_darwin/SqflitePlugin.h>)
 #import <sqflite_darwin/SqflitePlugin.h>
 #else
@@ -130,12 +112,10 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [AudioSessionPlugin registerWithRegistrar:[registry registrarForPlugin:@"AudioSessionPlugin"]];
-  [AudioplayersDarwinPlugin registerWithRegistrar:[registry registrarForPlugin:@"AudioplayersDarwinPlugin"]];
   [CameraPlugin registerWithRegistrar:[registry registrarForPlugin:@"CameraPlugin"]];
   [ConnectivityPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"ConnectivityPlusPlugin"]];
   [FPPDeviceInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FPPDeviceInfoPlusPlugin"]];
   [FlutterBluePlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterBluePlusPlugin"]];
-  [FlutterFacebookAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterFacebookAuthPlugin"]];
   [FlutterSecureStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterSecureStoragePlugin"]];
   [FlutterWebRTCPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterWebRTCPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
@@ -147,7 +127,6 @@
   [PermissionHandlerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PermissionHandlerPlugin"]];
   [RecordIosPlugin registerWithRegistrar:[registry registrarForPlugin:@"RecordIosPlugin"]];
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
-  [SignInWithApplePlugin registerWithRegistrar:[registry registrarForPlugin:@"SignInWithApplePlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
 }
 

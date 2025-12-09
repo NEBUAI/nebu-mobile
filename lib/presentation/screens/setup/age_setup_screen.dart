@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 
 class AgeSetupScreen extends StatefulWidget {
@@ -140,7 +140,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
               // Next button
               ElevatedButton(
                 onPressed: _selectedAge != null
-                    ? () => context.go(AppConstants.routePersonalitySetup)
+                    ? () => context.go(AppRoutes.personalitySetup.path)
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -165,7 +165,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
 
               // Skip button
               TextButton(
-                onPressed: () => context.go(AppConstants.routeHome),
+                onPressed: () => context.go(AppRoutes.home.path),
                 child: Text(
                   'setup.connection.skip_setup'.tr(),
                   style: TextStyle(

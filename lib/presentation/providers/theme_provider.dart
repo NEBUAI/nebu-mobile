@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/storage_keys.dart';
 import '../../presentation/providers/auth_provider.dart' as auth;
 
 // Theme state
@@ -17,19 +17,18 @@ class ThemeState {
 }
 
 // Theme notifier
-class ThemeNotifier extends Notifier<ThemeState> {
-  late SharedPreferences _prefs;
+class ThemeNotifier extends AsyncNotifier<ThemeState> {
+  SharedPreferences? _prefs;
 
   @override
-  ThemeState build() {
-    _prefs = ref.watch(auth.sharedPreferencesProvider);
-    Future.microtask(_loadTheme);
-    return ThemeState();
+  Future<ThemeState> build() async {
+    _prefs = await ref.read(auth.sharedPreferencesProvider.future);
+    return _loadTheme();
   }
 
   // Load theme from storage
-  Future<void> _loadTheme() async {
-    final themeModeString = _prefs.getString(AppConstants.keyThemeMode);
+  Future<ThemeState> _loadTheme() async {
+    final themeModeString = _prefs?.getString(StorageKeys.themeMode);
 
     ThemeMode themeMode;
     bool isDarkMode;
@@ -53,26 +52,33 @@ class ThemeNotifier extends Notifier<ThemeState> {
       }
     }
 
-    state = state.copyWith(themeMode: themeMode, isDarkMode: isDarkMode);
+    return ThemeState(themeMode: themeMode, isDarkMode: isDarkMode);
   }
 
   // Toggle dark mode
   Future<void> toggleDarkMode() async {
-    final newIsDarkMode = !state.isDarkMode;
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    final newIsDarkMode = !currentState.isDarkMode;
     final newThemeMode = newIsDarkMode ? ThemeMode.dark : ThemeMode.light;
 
     await _saveTheme(newThemeMode);
 
-    state = state.copyWith(themeMode: newThemeMode, isDarkMode: newIsDarkMode);
+    state = AsyncValue.data(
+      ThemeState(themeMode: newThemeMode, isDarkMode: newIsDarkMode),
+    );
   }
 
   // Set theme mode
   Future<void> setThemeMode(ThemeMode themeMode) async {
     await _saveTheme(themeMode);
 
-    state = state.copyWith(
-      themeMode: themeMode,
-      isDarkMode: themeMode == ThemeMode.dark,
+    state = AsyncValue.data(
+      ThemeState(
+        themeMode: themeMode,
+        isDarkMode: themeMode == ThemeMode.dark,
+      ),
     );
   }
 
@@ -106,11 +112,11 @@ class ThemeNotifier extends Notifier<ThemeState> {
         break;
     }
 
-    await _prefs.setString(AppConstants.keyThemeMode, themeModeString);
+    await _prefs?.setString(StorageKeys.themeMode, themeModeString);
   }
 }
 
 // Provider
-final themeProvider = NotifierProvider<ThemeNotifier, ThemeState>(
+final themeProvider = AsyncNotifierProvider<ThemeNotifier, ThemeState>(
   ThemeNotifier.new,
 );

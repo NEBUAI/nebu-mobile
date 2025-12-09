@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 
 class VoiceSetupScreen extends StatefulWidget {
@@ -125,9 +125,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AppTheme.primaryLight.withValues(
-                                            alpha: 0.1,
-                                          )
+                                        ? AppTheme.primaryLight
+                                            .withValues(alpha: 0.1)
                                         : Colors.white.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -162,10 +161,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                             ?.copyWith(
                                               color: isSelected
                                                   ? AppTheme.primaryLight
-                                                        .withValues(alpha: 0.7)
-                                                  : Colors.white.withValues(
-                                                      alpha: 0.7,
-                                                    ),
+                                                      .withValues(alpha: 0.7)
+                                                  : Colors.white.withValues(alpha: 0.7),
                                             ),
                                       ),
                                     ],
@@ -190,17 +187,13 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                 // Next button
                 ElevatedButton(
                   onPressed: _selectedVoice != null
-                      ? () => context.go(AppConstants.routeFavoritesSetup)
+                      ? () => context.go(AppRoutes.favoritesSetup.path)
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AppTheme.primaryLight,
-                    disabledBackgroundColor: Colors.white.withValues(
-                      alpha: 0.3,
-                    ),
-                    disabledForegroundColor: Colors.white.withValues(
-                      alpha: 0.5,
-                    ),
+                    disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
+                    disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -219,7 +212,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
 
                 // Skip button
                 TextButton(
-                  onPressed: () => context.go(AppConstants.routeHome),
+                  onPressed: () => context.go(AppRoutes.home.path),
                   child: Text(
                     'setup.connection.skip_setup'.tr(),
                     style: theme.textTheme.bodyLarge?.copyWith(

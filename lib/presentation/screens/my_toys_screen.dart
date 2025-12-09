@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../../data/models/toy.dart';
-import '../providers/api_provider.dart';
 import '../providers/theme_provider.dart';
+import '../providers/toy_provider.dart';
 
 class MyToysScreen extends ConsumerStatefulWidget {
   const MyToysScreen({super.key});
@@ -26,18 +26,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
   }
 
   Future<void> _loadToys() async {
-    try {
-      await ref.read(toyProviderInstance).loadMyToys();
-    } on Exception catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error al cargar juguetes: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+    await ref.read(toyProvider.notifier).loadMyToys();
   }
 
   Future<void> _deleteToy(Toy toy) async {
@@ -64,7 +53,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     if (confirmed != true || !mounted) return;
 
     try {
-      await ref.read(toyProviderInstance).deleteToy(toy.id);
+      await ref.read(toyProvider.notifier).deleteToy(toy.id);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -152,42 +141,75 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              'toys.type'.tr(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              toy.model ?? 'Nebu Robot',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            if (toy.batteryLevel != null) ...[
-              const SizedBox(height: 16),
-              Text(
-                'Batería',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            // Device info section
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest
+                    .withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.dividerColor.withValues(alpha: 0.2),
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                toy.batteryLevel!,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.memory,
+                        size: 20,
+                        color: theme.colorScheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Dispositivo IoT',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _InfoRow(
+                    label: 'ID',
+                    value: '${toy.iotDeviceId.substring(0, 12)}...',
+                    theme: theme,
+                  ),
+                  if (toy.model != null)
+                    _InfoRow(
+                      label: 'Modelo',
+                      value: toy.model!,
+                      theme: theme,
+                    ),
+                  if (toy.firmwareVersion != null)
+                    _InfoRow(
+                      label: 'Firmware',
+                      value: toy.firmwareVersion!,
+                      theme: theme,
+                    ),
+                  if (toy.batteryLevel != null)
+                    _InfoRow(
+                      label: 'Batería',
+                      value: toy.batteryLevel!,
+                      theme: theme,
+                    ),
+                  if (toy.signalStrength != null)
+                    _InfoRow(
+                      label: 'Señal',
+                      value: toy.signalStrength!,
+                      theme: theme,
+                    ),
+                ],
               ),
-            ],
+            ),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.pop(context);
-                  context.push(AppConstants.routeToySettings, extra: toy);
+                  context.push(AppRoutes.toySettings.path, extra: toy);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
@@ -229,17 +251,28 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
   }
 
   void _addNewToy(BuildContext context) {
-    context.push(AppConstants.routeConnectionSetup);
+    context.push(AppRoutes.connectionSetup.path);
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeState = ref.watch(themeProvider);
-    final isDark = themeState.isDarkMode;
+    final themeAsync = ref.watch(themeProvider);
+    final themeState = themeAsync.value;
+    final isDark = themeState?.isDarkMode ?? false;
     final theme = Theme.of(context);
-    final toyProvider = ref.watch(toyProviderInstance);
-    final List<Toy> toys = toyProvider.toys;
-    final bool isLoading = toyProvider.isLoading;
+    final toysAsync = ref.watch(toyProvider);
+
+    // Handle errors
+    ref.listen(toyProvider, (previous, next) {
+      if (next.hasError && !next.isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading devices: ${next.error}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    });
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -253,7 +286,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           ),
         ),
         actions: [
-          if (!isLoading)
+          if (!toysAsync.isLoading)
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _loadToys,
@@ -261,11 +294,10 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
             ),
         ],
       ),
-      body: isLoading && toys.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _loadToys,
-              child: ListView(
+      body: toysAsync.when(
+        data: (toys) => RefreshIndicator(
+          onRefresh: _loadToys,
+          child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
                   // Header
@@ -321,7 +353,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   const SizedBox(height: 20),
 
                   // Toy Cards from API
-                  if (toys.isEmpty && !isLoading) ...[
+                  if (toys.isEmpty) ...[
                     // Empty state
                     Container(
                       padding: const EdgeInsets.all(32),
@@ -352,9 +384,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             'Agrega tu primer juguete para comenzar',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.6,
-                              ),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -411,9 +441,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             'toys.add_more_hint'.tr(),
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.6,
-                              ),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                               height: 1.4,
                             ),
                           ),
@@ -433,6 +461,67 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 ],
               ),
             ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => RefreshIndicator(
+          onRefresh: _loadToys,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(24),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: theme.colorScheme.error,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'toys.error_loading'.tr(),
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: theme.colorScheme.error.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: SelectableText(
+                      '$error',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onErrorContainer,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: _loadToys,
+                    icon: const Icon(Icons.refresh),
+                    label: Text('common.retry'.tr()),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -499,9 +588,7 @@ class _ToyCard extends StatelessWidget {
                     Text(
                       toy.model ?? 'Nebu Robot',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.6,
-                        ),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -553,4 +640,38 @@ class _ToyCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.label,
+    required this.value,
+    required this.theme,
+  });
+
+  final String label;
+  final String value;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
+          ),
+          Text(
+            value,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
 }

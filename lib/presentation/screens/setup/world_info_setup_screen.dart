@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 
 class WorldInfoSetupScreen extends StatelessWidget {
@@ -109,7 +109,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // Mark setup as complete and navigate to home
-                    context.go(AppConstants.routeHome);
+                    context.go(AppRoutes.home.path);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

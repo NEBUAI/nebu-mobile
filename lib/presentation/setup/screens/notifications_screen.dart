@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
-import '../setup_wizard_controller.dart';
+import '../setup_wizard_notifier.dart';
 
-class NotificationsScreen extends StatefulWidget {
+class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
 
   @override
-  State<NotificationsScreen> createState() => _NotificationsScreenState();
+  ConsumerState<NotificationsScreen> createState() =>
+      _NotificationsScreenState();
 }
 
-class _NotificationsScreenState extends State<NotificationsScreen> {
-  final controller = Get.find<SetupWizardController>();
-
+class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   final List<Map<String, dynamic>> notificationTypes = [
     {
       'title': 'Push Notifications',
@@ -71,6 +70,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final SetupWizardState state = ref.watch(setupWizardProvider);
+    final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -85,8 +86,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               const SizedBox(height: 40),
               // Progress indicator
               SetupProgressIndicator(
-                currentStep: controller.currentStep.value + 1,
-                totalSteps: controller.totalSteps,
+                currentStep: state.currentStep + 1,
+                totalSteps: SetupWizardState.totalSteps,
               ),
               const SizedBox(height: 40),
 
@@ -180,13 +181,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 children: [
                   CustomButton(
                     text: 'Continue',
-                    onPressed: controller.nextStep,
+                    onPressed: notifier.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: controller.previousStep,
+                    onPressed: notifier.previousStep,
                     child: Text(
                       'Back',
                       style: TextStyle(

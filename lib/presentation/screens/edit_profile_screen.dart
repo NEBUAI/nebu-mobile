@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -13,315 +13,123 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
   late TextEditingController _emailController;
-  bool _isLoading = false;
-  bool _hasChanges = false;
 
   @override
   void initState() {
     super.initState();
-    final user = ref.read(authProvider).user;
-    _nameController = TextEditingController(text: user?.name ?? '');
+    final user = ref.read(authProvider).value;
+    _firstNameController = TextEditingController(text: user?.firstName ?? '');
+    _lastNameController = TextEditingController(text: user?.lastName ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
-
-    _nameController.addListener(_checkForChanges);
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     super.dispose();
   }
 
-  void _checkForChanges() {
-    final user = ref.read(authProvider).user;
-    final hasNameChanged = _nameController.text != (user?.name ?? '');
+  Future<void> _updateProfile() async {
+    final user = ref.read(authProvider).value;
+    if (user == null) return;
 
-    setState(() {
-      _hasChanges = hasNameChanged;
-    });
-  }
+    final updatedUser = user.copyWith(
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      email: _emailController.text,
+    );
 
-  Future<void> _saveProfile() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    await ref.read(authProvider.notifier).updateUser(updatedUser);
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final user = ref.read(authProvider).user;
-      if (user == null) {
-        throw Exception('User not found');
-      }
-
-      // TODO: Implement API call to update user profile
-      // For now, just show success message
-      await Future<void>.delayed(const Duration(seconds: 1));
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile updated successfully'),
-            backgroundColor: Colors.green,
-          ),
-        );
-
-        // Update local auth state
-        // ref.read(authProvider.notifier).updateUser(updatedUser);
-
-        context.pop();
-      }
-    } on Exception catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to update profile: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+    if (mounted) {
+      context.pop();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('profile.update_success'.tr())));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final user = ref.watch(authProvider).user;
+    final authState = ref.watch(authProvider);
+    final user = authState.value;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    if (user == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text('profile.edit_profile'.tr())),
+        body: Center(child: Text('profile.user_not_found'.tr())),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: Text('profile.edit_profile'.tr()),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
         actions: [
-          if (_hasChanges)
-            TextButton(
-              onPressed: _isLoading ? null : _saveProfile,
-              child: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Text('Save'),
-            ),
+          IconButton(icon: const Icon(Icons.check), onPressed: _updateProfile),
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                // Avatar Section
-                Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryLight.withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: user?.avatar != null
-                            ? ClipOval(
-                                child: Image.network(
-                                  user!.avatar!,
-                                  width: 120,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Center(
-                                child: Text(
-                                  (user?.name ?? 'U')[0].toUpperCase(),
-                                  style: theme.textTheme.displayMedium
-                                      ?.copyWith(color: AppTheme.primaryLight),
-                                ),
-                              ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: AppTheme.primaryLight,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: theme.scaffoldBackgroundColor,
-                              width: 3,
-                            ),
-                          ),
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.camera_alt,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              // TODO: Implement image picker
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Camera/Gallery coming soon'),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Name Field
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    hintText: 'Enter your name',
-                    prefixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 16),
-
-                // Email Field (Read-only)
-                TextFormField(
-                  controller: _emailController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'your@email.com',
-                    prefixIcon: const Icon(Icons.email),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    helperText: 'Email cannot be changed',
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Additional Info Section
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Account Information',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        _buildInfoRow('User ID', user?.id ?? 'N/A', theme),
-                        const Divider(),
-                        _buildInfoRow('Email', user?.email ?? 'N/A', theme),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Delete Account Button
-                OutlinedButton.icon(
-                  onPressed: _showDeleteAccountDialog,
-                  icon: const Icon(Icons.delete_forever, color: Colors.red),
-                  label: const Text(
-                    'Delete Account',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.red),
-                    minimumSize: const Size(double.infinity, 48),
-                  ),
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _buildTextField(
+              controller: _firstNameController,
+              label: 'auth.first_name'.tr(),
+              icon: Icons.person,
+              colorScheme: colorScheme,
             ),
-          ),
+            const SizedBox(height: 16),
+            _buildTextField(
+              controller: _lastNameController,
+              label: 'auth.last_name'.tr(),
+              icon: Icons.person_outline,
+              colorScheme: colorScheme,
+            ),
+            const SizedBox(height: 16),
+            _buildTextField(
+              controller: _emailController,
+              label: 'auth.email'.tr(),
+              icon: Icons.email,
+              colorScheme: colorScheme,
+              enabled: false,
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoRow(String label, String value, ThemeData theme) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.disabledColor,
-          ),
-        ),
-        Flexible(
-          child: Text(
-            value,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.end,
-          ),
-        ),
-      ],
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required ColorScheme colorScheme,
+    bool enabled = true,
+  }) => TextField(
+    controller: controller,
+    enabled: enabled,
+    decoration: InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: colorScheme.primary),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: colorScheme.primary, width: 2),
+      ),
+      filled: true,
+      fillColor: enabled
+          ? colorScheme.surface
+          : colorScheme.surface.withValues(alpha: 0.5),
     ),
   );
-
-  void _showDeleteAccountDialog() {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // TODO: Implement account deletion
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Account deletion not implemented yet'),
-                  backgroundColor: Colors.orange,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-  }
 }

@@ -9,15 +9,33 @@ part of 'user.dart';
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
   id: json['id'] as String,
   email: json['email'] as String,
-  name: json['name'] as String,
+  firstName: json['firstName'] as String?,
+  lastName: json['lastName'] as String?,
+  username: json['username'] as String?,
   avatar: json['avatar'] as String?,
+  role: json['role'] as String?,
+  status: json['status'] as String?,
+  emailVerified: json['emailVerified'] as bool?,
+  preferredLanguage: json['preferredLanguage'] as String?,
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
+  fullName: json['fullName'] as String?,
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'id': instance.id,
   'email': instance.email,
-  'name': instance.name,
+  'firstName': instance.firstName,
+  'lastName': instance.lastName,
+  'username': instance.username,
   'avatar': instance.avatar,
+  'role': instance.role,
+  'status': instance.status,
+  'emailVerified': instance.emailVerified,
+  'preferredLanguage': instance.preferredLanguage,
+  'createdAt': instance.createdAt?.toIso8601String(),
+  'fullName': instance.fullName,
 };
 
 _AuthTokens _$AuthTokensFromJson(Map<String, dynamic> json) => _AuthTokens(
@@ -41,6 +59,7 @@ _AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) =>
           ? null
           : AuthTokens.fromJson(json['tokens'] as Map<String, dynamic>),
       error: json['error'] as String?,
+      expiresIn: (json['expiresIn'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$AuthResponseToJson(_AuthResponse instance) =>
@@ -49,6 +68,7 @@ Map<String, dynamic> _$AuthResponseToJson(_AuthResponse instance) =>
       'user': instance.user,
       'tokens': instance.tokens,
       'error': instance.error,
+      'expiresIn': instance.expiresIn,
     };
 
 _SocialAuthResult _$SocialAuthResultFromJson(Map<String, dynamic> json) =>

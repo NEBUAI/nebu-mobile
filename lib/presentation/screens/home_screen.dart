@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_routes.dart';
 import '../providers/bluetooth_provider.dart';
 import '../providers/device_provider.dart';
 
@@ -34,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   TextButton.icon(
                     onPressed: () =>
-                        context.push(AppConstants.routeConnectionSetup),
+                        context.push(AppRoutes.connectionSetup.path),
                     icon: const Icon(Icons.add),
                     label: Text('home.add_toy'.tr()),
                   ),
@@ -65,23 +65,22 @@ class HomeScreen extends ConsumerWidget {
                     _QuickActionCard(
                       icon: Icons.qr_code_scanner,
                       title: 'home.scan_qr'.tr(),
-                      onTap: () => context.push(AppConstants.routeQRScanner),
+                      onTap: () => context.push(AppRoutes.qrScanner.path),
                     ),
                     _QuickActionCard(
-                      icon: Icons.devices,
-                      title: 'home.devices'.tr(),
-                      onTap: () =>
-                          context.push(AppConstants.routeDeviceManagement),
+                      icon: Icons.devices_other,
+                      title: 'All Devices',
+                      onTap: () => context.push(AppRoutes.allDevices.path),
                     ),
                     _QuickActionCard(
                       icon: Icons.dashboard,
                       title: 'home.my_toys'.tr(),
-                      onTap: () => context.go(AppConstants.routeMyToys),
+                      onTap: () => context.go(AppRoutes.myToys.path),
                     ),
                     _QuickActionCard(
                       icon: Icons.history,
                       title: 'home.activity_log'.tr(),
-                      onTap: () => context.go(AppConstants.routeActivityLog),
+                      onTap: () => context.go(AppRoutes.activityLog.path),
                     ),
                   ],
                 ),
@@ -95,24 +94,83 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildActiveToysList(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final connectedDevices = ref.watch(connectedDevicesProvider);
 
-    return connectedDevices.when(
-      data: (devices) {
-        if (devices.isEmpty) {
-          return _buildNoToysPlaceholder(theme);
-        }
+    try {
+      final connectedDevices = ref.watch(connectedDevicesProvider);
 
-        return Column(
-          children: devices
-              .map((device) => _DeviceBatteryCard(device: device))
-              .toList(),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) =>
-          Center(child: Text('Error loading devices: $error')),
-    );
+      return connectedDevices.when(
+        data: (devices) {
+          if (devices.isEmpty) {
+            return _buildNoToysPlaceholder(theme);
+          }
+
+          return Column(
+            children: devices
+                .map((device) => _DeviceBatteryCard(device: device))
+                .toList(),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: theme.colorScheme.error.withValues(alpha: 0.3),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 32,
+                color: theme.colorScheme.error,
+              ),
+              const SizedBox(height: 8),
+              SelectableText(
+                'connectedDevicesProvider Error: $error\n\nStack: ${stack.toString().substring(0, 200)}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onErrorContainer,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    } catch (e, stack) {
+      // Catch ProviderException here
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: theme.colorScheme.error.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 32,
+              color: theme.colorScheme.error,
+            ),
+            const SizedBox(height: 8),
+            SelectableText(
+              'ProviderException in home: $e\n\nStack: ${stack.toString().substring(0, 200)}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onErrorContainer,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildNoToysPlaceholder(ThemeData theme) => Container(

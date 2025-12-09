@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/storage_keys.dart';
 import '../../core/utils/env_config.dart';
 import '../models/user.dart';
 
@@ -24,16 +24,23 @@ class AuthService {
 
   // Email/Password Authentication
   Future<AuthResponse> login({
-    required String email,
+    required String identifier,
     required String password,
   }) async {
     try {
+      // Send as 'email' field for backend compatibility
+      // The backend should accept both email and username in this field
       final response = await _dio.post<Map<String, dynamic>>(
         '/auth/login',
-        data: {'email': email, 'password': password},
+        data: {'email': identifier, 'password': password},
       );
 
-      final authResponse = AuthResponse.fromJson(response.data!);
+      print('🔐 [AUTH_SERVICE] Login response data: ${response.data}');
+
+      // Use fromBackend to handle NestJS response format
+      final authResponse = AuthResponse.fromBackend(response.data!);
+
+      print('🔐 [AUTH_SERVICE] Parsed user: ${authResponse.user?.toJson()}');
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);
@@ -72,7 +79,8 @@ class AuthService {
         },
       );
 
-      final authResponse = AuthResponse.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResponse = AuthResponse.fromBackend(response.data!);
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);
@@ -102,7 +110,8 @@ class AuthService {
         data: {'token': googleToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResult = SocialAuthResult.fromBackend(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -131,7 +140,8 @@ class AuthService {
         data: {'token': facebookToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResult = SocialAuthResult.fromBackend(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -160,7 +170,8 @@ class AuthService {
         data: {'token': appleToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResult = SocialAuthResult.fromBackend(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -185,20 +196,20 @@ class AuthService {
   // Token Management
   Future<void> _storeTokens(AuthTokens tokens) async {
     await _secureStorage.write(
-      key: AppConstants.keyAccessToken,
+      key: StorageKeys.accessToken,
       value: tokens.accessToken,
     );
     await _secureStorage.write(
-      key: AppConstants.keyRefreshToken,
+      key: StorageKeys.refreshToken,
       value: tokens.refreshToken,
     );
   }
 
   Future<String?> getAccessToken() async =>
-      _secureStorage.read(key: AppConstants.keyAccessToken);
+      _secureStorage.read(key: StorageKeys.accessToken);
 
   Future<String?> getRefreshToken() async =>
-      _secureStorage.read(key: AppConstants.keyRefreshToken);
+      _secureStorage.read(key: StorageKeys.refreshToken);
 
   Future<String?> refreshAccessToken() async {
     try {
@@ -214,7 +225,7 @@ class AuthService {
 
       final newAccessToken = response.data?['accessToken'] as String;
       await _secureStorage.write(
-        key: AppConstants.keyAccessToken,
+        key: StorageKeys.accessToken,
         value: newAccessToken,
       );
 
@@ -226,9 +237,9 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    await _secureStorage.delete(key: AppConstants.keyAccessToken);
-    await _secureStorage.delete(key: AppConstants.keyRefreshToken);
-    await _prefs.remove(AppConstants.keyUser);
+    await _secureStorage.delete(key: StorageKeys.accessToken);
+    await _secureStorage.delete(key: StorageKeys.refreshToken);
+    await _prefs.remove(StorageKeys.user);
   }
 
   Future<bool> isAuthenticated() async {

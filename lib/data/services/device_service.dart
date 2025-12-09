@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:logger/logger.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../core/constants/ble_constants.dart';
 import 'bluetooth_service.dart';
 
 /// Servicio para interactuar con características estándar del dispositivo (ej. Batería)
@@ -48,7 +48,7 @@ class DeviceService {
       final batteryService = services.firstWhere(
         (s) =>
             s.uuid.toString().toLowerCase() ==
-            AppConstants.batteryServiceUuid.toLowerCase(),
+            BleConstants.batteryServiceUuid.toLowerCase(),
         orElse: () => throw Exception('Battery service not found'),
       );
 
@@ -58,7 +58,7 @@ class DeviceService {
       final batteryLevelChar = batteryService.characteristics.firstWhere(
         (c) =>
             c.uuid.toString().toLowerCase() ==
-            AppConstants.batteryLevelCharUuid.toLowerCase(),
+            BleConstants.batteryLevelCharUuid.toLowerCase(),
         orElse: () => throw Exception('Battery level characteristic not found'),
       );
 
@@ -87,6 +87,6 @@ class DeviceService {
     }
   }
 
-  /// TODO: Implement battery level retrieval (if ESP32 supports it)
-  /// This typically requires a custom BLE characteristic.
+  // TODO(dev): Implement battery level retrieval (if ESP32 supports it)
+  // This typically requires a custom BLE characteristic.
 }
