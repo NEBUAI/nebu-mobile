@@ -1,0 +1,19 @@
+{
+    "ENV": "production",
+    "API_URL": "https://api.flow-telligence.com/api/v1",
+    "API_KEY": "your_production_api_key_here",
+    "WS_URL": "wss://ws.flow-telligence.com",
+    "LIVEKIT_URL": "wss://your-production-livekit-url",
+    "LIVEKIT_API_KEY": "your_livekit_api_key",
+    "LIVEKIT_API_SECRET": "your_livekit_api_secret",
+    "APP_VERSION": "1.0.0",
+    "ENABLE_DEBUG_LOGS": "false",
+    "ENABLE_CRASH_REPORTING": "true",
+    "GOOGLE_CLIENT_ID": "your_google_client_id",
+    "GOOGLE_WEB_CLIENT_ID": "your_google_web_client_id",
+    "FACEBOOK_APP_ID": "your_facebook_app_id",
+    "FACEBOOK_CLIENT_TOKEN": "your_facebook_client_token",
+    "APPLE_CLIENT_ID": "your_apple_client_id",
+    "APPLE_TEAM_ID": "your_apple_team_id",
+    "APPLE_KEY_ID": "your_apple_key_id"
+}
