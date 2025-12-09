@@ -16,8 +16,13 @@ import '../../presentation/screens/iot_devices_screen.dart';
 import '../../presentation/screens/login_screen.dart';
 import '../../presentation/screens/main_screen.dart';
 import '../../presentation/screens/my_toys_screen.dart';
+import '../../presentation/screens/notifications_screen.dart';
+import '../../presentation/screens/orders_screen.dart';
+import '../../presentation/screens/privacy_policy_screen.dart';
+import '../../presentation/screens/privacy_settings_screen.dart';
 import '../../presentation/screens/profile_screen.dart';
 import '../../presentation/screens/qr_scanner_screen.dart';
+import '../../presentation/screens/terms_of_service_screen.dart';
 import '../../presentation/screens/setup/age_setup_screen.dart';
 import '../../presentation/screens/setup/connection_setup_screen.dart';
 import '../../presentation/screens/setup/favorites_setup_screen.dart';
@@ -166,6 +171,26 @@ class AppRouter {
     GoRoute(
       path: AppRoutes.editProfile.path,
       builder: (_, __) => const EditProfileScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.privacySettings.path,
+      builder: (_, __) => const PrivacySettingsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.privacyPolicy.path,
+      builder: (_, __) => const PrivacyPolicyScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.termsOfService.path,
+      builder: (_, __) => const TermsOfServiceScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.orders.path,
+      builder: (_, __) => const OrdersScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.notifications.path,
+      builder: (_, __) => const NotificationsScreen(),
     ),
     GoRoute(
       path: AppRoutes.toySettings.path,

@@ -15,6 +15,8 @@ enum AppRoutes {
   toySettings('/toy-settings'),
   notifications('/notifications'),
   privacySettings('/privacy-settings'),
+  privacyPolicy('/privacy-policy'),
+  termsOfService('/terms-of-service'),
   helpSupport('/help-support'),
   orders('/orders'),
   connectionSetup('/setup/connection'),

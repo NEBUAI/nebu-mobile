@@ -114,7 +114,7 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'View Profile',
+                            'profile.view_profile'.tr(),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
@@ -144,7 +144,7 @@ class ProfileScreen extends ConsumerWidget {
                   _SettingsTile(
                     theme: theme,
                     icon: Icons.child_care,
-                    title: 'Child Profile',
+                    title: 'profile.child_profile'.tr(),
                     trailing: const Icon(
                       Icons.chevron_right,
                       color: Colors.grey,
@@ -157,15 +157,15 @@ class ProfileScreen extends ConsumerWidget {
                   _SettingsTile(
                     theme: theme,
                     icon: Icons.receipt_long_outlined,
-                    title: 'Your orders',
+                    title: 'profile.your_orders'.tr(),
                     trailing: const Icon(
                       Icons.chevron_right,
                       color: Colors.grey,
                     ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Orders feature coming soon'),
+                        SnackBar(
+                          content: Text('profile.orders_coming_soon'.tr()),
                         ),
                       );
                     },
@@ -192,8 +192,8 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Notifications feature coming soon'),
+                        SnackBar(
+                          content: Text('profile.notifications_coming_soon'.tr()),
                         ),
                       );
                     },
@@ -209,7 +209,7 @@ class ProfileScreen extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 4, bottom: 12),
                   child: Text(
-                    'Settings',
+                    'profile.settings'.tr(),
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
@@ -303,11 +303,7 @@ class ProfileScreen extends ConsumerWidget {
                       color: Colors.grey,
                     ),
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Privacy settings coming soon'),
-                        ),
-                      );
+                      context.push(AppRoutes.privacySettings.path);
                     },
                   ),
                 ],
@@ -427,24 +423,24 @@ void _showHelpDialog(BuildContext context) {
   showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Help & Support'),
+      title: Text('profile.help_support_title'.tr()),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Need help with your Nebu toys?'),
+          Text('profile.help_need_help'.tr()),
           const SizedBox(height: 16),
-          _buildHelpOption(Icons.email, 'Email Support', 'support@nebu.ai'),
+          _buildHelpOption(Icons.email, 'profile.help_email'.tr(), 'support@nebu.ai'),
           const SizedBox(height: 8),
-          _buildHelpOption(Icons.phone, 'Phone', '+1 (555) 123-4567'),
+          _buildHelpOption(Icons.phone, 'profile.help_phone'.tr(), '+1 (555) 123-4567'),
           const SizedBox(height: 8),
-          _buildHelpOption(Icons.chat, 'Live Chat', 'Available 9AM-5PM EST'),
+          _buildHelpOption(Icons.chat, 'profile.help_chat'.tr(), 'profile.help_chat_hours'.tr()),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: Text('profile.help_close'.tr()),
         ),
       ],
     ),
@@ -481,11 +477,11 @@ void _showAboutDialog(BuildContext context) {
     ),
     children: [
       const SizedBox(height: 16),
-      const Text(
-        'Nebu Mobile brings your interactive toys to life with AI-powered conversations and personalized experiences.',
+      Text(
+        'profile.about_description'.tr(),
       ),
       const SizedBox(height: 8),
-      const Text('© 2025 Nebu AI. All rights reserved.'),
+      Text('profile.about_copyright'.tr()),
     ],
   );
 }
