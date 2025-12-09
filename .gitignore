@@ -191,3 +191,5 @@ ios/Flutter/ephemeral/
 
 # Environment variables
 .env
+config/production.json
+config/staging.json
