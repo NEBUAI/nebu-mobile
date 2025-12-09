@@ -18,18 +18,15 @@ class AppConfig {
   // API Configuration
   static const apiUrl = String.fromEnvironment(
     'API_URL',
-    defaultValue: '', // Se carga desde .env en desarrollo
   );
 
   static const apiKey = String.fromEnvironment(
     'API_KEY',
-    defaultValue: '', // Se carga desde .env en desarrollo
   );
 
   // WebSocket Configuration
   static const wsUrl = String.fromEnvironment(
     'WS_URL',
-    defaultValue: '', // Se carga desde .env en desarrollo
   );
 
   // Feature Flags
@@ -119,8 +116,7 @@ class AppConfig {
   }
 
   /// Información de debug
-  static String getDebugInfo() {
-    return '''
+  static String getDebugInfo() => '''
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📱 App Configuration
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -132,7 +128,6 @@ Debug Logs: $shouldShowDebugLogs
 Crash Reporting: $shouldEnableCrashReporting
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ''';
-  }
 
   static String _maskUrl(String url) {
     if (url.isEmpty) return '[NOT SET]';

@@ -4,7 +4,6 @@ import '../config/app_config.dart';
 
 /// Ejemplo de servicio HTTP usando AppConfig
 class ApiClient {
-  late final Dio _dio;
 
   ApiClient() {
     _dio = Dio(
@@ -23,10 +22,11 @@ class ApiClient {
     // Logging solo en desarrollo
     if (AppConfig.shouldShowDebugLogs) {
       _dio.interceptors.add(
-        LogInterceptor(requestBody: true, responseBody: true, error: true),
+        LogInterceptor(requestBody: true, responseBody: true),
       );
     }
   }
+  late final Dio _dio;
 
   Dio get dio => _dio;
 

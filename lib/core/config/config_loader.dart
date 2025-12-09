@@ -17,7 +17,7 @@ class ConfigLoader {
     if (AppConfig.isDevelopment || AppConfig.isStaging) {
       try {
         _logger.d('📂 Loading .env file for ${AppConfig.environment}...');
-        await dotenv.load(fileName: '.env');
+        await dotenv.load();
         _logger.i('✅ .env file loaded successfully');
 
         // Configurar valores en runtime desde .env
