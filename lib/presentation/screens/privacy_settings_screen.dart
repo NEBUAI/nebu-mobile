@@ -24,10 +24,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('privacy.title'.tr()),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: Text('privacy.title'.tr()), elevation: 0),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -148,7 +145,10 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             theme,
             children: [
               ListTile(
-                leading: Icon(Icons.description, color: theme.colorScheme.primary),
+                leading: Icon(
+                  Icons.description,
+                  color: theme.colorScheme.primary,
+                ),
                 title: Text('privacy.privacy_policy'.tr()),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
@@ -194,30 +194,31 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
   }
 
   Widget _buildSectionHeader(String title, ThemeData theme) => Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 12),
-      child: Text(
-        title,
-        style: theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: theme.colorScheme.onSurface,
-        ),
+    padding: const EdgeInsets.only(left: 4, bottom: 12),
+    child: Text(
+      title,
+      style: theme.textTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+        color: theme.colorScheme.onSurface,
       ),
-    );
+    ),
+  );
 
-  Widget _buildCard(ThemeData theme, {required List<Widget> children}) => DecoratedBox(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(children: children),
-    );
+  Widget _buildCard(ThemeData theme, {required List<Widget> children}) =>
+      DecoratedBox(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(children: children),
+      );
 
   Widget _buildPermissionTile(
     ThemeData theme,
@@ -226,35 +227,35 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
     String subtitle,
     bool granted,
   ) => ListTile(
-      leading: Icon(icon, color: theme.colorScheme.primary),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: Chip(
-        label: Text(
-          granted ? 'privacy.granted'.tr() : 'privacy.denied'.tr(),
-          style: TextStyle(
-            fontSize: 12,
-            color: granted ? Colors.green : Colors.orange,
+    leading: Icon(icon, color: theme.colorScheme.primary),
+    title: Text(title),
+    subtitle: Text(subtitle),
+    trailing: Chip(
+      label: Text(
+        granted ? 'privacy.granted'.tr() : 'privacy.denied'.tr(),
+        style: TextStyle(
+          fontSize: 12,
+          color: granted ? Colors.green : Colors.orange,
+        ),
+      ),
+      backgroundColor: granted
+          ? Colors.green.withValues(alpha: 0.1)
+          : Colors.orange.withValues(alpha: 0.1),
+    ),
+    onTap: () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('privacy.manage_in_settings'.tr()),
+          action: SnackBarAction(
+            label: 'privacy.open_settings'.tr(),
+            onPressed: () {
+              // TODO: Open app settings
+            },
           ),
         ),
-        backgroundColor: granted
-            ? Colors.green.withValues(alpha: 0.1)
-            : Colors.orange.withValues(alpha: 0.1),
-      ),
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('privacy.manage_in_settings'.tr()),
-            action: SnackBarAction(
-              label: 'privacy.open_settings'.tr(),
-              onPressed: () {
-                // TODO: Open app settings
-              },
-            ),
-          ),
-        );
-      },
-    );
+      );
+    },
+  );
 
   void _showDownloadDataDialog() {
     showDialog<void>(
@@ -271,9 +272,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('privacy.download_started'.tr()),
-                ),
+                SnackBar(content: Text('privacy.download_started'.tr())),
               );
             },
             child: Text('privacy.download'.tr()),
@@ -325,22 +324,22 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
     String time,
     bool current,
   ) => ListTile(
-      leading: Icon(
-        Icons.phone_android,
-        color: current ? Colors.green : Colors.grey,
-      ),
-      title: Text(device),
-      subtitle: Text('$location • $time'),
-      trailing: current
-          ? Chip(
-              label: Text(
-                'privacy.current'.tr(),
-                style: const TextStyle(fontSize: 10),
-              ),
-              backgroundColor: Colors.green.withValues(alpha: 0.1),
-            )
-          : null,
-    );
+    leading: Icon(
+      Icons.phone_android,
+      color: current ? Colors.green : Colors.grey,
+    ),
+    title: Text(device),
+    subtitle: Text('$location • $time'),
+    trailing: current
+        ? Chip(
+            label: Text(
+              'privacy.current'.tr(),
+              style: const TextStyle(fontSize: 10),
+            ),
+            backgroundColor: Colors.green.withValues(alpha: 0.1),
+          )
+        : null,
+  );
 
   void _showDeleteAccountDialog() {
     showDialog<void>(
@@ -376,7 +375,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             onPressed: () async {
               Navigator.pop(context);
               final confirmed = await _confirmDeleteAccount();
-              if (confirmed ?? false && mounted) {
+              if ((confirmed ?? false) && mounted) {
                 // TODO: Implement account deletion
                 await ref.read(authProvider.notifier).logout();
                 if (mounted) {

@@ -10,13 +10,9 @@ class PrivacyPolicyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isSpanish = context.locale.languageCode == 'es';
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('privacy_policy.title'.tr()),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: Text('privacy_policy.title'.tr()), elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -42,7 +38,9 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             _buildSection(
               theme,
               'privacy_policy.introduction_title'.tr(),
-              'privacy_policy.introduction_content'.tr(args: [AppConfig.appName]),
+              'privacy_policy.introduction_content'.tr(
+                args: [AppConfig.appName],
+              ),
             ),
 
             // Information We Collect
@@ -120,15 +118,14 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                color: theme.colorScheme.primaryContainer.withValues(
+                  alpha: 0.3,
+                ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.email,
-                    color: theme.colorScheme.primary,
-                  ),
+                  Icon(Icons.email, color: theme.colorScheme.primary),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -160,46 +157,40 @@ class PrivacyPolicyScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSection(ThemeData theme, String title, String content) => Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            content,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-
-  Widget _buildBulletPoint(ThemeData theme, String text) => Padding(
-      padding: const EdgeInsets.only(left: 16, bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '• ',
-            style: theme.textTheme.bodyMedium,
-          ),
-          Expanded(
-            child: Text(
-              text,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                height: 1.5,
+  Widget _buildSection(ThemeData theme, String title, String content) =>
+      Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 8),
+            Text(
+              content,
+              style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildBulletPoint(ThemeData theme, String text) => Padding(
+    padding: const EdgeInsets.only(left: 16, bottom: 8),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('• ', style: theme.textTheme.bodyMedium),
+        Expanded(
+          child: Text(
+            text,
+            style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 }
