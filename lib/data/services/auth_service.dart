@@ -28,12 +28,15 @@ class AuthService {
     required String password,
   }) async {
     try {
+      // Send as 'email' field for backend compatibility
+      // The backend should accept both email and username in this field
       final response = await _dio.post<Map<String, dynamic>>(
         '/auth/login',
-        data: {'identifier': identifier, 'password': password},
+        data: {'email': identifier, 'password': password},
       );
 
-      final authResponse = AuthResponse.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResponse = AuthResponse.fromBackend(response.data!);
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);
@@ -72,7 +75,8 @@ class AuthService {
         },
       );
 
-      final authResponse = AuthResponse.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResponse = AuthResponse.fromBackend(response.data!);
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);
@@ -102,7 +106,8 @@ class AuthService {
         data: {'token': googleToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResult = SocialAuthResult.fromBackend(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -131,7 +136,8 @@ class AuthService {
         data: {'token': facebookToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResult = SocialAuthResult.fromBackend(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);
@@ -160,7 +166,8 @@ class AuthService {
         data: {'token': appleToken},
       );
 
-      final authResult = SocialAuthResult.fromJson(response.data!);
+      // Use fromBackend to handle NestJS response format
+      final authResult = SocialAuthResult.fromBackend(response.data!);
 
       if (authResult.success && authResult.tokens != null) {
         await _storeTokens(authResult.tokens!);

@@ -99,15 +99,15 @@ class AppRouter {
   static List<RouteBase> _getRoutesStatic() => [
     GoRoute(
       path: AppRoutes.splash.path,
-      builder: (_, __) => const SplashScreen(),
+      builder: (_, _) => const SplashScreen(),
     ),
     GoRoute(
       path: AppRoutes.welcome.path,
-      builder: (_, __) => const WelcomeScreen(),
+      builder: (_, _) => const WelcomeScreen(),
     ),
     GoRoute(
       path: AppRoutes.login.path,
-      builder: (_, __) => const LoginScreen(),
+      builder: (_, _) => const LoginScreen(),
     ),
     GoRoute(
       path: AppRoutes.signUp.path,
@@ -120,20 +120,20 @@ class AppRouter {
       routes: [
         GoRoute(
           path: AppRoutes.home.path,
-          pageBuilder: (_, __) => const NoTransitionPage(child: HomeScreen()),
+          pageBuilder: (_, _) => const NoTransitionPage(child: HomeScreen()),
         ),
         GoRoute(
           path: AppRoutes.activityLog.path,
-          pageBuilder: (_, __) =>
+          pageBuilder: (_, _) =>
               const NoTransitionPage(child: ActivityLogScreen()),
         ),
         GoRoute(
           path: AppRoutes.myToys.path,
-          pageBuilder: (_, __) => const NoTransitionPage(child: MyToysScreen()),
+          pageBuilder: (_, _) => const NoTransitionPage(child: MyToysScreen()),
         ),
         GoRoute(
           path: AppRoutes.profile.path,
-          pageBuilder: (_, __) =>
+          pageBuilder: (_, _) =>
               const NoTransitionPage(child: ProfileScreen()),
         ),
       ],
@@ -197,23 +197,23 @@ class AppRouter {
     ),
     GoRoute(
       path: AppRoutes.personalitySetup.path,
-      builder: (_, __) => const PersonalitySetupScreen(),
+      builder: (_, _) => const PersonalitySetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.voiceSetup.path,
-      builder: (_, __) => const VoiceSetupScreen(),
+      builder: (_, _) => const VoiceSetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.favoritesSetup.path,
-      builder: (_, __) => const FavoritesSetupScreen(),
+      builder: (_, _) => const FavoritesSetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.worldInfoSetup.path,
-      builder: (_, __) => const WorldInfoSetupScreen(),
+      builder: (_, _) => const WorldInfoSetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.localChildSetup.path,
-      builder: (_, __) => const LocalChildSetupScreen(),
+      builder: (_, _) => const LocalChildSetupScreen(),
     ),
   ];
 }
