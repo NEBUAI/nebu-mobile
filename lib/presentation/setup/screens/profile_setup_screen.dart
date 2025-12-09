@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_input.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
-import '../setup_wizard_controller.dart';
+import '../setup_wizard_notifier.dart';
 
-class ProfileSetupScreen extends StatefulWidget {
+class ProfileSetupScreen extends ConsumerStatefulWidget {
   const ProfileSetupScreen({super.key});
 
   @override
-  State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
+  ConsumerState<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
 }
 
-class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
-  final controller = Get.find<SetupWizardController>();
+class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -24,8 +23,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = controller.userName.value;
-    _emailController.text = controller.userEmail.value;
+    // Inicializar en didChangeDependencies donde ref está disponible
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final state = ref.read(setupWizardProvider);
+    _nameController.text = state.userName;
+    _emailController.text = state.userEmail;
   }
 
   @override
@@ -47,7 +53,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
       if (image != null) {
         // Store the image path
-        controller.avatarUrl.value = image.path;
+        ref.read(setupWizardProvider.notifier).updateAvatarUrl(image.path);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Photo captured successfully')),
@@ -75,7 +81,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
       if (image != null) {
         // Store the image path
-        controller.avatarUrl.value = image.path;
+        ref.read(setupWizardProvider.notifier).updateAvatarUrl(image.path);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Image selected successfully')),
@@ -93,6 +99,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final SetupWizardState state = ref.watch(setupWizardProvider);
+    final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -109,8 +117,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 const SizedBox(height: 40),
                 // Progress indicator
                 SetupProgressIndicator(
-                  currentStep: controller.currentStep.value + 1,
-                  totalSteps: controller.totalSteps,
+                  currentStep: state.currentStep + 1,
+                  totalSteps: SetupWizardState.totalSteps,
                 ),
                 const SizedBox(height: 40),
 
@@ -144,7 +152,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        gradient: controller.avatarUrl.value.isNotEmpty
+                        gradient: state.avatarUrl.isNotEmpty
                             ? null
                             : const LinearGradient(
                                 colors: AppTheme.primaryGradient,
@@ -156,14 +164,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           color: AppTheme.primaryLight,
                           width: 3,
                         ),
-                        image: controller.avatarUrl.value.isNotEmpty
+                        image: state.avatarUrl.isNotEmpty
                             ? DecorationImage(
-                                image: NetworkImage(controller.avatarUrl.value),
+                                image: NetworkImage(state.avatarUrl),
                                 fit: BoxFit.cover,
                               )
                             : null,
                       ),
-                      child: controller.avatarUrl.value.isEmpty
+                      child: state.avatarUrl.isEmpty
                           ? const Icon(
                               Icons.person_add,
                               size: 40,
@@ -198,7 +206,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         label: 'Full Name',
                         hint: 'Enter your full name',
                         controller: _nameController,
-                        onChanged: (value) => controller.userName.value = value,
+                        onChanged: (value) => notifier.updateUserName(value),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your name';
@@ -218,13 +226,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         label: 'Email Address',
                         hint: 'Enter your email address',
                         controller: _emailController,
-                        onChanged: (value) =>
-                            controller.userEmail.value = value,
+                        onChanged: (value) => notifier.updateUserEmail(value),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your email';
                           }
-                          if (!GetUtils.isEmail(value.trim())) {
+                          if (!_isValidEmail(value.trim())) {
                             return 'Please enter a valid email address';
                           }
                           return null;
@@ -283,7 +290,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextButton(
-                      onPressed: controller.previousStep,
+                      onPressed: notifier.previousStep,
                       child: Text(
                         'Back',
                         style: TextStyle(
@@ -306,8 +313,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   void _validateAndContinue() {
     if (_formKey.currentState!.validate()) {
-      controller.nextStep();
+      ref.read(setupWizardProvider.notifier).nextStep();
     }
+  }
+
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegex.hasMatch(email);
   }
 
   void _showAvatarOptions() {
@@ -349,7 +363,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 return GestureDetector(
                   onTap: () {
                     // Store avatar as local identifier instead of external URL
-                    controller.avatarUrl.value = 'avatar_${index + 1}';
+                    ref
+                        .read(setupWizardProvider.notifier)
+                        .updateAvatarUrl('avatar_${index + 1}');
                     Navigator.pop(context);
                   },
                   child: DecoratedBox(

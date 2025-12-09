@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
-import '../setup_wizard_controller.dart';
+import '../setup_wizard_notifier.dart';
 
-class CompletionScreen extends StatefulWidget {
+class CompletionScreen extends ConsumerStatefulWidget {
   const CompletionScreen({super.key});
 
   @override
-  State<CompletionScreen> createState() => _CompletionScreenState();
+  ConsumerState<CompletionScreen> createState() => _CompletionScreenState();
 }
 
-class _CompletionScreenState extends State<CompletionScreen>
+class _CompletionScreenState extends ConsumerState<CompletionScreen>
     with TickerProviderStateMixin {
-  final controller = Get.find<SetupWizardController>();
   late AnimationController _animationController;
   late AnimationController _checkAnimationController;
   late Animation<double> _scaleAnimation;
@@ -64,6 +64,8 @@ class _CompletionScreenState extends State<CompletionScreen>
 
   @override
   Widget build(BuildContext context) {
+    final SetupWizardState state = ref.watch(setupWizardProvider);
+    final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -78,8 +80,8 @@ class _CompletionScreenState extends State<CompletionScreen>
               const SizedBox(height: 40),
               // Progress indicator
               SetupProgressIndicator(
-                currentStep: controller.currentStep.value + 1,
-                totalSteps: controller.totalSteps,
+                currentStep: state.currentStep + 1,
+                totalSteps: SetupWizardState.totalSteps,
               ),
               const SizedBox(height: 60),
 
@@ -152,12 +154,15 @@ class _CompletionScreenState extends State<CompletionScreen>
               ),
 
               // Summary section
-              Expanded(flex: 2, child: _buildSummarySection(isDark)),
+              Expanded(flex: 2, child: _buildSummarySection(state, isDark)),
 
               // Action button
               CustomButton(
                 text: 'Start Using Nebu',
-                onPressed: controller.completeSetup,
+                onPressed: () {
+                  notifier.completeSetup();
+                  context.go('/main');
+                },
                 isFullWidth: true,
                 icon: Icons.rocket_launch,
               ),
@@ -170,7 +175,7 @@ class _CompletionScreenState extends State<CompletionScreen>
     );
   }
 
-  Widget _buildSummarySection(bool isDark) => Container(
+  Widget _buildSummarySection(SetupWizardState state, bool isDark) => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
@@ -208,30 +213,28 @@ class _CompletionScreenState extends State<CompletionScreen>
         _buildSummaryItem(
           icon: Icons.person,
           title: 'Profile',
-          value: controller.userName.value.isNotEmpty
-              ? controller.userName.value
-              : 'Not set',
+          value: state.userName.isNotEmpty ? state.userName : 'Not set',
           isDark: isDark,
         ),
 
         _buildSummaryItem(
           icon: Icons.language,
           title: 'Language',
-          value: _getLanguageName(controller.selectedLanguage.value),
+          value: _getLanguageName(state.selectedLanguage),
           isDark: isDark,
         ),
 
         _buildSummaryItem(
           icon: Icons.mic,
           title: 'Voice',
-          value: controller.voiceEnabled.value ? 'Enabled' : 'Disabled',
+          value: state.voiceEnabled ? 'Enabled' : 'Disabled',
           isDark: isDark,
         ),
 
         _buildSummaryItem(
           icon: Icons.notifications,
           title: 'Notifications',
-          value: controller.notificationsEnabled.value ? 'Enabled' : 'Disabled',
+          value: state.notificationsEnabled ? 'Enabled' : 'Disabled',
           isDark: isDark,
         ),
       ],
