@@ -63,7 +63,7 @@ class ToyService {
       final response = await _apiService.get<List<dynamic>>('/toys/my-toys');
 
       _logger.d('🎮 [TOY_SERVICE] Raw response type: ${response.runtimeType}');
-      _logger.d('🎮 [TOY_SERVICE] Response length: ${response.length}');
+      _logger.d('🎮 [TOY_SERVICE] Response: $response');
 
       if (response.isEmpty) {
         _logger.i('🎮 [TOY_SERVICE] No toys found, returning empty list');

@@ -19,7 +19,8 @@ final bluetoothConnectionListenerProvider = Provider<void>((ref) {
 
     // Obtener toys del provider
     final toysAsync = ref.read(toyProvider);
-    final toys = toysAsync.value ?? [];
+    // Usar hasValue para evitar ProviderException si está en error
+    final toys = toysAsync.hasValue ? toysAsync.value! : <Toy>[];
     final currentToy = toys.isNotEmpty ? toys.first : null;
 
     if (connectionState == fbp.BluetoothConnectionState.connected) {

@@ -94,22 +94,55 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildActiveToysList(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final connectedDevices = ref.watch(connectedDevicesProvider);
 
-    return connectedDevices.when(
-      data: (devices) {
-        if (devices.isEmpty) {
-          return _buildNoToysPlaceholder(theme);
-        }
+    try {
+      final connectedDevices = ref.watch(connectedDevicesProvider);
 
-        return Column(
-          children: devices
-              .map((device) => _DeviceBatteryCard(device: device))
-              .toList(),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Container(
+      return connectedDevices.when(
+        data: (devices) {
+          if (devices.isEmpty) {
+            return _buildNoToysPlaceholder(theme);
+          }
+
+          return Column(
+            children: devices
+                .map((device) => _DeviceBatteryCard(device: device))
+                .toList(),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: theme.colorScheme.error.withValues(alpha: 0.3),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 32,
+                color: theme.colorScheme.error,
+              ),
+              const SizedBox(height: 8),
+              SelectableText(
+                'connectedDevicesProvider Error: $error\n\nStack: ${stack.toString().substring(0, 200)}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onErrorContainer,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    } catch (e, stack) {
+      // Catch ProviderException here
+      return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
@@ -128,17 +161,16 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             SelectableText(
-              '$error',
+              'ProviderException in home: $e\n\nStack: ${stack.toString().substring(0, 200)}',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onErrorContainer,
               ),
               textAlign: TextAlign.center,
-              maxLines: 3,
             ),
           ],
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget _buildNoToysPlaceholder(ThemeData theme) => Container(
