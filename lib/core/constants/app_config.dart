@@ -16,6 +16,6 @@ class AppConfig {
 
   // Environment variables
   static String get apiBaseUrl =>
-      dotenv.env['API_BASE_URL'] ?? 'https://default-api.com';
+      dotenv.env['API_URL'] ?? 'https://default-api.com';
   static String get apiKey => dotenv.env['API_KEY'] ?? 'default-api-key';
 }

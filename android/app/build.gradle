@@ -18,12 +18,12 @@ android {
     ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = '17'
     }
 
     defaultConfig {
@@ -53,13 +53,13 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            
-            // Optimizaciones
+
+            // Optimizaciones con ProGuard rules actualizadas para Flutter 2025
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        
+
         debug {
             signingConfig signingConfigs.debug
         }

@@ -1,4 +1,4 @@
-package com.example.nebu_mobile_flutter
+package com.nebu.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 

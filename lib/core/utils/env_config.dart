@@ -7,7 +7,7 @@ class EnvConfig {
   // Backend API
   static String get urlBackend => dotenv.get('URL_BACKEND', fallback: '');
   static String get apiBaseUrl =>
-      dotenv.get('API_BASE_URL', fallback: 'http://localhost:3000');
+      dotenv.get('API_URL', fallback: 'http://localhost:3000');
   static int get apiTimeout =>
       int.tryParse(dotenv.get('API_TIMEOUT', fallback: '30000')) ?? 30000;
 

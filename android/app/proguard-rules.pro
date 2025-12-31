@@ -1,6 +1,6 @@
-# ProGuard rules for Nebu Mobile
+# ProGuard rules for Nebu Mobile (Updated for Flutter 3.x+ / 2025)
 
-# Flutter
+# Flutter - Core
 -keep class io.flutter.app.** { *; }
 -keep class io.flutter.plugin.**  { *; }
 -keep class io.flutter.util.**  { *; }
@@ -9,6 +9,13 @@
 -keep class io.flutter.plugins.**  { *; }
 -keep class io.flutter.embedding.** { *; }
 -dontwarn io.flutter.embedding.**
+
+# Flutter - Keep GeneratedPluginRegistrant
+-keep class io.flutter.plugins.GeneratedPluginRegistrant { *; }
+
+# Dart - Keep for debugging
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
 # Google Play Core (para deferred components)
 -keep class com.google.android.play.core.** { *; }
@@ -63,3 +70,52 @@
     public static *** v(...);
     public static *** i(...);
 }
+
+# ========== FLUTTER PACKAGES - 2025 UPDATES ==========
+
+# JSON Serialization (json_annotation / json_serializable)
+-keepattributes *Annotation*
+-keep class **$*.g.dart { *; }
+-keep class **.g.dart { *; }
+-keep class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Dio (HTTP Client)
+-keep class io.flutter.plugins.** { *; }
+-keepclassmembers class * {
+    @retrofit2.http.* <methods>;
+}
+
+# Easy Localization (CRÍTICO)
+-keep class easy_localization.** { *; }
+-keep class * extends easy_localization.** { *; }
+
+# Flutter Secure Storage
+-keep class com.it_nomads.fluttersecurestorage.** { *; }
+-dontwarn com.it_nomads.fluttersecurestorage.**
+
+# Shared Preferences
+-keep class io.flutter.plugins.sharedpreferences.** { *; }
+
+# Flutter Blue Plus (Bluetooth)
+-keep class com.lib.flutter_blue_plus.** { *; }
+-dontwarn com.lib.flutter_blue_plus.**
+
+# Permission Handler
+-keep class com.baseflow.permissionhandler.** { *; }
+
+# Camera
+-keep class io.flutter.plugins.camera.** { *; }
+
+# Mobile Scanner (QR)
+-keep class dev.steenbakker.mobile_scanner.** { *; }
+
+# Image Picker
+-keep class io.flutter.plugins.imagepicker.** { *; }
+
+# Just Audio
+-keep class com.ryanheise.just_audio.** { *; }
+
+# Google Sign In
+-keep class io.flutter.plugins.googlesignin.** { *; }
