@@ -1,92 +1,77 @@
+// Excepción personalizada
+class ApiUrlNotConfiguredException implements Exception {
+  final String message;
+
+  ApiUrlNotConfiguredException([this.message = 'API_URL no configurada']);
+
+  @override
+  String toString() => message;
+}
+
 /// Configuración de la aplicación
-///
-/// Usa dart-define en producción y .env en desarrollo
-///
-/// Build de producción:
-/// ```bash
-/// flutter build apk --dart-define=ENV=production \
-///   --dart-define=API_URL=https://api.nebu.ai \
-///   --dart-define=API_KEY=your_api_key
-/// ```
-///
 class AppConfig {
-  // Environment
   static const environment = String.fromEnvironment(
     'ENV',
     defaultValue: 'development',
   );
-
-  // API Configuration
-  static const apiUrl = String.fromEnvironment(
-    'API_URL',
-  );
-
-  static const apiKey = String.fromEnvironment(
-    'API_KEY',
-  );
-
-  // WebSocket Configuration
-  static const wsUrl = String.fromEnvironment(
-    'WS_URL',
-  );
-
-  // Feature Flags
+  static const apiUrl = String.fromEnvironment('API_URL');
+  static const apiKey = String.fromEnvironment('API_KEY');
+  static const wsUrl = String.fromEnvironment('WS_URL');
   static const enableDebugLogs = String.fromEnvironment(
     'ENABLE_DEBUG_LOGS',
     defaultValue: 'true',
   );
-
   static const enableCrashReporting = String.fromEnvironment(
     'ENABLE_CRASH_REPORTING',
     defaultValue: 'false',
   );
 
-  // Computed properties
   static bool get isProduction => environment == 'production';
   static bool get isDevelopment => environment == 'development';
   static bool get isStaging => environment == 'staging';
-
   static bool get shouldShowDebugLogs =>
       enableDebugLogs.toLowerCase() == 'true' && !isProduction;
-
   static bool get shouldEnableCrashReporting =>
       enableCrashReporting.toLowerCase() == 'true';
 
-  // Runtime values (loaded from .env in development)
   static String? _runtimeApiUrl;
   static String? _runtimeApiKey;
   static String? _runtimeWsUrl;
 
   /// Obtener la URL de la API (prioriza dart-define sobre .env)
   static String getApiUrl() {
-    if (apiUrl.isNotEmpty) return apiUrl;
+    if (apiUrl.isNotEmpty) {
+      return apiUrl;
+    }
     if (_runtimeApiUrl != null && _runtimeApiUrl!.isNotEmpty) {
       return _runtimeApiUrl!;
     }
-    throw Exception('API_URL not configured. Check .env or dart-define');
+    throw ApiUrlNotConfiguredException();
   }
 
   /// Obtener la API Key (prioriza dart-define sobre .env)
   static String getApiKey() {
-    if (apiKey.isNotEmpty) return apiKey;
+    if (apiKey.isNotEmpty) {
+      return apiKey;
+    }
     if (_runtimeApiKey != null && _runtimeApiKey!.isNotEmpty) {
       return _runtimeApiKey!;
     }
-    // API Key es opcional, retornar vacío si no está configurado
     return '';
   }
 
   /// Obtener la URL de WebSocket (prioriza dart-define sobre .env)
   static String getWsUrl() {
-    if (wsUrl.isNotEmpty) return wsUrl;
+    if (wsUrl.isNotEmpty) {
+      return wsUrl;
+    }
     if (_runtimeWsUrl != null && _runtimeWsUrl!.isNotEmpty) {
       return _runtimeWsUrl!;
     }
-    // WS URL es opcional, retornar vacío si no está configurado
     return '';
   }
 
-  /// Configurar valores en runtime (usado con flutter_dotenv en desarrollo)
+  /// Configurar valores en runtime
   static void setRuntimeConfig({
     String? apiUrl,
     String? apiKey,
@@ -103,20 +88,21 @@ class AppConfig {
 
     try {
       getApiUrl();
+    } on ApiUrlNotConfiguredException catch (e) {
+      errors.add('❌ ${e.message}');
     } catch (e) {
-      errors.add('❌ API_URL no configurada');
+      errors.add('❌ Error inesperado: ${e.toString()}');
     }
 
     if (errors.isNotEmpty) {
       throw Exception(
         'Configuración inválida:\n${errors.join('\n')}\n\n'
-        'En desarrollo: Verifica tu archivo .env\n'
-        'En producción: Usa --dart-define en el build',
+            'En desarrollo: Verifica tu archivo .env\n'
+            'En producción: Usa --dart-define en el build',
       );
     }
   }
 
-  /// Información de debug
   static String getDebugInfo() => '''
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📱 App Configuration
@@ -132,14 +118,12 @@ Crash Reporting: $shouldEnableCrashReporting
 
   static String _maskUrl(String url) {
     if (url.isEmpty) {
-        return '[NOT SET]';
+      return '[NOT SET]';
     }
     if (isProduction) {
-      // En producción, ocultar parte de la URL
       final uri = Uri.parse(url);
       return '${uri.scheme}://***${uri.host.substring(uri.host.length - 10)}';
-    }
-    else {
+    } else {
       return url;
     }
   }

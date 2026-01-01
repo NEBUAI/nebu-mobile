@@ -215,7 +215,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
 
   Widget _buildMemorySection() {
     final memory = _healthStatus!.memory;
-    if (memory == null) return const SizedBox.shrink();
+    if (memory == null) {
+      return const SizedBox.shrink();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +239,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
 
   Widget _buildHealthChecksSection() {
     final checks = _healthStatus!.checks;
-    if (checks == null) return const SizedBox.shrink();
+    if (checks == null) {
+      return const SizedBox.shrink();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +260,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
 
   Widget _buildPerformanceSection() {
     final performance = _healthStatus!.performance;
-    if (performance == null) return const SizedBox.shrink();
+    if (performance == null) {
+      return const SizedBox.shrink();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

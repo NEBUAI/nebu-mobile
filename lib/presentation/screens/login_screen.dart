@@ -27,7 +27,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _handleEmailLogin() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
     await ref.read(authProvider.notifier).login(
           identifier: _identifierController.text.trim(),

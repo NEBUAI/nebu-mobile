@@ -56,7 +56,9 @@ class ActivityNotifier extends Notifier<ActivityState> {
     int limit = 20,
     bool append = false,
   }) async {
-    if (state.isLoading) return;
+    if (state.isLoading) {
+      return;
+    }
 
     state = state.copyWith(isLoading: true);
 
@@ -97,7 +99,9 @@ class ActivityNotifier extends Notifier<ActivityState> {
     DateTime? endDate,
     int limit = 20,
   }) async {
-    if (!state.hasMore || state.isLoading) return;
+    if (!state.hasMore || state.isLoading) {
+      return;
+    }
 
     await loadActivities(
       userId: userId,
@@ -194,7 +198,9 @@ final activitiesByToyProvider = Provider.family<List<Activity>, String?>((
   toyId,
 ) {
   final state = ref.watch(activityNotifierProvider);
-  if (toyId == null) return state.activities;
+  if (toyId == null) {
+    return state.activities;
+  }
   return state.activities.where((a) => a.toyId == toyId).toList();
 });
 

@@ -50,7 +50,9 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       ),
     );
 
-    if (confirmed != true || !mounted) return;
+    if (confirmed != true || !mounted) {
+      return;
+    }
 
     try {
       await ref.read(toyProvider.notifier).deleteToy(toy.id);

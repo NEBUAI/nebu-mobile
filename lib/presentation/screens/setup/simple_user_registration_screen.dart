@@ -61,7 +61,9 @@ class _SimpleUserRegistrationScreenState
 
       _logger.d('User created successfully: ${user.id}');
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       setState(() {
         _isLoading = false;

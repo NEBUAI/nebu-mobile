@@ -155,7 +155,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked error: $errorMessage');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking error activity: $e');

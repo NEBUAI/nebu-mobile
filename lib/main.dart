@@ -65,7 +65,7 @@ class NebuApp extends ConsumerWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
-      error: (_, __) => const MaterialApp(
+      error: (_, _) => const MaterialApp(
         title: AppConfig.appName,
         debugShowCheckedModeBanner: false,
         home: Scaffold(body: Center(child: Text('Error loading theme'))),

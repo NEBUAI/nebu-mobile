@@ -36,7 +36,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   Future<void> _updateProfile() async {
     final user = ref.read(authProvider).value;
-    if (user == null) return;
+    if (user == null) {
+      return;
+    }
 
     final updatedUser = user.copyWith(
       firstName: _firstNameController.text,

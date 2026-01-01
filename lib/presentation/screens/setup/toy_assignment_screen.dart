@@ -57,7 +57,9 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
             : _toyNameController.text.trim(),
       );
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       if (response.success && response.toy != null) {
         // Llamar al callback si existe
