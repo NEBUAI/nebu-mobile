@@ -35,12 +35,8 @@ class AuthService {
         data: {'email': identifier, 'password': password},
       );
 
-      print('🔐 [AUTH_SERVICE] Login response data: ${response.data}');
-
       // Use fromBackend to handle NestJS response format
       final authResponse = AuthResponse.fromBackend(response.data!);
-
-      print('🔐 [AUTH_SERVICE] Parsed user: ${authResponse.user?.toJson()}');
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);

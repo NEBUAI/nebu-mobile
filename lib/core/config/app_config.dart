@@ -1,8 +1,8 @@
 // Excepción personalizada
 class ApiUrlNotConfiguredException implements Exception {
-  final String message;
 
   ApiUrlNotConfiguredException([this.message = 'API_URL no configurada']);
+  final String message;
 
   @override
   String toString() => message;
@@ -91,7 +91,7 @@ class AppConfig {
     } on ApiUrlNotConfiguredException catch (e) {
       errors.add('❌ ${e.message}');
     } catch (e) {
-      errors.add('❌ Error inesperado: ${e.toString()}');
+      errors.add('❌ Error inesperado: $e');
     }
 
     if (errors.isNotEmpty) {

@@ -83,11 +83,21 @@ class UserService {
       _logger.d('Updating current user profile');
 
       final data = <String, dynamic>{};
-      if (firstName != null) data['firstName'] = firstName;
-      if (lastName != null) data['lastName'] = lastName;
-      if (username != null) data['username'] = username;
-      if (bio != null) data['bio'] = bio;
-      if (phone != null) data['phone'] = phone;
+      if (firstName != null) {
+        data['firstName'] = firstName;
+      }
+      if (lastName != null) {
+        data['lastName'] = lastName;
+      }
+      if (username != null) {
+        data['username'] = username;
+      }
+      if (bio != null) {
+        data['bio'] = bio;
+      }
+      if (phone != null) {
+        data['phone'] = phone;
+      }
       if (preferredLanguage != null) {
         data['preferredLanguage'] = preferredLanguage;
       }

@@ -187,7 +187,9 @@ final activityNotifierProvider =
 final activitiesByTypeProvider = Provider.family<List<Activity>, ActivityType?>(
   (ref, type) {
     final state = ref.watch(activityNotifierProvider);
-    if (type == null) return state.activities;
+    if (type == null) {
+      return state.activities;
+    }
     return state.activities.where((a) => a.type == type).toList();
   },
 );
