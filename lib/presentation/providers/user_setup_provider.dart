@@ -152,8 +152,9 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
     required String userId,
     required UserProfile profile,
   }) async {
-    if (state.setup == null) return false;
-
+    if (state.setup == null) {
+      return false;
+    }
     state = state.copyWith(isSaving: true);
 
     try {
