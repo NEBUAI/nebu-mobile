@@ -238,7 +238,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
       final status = await Permission.microphone.request();
       ref
           .read<SetupWizardNotifier>(setupWizardProvider.notifier)
-          .updateMicrophonePermission(status.isGranted);
+          .updateMicrophonePermission(granted: status.isGranted);
 
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Microphone');
@@ -261,7 +261,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
       final status = await Permission.notification.request();
       ref
           .read<SetupWizardNotifier>(setupWizardProvider.notifier)
-          .updateNotificationsPermission(status.isGranted);
+          .updateNotificationsPermission(granted: status.isGranted);
 
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Notifications');
@@ -284,7 +284,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
       final status = await Permission.camera.request();
       ref
           .read<SetupWizardNotifier>(setupWizardProvider.notifier)
-          .updateCameraPermission(status.isGranted);
+          .updateCameraPermission(granted: status.isGranted);
 
       if (!status.isGranted) {
         _showPermissionDeniedDialog('Camera');

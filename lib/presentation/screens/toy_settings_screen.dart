@@ -33,7 +33,9 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
   }
 
   Future<void> _updateToySettings() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
     setState(() => _isLoading = true);
 

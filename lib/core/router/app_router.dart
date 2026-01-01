@@ -123,7 +123,7 @@ class AppRouter {
     ),
     GoRoute(
       path: AppRoutes.signUp.path,
-      builder: (_, __) => const SignUpScreen(),
+      builder: (_, _) => const SignUpScreen(),
     ),
 
     // Main application shell
@@ -154,43 +154,43 @@ class AppRouter {
     // Other top-level screens
     GoRoute(
       path: AppRoutes.deviceManagement.path,
-      builder: (_, __) => const DeviceManagementScreen(),
+      builder: (_, _) => const DeviceManagementScreen(),
     ),
     GoRoute(
       path: AppRoutes.iotDevices.path,
-      builder: (_, __) => const IoTDevicesScreen(),
+      builder: (_, _) => const IoTDevicesScreen(),
     ),
     GoRoute(
       path: AppRoutes.allDevices.path,
-      builder: (_, __) => const AllDevicesScreen(),
+      builder: (_, _) => const AllDevicesScreen(),
     ),
     GoRoute(
       path: AppRoutes.qrScanner.path,
-      builder: (_, __) => const QRScannerScreen(),
+      builder: (_, _) => const QRScannerScreen(),
     ),
     GoRoute(
       path: AppRoutes.editProfile.path,
-      builder: (_, __) => const EditProfileScreen(),
+      builder: (_, _) => const EditProfileScreen(),
     ),
     GoRoute(
       path: AppRoutes.privacySettings.path,
-      builder: (_, __) => const PrivacySettingsScreen(),
+      builder: (_, _) => const PrivacySettingsScreen(),
     ),
     GoRoute(
       path: AppRoutes.privacyPolicy.path,
-      builder: (_, __) => const PrivacyPolicyScreen(),
+      builder: (_, _) => const PrivacyPolicyScreen(),
     ),
     GoRoute(
       path: AppRoutes.termsOfService.path,
-      builder: (_, __) => const TermsOfServiceScreen(),
+      builder: (_, _) => const TermsOfServiceScreen(),
     ),
     GoRoute(
       path: AppRoutes.orders.path,
-      builder: (_, __) => const OrdersScreen(),
+      builder: (_, _) => const OrdersScreen(),
     ),
     GoRoute(
       path: AppRoutes.notifications.path,
-      builder: (_, __) => const NotificationsScreen(),
+      builder: (_, _) => const NotificationsScreen(),
     ),
     GoRoute(
       path: AppRoutes.toySettings.path,
@@ -207,7 +207,7 @@ class AppRouter {
     ),
     GoRoute(
       path: AppRoutes.childProfile.path,
-      builder: (_, __) => const ChildProfileScreen(),
+      builder: (_, _) => const ChildProfileScreen(),
     ),
 
     // Setup flow
@@ -217,19 +217,19 @@ class AppRouter {
   static List<RouteBase> _getSetupRoutesStatic() => [
     GoRoute(
       path: AppRoutes.connectionSetup.path,
-      builder: (_, __) => const ConnectionSetupScreen(),
+      builder: (_, _) => const ConnectionSetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.toyNameSetup.path,
-      builder: (_, __) => const ToyNameSetupScreen(),
+      builder: (_, _) => const ToyNameSetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.wifiSetup.path,
-      builder: (_, __) => const WifiSetupScreen(),
+      builder: (_, _) => const WifiSetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.ageSetup.path,
-      builder: (_, __) => const AgeSetupScreen(),
+      builder: (_, _) => const AgeSetupScreen(),
     ),
     GoRoute(
       path: AppRoutes.personalitySetup.path,

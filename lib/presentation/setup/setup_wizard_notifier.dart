@@ -173,11 +173,11 @@ class SetupWizardNotifier extends Notifier<SetupWizardState> {
     state = state.copyWith(avatarUrl: url);
   }
 
-  void updateNotificationsEnabled(bool enabled) {
+  void updateNotificationsEnabled({required bool enabled}) {
     state = state.copyWith(notificationsEnabled: enabled);
   }
 
-  void updateVoiceEnabled(bool enabled) {
+  void updateVoiceEnabled({required bool enabled}) {
     state = state.copyWith(voiceEnabled: enabled);
   }
 
@@ -189,15 +189,15 @@ class SetupWizardNotifier extends Notifier<SetupWizardState> {
     state = state.copyWith(selectedTheme: theme);
   }
 
-  void updateMicrophonePermission(bool granted) {
+  void updateMicrophonePermission({required bool granted}) {
     state = state.copyWith(microphonePermission: granted);
   }
 
-  void updateCameraPermission(bool granted) {
+  void updateCameraPermission({required bool granted}) {
     state = state.copyWith(cameraPermission: granted);
   }
 
-  void updateNotificationsPermission(bool granted) {
+  void updateNotificationsPermission({required bool granted}) {
     state = state.copyWith(notificationsPermission: granted);
   }
 }

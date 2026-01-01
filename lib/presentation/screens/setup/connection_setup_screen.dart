@@ -102,7 +102,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
   }
 
   Future<void> _startScan() async {
-    if (_isScanning) return;
+    if (_isScanning) {
+      return;
+    }
 
     _logger.i('Starting Bluetooth scan...');
     setState(() {
@@ -131,11 +133,15 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       });
 
       Future<void>.delayed(const Duration(seconds: 15), () {
-        if (mounted) _stopScan();
+        if (mounted) {
+          _stopScan();
+        }
       });
     } on Exception catch (e) {
       _logger.e('Error starting scan: $e');
-      if (mounted) setState(() => _isScanning = false);
+      if (mounted) {
+        setState(() => _isScanning = false);
+      }
     }
   }
 
@@ -144,7 +150,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       await fbp.FlutterBluePlus.stopScan();
       await _scanSubscription?.cancel();
       _scanSubscription = null;
-      if (mounted) setState(() => _isScanning = false);
+      if (mounted) {
+        setState(() => _isScanning = false);
+      }
     } on Exception catch (e) {
       _logger.e('Error stopping scan: $e');
     }
@@ -159,7 +167,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
     try {
       await esp32service.connectToESP32(device);
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       messenger.showSnackBar(
         SnackBar(
@@ -180,7 +190,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       setState(() => _selectedDevice = device);
     } on Exception catch (e) {
       _logger.e('Failed to connect: $e');
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       messenger.showSnackBar(
         SnackBar(
@@ -198,7 +210,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
         ),
       );
     } finally {
-      if (mounted) setState(() => _isConnecting = false);
+      if (mounted) {
+        setState(() => _isConnecting = false);
+      }
     }
   }
 
@@ -258,7 +272,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF6B4EFF).withOpacity(0.1),
+                    color: const Color(0xFF6B4EFF).withValues(alpha: 26),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Icon(
@@ -407,7 +421,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                               : 'Start Scan',
                       isLoading: _isScanning,
                       onPressed: () {
-                        if (_isScanning) return;
+                        if (_isScanning) {
+                          return;
+                        }
                         if (canProceed) {
                           context.push(AppRoutes.wifiSetup.path);
                         } else if (!_isBluetoothEnabled) {
@@ -461,7 +477,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF6B4EFF).withOpacity(0.1),
+                  color: const Color(0xFF6B4EFF).withValues(alpha: 26),
                   borderRadius: BorderRadius.circular(60),
                 ),
                 child: Center(
@@ -564,7 +580,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: const Color(0xFF6B4EFF).withOpacity(0.1),
+                color: const Color(0xFF6B4EFF).withValues(alpha: 26),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -729,8 +745,12 @@ class _DeviceCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   IconData _getSignalIcon() {
-    if (signal >= -50) return Icons.signal_cellular_4_bar_rounded;
-    if (signal >= -70) return Icons.signal_cellular_alt_rounded;
+    if (signal >= -50) {
+      return Icons.signal_cellular_4_bar_rounded;
+    }
+    if (signal >= -70) {
+      return Icons.signal_cellular_alt_rounded;
+    }
     return Icons.signal_cellular_alt_1_bar_rounded;
   }
 

@@ -8,6 +8,7 @@
 ///   --dart-define=API_URL=https://api.nebu.ai \
 ///   --dart-define=API_KEY=your_api_key
 /// ```
+///
 class AppConfig {
   // Environment
   static const environment = String.fromEnvironment(
@@ -130,12 +131,16 @@ Crash Reporting: $shouldEnableCrashReporting
 ''';
 
   static String _maskUrl(String url) {
-    if (url.isEmpty) return '[NOT SET]';
+    if (url.isEmpty) {
+        return '[NOT SET]';
+    }
     if (isProduction) {
       // En producción, ocultar parte de la URL
       final uri = Uri.parse(url);
       return '${uri.scheme}://***${uri.host.substring(uri.host.length - 10)}';
     }
-    return url;
+    else {
+      return url;
+    }
   }
 }
