@@ -18,7 +18,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.3'
+          flutter-version: '3.35.6'
           channel: 'stable'
           cache: true
       
@@ -27,6 +27,9 @@ jobs:
           cd ios
           pod install
       
+      - name: Create .env file
+        run: touch .env
+
       - name: Get dependencies
         run: flutter pub get
       
