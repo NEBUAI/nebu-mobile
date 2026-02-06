@@ -27,6 +27,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     final Widget buttonChild = Row(
       mainAxisSize: isFullWidth ? MainAxisSize.max : MainAxisSize.min,
@@ -66,7 +67,7 @@ class CustomButton extends StatelessWidget {
             boxShadow: onPressed != null && !isLoading
                 ? [
                     BoxShadow(
-                      color: AppTheme.primaryLight.withValues(alpha: 0.3),
+                      color: colorScheme.primary.withValues(alpha: 0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -95,12 +96,8 @@ class CustomButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isLoading ? null : onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDark
-                  ? AppTheme.surfaceDark
-                  : AppTheme.surfaceLight,
-              foregroundColor: isDark
-                  ? AppTheme.primaryDark
-                  : AppTheme.primaryLight,
+              backgroundColor: colorScheme.surface,
+              foregroundColor: colorScheme.primary,
               elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -118,11 +115,9 @@ class CustomButton extends StatelessWidget {
           child: OutlinedButton(
             onPressed: isLoading ? null : onPressed,
             style: OutlinedButton.styleFrom(
-              foregroundColor: isDark
-                  ? AppTheme.primaryDark
-                  : AppTheme.primaryLight,
+              foregroundColor: colorScheme.primary,
               side: BorderSide(
-                color: isDark ? AppTheme.primaryDark : AppTheme.primaryLight,
+                color: colorScheme.primary,
                 width: 2,
               ),
               shape: RoundedRectangleBorder(

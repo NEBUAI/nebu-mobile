@@ -5,29 +5,29 @@ class AppTheme {
 
   // ----------------- Color Definitions -----------------
 
-  // Light Theme Colors
-  static const Color primaryLight = Color(0xFF6366F1);
-  static const Color secondaryLight = Color(0xFF8B5CF6);
-  static const Color backgroundLight = Color(0xFFF9FAFB);
+  // Light Theme Colors (Warmer Palette)
+  static const Color primaryLight = Color(0xFFF97316); // Orange 500
+  static const Color secondaryLight = Color(0xFFF43F5E); // Rose 500
+  static const Color backgroundLight = Color(0xFFFFF7ED); // Orange 50
   static const Color surfaceLight = Colors.white;
   static const Color errorLight = Color(0xFFEF4444);
   static const Color onPrimaryLight = Colors.white;
-  static const Color onBackgroundLight = Color(0xFF1F2937);
+  static const Color onBackgroundLight = Color(0xFF431407); // Orange 950
 
-  // Dark Theme Colors
-  static const Color primaryDark = Color(0xFF818CF8);
-  static const Color secondaryDark = Color(0xFFA78BFA);
-  static const Color backgroundDark = Color(0xFF111827);
-  static const Color surfaceDark = Color(0xFF1F2937);
+  // Dark Theme Colors (Warmer Palette)
+  static const Color primaryDark = Color(0xFFFB923C); // Orange 400
+  static const Color secondaryDark = Color(0xFFFB7185); // Rose 400
+  static const Color backgroundDark = Color(0xFF1C1917); // Stone 900
+  static const Color surfaceDark = Color(0xFF292524); // Stone 800
   static const Color errorDark = Color(0xFFF87171);
   static const Color onPrimaryDark = Colors.black;
-  static const Color onBackgroundDark = Color(0xFFF9FAFB);
+  static const Color onBackgroundDark = Color(0xFFFFF7ED); // Orange 50
 
   // Gradient Colors
   static const List<Color> primaryGradient = [primaryLight, secondaryLight];
   static const List<Color> secondaryGradient = [
     secondaryLight,
-    Color(0xFFEC4899)
+    Color(0xFFFB923C) // Warmer complement
   ];
 
   // ----------------- Color Schemes -----------------
