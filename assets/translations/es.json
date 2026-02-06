@@ -61,7 +61,13 @@
       "cancel_dialog_message": "El ESP32 aún está intentando conectarse a WiFi. ¿Estás seguro que quieres cancelar?",
       "error_status_stream": "Error en la conexión con el ESP32. Por favor intenta de nuevo.",
       "cancel_button": "CANCELAR",
-      "connection_cancelled": "Conexión WiFi cancelada"
+      "connection_cancelled": "Conexión WiFi cancelada",
+      "scan_networks": "Buscar redes",
+      "available_networks": "Redes disponibles",
+      "scanning": "Buscando redes...",
+      "no_networks_found": "No se encontraron redes",
+      "scan_not_supported": "El escaneo de redes no está disponible en este dispositivo",
+      "scan_error": "Error al buscar redes"
     },
     "toy_name": {
       "title": "Nombra Tu Juguete",

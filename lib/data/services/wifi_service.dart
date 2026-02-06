@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:wifi_scan/wifi_scan.dart';
 
 /// Red WiFi
 class WiFiNetwork {
@@ -108,19 +109,65 @@ class WiFiService {
         throw Exception('Location permission required for WiFi scanning');
       }
 
-      /// TODO: Implement actual WiFi network scanning using a native plugin
-      /// For now, return empty list until implemented
-      /// Need a plugin like 'wifi_scan' or 'wifi_iot' for real functionality
+      final wifiScan = WiFiScan.instance;
 
-      _logger.w('WiFi scanning not implemented - requires native plugin');
+      // Verificar si el escaneo esta soportado
+      final canStartScan = await wifiScan.canStartScan();
+      if (canStartScan != CanStartScan.yes) {
+        _logger.w('WiFi scan not supported: $canStartScan');
+        throw Exception('WiFi scanning is not supported on this device');
+      }
 
-      final networks = <WiFiNetwork>[];
+      // Iniciar escaneo
+      final startResult = await wifiScan.startScan();
+      if (!startResult) {
+        _logger.w('WiFi scan failed to start');
+        throw Exception('Failed to start WiFi scan');
+      }
+
+      // Esperar a que el OS complete el escaneo
+      await Future<void>.delayed(const Duration(seconds: 3));
+
+      // Obtener resultados
+      final canGetResults = await wifiScan.canGetScannedResults();
+      if (canGetResults != CanGetScannedResults.yes) {
+        _logger.w('Cannot get scan results: $canGetResults');
+        throw Exception('Cannot retrieve WiFi scan results');
+      }
+
+      final accessPoints = await wifiScan.getScannedResults();
+
+      // Mapear a WiFiNetwork, filtrar SSIDs vacios, 5GHz y deduplicar
+      final networkMap = <String, WiFiNetwork>{};
+      for (final ap in accessPoints) {
+        if (ap.ssid.isEmpty) continue;
+        // ESP32 solo soporta 2.4GHz (frecuencias < 3000 MHz)
+        if (ap.frequency >= 3000) continue;
+        final existing = networkMap[ap.ssid];
+        if (existing == null || ap.level > existing.rssi) {
+          networkMap[ap.ssid] = WiFiNetwork(
+            ssid: ap.ssid,
+            rssi: ap.level,
+            security: ap.capabilities.contains('WPA3')
+                ? 'WPA3'
+                : ap.capabilities.contains('WPA2')
+                    ? 'WPA2'
+                    : ap.capabilities.contains('WPA')
+                        ? 'WPA'
+                        : ap.capabilities.contains('WEP')
+                            ? 'WEP'
+                            : 'Open',
+            frequency: ap.frequency,
+          );
+        }
+      }
+
+      final networks = networkMap.values.toList()
+        ..sort((a, b) => b.rssi.compareTo(a.rssi));
+
+      _logger.i('Found ${networks.length} WiFi networks');
       _networksController.add(networks);
-
-      throw UnimplementedError(
-        'WiFi scanning requires a native plugin. '
-        'Please implement using wifi_scan or wifi_iot package.',
-      );
+      return networks;
     } catch (e) {
       _logger.e('Error scanning WiFi networks: $e');
       rethrow;

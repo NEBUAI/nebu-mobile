@@ -8,7 +8,7 @@ import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_routes.dart';
-import '../../providers/esp32_provider.dart';
+import '../../providers/api_provider.dart';
 
 class ConnectionSetupScreen extends ConsumerStatefulWidget {
   const ConnectionSetupScreen({super.key});
@@ -152,11 +152,11 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
 
   Future<void> _connectToDevice(fbp.BluetoothDevice device) async {
     final messenger = ScaffoldMessenger.of(context);
-    final esp32service = ref.read(esp32WifiConfigServiceProvider);
 
     setState(() => _isConnecting = true);
 
     try {
+      final esp32service = await ref.read(esp32WifiConfigServiceProvider.future);
       await esp32service.connectToESP32(device);
 
       if (!mounted) return;
