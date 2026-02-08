@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../providers/esp32_provider.dart';
+
+/// Widget de controles de audio para el ESP32
+/// Proporciona un slider de volumen y botón de mute
+class ESP32AudioControls extends ConsumerStatefulWidget {
+  const ESP32AudioControls({super.key});
+
+  @override
+  ConsumerState<ESP32AudioControls> createState() => _ESP32AudioControlsState();
+}
+
+class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
+  bool _isUpdatingVolume = false;
+  bool _isUpdatingMute = false;
+  double _localVolume = 50; // Local UI state for smooth slider
+
+  @override
+  Widget build(BuildContext context) {
+    final int volume = ref.watch(esp32VolumeProvider) ?? 50;
+    final bool isMuted = ref.watch(esp32MuteProvider) ?? false;
+    final setVolume = ref.read(esp32SetVolumeProvider);
+    final setMute = ref.read(esp32SetMuteProvider);
+
+    // Sync local volume with actual volume when not dragging
+    if (!_isUpdatingVolume) {
+      _localVolume = volume.toDouble();
+    }
+
+    return Card(
+      margin: const EdgeInsets.all(0),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Volume Slider
+            Row(
+              children: [
+                Icon(
+                  Icons.volume_down,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                Expanded(
+                  child: Slider(
+                    value: _localVolume,
+                    max: 100,
+                    divisions: 20,
+                    label: '${_localVolume.toInt()}%',
+                    onChanged: _isUpdatingVolume
+                        ? null
+                        : (value) {
+                            setState(() {
+                              _localVolume = value;
+                            });
+                          },
+                    onChangeEnd: (value) async {
+                      setState(() => _isUpdatingVolume = true);
+                      try {
+                        final success = await setVolume(value.toInt());
+                        if (!success && mounted) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Failed to set volume'),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      } finally {
+                        if (mounted) {
+                          setState(() => _isUpdatingVolume = false);
+                        }
+                      }
+                    },
+                  ),
+                ),
+                Icon(
+                  Icons.volume_up,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 45,
+                  child: Text(
+                    '${_localVolume.toInt()}%',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+
+            // Mute Button
+            Row(
+              children: [
+                Icon(
+                  isMuted ? Icons.volume_off : Icons.volume_up,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    isMuted ? 'Muted' : 'Unmuted',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                Switch(
+                  value: isMuted,
+                  onChanged: _isUpdatingMute
+                      ? null
+                      : (value) async {
+                          setState(() => _isUpdatingMute = true);
+                          try {
+                            final success = await setMute(value);
+                            if (!success && mounted) {
+                              if (!mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Failed to toggle mute'),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          } finally {
+                            if (mounted) {
+                              setState(() => _isUpdatingMute = false);
+                            }
+                          }
+                        },
+                ),
+              ],
+            ),
+
+            // Status info
+            if (_isUpdatingVolume || _isUpdatingMute)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Updating...',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

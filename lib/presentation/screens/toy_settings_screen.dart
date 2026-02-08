@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
+import '../widgets/esp32_audio_controls.dart';
 
 class ToySettingsScreen extends ConsumerStatefulWidget {
   const ToySettingsScreen({required this.toy, super.key});
@@ -232,6 +233,18 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         ),
                       ),
                     ),
+
+                    const SizedBox(height: 24),
+
+                    // Audio Controls (Volume & Mute)
+                    Text(
+                      'Audio Controls',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const ESP32AudioControls(),
 
                     const SizedBox(height: 32),
 

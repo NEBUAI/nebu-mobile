@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:logger/logger.dart' as logger;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -215,8 +215,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       return;
     }
 
-    final ssidMatch = RegExp(r'S:(.*?);').firstMatch(qrData);
-    final passwordMatch = RegExp(r'P:(.*?);').firstMatch(qrData);
+    final ssidMatch = RegExp('S:(.*?);').firstMatch(qrData);
+    final passwordMatch = RegExp('P:(.*?);').firstMatch(qrData);
 
     if (ssidMatch != null) {
       setState(() {

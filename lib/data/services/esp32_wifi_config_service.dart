@@ -62,9 +62,15 @@ class ESP32WifiConfigService {
   fbp.BluetoothCharacteristic? _passwordCharacteristic;
   fbp.BluetoothCharacteristic? _statusCharacteristic;
   fbp.BluetoothCharacteristic? _deviceIdCharacteristic;
+  fbp.BluetoothCharacteristic? _volumeCharacteristic;
+  fbp.BluetoothCharacteristic? _muteCharacteristic;
   StreamSubscription<List<int>>? _statusSubscription;
   StreamSubscription<List<int>>? _deviceIdSubscription;
+  StreamSubscription<List<int>>? _volumeSubscription;
+  StreamSubscription<List<int>>? _muteSubscription;
   String? _currentDeviceId;
+  int? _currentVolume;
+  bool? _currentMute;
 
   /// Stream del estado de conexión WiFi del ESP32
   Stream<ESP32WifiStatus> get statusStream => _statusController.stream;
@@ -74,6 +80,12 @@ class ESP32WifiConfigService {
 
   /// Device ID actual del ESP32 (null si no se ha recibido aún)
   String? get deviceId => _currentDeviceId;
+
+  /// Volume actual del ESP32 (0-100, null si no se ha recibido aún)
+  int? get volume => _currentVolume;
+
+  /// Estado de mute del ESP32 (null si no se ha recibido aún)
+  bool? get isMuted => _currentMute;
 
   /// Conectar a un ESP32 y preparar las características
   Future<void> connectToESP32(fbp.BluetoothDevice device) async {
@@ -256,6 +268,78 @@ class ESP32WifiConfigService {
         }
       } else {
         _logger.w('⚠️  [ESP32] Device ID characteristic not found');
+      }
+
+      // Volume characteristic
+      _logger.d(
+        '🔍 [ESP32] Looking for Volume characteristic: ${BleConstants.esp32VolumeCharUuid}',
+      );
+      final volumeChars = wifiService.characteristics.where(
+        (c) =>
+            c.uuid.toString().toLowerCase() ==
+            BleConstants.esp32VolumeCharUuid.toLowerCase(),
+      );
+      _volumeCharacteristic = volumeChars.isNotEmpty ? volumeChars.first : null;
+
+      if (_volumeCharacteristic != null) {
+        _logger.i('✅ [ESP32] Found Volume characteristic');
+        _logger.d(
+          '   Properties: READ=${_volumeCharacteristic!.properties.read}, '
+          'WRITE=${_volumeCharacteristic!.properties.write}, '
+          'NOTIFY=${_volumeCharacteristic!.properties.notify}',
+        );
+
+        // Suscribirse a notificaciones de volumen
+        if (_volumeCharacteristic!.properties.notify) {
+          _logger.d(
+            '🔔 [ESP32] Volume characteristic supports NOTIFY, subscribing...',
+          );
+          await _subscribeToVolume();
+        }
+
+        // Leer el volumen inmediatamente
+        if (_volumeCharacteristic!.properties.read) {
+          _logger.d('📖 [ESP32] Reading Volume immediately...');
+          await readVolume();
+        }
+      } else {
+        _logger.w('⚠️  [ESP32] Volume characteristic not found (optional)');
+      }
+
+      // Mute characteristic
+      _logger.d(
+        '🔍 [ESP32] Looking for Mute characteristic: ${BleConstants.esp32MuteCharUuid}',
+      );
+      final muteChars = wifiService.characteristics.where(
+        (c) =>
+            c.uuid.toString().toLowerCase() ==
+            BleConstants.esp32MuteCharUuid.toLowerCase(),
+      );
+      _muteCharacteristic = muteChars.isNotEmpty ? muteChars.first : null;
+
+      if (_muteCharacteristic != null) {
+        _logger.i('✅ [ESP32] Found Mute characteristic');
+        _logger.d(
+          '   Properties: READ=${_muteCharacteristic!.properties.read}, '
+          'WRITE=${_muteCharacteristic!.properties.write}, '
+          'NOTIFY=${_muteCharacteristic!.properties.notify}',
+        );
+
+        // Suscribirse a notificaciones de mute
+        if (_muteCharacteristic!.properties.notify) {
+          _logger.d(
+            '🔔 [ESP32] Mute characteristic supports NOTIFY, subscribing...',
+          );
+          await _subscribeToMute();
+        }
+
+        // Leer el estado de mute inmediatamente
+        if (_muteCharacteristic!.properties.read) {
+          _logger.d('📖 [ESP32] Reading Mute state immediately...');
+          await readMute();
+        }
+      } else {
+        _logger.w('⚠️  [ESP32] Mute characteristic not found (optional)');
       }
 
       _logger.i('🎉 [ESP32] ESP32 connected and ready for WiFi configuration!');
@@ -554,6 +638,187 @@ class ESP32WifiConfigService {
     }
   }
 
+  /// Establecer el volumen del ESP32 (0-100)
+  Future<bool> setVolume(int volume) async {
+    if (_volumeCharacteristic == null) {
+      _logger.w('[VOLUME] Volume characteristic not available');
+      return false;
+    }
+
+    if (volume < 0 || volume > 100) {
+      _logger.e('[VOLUME] Invalid volume value: $volume (must be 0-100)');
+      return false;
+    }
+
+    try {
+      _logger.i('[VOLUME] Setting volume to: $volume');
+
+      // El ESP32 espera un uint8_t (0-100)
+      final volumeBytes = [volume];
+
+      final useWriteWithoutResponse =
+          _volumeCharacteristic!.properties.writeWithoutResponse;
+
+      await _bluetoothService.writeCharacteristic(
+        _volumeCharacteristic!,
+        volumeBytes,
+        withoutResponse: useWriteWithoutResponse,
+      );
+
+      _currentVolume = volume;
+      _logger.i('[VOLUME] Volume set successfully to $volume');
+      return true;
+    } on Exception catch (e, stackTrace) {
+      _logger.e('[VOLUME] Error setting volume: $e');
+      _logger.e('[VOLUME] Stack trace: $stackTrace');
+      return false;
+    }
+  }
+
+  /// Leer el volumen actual del ESP32
+  Future<int?> readVolume() async {
+    if (_volumeCharacteristic == null) {
+      _logger.w('[VOLUME] Volume characteristic not available');
+      return null;
+    }
+
+    try {
+      _logger.d('[VOLUME] Reading volume from ESP32...');
+      final volumeBytes = await _bluetoothService.readCharacteristic(
+        _volumeCharacteristic!,
+      );
+
+      if (volumeBytes.isEmpty) {
+        _logger.w('[VOLUME] Empty volume response');
+        return null;
+      }
+
+      final volume = volumeBytes[0];
+      _currentVolume = volume;
+      _logger.i('[VOLUME] ESP32 volume: $volume');
+      return volume;
+    } on Exception catch (e, stackTrace) {
+      _logger.e('[VOLUME] Error reading volume: $e');
+      _logger.e('[VOLUME] Stack trace: $stackTrace');
+      return null;
+    }
+  }
+
+  /// Suscribirse a notificaciones de volumen
+  Future<void> _subscribeToVolume() async {
+    if (_volumeCharacteristic == null) {
+      return;
+    }
+
+    try {
+      _logger.i('[VOLUME] Subscribing to volume notifications...');
+      await _volumeCharacteristic!.setNotifyValue(true);
+
+      _volumeSubscription = _volumeCharacteristic!.lastValueStream.listen((value) {
+        if (value.isNotEmpty) {
+          final volume = value[0];
+          _currentVolume = volume;
+          _logger.i('[VOLUME] Volume notification: $volume');
+        } else {
+          _logger.w('[VOLUME] Received empty volume notification');
+        }
+      });
+
+      _logger.i('[VOLUME] Subscribed to volume notifications');
+    } on Exception catch (e, stackTrace) {
+      _logger.e('[VOLUME] Error subscribing to volume: $e');
+      _logger.e('[VOLUME] Stack trace: $stackTrace');
+    }
+  }
+
+  /// Establecer el estado de mute del ESP32
+  Future<bool> setMute(bool mute) async {
+    if (_muteCharacteristic == null) {
+      _logger.w('[MUTE] Mute characteristic not available');
+      return false;
+    }
+
+    try {
+      _logger.i('[MUTE] Setting mute to: $mute');
+
+      // El ESP32 espera un uint8_t (0 = unmuted, 1 = muted)
+      final muteBytes = [if (mute) 1 else 0];
+
+      final useWriteWithoutResponse =
+          _muteCharacteristic!.properties.writeWithoutResponse;
+
+      await _bluetoothService.writeCharacteristic(
+        _muteCharacteristic!,
+        muteBytes,
+        withoutResponse: useWriteWithoutResponse,
+      );
+
+      _currentMute = mute;
+      _logger.i('[MUTE] Mute state set successfully to $mute');
+      return true;
+    } on Exception catch (e, stackTrace) {
+      _logger.e('[MUTE] Error setting mute: $e');
+      _logger.e('[MUTE] Stack trace: $stackTrace');
+      return false;
+    }
+  }
+
+  /// Leer el estado de mute del ESP32
+  Future<bool?> readMute() async {
+    if (_muteCharacteristic == null) {
+      _logger.w('[MUTE] Mute characteristic not available');
+      return null;
+    }
+
+    try {
+      _logger.d('[MUTE] Reading mute state from ESP32...');
+      final muteBytes = await _bluetoothService.readCharacteristic(
+        _muteCharacteristic!,
+      );
+
+      if (muteBytes.isEmpty) {
+        _logger.w('[MUTE] Empty mute response');
+        return null;
+      }
+
+      final mute = muteBytes[0] != 0;
+      _currentMute = mute;
+      _logger.i('[MUTE] ESP32 mute state: $mute');
+      return mute;
+    } on Exception catch (e, stackTrace) {
+      _logger.e('[MUTE] Error reading mute state: $e');
+      _logger.e('[MUTE] Stack trace: $stackTrace');
+      return null;
+    }
+  }
+
+  /// Suscribirse a notificaciones de mute
+  Future<void> _subscribeToMute() async {
+    if (_muteCharacteristic == null) {
+      return;
+    }
+
+    try {
+      _logger.i('[MUTE] Subscribing to mute notifications...');
+      await _muteCharacteristic!.setNotifyValue(true);
+
+      _muteSubscription = _muteCharacteristic!.lastValueStream.listen((value) {
+        if (value.isNotEmpty) {
+          final mute = value[0] != 0;
+          _currentMute = mute;
+          _logger.i('[MUTE] Mute notification: $mute');
+        } else {
+          _logger.w('[MUTE] Received empty mute notification');
+        }
+      });
+
+      _logger.i('[MUTE] Subscribed to mute notifications');
+    } on Exception catch (e, stackTrace) {
+      _logger.e('[MUTE] Error subscribing to mute: $e');
+      _logger.e('[MUTE] Stack trace: $stackTrace');
+    }
+  }
+
   /// Desconectar del ESP32
   Future<void> disconnect() async {
     try {
@@ -565,11 +830,21 @@ class ESP32WifiConfigService {
       await _deviceIdSubscription?.cancel();
       _deviceIdSubscription = null;
 
+      await _volumeSubscription?.cancel();
+      _volumeSubscription = null;
+
+      await _muteSubscription?.cancel();
+      _muteSubscription = null;
+
       _ssidCharacteristic = null;
       _passwordCharacteristic = null;
       _statusCharacteristic = null;
       _deviceIdCharacteristic = null;
+      _volumeCharacteristic = null;
+      _muteCharacteristic = null;
       _currentDeviceId = null;
+      _currentVolume = null;
+      _currentMute = null;
 
       await _bluetoothService.disconnect();
       _logger.i('✅ [ESP32] Disconnected from ESP32');
@@ -583,6 +858,8 @@ class ESP32WifiConfigService {
   void dispose() {
     _statusSubscription?.cancel();
     _deviceIdSubscription?.cancel();
+    _volumeSubscription?.cancel();
+    _muteSubscription?.cancel();
     _statusController.close();
     _deviceIdController.close();
   }

@@ -17,4 +17,8 @@ class BleConstants {
       '0000bf9a-7856-3412-3412-341278563412';
   static const String esp32DeviceIdCharUuid =
       '0000c09a-7856-3412-3412-341278563412';
+  static const String esp32VolumeCharUuid =
+      '0000c19a-7856-3412-3412-341278563412';
+  static const String esp32MuteCharUuid =
+      '0000c29a-7856-3412-3412-341278563412';
 }
