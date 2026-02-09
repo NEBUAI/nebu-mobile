@@ -37,15 +37,23 @@ abstract final class Config {
   // ============================================
   // Backend API
   // ============================================
-  static String get apiBaseUrl => dotenv.get(
-    'API_URL',
-    fallback: isProduction
-        ? 'https://default-api.com'
-        : 'http://localhost:3000',
-  );
+  /// URL del API - En release, usa valores por defecto seguros
+  /// En desarrollo, puede sobreescribirse desde .env
+  static String get apiBaseUrl {
+    // Primero intenta obtener del .env (si está cargado)
+    final urlFromEnv = dotenv.maybeGet('API_URL');
+    if (urlFromEnv != null && urlFromEnv.isNotEmpty) {
+      return urlFromEnv;
+    }
 
-  static String get apiKey => dotenv.get('API_KEY', fallback: '');
-  static String get wsUrl => dotenv.get('WS_URL', fallback: '');
+    // Fallback seguro basado en el ambiente
+    return isProduction
+        ? 'https://api.flow-telligence.com/api/v1' // URL de producción
+        : 'http://localhost:3000'; // URL de desarrollo
+  }
+
+  static String get apiKey => dotenv.maybeGet('API_KEY') ?? '';
+  static String get wsUrl => dotenv.maybeGet('WS_URL') ?? '';
 
   // ============================================
   // LiveKit
