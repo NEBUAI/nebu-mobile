@@ -199,12 +199,19 @@ class AuthService {
     final data = e.response?.data;
     if (data is Map<String, dynamic>) {
       final message = data['message'];
-      if (message is String) return message;
-      if (message is List) return message.join(', ');
+      if (message is String) return _cleanMessage(message);
+      if (message is List) return _cleanMessage(message.join(', '));
       final error = data['error'];
-      if (error is String) return error;
+      if (error is String) return _cleanMessage(error);
     }
     return null;
+  }
+
+  /// Remove technical prefixes from backend error messages
+  static String _cleanMessage(String msg) {
+    return msg
+        .replaceFirst(RegExp(r'^Validation failed:\s*'), '')
+        .replaceFirst(RegExp(r'^Error:\s*'), '');
   }
 
   // Token Management
