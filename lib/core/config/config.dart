@@ -83,10 +83,6 @@ abstract final class Config {
       errors.add('❌ API_URL no configurada');
     }
 
-    if (isProduction && apiKey.isEmpty) {
-      errors.add('❌ API_KEY requerida en producción');
-    }
-
     if (errors.isNotEmpty) {
       throw Exception(
         'Configuración inválida:\n${errors.join('\n')}\n\n'
