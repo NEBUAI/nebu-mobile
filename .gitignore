@@ -194,3 +194,14 @@ ios/Flutter/ephemeral/
 config/production.json
 config/staging.json
 .idea/markdown.xml
+
+# Google Play credentials
+android/service-account.json
+android/app/service-account.json
+*.json.key
+
+# Keystore files
+android/upload-keystore.jks
+android/key.properties
+*.keystore
+*.jks
