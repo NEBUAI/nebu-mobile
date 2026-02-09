@@ -28,7 +28,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     try {
       final service = ref.read(notificationServiceProvider);
       final data = await service.getMyNotifications();
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _notifications = data
             .map(
@@ -48,7 +50,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         _isLoading = false;
       });
     } on Exception {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() => _isLoading = false);
     }
   }
@@ -171,7 +175,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Future<void> _markAllAsRead() async {
     final service = ref.read(notificationServiceProvider);
     final success = await service.markAllAsRead();
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     if (success) {
       setState(() {
         for (final n in _notifications) {
@@ -187,7 +193,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Future<void> _handleNotificationTap(_Notification notification) async {
     final service = ref.read(notificationServiceProvider);
     await service.markAsRead(notification.id);
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     setState(() {
       notification.isRead = true;
     });
@@ -196,7 +204,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Future<void> _dismissNotification(_Notification notification) async {
     final service = ref.read(notificationServiceProvider);
     await service.deleteNotification(notification.id);
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _notifications.remove(notification);
     });

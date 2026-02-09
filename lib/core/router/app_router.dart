@@ -47,7 +47,7 @@ final _authChangeNotifier = _AuthChangeNotifier();
 // Router provider - created once, uses refreshListenable for auth state changes
 final routerProvider = Provider<GoRouter>((ref) {
   // Listen to auth changes and trigger GoRouter redirect re-evaluation
-  ref.listen(authProvider, (_, __) {
+  ref.listen(authProvider, (_, _) {
     _authChangeNotifier.notify();
   });
 
@@ -78,7 +78,9 @@ class AppRouter {
     final location = state.matchedLocation;
 
     // While auth is still loading, don't redirect — stay on current page
-    if (isLoading) return null;
+    if (isLoading) {
+      return null;
+    }
 
     // Splash screen: redirect once auth state is resolved
     if (location == AppRoutes.splash.path) {

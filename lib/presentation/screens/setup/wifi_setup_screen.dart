@@ -107,12 +107,12 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             );
 
             // Continuar al siguiente paso
-            Future<void>.delayed(const Duration(seconds: 1), () {
+            unawaited(Future<void>.delayed(const Duration(seconds: 1), () {
               if (mounted) {
                 debugPrint('➡️  [WIFI_SCREEN] Navigating to ToyNameSetup');
                 context.push(AppRoutes.toyNameSetup.path);
               }
-            });
+            }));
             break;
 
           case ESP32WifiStatus.failed:
@@ -272,7 +272,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
   Future<void> _showWifiNetworksSheet() async {
     final esp32Service = await ref.read(esp32WifiConfigServiceProvider.future);
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     final wifiService = WiFiService(
       logger: logger.Logger(),
       esp32WifiConfigService: esp32Service,

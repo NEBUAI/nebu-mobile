@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:record/record.dart';
@@ -379,7 +381,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     try {
       final hasPermission = await _recorder.hasPermission();
       if (!hasPermission) {
-        if (!mounted) return;
+        if (!mounted) {
+          return;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Microphone permission is required'),
@@ -390,13 +394,17 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
       }
 
       await _recorder.start(const RecordConfig(), path: '');
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
         isRecording = true;
       });
-      _animationController.repeat(reverse: true);
+      unawaited(_animationController.repeat(reverse: true));
     } on Exception {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Failed to start recording'),
@@ -409,7 +417,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
   Future<void> _stopRecording() async {
     try {
       final path = await _recorder.stop();
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
         isRecording = false;
       });
@@ -426,7 +436,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         );
       }
     } on Exception {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
         isRecording = false;
       });
@@ -442,7 +454,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     });
 
     // TTS requires flutter_tts package — simulating playback for now
-    Future.delayed(const Duration(seconds: 3), () {
+    unawaited(Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
           isPlaying = false;
@@ -454,6 +466,6 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
           ),
         );
       }
-    });
+    }));
   }
 }

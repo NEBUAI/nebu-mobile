@@ -66,7 +66,7 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
       if (!context.mounted) {
         return;
       }
-      showDialog<String>(
+      await showDialog<String>(
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text('qr_scanner.scanned'.tr()),
@@ -110,8 +110,10 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
         userId: user.id,
       );
 
-      if (!context.mounted) return;
-      showDialog<void>(
+      if (!context.mounted) {
+        return;
+      }
+      await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
           icon: const Icon(Icons.check_circle, color: Colors.green, size: 48),
@@ -133,9 +135,11 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
         ),
       );
     } on Exception catch (e) {
-      if (!context.mounted) return;
+      if (!context.mounted) {
+        return;
+      }
       final message = e.toString().replaceFirst('Exception: ', '');
-      showDialog<void>(
+      await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
           icon: const Icon(Icons.error, color: Colors.red, size: 48),

@@ -67,16 +67,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   Future<void> _startAnimations() async {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     await _iconController.forward();
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     await Future<void>.delayed(const Duration(milliseconds: 200));
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     await _textController.forward();
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     await Future<void>.delayed(const Duration(milliseconds: 600));
 
     unawaited(_navigateToNextScreen());

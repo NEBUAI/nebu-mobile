@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,13 +28,17 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     try {
       final service = ref.read(orderServiceProvider);
       final data = await service.getMyOrders();
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
-        _orders = data.map((json) => _Order.fromJson(json)).toList();
+        _orders = data.map(_Order.fromJson).toList();
         _isLoading = false;
       });
     } on Exception {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() => _isLoading = false);
     }
   }
@@ -259,14 +265,14 @@ class _OrderCard extends StatelessWidget {
   }
 
   void _showOrderDetails(BuildContext context, _Order order) {
-    showModalBottomSheet<void>(
+    unawaited(showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => _OrderDetailsSheet(order: order),
-    );
+    ));
   }
 }
 

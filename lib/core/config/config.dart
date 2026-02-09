@@ -38,11 +38,9 @@ abstract final class Config {
   // Backend API
   // ============================================
   /// URL del API - Valores por defecto seguros para producción y desarrollo
-  static String get apiBaseUrl {
-    return isProduction
-        ? 'https://api.flow-telligence.com/api/v1' // URL de producción
-        : 'http://localhost:3000'; // URL de desarrollo local
-  }
+  static String get apiBaseUrl => isProduction
+      ? 'https://api.flow-telligence.com/api/v1' // URL de producción
+      : 'http://localhost:3000'; // URL de desarrollo local
 
   static String get apiKey => '';
   static String get wsUrl => '';

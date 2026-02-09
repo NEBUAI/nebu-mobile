@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -258,7 +260,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
   );
 
   void _showDownloadDataDialog() {
-    showDialog<void>(
+    unawaited(showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('privacy.download_data'.tr()),
@@ -279,11 +281,11 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   void _showLoginHistoryDialog() {
-    showDialog<void>(
+    unawaited(showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('privacy.login_history'.tr()),
@@ -315,7 +317,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _buildLoginHistoryItem(
@@ -342,7 +344,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
   );
 
   void _showDeleteAccountDialog() {
-    showDialog<void>(
+    unawaited(showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
@@ -387,7 +389,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Future<void> _performAccountDeletion() async {
@@ -395,13 +397,17 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
       final userService = ref.read(userServiceProvider);
       await userService.deleteOwnAccount();
       await ref.read(authProvider.notifier).logout();
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('privacy.account_deleted_success'.tr())),
       );
       context.go(AppRoutes.welcome.path);
     } on Exception catch (e) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
