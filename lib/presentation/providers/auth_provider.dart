@@ -17,10 +17,7 @@ final authProvider = AsyncNotifierProvider<AuthNotifier, User?>(
 
 class AuthNotifier extends AsyncNotifier<User?> {
   @override
-  Future<User?> build() async {
-    // On startup, check if the user is already authenticated and load user data
-    return _loadUserFromStorage();
-  }
+  Future<User?> build() => _loadUserFromStorage();
 
   Future<User?> _loadUserFromStorage() async {
     try {

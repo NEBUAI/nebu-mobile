@@ -31,10 +31,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
       secureStorage: getSecureStorage(),
       logger: logger,
     );
-    _healthService = HealthService(
-      apiService: apiService,
-      logger: logger,
-    );
+    _healthService = HealthService(apiService: apiService, logger: logger);
   }
 
   // Helper methods - replace with actual dependency injection
@@ -55,7 +52,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         _healthStatus = status;
         _isLoading = false;
       });
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() {
         _errorMessage = e.toString();
         _isLoading = false;
@@ -65,94 +62,94 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Backend Health Check'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ElevatedButton.icon(
-              onPressed: _isLoading ? null : _checkHealth,
-              icon: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Icon(Icons.refresh),
-              label: Text(_isLoading ? 'Checking...' : 'Check Backend Health'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(16),
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-              ),
+    appBar: AppBar(
+      title: const Text('Backend Health Check'),
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ElevatedButton.icon(
+            onPressed: _isLoading ? null : _checkHealth,
+            icon: _isLoading
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Icon(Icons.refresh),
+            label: Text(_isLoading ? 'Checking...' : 'Check Backend Health'),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.all(16),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
             ),
-            const SizedBox(height: 24),
-            if (_errorMessage != null)
-              Card(
-                color: Colors.red.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.error, color: Colors.red.shade700),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Error',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red.shade700,
-                            ),
+          ),
+          const SizedBox(height: 24),
+          if (_errorMessage != null)
+            Card(
+              color: Colors.red.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.error, color: Colors.red.shade700),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Error',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red.shade700,
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _errorMessage!,
-                        style: TextStyle(color: Colors.red.shade900),
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red.shade900),
+                    ),
+                  ],
                 ),
               ),
-            if (_healthStatus != null)
-              Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildStatusHeader(),
-                          const Divider(height: 32),
-                          _buildInfoSection(),
-                          const Divider(height: 32),
-                          _buildMemorySection(),
-                          const Divider(height: 32),
-                          _buildHealthChecksSection(),
-                          const Divider(height: 32),
-                          _buildPerformanceSection(),
-                        ],
-                      ),
+            ),
+          if (_healthStatus != null)
+            Expanded(
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildStatusHeader(),
+                        const Divider(height: 32),
+                        _buildInfoSection(),
+                        const Divider(height: 32),
+                        _buildMemorySection(),
+                        const Divider(height: 32),
+                        _buildHealthChecksSection(),
+                        const Divider(height: 32),
+                        _buildPerformanceSection(),
+                      ],
                     ),
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
-    );
+    ),
+  );
 
   Widget _buildStatusHeader() {
     final status = _healthStatus!;
@@ -204,10 +201,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         const SizedBox(height: 8),
         _buildInfoRow('Version', status.version),
         _buildInfoRow('Environment', status.environment),
-        _buildInfoRow(
-          'Uptime',
-          _formatUptime(status.uptime),
-        ),
+        _buildInfoRow('Uptime', _formatUptime(status.uptime)),
         _buildInfoRow('Timestamp', status.timestamp),
       ],
     );
@@ -281,51 +275,49 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
   }
 
   Widget _buildInfoRow(String label, String value) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 140,
-            child: Text(
-              '$label:',
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      children: [
+        SizedBox(
+          width: 140,
+          child: Text(
+            '$label:',
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
-          Expanded(
-            child: Text(value),
-          ),
-        ],
-      ),
-    );
+        ),
+        Expanded(child: Text(value)),
+      ],
+    ),
+  );
 
   Widget _buildProgressRow(String label, int percent) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 140,
-                child: Text(
-                  '$label:',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: 140,
+              child: Text(
+                '$label:',
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
-              Text('$percent%'),
-            ],
-          ),
-          const SizedBox(height: 4),
-          LinearProgressIndicator(
-            value: percent / 100,
-            backgroundColor: Colors.grey.shade200,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              percent > 80 ? Colors.orange : Colors.blue,
             ),
+            Text('$percent%'),
+          ],
+        ),
+        const SizedBox(height: 4),
+        LinearProgressIndicator(
+          value: percent / 100,
+          backgroundColor: Colors.grey.shade200,
+          valueColor: AlwaysStoppedAnimation<Color>(
+            percent > 80 ? Colors.orange : Colors.blue,
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
   Widget _buildCheckRow(String label, CheckStatus check) {
     final isHealthy = check.status == 'ok';

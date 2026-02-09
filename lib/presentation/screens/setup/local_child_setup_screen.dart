@@ -162,7 +162,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
 
       // Navigate to home
       context.go(AppRoutes.home.path);
-    } catch (e) {
+    } on Exception catch (e) {
       ref.read(loggerProvider).e('❌ [LOCAL_SETUP] Error saving data: $e');
 
       if (!mounted) {

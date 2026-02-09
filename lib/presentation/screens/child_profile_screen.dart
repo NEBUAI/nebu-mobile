@@ -197,7 +197,9 @@ class ChildProfileScreen extends ConsumerWidget {
             child: Text('Delete', style: TextStyle(color: colorScheme.error)),
             onPressed: () async {
               await service.clearChildData();
-              if (!context.mounted) return;
+              if (!context.mounted) {
+                return;
+              }
               Navigator.of(context).pop();
             },
           ),

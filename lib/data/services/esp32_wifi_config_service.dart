@@ -164,12 +164,11 @@ class ESP32WifiConfigService {
         },
       );
 
-      _logger.i('✅ [ESP32] Found WiFi configuration service!');
-
-      // Obtener las características
-      _logger.d(
-        '🔍 [ESP32] Looking for SSID characteristic: ${BleConstants.esp32SsidCharUuid}',
-      );
+      _logger
+        ..i('✅ [ESP32] Found WiFi configuration service!')
+        ..d(
+          '🔍 [ESP32] Looking for SSID characteristic: ${BleConstants.esp32SsidCharUuid}',
+        );
       _ssidCharacteristic = wifiService.characteristics.firstWhere(
         (c) =>
             c.uuid.toString().toLowerCase() ==
@@ -206,12 +205,12 @@ class ESP32WifiConfigService {
           'WRITE=${_passwordCharacteristic!.properties.write}, '
           'WRITE_NO_RSP=${_passwordCharacteristic!.properties.writeWithoutResponse}, '
           'NOTIFY=${_passwordCharacteristic!.properties.notify}',
+        )
+        ..d(
+          '🔍 [ESP32] Looking for Status characteristic: ${BleConstants.esp32StatusCharUuid}',
         );
 
       // Status characteristic es opcional
-      _logger.d(
-        '🔍 [ESP32] Looking for Status characteristic: ${BleConstants.esp32StatusCharUuid}',
-      );
       final statusChars = wifiService.characteristics.where(
         (c) =>
             c.uuid.toString().toLowerCase() ==
@@ -245,8 +244,9 @@ class ESP32WifiConfigService {
             c.uuid.toString().toLowerCase() ==
             BleConstants.esp32DeviceIdCharUuid.toLowerCase(),
       );
-      _deviceIdCharacteristic =
-          deviceIdChars.isNotEmpty ? deviceIdChars.first : null;
+      _deviceIdCharacteristic = deviceIdChars.isNotEmpty
+          ? deviceIdChars.first
+          : null;
 
       if (_deviceIdCharacteristic != null) {
         _logger
@@ -375,9 +375,13 @@ class ESP32WifiConfigService {
         ..d(
           '📡 [WIFI] Password: [${password.isNotEmpty ? '${password.length} chars (hidden)' : 'empty'}]',
         )
-        ..i('📡 [WIFI] Status characteristic available: ${_statusCharacteristic != null}');
+        ..i(
+          '📡 [WIFI] Status characteristic available: ${_statusCharacteristic != null}',
+        );
       if (_statusCharacteristic != null) {
-        _logger.i('📡 [WIFI] Status NOTIFY enabled: ${_statusCharacteristic!.isNotifying}');
+        _logger.i(
+          '📡 [WIFI] Status NOTIFY enabled: ${_statusCharacteristic!.isNotifying}',
+        );
       }
 
       // Convertir SSID y password a bytes (UTF-8)
@@ -399,19 +403,20 @@ class ESP32WifiConfigService {
         ..d(
           '📤 [WIFI] Characteristic supports: WRITE=${_ssidCharacteristic!.properties.write}, '
           'WRITE_NO_RSP=${_ssidCharacteristic!.properties.writeWithoutResponse}',
-        );
+        )
+        ..d('📤 [WIFI] Writing SSID to characteristic...');
 
       // Enviar SSID
-      _logger.d('📤 [WIFI] Writing SSID to characteristic...');
       await _bluetoothService.writeCharacteristic(
         _ssidCharacteristic!,
         ssidBytes,
         withoutResponse: useWriteWithoutResponse,
       );
-      _logger.i('✅ [WIFI] SSID sent successfully');
+      _logger
+        ..i('✅ [WIFI] SSID sent successfully')
+        ..d('⏱️  [WIFI] Waiting 100ms before sending password...');
 
       // Pequeña pausa entre escrituras
-      _logger.d('⏱️  [WIFI] Waiting 100ms before sending password...');
       await Future<void>.delayed(const Duration(milliseconds: 100));
 
       // Enviar Password
@@ -428,12 +433,17 @@ class ESP32WifiConfigService {
         );
 
       // Intentar leer el status inmediatamente después de enviar credenciales
-      if (_statusCharacteristic != null && _statusCharacteristic!.properties.read) {
+      if (_statusCharacteristic != null &&
+          _statusCharacteristic!.properties.read) {
         _logger.d('📖 [WIFI] Reading initial WiFi status...');
         final initialStatus = await readWifiStatus();
-        _logger.i('📖 [WIFI] Initial status after sending credentials: $initialStatus');
+        _logger.i(
+          '📖 [WIFI] Initial status after sending credentials: $initialStatus',
+        );
       } else {
-        _logger.w('⚠️  [WIFI] Cannot read status (characteristic not available or not readable)');
+        _logger.w(
+          '⚠️  [WIFI] Cannot read status (characteristic not available or not readable)',
+        );
       }
 
       return const ESP32WifiConfigResult(
@@ -469,9 +479,13 @@ class ESP32WifiConfigService {
         return ESP32WifiStatus.idle;
       }
 
-      final statusString = utf8.decode(statusBytes, allowMalformed: true).trim();
+      final statusString = utf8
+          .decode(statusBytes, allowMalformed: true)
+          .trim();
       final status = ESP32WifiStatus.fromString(statusString);
-      _logger.i('📖 [STATUS] ESP32 WiFi status: $status (value: "$statusString")');
+      _logger.i(
+        '📖 [STATUS] ESP32 WiFi status: $status (value: "$statusString")',
+      );
       return status;
     } on Exception catch (e, stackTrace) {
       _logger
@@ -492,7 +506,9 @@ class ESP32WifiConfigService {
       _logger
         ..i('🔔 [STATUS] Subscribing to WiFi status notifications...')
         ..d('🔔 [STATUS] Characteristic UUID: ${_statusCharacteristic!.uuid}')
-        ..d('🔔 [STATUS] NOTIFY property: ${_statusCharacteristic!.properties.notify}');
+        ..d(
+          '🔔 [STATUS] NOTIFY property: ${_statusCharacteristic!.properties.notify}',
+        );
 
       await _statusCharacteristic!.setNotifyValue(true);
 
@@ -500,53 +516,58 @@ class ESP32WifiConfigService {
         ..i('✅ [STATUS] setNotifyValue(true) completed')
         ..d('🔔 [STATUS] isNotifying: ${_statusCharacteristic!.isNotifying}');
 
-      _statusSubscription = _statusCharacteristic!.lastValueStream.listen((
-        value,
-      ) {
-        _logger.d('🔔 [STATUS] Received notification - byte length: ${value.length}');
-
-        if (value.isNotEmpty) {
-          final statusString = utf8.decode(value, allowMalformed: true).trim();
-          final status = ESP32WifiStatus.fromString(statusString);
-          _logger.i(
-            '🔔 [STATUS] ESP32 WiFi status update: $status (raw value: "$statusString")',
+      _statusSubscription = _statusCharacteristic!.lastValueStream.listen(
+        (value) {
+          _logger.d(
+            '🔔 [STATUS] Received notification - byte length: ${value.length}',
           );
 
-          switch (status) {
-            case ESP32WifiStatus.idle:
-              _logger.d('🔔 [STATUS] ESP32 is IDLE - waiting for action');
-              break;
-            case ESP32WifiStatus.connecting:
-              _logger.i('🔔 [STATUS] ESP32 is CONNECTING to WiFi...');
-              break;
-            case ESP32WifiStatus.connected:
-              _logger.i('✅ [STATUS] ESP32 CONNECTED to WiFi successfully!');
-              break;
-            case ESP32WifiStatus.reconnecting:
-              _logger.i('🔄 [STATUS] ESP32 is RECONNECTING to WiFi...');
-              break;
-            case ESP32WifiStatus.failed:
-              _logger.e('❌ [STATUS] ESP32 FAILED to connect to WiFi');
-              break;
-          }
+          if (value.isNotEmpty) {
+            final statusString = utf8
+                .decode(value, allowMalformed: true)
+                .trim();
+            final status = ESP32WifiStatus.fromString(statusString);
+            _logger.i(
+              '🔔 [STATUS] ESP32 WiFi status update: $status (raw value: "$statusString")',
+            );
 
-          _logger.d('🔔 [STATUS] Adding status to stream controller...');
-          _statusController.add(status);
-          _logger.d('🔔 [STATUS] Status added to stream successfully');
-        } else {
-          _logger
-            ..w('⚠️  [STATUS] Received EMPTY status notification (0 bytes)')
-            ..w('⚠️  [STATUS] This might indicate ESP32 firmware issue');
-        }
-      },
-      onError: (Object error) {
-        _logger.e('❌ [STATUS] Error in status stream: $error');
-      },
-      onDone: () {
-        _logger.w('⚠️  [STATUS] Status stream closed/done');
-      },
+            switch (status) {
+              case ESP32WifiStatus.idle:
+                _logger.d('🔔 [STATUS] ESP32 is IDLE - waiting for action');
+                break;
+              case ESP32WifiStatus.connecting:
+                _logger.i('🔔 [STATUS] ESP32 is CONNECTING to WiFi...');
+                break;
+              case ESP32WifiStatus.connected:
+                _logger.i('✅ [STATUS] ESP32 CONNECTED to WiFi successfully!');
+                break;
+              case ESP32WifiStatus.reconnecting:
+                _logger.i('🔄 [STATUS] ESP32 is RECONNECTING to WiFi...');
+                break;
+              case ESP32WifiStatus.failed:
+                _logger.e('❌ [STATUS] ESP32 FAILED to connect to WiFi');
+                break;
+            }
+
+            _logger.d('🔔 [STATUS] Adding status to stream controller...');
+            _statusController.add(status);
+            _logger.d('🔔 [STATUS] Status added to stream successfully');
+          } else {
+            _logger
+              ..w('⚠️  [STATUS] Received EMPTY status notification (0 bytes)')
+              ..w('⚠️  [STATUS] This might indicate ESP32 firmware issue');
+          }
+        },
+        onError: (Object error) {
+          _logger.e('❌ [STATUS] Error in status stream: $error');
+        },
+        onDone: () {
+          _logger.w('⚠️  [STATUS] Status stream closed/done');
+        },
       );
-      _logger.i('✅ [STATUS] Subscribed to WiFi status notifications successfully');
+      _logger.i(
+        '✅ [STATUS] Subscribed to WiFi status notifications successfully',
+      );
     } on Exception catch (e, stackTrace) {
       _logger
         ..e('❌ [STATUS] Error subscribing to status notifications: $e')
@@ -598,8 +619,9 @@ class ESP32WifiConfigService {
     try {
       _logger.i('🔔 [DEVICE_ID] Subscribing to Device ID notifications...');
       await _deviceIdCharacteristic!.setNotifyValue(true);
-      _deviceIdSubscription =
-          _deviceIdCharacteristic!.lastValueStream.listen((value) async {
+      _deviceIdSubscription = _deviceIdCharacteristic!.lastValueStream.listen((
+        value,
+      ) async {
         if (value.isNotEmpty) {
           final deviceId = utf8.decode(value, allowMalformed: true).trim();
           _logger.i('🔔 [DEVICE_ID] Device ID notification: "$deviceId"');
@@ -733,7 +755,9 @@ class ESP32WifiConfigService {
       _logger.i('[VOLUME] Subscribing to volume notifications...');
       await _volumeCharacteristic!.setNotifyValue(true);
 
-      _volumeSubscription = _volumeCharacteristic!.lastValueStream.listen((value) {
+      _volumeSubscription = _volumeCharacteristic!.lastValueStream.listen((
+        value,
+      ) {
         if (value.isNotEmpty) {
           final volume = value[0];
           _currentVolume = volume;
@@ -752,7 +776,7 @@ class ESP32WifiConfigService {
   }
 
   /// Establecer el estado de mute del ESP32
-  Future<bool> setMute(bool mute) async {
+  Future<bool> setMute({required bool mute}) async {
     if (_muteCharacteristic == null) {
       _logger.w('[MUTE] Mute characteristic not available');
       return false;

@@ -75,7 +75,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             break;
 
           case ESP32WifiStatus.reconnecting:
-            debugPrint('🔄 [WIFI_SCREEN] Status RECONNECTING - showing snackbar');
+            debugPrint(
+              '🔄 [WIFI_SCREEN] Status RECONNECTING - showing snackbar',
+            );
             messenger.showSnackBar(
               SnackBar(
                 content: Text('setup.wifi.status_reconnecting'.tr()),
@@ -86,7 +88,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             break;
 
           case ESP32WifiStatus.connected:
-            debugPrint('✅ [WIFI_SCREEN] Status CONNECTED - navigating to next step');
+            debugPrint(
+              '✅ [WIFI_SCREEN] Status CONNECTED - navigating to next step',
+            );
 
             // Cancelar timeout si existe
             _timeoutTimer?.cancel();
@@ -164,7 +168,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         debugPrint('⚠️  [WIFI_SCREEN] Status stream closed');
 
         if (!mounted) {
-          debugPrint('⚠️  [WIFI_SCREEN] Widget not mounted, ignoring stream close');
+          debugPrint(
+            '⚠️  [WIFI_SCREEN] Widget not mounted, ignoring stream close',
+          );
           return;
         }
 
@@ -211,9 +217,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   void _parseWifiQr(String qrData) {
     // Standard format: WIFI:S:<SSID>;T:<TYPE>;P:<PASSWORD>;H:<HIDDEN>;;
     if (!qrData.startsWith('WIFI:')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid WiFi QR Code')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Invalid WiFi QR Code')));
       return;
     }
 
@@ -248,16 +254,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             const SnackBar(content: Text('Could not fetch WiFi name')),
           );
         }
-      } catch (e) {
+      } on Exception catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error: $e')));
         }
       }
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Location permission is required to get WiFi name')),
+        const SnackBar(
+          content: Text('Location permission is required to get WiFi name'),
+        ),
       );
     }
   }
@@ -290,7 +298,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
     // Prevenir múltiples llamadas simultáneas
     if (_isConnecting) {
-      debugPrint('⚠️  [WIFI_SCREEN] Already connecting, ignoring duplicate request');
+      debugPrint(
+        '⚠️  [WIFI_SCREEN] Already connecting, ignoring duplicate request',
+      );
       return;
     }
 
@@ -312,7 +322,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         password: _passwordController.text,
       );
 
-      debugPrint('📤 [WIFI_SCREEN] Send result: ${result.success ? "SUCCESS" : "FAILED"}');
+      debugPrint(
+        '📤 [WIFI_SCREEN] Send result: ${result.success ? "SUCCESS" : "FAILED"}',
+      );
       if (!result.success) {
         debugPrint('📤 [WIFI_SCREEN] Error message: ${result.message}');
       }
@@ -339,7 +351,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         debugPrint('🔔 [WIFI_SCREEN] Waiting for status updates from ESP32');
         // El statusStream se encargará de actualizar la UI cuando el ESP32 responda
       } else {
-        debugPrint('❌ [WIFI_SCREEN] Failed to send credentials: ${result.message}');
+        debugPrint(
+          '❌ [WIFI_SCREEN] Failed to send credentials: ${result.message}',
+        );
         throw Exception(result.message);
       }
     } on Exception catch (e) {
@@ -502,184 +516,183 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   Widget _buildQuickActions(ThemeData theme) => Wrap(
-        alignment: WrapAlignment.spaceEvenly,
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          _QuickActionButton(
-            icon: Icons.qr_code_scanner,
-            label: 'QR Scan',
-            onPressed: _scanQrCode,
-          ),
-          _QuickActionButton(
-            icon: Icons.wifi,
-            label: 'Current WiFi',
-            onPressed: _getCurrentWifi,
-          ),
-          _QuickActionButton(
-            icon: Icons.wifi_find,
-            label: 'setup.wifi.scan_networks'.tr(),
-            onPressed: _showWifiNetworksSheet,
-          ),
-        ],
-      );
+    alignment: WrapAlignment.spaceEvenly,
+    spacing: 8,
+    runSpacing: 8,
+    children: [
+      _QuickActionButton(
+        icon: Icons.qr_code_scanner,
+        label: 'QR Scan',
+        onPressed: _scanQrCode,
+      ),
+      _QuickActionButton(
+        icon: Icons.wifi,
+        label: 'Current WiFi',
+        onPressed: _getCurrentWifi,
+      ),
+      _QuickActionButton(
+        icon: Icons.wifi_find,
+        label: 'setup.wifi.scan_networks'.tr(),
+        onPressed: _showWifiNetworksSheet,
+      ),
+    ],
+  );
 
   Widget _buildHeader(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: () => context.pop(),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-          ),
-          const Spacer(),
-          _buildProgressIndicator(2, 7), // This is now step 2
-          const Spacer(),
-          const Opacity(
-            opacity: 0,
-            child: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
-          ),
-        ],
-      );
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      IconButton(
+        onPressed: () => context.pop(),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+      ),
+      const Spacer(),
+      _buildProgressIndicator(2, 7), // This is now step 2
+      const Spacer(),
+      const Opacity(
+        opacity: 0,
+        child: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
+      ),
+    ],
+  );
 
   Widget _buildTitle(ThemeData theme) => Column(
-        children: [
-          Text(
-            'setup.wifi.title'.tr(),
-            style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'setup.wifi.subtitle'.tr(),
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: Colors.white.withAlpha(230),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      );
+    children: [
+      Text(
+        'setup.wifi.title'.tr(),
+        style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
+      const SizedBox(height: 12),
+      Text(
+        'setup.wifi.subtitle'.tr(),
+        style: theme.textTheme.bodyLarge?.copyWith(
+          color: Colors.white.withAlpha(230),
+        ),
+        textAlign: TextAlign.center,
+      ),
+    ],
+  );
 
   Widget _buildSsidInput(ThemeData theme) => TextFormField(
-        controller: _ssidController,
-        style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
-        decoration: _buildInputDecoration(theme, 'setup.wifi.ssid_hint'.tr()),
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return 'setup.wifi.validation_ssid_empty'.tr();
-          }
+    controller: _ssidController,
+    style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+    decoration: _buildInputDecoration(theme, 'setup.wifi.ssid_hint'.tr()),
+    validator: (value) {
+      if (value == null || value.trim().isEmpty) {
+        return 'setup.wifi.validation_ssid_empty'.tr();
+      }
 
-          // Validar longitud máxima del SSID (32 bytes en WiFi)
-          if (value.trim().length > 32) {
-            return 'setup.wifi.validation_ssid_too_long'.tr();
-          }
+      // Validar longitud máxima del SSID (32 bytes en WiFi)
+      if (value.trim().length > 32) {
+        return 'setup.wifi.validation_ssid_too_long'.tr();
+      }
 
-          // Validar caracteres especiales problemáticos
-          if (value.contains('\n') || value.contains('\r')) {
-            return 'setup.wifi.validation_ssid_invalid_chars'.tr();
-          }
+      // Validar caracteres especiales problemáticos
+      if (value.contains('\n') || value.contains('\r')) {
+        return 'setup.wifi.validation_ssid_invalid_chars'.tr();
+      }
 
-          return null;
-        },
-      );
+      return null;
+    },
+  );
 
   Widget _buildPasswordInput(ThemeData theme) => TextFormField(
-        controller: _passwordController,
-        obscureText: !_isPasswordVisible,
-        style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
-        decoration: _buildInputDecoration(
-          theme,
-          'setup.wifi.password_hint'.tr(),
-          suffixIcon: IconButton(
-            icon: Icon(
-              _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-              color: Colors.white.withAlpha(179),
-            ),
-            onPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
-          ),
+    controller: _passwordController,
+    obscureText: !_isPasswordVisible,
+    style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+    decoration: _buildInputDecoration(
+      theme,
+      'setup.wifi.password_hint'.tr(),
+      suffixIcon: IconButton(
+        icon: Icon(
+          _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+          color: Colors.white.withAlpha(179),
         ),
-        validator: (value) {
-          // Validar longitud mínima de WPA2 (8 caracteres) si no está vacío
-          if (value != null && value.isNotEmpty && value.length < 8) {
-            return 'setup.wifi.validation_password_too_short'.tr();
-          }
-
-          // Validar longitud máxima (63 caracteres para WPA2)
-          if (value != null && value.length > 63) {
-            return 'setup.wifi.validation_password_too_long'.tr();
-          }
-
-          return null;
+        onPressed: () {
+          setState(() {
+            _isPasswordVisible = !_isPasswordVisible;
+          });
         },
-      );
+      ),
+    ),
+    validator: (value) {
+      // Validar longitud mínima de WPA2 (8 caracteres) si no está vacío
+      if (value != null && value.isNotEmpty && value.length < 8) {
+        return 'setup.wifi.validation_password_too_short'.tr();
+      }
+
+      // Validar longitud máxima (63 caracteres para WPA2)
+      if (value != null && value.length > 63) {
+        return 'setup.wifi.validation_password_too_long'.tr();
+      }
+
+      return null;
+    },
+  );
 
   InputDecoration _buildInputDecoration(
     ThemeData theme,
     String hintText, {
     Widget? suffixIcon,
-  }) =>
-      InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white.withAlpha(128)),
-        filled: true,
-        fillColor: Colors.white.withAlpha(51),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.all(20),
-        suffixIcon: suffixIcon,
-      );
+  }) => InputDecoration(
+    hintText: hintText,
+    hintStyle: TextStyle(color: Colors.white.withAlpha(128)),
+    filled: true,
+    fillColor: Colors.white.withAlpha(51),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide.none,
+    ),
+    contentPadding: const EdgeInsets.all(20),
+    suffixIcon: suffixIcon,
+  );
 
   Widget _buildFooterButtons(BuildContext context, ThemeData theme) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ElevatedButton(
-            onPressed: _isConnecting ? null : _connectToWifi,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: AppTheme.primaryLight,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: _isConnecting
-                ? const SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      color: AppTheme.primaryLight,
-                    ),
-                  )
-                : Text(
-                    'setup.wifi.connect_button'.tr(),
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: AppTheme.primaryLight,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      ElevatedButton(
+        onPressed: _isConnecting ? null : _connectToWifi,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: AppTheme.primaryLight,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: _isConnecting ? _cancelConnection : _skipWifiSetup,
-            child: Text(
-              _isConnecting
-                  ? 'setup.wifi.cancel_button'.tr()
-                  : 'setup.wifi.skip_button'.tr(),
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: _isConnecting
-                    ? Colors.red.withAlpha(204)
-                    : Colors.white.withAlpha(204),
+        ),
+        child: _isConnecting
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: AppTheme.primaryLight,
+                ),
+              )
+            : Text(
+                'setup.wifi.connect_button'.tr(),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: AppTheme.primaryLight,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+      ),
+      const SizedBox(height: 12),
+      TextButton(
+        onPressed: _isConnecting ? _cancelConnection : _skipWifiSetup,
+        child: Text(
+          _isConnecting
+              ? 'setup.wifi.cancel_button'.tr()
+              : 'setup.wifi.skip_button'.tr(),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: _isConnecting
+                ? Colors.red.withAlpha(204)
+                : Colors.white.withAlpha(204),
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 
   void _cancelConnection() {
     debugPrint('🛑 [WIFI_SCREEN] User cancelled WiFi connection');
@@ -701,20 +714,20 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(
-          total,
-          (index) => Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: index < current ? 24 : 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: index < current ? Colors.white : Colors.white.withAlpha(77),
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: List.generate(
+      total,
+      (index) => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        width: index < current ? 24 : 8,
+        height: 8,
+        decoration: BoxDecoration(
+          color: index < current ? Colors.white : Colors.white.withAlpha(77),
+          borderRadius: BorderRadius.circular(4),
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _QuickActionButton extends StatelessWidget {
@@ -760,34 +773,27 @@ class _WifiNetworksSheet extends StatefulWidget {
     required this.wifiService,
     required this.onNetworkSelected,
   });
-
   final WiFiService wifiService;
-  final ValueChanged<String> onNetworkSelected;
+  final void Function(String) onNetworkSelected;
 
   @override
   State<_WifiNetworksSheet> createState() => _WifiNetworksSheetState();
 }
 
 class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
+  bool _isLoading = true;
   List<WiFiNetwork> _networks = [];
-  bool _isScanning = true;
   String? _error;
 
   @override
   void initState() {
     super.initState();
-    _scan();
+    _scanNetworks();
   }
 
-  @override
-  void dispose() {
-    widget.wifiService.dispose();
-    super.dispose();
-  }
-
-  Future<void> _scan() async {
+  Future<void> _scanNetworks() async {
     setState(() {
-      _isScanning = true;
+      _isLoading = true;
       _error = null;
     });
 
@@ -796,30 +802,17 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
       if (mounted) {
         setState(() {
           _networks = networks;
-          _isScanning = false;
+          _isLoading = false;
         });
       }
-    } catch (e) {
+    } on Exception catch (e) {
       if (mounted) {
         setState(() {
-          _isScanning = false;
           _error = e.toString();
+          _isLoading = false;
         });
       }
     }
-  }
-
-  IconData _signalIcon(int rssi) {
-    if (rssi >= -50) {
-      return Icons.network_wifi;
-    }
-    if (rssi >= -70) {
-      return Icons.network_wifi_3_bar;
-    }
-    if (rssi >= -80) {
-      return Icons.network_wifi_2_bar;
-    }
-    return Icons.network_wifi_1_bar;
   }
 
   @override
@@ -827,166 +820,104 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
     final theme = Theme.of(context);
 
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.6,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
       decoration: const BoxDecoration(
-        color: Color(0xFF1E1E2E),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Handle
-          Container(
-            margin: const EdgeInsets.only(top: 12),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha(77),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          // Header
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 8, 8),
-            child: Row(
-              children: [
-                Text(
-                  'setup.wifi.available_networks'.tr(),
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'setup.wifi.scan_networks'.tr(),
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: AppTheme.onBackgroundLight,
+                  fontWeight: FontWeight.bold,
                 ),
-                const Spacer(),
-                IconButton(
-                  onPressed: _isScanning ? null : _scan,
-                  icon: Icon(
-                    Icons.refresh,
-                    color: _isScanning
-                        ? Colors.white.withAlpha(77)
-                        : Colors.white,
-                  ),
-                ),
-              ],
-            ),
+              ),
+              IconButton(
+                onPressed: _scanNetworks,
+                icon: const Icon(Icons.refresh),
+              ),
+            ],
           ),
-          const Divider(color: Colors.white24, height: 1),
-          // Content
-          Flexible(child: _buildContent(theme)),
+          const SizedBox(height: 24),
+          if (_isLoading)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32),
+                child: CircularProgressIndicator(),
+              ),
+            )
+          else if (_error != null)
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Error scanning networks',
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _error!,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: _scanNetworks,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+          else if (_networks.isEmpty)
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Text(
+                'No networks found',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleMedium,
+              ),
+            )
+          else
+            Flexible(
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: _networks.length,
+                separatorBuilder: (context, index) => const Divider(),
+                itemBuilder: (context, index) {
+                  final network = _networks[index];
+                  return ListTile(
+                    leading: const Icon(Icons.wifi),
+                    title: Text(network.ssid),
+                    subtitle: Text(
+                      'Signal: ${network.rssi} dBm',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      widget.onNetworkSelected(network.ssid);
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+            ),
+          const SizedBox(height: 16),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('common.cancel'.tr()),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildContent(ThemeData theme) {
-    if (_isScanning) {
-      return Padding(
-        padding: const EdgeInsets.all(40),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(color: Colors.white),
-            const SizedBox(height: 16),
-            Text(
-              'setup.wifi.scanning'.tr(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withAlpha(179),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (_error != null) {
-      return Padding(
-        padding: const EdgeInsets.all(40),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.error_outline, color: Colors.redAccent, size: 48),
-            const SizedBox(height: 12),
-            Text(
-              'setup.wifi.scan_error'.tr(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withAlpha(179),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: _scan,
-              child: Text(
-                'setup.wifi.retry'.tr(),
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (_networks.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(40),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.wifi_off, color: Colors.white.withAlpha(128), size: 48),
-            const SizedBox(height: 12),
-            Text(
-              'setup.wifi.no_networks_found'.tr(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withAlpha(179),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: _scan,
-              child: Text(
-                'setup.wifi.retry'.tr(),
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return ListView.separated(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: _networks.length,
-      separatorBuilder: (_, _) =>
-          const Divider(color: Colors.white12, height: 1, indent: 56),
-      itemBuilder: (context, index) {
-        final network = _networks[index];
-        return ListTile(
-          leading: Icon(
-            _signalIcon(network.rssi),
-            color: Colors.white,
-          ),
-          title: Text(
-            network.ssid,
-            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white),
-          ),
-          subtitle: Text(
-            '${network.security} · ${network.rssi} dBm',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: Colors.white.withAlpha(128),
-            ),
-          ),
-          trailing: network.security != 'Open'
-              ? Icon(Icons.lock, color: Colors.white.withAlpha(128), size: 18)
-              : null,
-          onTap: () {
-            widget.onNetworkSelected(network.ssid);
-            Navigator.of(context).pop();
-          },
-        );
-      },
     );
   }
 }

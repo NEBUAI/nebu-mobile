@@ -23,11 +23,12 @@ final esp32MuteProvider = Provider<bool?>((ref) {
 // Provider para establecer el volumen del ESP32
 final esp32SetVolumeProvider = Provider<Future<bool> Function(int)>((ref) {
   final service = ref.read(esp32WifiConfigServiceProvider);
-  return (int volume) async => service.setVolume(volume);
+  return service.setVolume;
 });
 
 // Provider para establecer el estado de mute del ESP32
-final esp32SetMuteProvider = Provider<Future<bool> Function(bool)>((ref) {
-  final service = ref.read(esp32WifiConfigServiceProvider);
-  return (bool mute) async => service.setMute(mute);
-});
+final esp32SetMuteProvider =
+    Provider<Future<bool> Function({required bool mute})>((ref) {
+      final service = ref.read(esp32WifiConfigServiceProvider);
+      return service.setMute;
+    });

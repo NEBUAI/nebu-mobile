@@ -52,7 +52,7 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
         isLoading: false,
         isSetupComplete: true,
       );
-    } on Exception catch (e) {
+    } on Exception {
       // Si no existe setup, no es un error crítico
       state = state.copyWith(isLoading: false, isSetupComplete: false);
     }

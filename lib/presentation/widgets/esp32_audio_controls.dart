@@ -89,8 +89,8 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                   child: Text(
                     '${_localVolume.toInt()}%',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.end,
                   ),
                 ),
@@ -121,7 +121,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                       : (value) async {
                           setState(() => _isUpdatingMute = true);
                           try {
-                            final success = await setMute(value);
+                            final success = await setMute(mute: value);
                             if (!success && context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -159,8 +159,8 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                     Text(
                       'Updating...',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),

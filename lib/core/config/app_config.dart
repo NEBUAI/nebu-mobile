@@ -9,6 +9,8 @@
 ///   --dart-define=API_KEY=your_api_key
 /// ```
 abstract final class AppConfig {
+  AppConfig._();
+
   // Environment
   static const environment = String.fromEnvironment(
     'ENV',
@@ -108,7 +110,7 @@ abstract final class AppConfig {
 
     try {
       getApiUrl();
-    } on Exception catch (e) {
+    } on Exception {
       errors.add('❌ API_URL no configurada');
     }
 

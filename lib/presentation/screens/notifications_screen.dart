@@ -23,8 +23,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         ? allNotifications
         : allNotifications.where((n) => n.type == _filter).toList();
 
-    final unreadCount =
-        allNotifications.where((n) => !n.isRead).length;
+    final unreadCount = allNotifications.where((n) => !n.isRead).length;
 
     return Scaffold(
       appBar: AppBar(
@@ -97,32 +96,32 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   Widget _buildEmptyState(ThemeData theme) => Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.notifications_none,
-            size: 100,
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.notifications_none,
+          size: 100,
+          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'notifications.no_notifications'.tr(),
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: theme.colorScheme.onSurface,
           ),
-          const SizedBox(height: 24),
-          Text(
-            'notifications.no_notifications'.tr(),
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.colorScheme.onSurface,
-            ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'notifications.no_notifications_desc'.tr(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),
-          const SizedBox(height: 8),
-          Text(
-            'notifications.no_notifications_desc'.tr(),
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  );
 
   void _markAllAsRead() {
     setState(() {
@@ -137,62 +136,58 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     setState(() {
       notification.isRead = true;
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(notification.title)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(notification.title)));
   }
 
-  void _dismissNotification(_Notification notification) {
-    setState(() {
-      _getMockNotifications().remove(notification);
-    });
-  }
+  void _dismissNotification(_Notification notification) => setState(() {
+    _getMockNotifications().remove(notification);
+  });
 
-  List<_Notification> _getMockNotifications() {
+  List<_Notification> _getMockNotifications() => [
     // TODO(dev): Replace with actual API call
-    return [
-      _Notification(
-        id: '1',
-        title: 'Nebu Robot Connected',
-        message: 'Your Nebu Robot "Buddy" is now connected',
-        type: 'toys',
-        timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
-        isRead: false,
-      ),
-      _Notification(
-        id: '2',
-        title: 'Order Shipped',
-        message: 'Your order #ORD-002 has been shipped',
-        type: 'orders',
-        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-        isRead: false,
-      ),
-      _Notification(
-        id: '3',
-        title: 'New Feature Available',
-        message: 'Check out the new voice commands feature!',
-        type: 'system',
-        timestamp: DateTime.now().subtract(const Duration(days: 1)),
-        isRead: true,
-      ),
-      _Notification(
-        id: '4',
-        title: 'Battery Low',
-        message: 'Your Nebu Robot battery is at 15%',
-        type: 'toys',
-        timestamp: DateTime.now().subtract(const Duration(days: 2)),
-        isRead: true,
-      ),
-      _Notification(
-        id: '5',
-        title: 'Order Delivered',
-        message: 'Your order #ORD-001 has been delivered',
-        type: 'orders',
-        timestamp: DateTime.now().subtract(const Duration(days: 3)),
-        isRead: true,
-      ),
-    ];
-  }
+    _Notification(
+      id: '1',
+      title: 'Nebu Robot Connected',
+      message: 'Your Nebu Robot "Buddy" is now connected',
+      type: 'toys',
+      timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
+      isRead: false,
+    ),
+    _Notification(
+      id: '2',
+      title: 'Order Shipped',
+      message: 'Your order #ORD-002 has been shipped',
+      type: 'orders',
+      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+      isRead: false,
+    ),
+    _Notification(
+      id: '3',
+      title: 'New Feature Available',
+      message: 'Check out the new voice commands feature!',
+      type: 'system',
+      timestamp: DateTime.now().subtract(const Duration(days: 1)),
+      isRead: true,
+    ),
+    _Notification(
+      id: '4',
+      title: 'Battery Low',
+      message: 'Your Nebu Robot battery is at 15%',
+      type: 'toys',
+      timestamp: DateTime.now().subtract(const Duration(days: 2)),
+      isRead: true,
+    ),
+    _Notification(
+      id: '5',
+      title: 'Order Delivered',
+      message: 'Your order #ORD-001 has been delivered',
+      type: 'orders',
+      timestamp: DateTime.now().subtract(const Duration(days: 3)),
+      isRead: true,
+    ),
+  ];
 }
 
 class _NotificationCard extends StatelessWidget {
@@ -250,8 +245,10 @@ class _NotificationCard extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: _getTypeColor(notification.type, theme)
-                        .withValues(alpha: 0.1),
+                    color: _getTypeColor(
+                      notification.type,
+                      theme,
+                    ).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -294,8 +291,9 @@ class _NotificationCard extends StatelessWidget {
                       Text(
                         notification.message,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.7),
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.7,
+                          ),
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -304,8 +302,9 @@ class _NotificationCard extends StatelessWidget {
                       Text(
                         _formatTimestamp(notification.timestamp),
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.5),
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.5,
+                          ),
                         ),
                       ),
                     ],
@@ -352,11 +351,13 @@ class _NotificationCard extends StatelessWidget {
     if (difference.inMinutes < 1) {
       return 'notifications.just_now'.tr();
     } else if (difference.inMinutes < 60) {
-      return 'notifications.minutes_ago'
-          .tr(args: [difference.inMinutes.toString()]);
+      return 'notifications.minutes_ago'.tr(
+        args: [difference.inMinutes.toString()],
+      );
     } else if (difference.inHours < 24) {
-      return 'notifications.hours_ago'
-          .tr(args: [difference.inHours.toString()]);
+      return 'notifications.hours_ago'.tr(
+        args: [difference.inHours.toString()],
+      );
     } else if (difference.inDays < 7) {
       return 'notifications.days_ago'.tr(args: [difference.inDays.toString()]);
     } else {
@@ -367,7 +368,6 @@ class _NotificationCard extends StatelessWidget {
 
 // Mock model
 class _Notification {
-
   _Notification({
     required this.id,
     required this.title,

@@ -378,7 +378,9 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
               if ((confirmed ?? false) && mounted) {
                 // TODO(dev): Implement account deletion
                 await ref.read(authProvider.notifier).logout();
-                if (!context.mounted) return;
+                if (!context.mounted) {
+                  return;
+                }
                 context.go(AppRoutes.welcome.path);
               }
             },

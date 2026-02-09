@@ -11,10 +11,7 @@ final toyProvider = AsyncNotifierProvider<ToyNotifier, List<Toy>>(
 
 class ToyNotifier extends AsyncNotifier<List<Toy>> {
   @override
-  Future<List<Toy>> build() async {
-    // Initialize with empty list, will be loaded when needed
-    return [];
-  }
+  Future<List<Toy>> build() => Future.value([]);
 
   ToyService get _toyService => ref.read(toyServiceProvider);
 

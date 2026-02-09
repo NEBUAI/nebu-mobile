@@ -5,6 +5,8 @@ import 'app_config.dart';
 
 /// Helper para cargar configuración desde .env en desarrollo
 abstract final class ConfigLoader {
+  ConfigLoader._();
+  
   static final _logger = Logger();
 
   /// Inicializar configuración
