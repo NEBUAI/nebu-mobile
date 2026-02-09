@@ -193,3 +193,4 @@ ios/Flutter/ephemeral/
 .env
 config/production.json
 config/staging.json
+.idea/markdown.xml
