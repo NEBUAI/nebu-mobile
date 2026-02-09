@@ -91,7 +91,8 @@ class LocalChildDataService {
 
     final personalityLabel = personalityLabels[personality] ?? personality;
 
-    return '''You are Nebu, a friendly AI companion for children.
+    return '''
+You are Nebu, a friendly AI companion for children.
 
 Child Information:
 - Name: $name

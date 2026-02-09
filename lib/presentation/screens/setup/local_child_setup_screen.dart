@@ -63,8 +63,12 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
     final savedPersonality = prefs.getString('local_child_personality');
     final savedPrompt = prefs.getString('local_custom_prompt');
 
-    if (savedName != null) _childNameController.text = savedName;
-    if (savedPrompt != null) _customPromptController.text = savedPrompt;
+    if (savedName != null) {
+      _childNameController.text = savedName;
+    }
+    if (savedPrompt != null) {
+      _customPromptController.text = savedPrompt;
+    }
 
     if (mounted) {
       setState(() {
@@ -145,7 +149,9 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
             isLocalSetup: true,
           );
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -159,7 +165,9 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
     } catch (e) {
       ref.read(loggerProvider).e('❌ [LOCAL_SETUP] Error saving data: $e');
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -184,7 +192,8 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       orElse: () => _personalities[0],
     )['label'];
 
-    return '''You are Nebu, a friendly AI companion for children.
+    return '''
+You are Nebu, a friendly AI companion for children.
 
 Child Information:
 - Name: $childName

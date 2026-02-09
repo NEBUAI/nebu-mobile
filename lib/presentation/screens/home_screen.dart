@@ -140,7 +140,7 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
       );
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       // Catch ProviderException here
       return Container(
         padding: const EdgeInsets.all(16),

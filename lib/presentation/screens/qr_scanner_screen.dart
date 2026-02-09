@@ -44,7 +44,9 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
   }
 
   void handleQRCode(String? code, BuildContext context) {
-    if (code == null || code.isEmpty || state.isProcessing) return;
+    if (code == null || code.isEmpty || state.isProcessing) {
+      return;
+    }
 
     state = state.copyWith(isProcessing: true, scannedCode: code);
 
@@ -53,7 +55,7 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
   }
 
   void _processQRCode(String code, BuildContext context) {
-    // TODO: Implement QR code processing logic
+    // TODO(dev): Implement QR code processing logic
     // Could be used for device pairing, configuration, etc.
 
     showDialog<String>(

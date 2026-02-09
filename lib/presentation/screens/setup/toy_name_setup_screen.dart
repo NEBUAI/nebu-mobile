@@ -301,7 +301,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                               // Register device in backend if Device ID exists
                               final success = await _registerDeviceIfNeeded();
 
-                              if (success && mounted) {
+                              if (success && context.mounted) {
                                 await context.push(AppRoutes.ageSetup.path);
                               }
                             }
