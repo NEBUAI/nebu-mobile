@@ -1,4 +1,4 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart';
 
 /// Configuración centralizada de la aplicación
 /// Úsala en lugar de EnvConfig o AppConfig
@@ -10,10 +10,10 @@ abstract final class Config {
   // ============================================
   // Environment
   // ============================================
-  static String get environment => dotenv.get('ENV', fallback: 'development');
-  static bool get isDevelopment => environment == 'development';
-  static bool get isProduction => environment == 'production';
-  static bool get isStaging => environment == 'staging';
+  static String get environment => 'production';
+  static bool get isDevelopment => kDebugMode;
+  static bool get isProduction => !kDebugMode;
+  static bool get isStaging => false;
 
   // ============================================
   // App Constants
@@ -37,51 +37,42 @@ abstract final class Config {
   // ============================================
   // Backend API
   // ============================================
-  /// URL del API - En release, usa valores por defecto seguros
-  /// En desarrollo, puede sobreescribirse desde .env
+  /// URL del API - Valores por defecto seguros para producción y desarrollo
   static String get apiBaseUrl {
-    // Primero intenta obtener del .env (si está cargado)
-    final urlFromEnv = dotenv.maybeGet('API_URL');
-    if (urlFromEnv != null && urlFromEnv.isNotEmpty) {
-      return urlFromEnv;
-    }
-
-    // Fallback seguro basado en el ambiente
     return isProduction
         ? 'https://api.flow-telligence.com/api/v1' // URL de producción
-        : 'http://localhost:3000'; // URL de desarrollo
+        : 'http://localhost:3000'; // URL de desarrollo local
   }
 
-  static String get apiKey => dotenv.maybeGet('API_KEY') ?? '';
-  static String get wsUrl => dotenv.maybeGet('WS_URL') ?? '';
+  static String get apiKey => '';
+  static String get wsUrl => '';
+
+  /// URL del WebSocket en producción
+  static String get wsBaseUrl {
+    return isProduction
+        ? 'wss://api.flow-telligence.com/api/v1'
+        : 'ws://localhost:3000';
+  }
 
   // ============================================
   // LiveKit
   // ============================================
-  static String get livekitUrl => dotenv.get('LIVEKIT_URL', fallback: '');
-  static String get livekitApiKey =>
-      dotenv.get('LIVEKIT_API_KEY', fallback: '');
-  static String get livekitApiSecret =>
-      dotenv.get('LIVEKIT_API_SECRET', fallback: '');
+  static String get livekitUrl => '';
+  static String get livekitApiKey => '';
+  static String get livekitApiSecret => '';
 
   // ============================================
   // Social Auth
   // ============================================
-  static String get googleWebClientId =>
-      dotenv.get('GOOGLE_WEB_CLIENT_ID', fallback: '');
-  static String get googleIosClientId =>
-      dotenv.get('GOOGLE_IOS_CLIENT_ID', fallback: '');
-  static String get facebookAppId =>
-      dotenv.get('FACEBOOK_APP_ID', fallback: '');
+  static String get googleWebClientId => '';
+  static String get googleIosClientId => '';
+  static String get facebookAppId => '';
 
   // ============================================
   // Debug & Logging
   // ============================================
-  static bool get enableDebugLogs =>
-      dotenv.get('ENABLE_DEBUG_LOGS', fallback: 'true') == 'true' &&
-      !isProduction;
-  static bool get enableCrashReporting =>
-      dotenv.get('ENABLE_CRASH_REPORTING', fallback: 'false') == 'true';
+  static bool get enableDebugLogs => !isProduction;
+  static bool get enableCrashReporting => false;
 
   // ============================================
   // Validation
