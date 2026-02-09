@@ -6,7 +6,7 @@ import 'app_config.dart';
 /// Helper para cargar configuración desde .env en desarrollo
 abstract final class ConfigLoader {
   ConfigLoader._();
-  
+
   static final _logger = Logger();
 
   /// Inicializar configuración
@@ -19,9 +19,11 @@ abstract final class ConfigLoader {
 
     if (AppConfig.isDevelopment || AppConfig.isStaging) {
       try {
-        _logger.d('📂 Loading .env file for ${AppConfig.environment}...');
-        await dotenv.load();
-        _logger.i('✅ .env file loaded successfully');
+        _logger.d(
+          '📂 Loading .env file for ${AppConfig.environment} (optional)...',
+        );
+        await dotenv.load(isOptional: true);
+        _logger.i('✅ .env file loaded (if present)');
 
         // Configurar valores en runtime desde .env
         AppConfig.setRuntimeConfig(
@@ -31,11 +33,10 @@ abstract final class ConfigLoader {
         );
 
         _logger.i('✅ Runtime config set from .env');
-      } catch (e) {
+      } on Exception catch (e) {
         _logger
           ..e('❌ Error loading .env file: $e')
-          ..e('⚠️  Make sure .env exists (copy from .env.example)');
-        rethrow;
+          ..e('⚠️  .env is optional; ensure dart-define values are set');
       }
     } else {
       _logger.i('🏭 Production mode: Using dart-define values');

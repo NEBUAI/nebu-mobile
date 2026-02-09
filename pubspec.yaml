@@ -68,6 +68,7 @@ dependencies:
   logger: ^2.3.0
   freezed_annotation: ^3.1.0
   uuid: ^4.5.1
+  path_provider: ^2.1.3
 
   # UI Helpers
   cached_network_image: ^3.3.1
@@ -99,7 +100,6 @@ flutter:
     - assets/images/
     - assets/translations/
     - assets/icon_flow.svg
-    - .env
 
 flutter_launcher_icons:
   android: true

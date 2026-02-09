@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Configuración del agente de voz
 class VoiceAgentConfig {
@@ -66,10 +67,12 @@ class OpenAIVoiceService {
   OpenAIVoiceService({required Logger logger, required Dio dio})
     : _logger = logger,
       _dio = dio,
-      _recorder = AudioRecorder();
+      _recorder = AudioRecorder(),
+      _secureStorage = const FlutterSecureStorage();
   final Logger _logger;
   final Dio _dio;
   final AudioRecorder _recorder;
+  final FlutterSecureStorage _secureStorage;
   late final AudioPlayer _audioPlayer;
 
   late VoiceAgentConfig _config;
@@ -139,9 +142,11 @@ class OpenAIVoiceService {
   /// Guardar conversación en almacenamiento local
   Future<void> _saveConversation() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
       final conversationJson = _conversation.map((m) => m.toJson()).toList();
-      await prefs.setString('voice_conversation', jsonEncode(conversationJson));
+      await _secureStorage.write(
+        key: 'voice_conversation',
+        value: jsonEncode(conversationJson),
+      );
     } on Exception catch (e) {
       _logger.e('Error saving conversation: $e');
     }
@@ -152,8 +157,9 @@ class OpenAIVoiceService {
   // ignore: unused_element
   Future<void> _loadConversation() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final conversationString = prefs.getString('voice_conversation');
+      final conversationString = await _secureStorage.read(
+        key: 'voice_conversation',
+      );
       if (conversationString != null) {
         final conversationJson = jsonDecode(conversationString) as List;
         _conversation
@@ -190,9 +196,11 @@ class OpenAIVoiceService {
       }
 
       // Iniciar grabación
+      final tempDir = await getTemporaryDirectory();
+      final audioPath = '${tempDir.path}/voice_input.wav';
       await _recorder.start(
         const RecordConfig(encoder: AudioEncoder.wav, sampleRate: 16000),
-        path: '/tmp/voice_input.wav',
+        path: audioPath,
       );
 
       _logger.i('Started listening for voice input');
@@ -331,7 +339,8 @@ class OpenAIVoiceService {
       );
 
       // Guardar audio temporal
-      const audioPath = '/tmp/voice_response.mp3';
+      final tempDir = await getTemporaryDirectory();
+      final audioPath = '${tempDir.path}/voice_response.mp3';
       final audioFile = File(audioPath);
       await audioFile.writeAsBytes(response.data!);
 
@@ -418,7 +427,7 @@ class OpenAIVoiceService {
 
   /// Obtener historial de conversación
   List<ConversationMessage> get conversation =>
-      List.unmodifiable(_conversation);
+      List<ConversationMessage>.unmodifiable(_conversation);
 
   /// Obtener estado actual
   VoiceAgentStatus get status => _status;
@@ -436,10 +445,20 @@ class OpenAIVoiceService {
     _logger.i('Conversation cleared');
   }
 
-  /// Cerrar servicio
+  /// Liberar recursos
   Future<void> dispose() async {
-    await _recorder.dispose();
-    await _audioPlayer.dispose();
+    if (_isInitialized) {
+      try {
+        await _audioPlayer.dispose();
+      } on Exception catch (e) {
+        _logger.w('Error disposing audio player: $e');
+      }
+    }
+    try {
+      await _recorder.dispose();
+    } on Exception catch (e) {
+      _logger.w('Error disposing recorder: $e');
+    }
     await _statusController.close();
     await _messageController.close();
     _logger.i('OpenAI Voice Service disposed');
