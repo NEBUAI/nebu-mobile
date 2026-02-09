@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/api_provider.dart';
+
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
 
@@ -12,18 +14,54 @@ class NotificationsScreen extends ConsumerStatefulWidget {
 
 class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   String _filter = 'all';
+  List<_Notification> _notifications = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotifications();
+  }
+
+  Future<void> _loadNotifications() async {
+    setState(() => _isLoading = true);
+    try {
+      final service = ref.read(notificationServiceProvider);
+      final data = await service.getMyNotifications();
+      if (!mounted) return;
+      setState(() {
+        _notifications = data
+            .map(
+              (json) => _Notification(
+                id: json['id'] as String? ?? '',
+                title: json['title'] as String? ?? '',
+                message: json['message'] as String? ?? '',
+                type: json['type'] as String? ?? 'system',
+                timestamp: DateTime.tryParse(
+                      json['createdAt'] as String? ?? '',
+                    ) ??
+                    DateTime.now(),
+                isRead: json['readAt'] != null,
+              ),
+            )
+            .toList();
+        _isLoading = false;
+      });
+    } on Exception {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // Mock data - Replace with actual notifications from provider
-    final allNotifications = _getMockNotifications();
     final filteredNotifications = _filter == 'all'
-        ? allNotifications
-        : allNotifications.where((n) => n.type == _filter).toList();
+        ? _notifications
+        : _notifications.where((n) => n.type == _filter).toList();
 
-    final unreadCount = allNotifications.where((n) => !n.isRead).length;
+    final unreadCount = _notifications.where((n) => !n.isRead).length;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,20 +99,27 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
 
           // Notifications list
           Expanded(
-            child: filteredNotifications.isEmpty
-                ? _buildEmptyState(theme)
-                : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: filteredNotifications.length,
-                    itemBuilder: (context, index) {
-                      final notification = filteredNotifications[index];
-                      return _NotificationCard(
-                        notification: notification,
-                        onTap: () => _handleNotificationTap(notification),
-                        onDismiss: () => _dismissNotification(notification),
-                      );
-                    },
-                  ),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : filteredNotifications.isEmpty
+                    ? _buildEmptyState(theme)
+                    : RefreshIndicator(
+                        onRefresh: _loadNotifications,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: filteredNotifications.length,
+                          itemBuilder: (context, index) {
+                            final notification = filteredNotifications[index];
+                            return _NotificationCard(
+                              notification: notification,
+                              onTap: () =>
+                                  _handleNotificationTap(notification),
+                              onDismiss: () =>
+                                  _dismissNotification(notification),
+                            );
+                          },
+                        ),
+                      ),
           ),
         ],
       ),
@@ -123,71 +168,39 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     ),
   );
 
-  void _markAllAsRead() {
-    setState(() {
-      // TODO(dev): Implement mark all as read
-    });
+  Future<void> _markAllAsRead() async {
+    final service = ref.read(notificationServiceProvider);
+    final success = await service.markAllAsRead();
+    if (!mounted) return;
+    if (success) {
+      setState(() {
+        for (final n in _notifications) {
+          n.isRead = true;
+        }
+      });
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('notifications.marked_all_read'.tr())),
     );
   }
 
-  void _handleNotificationTap(_Notification notification) {
+  Future<void> _handleNotificationTap(_Notification notification) async {
+    final service = ref.read(notificationServiceProvider);
+    await service.markAsRead(notification.id);
+    if (!mounted) return;
     setState(() {
       notification.isRead = true;
     });
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(notification.title)));
   }
 
-  void _dismissNotification(_Notification notification) => setState(() {
-    _getMockNotifications().remove(notification);
-  });
-
-  List<_Notification> _getMockNotifications() => [
-    // TODO(dev): Replace with actual API call
-    _Notification(
-      id: '1',
-      title: 'Nebu Robot Connected',
-      message: 'Your Nebu Robot "Buddy" is now connected',
-      type: 'toys',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
-      isRead: false,
-    ),
-    _Notification(
-      id: '2',
-      title: 'Order Shipped',
-      message: 'Your order #ORD-002 has been shipped',
-      type: 'orders',
-      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-      isRead: false,
-    ),
-    _Notification(
-      id: '3',
-      title: 'New Feature Available',
-      message: 'Check out the new voice commands feature!',
-      type: 'system',
-      timestamp: DateTime.now().subtract(const Duration(days: 1)),
-      isRead: true,
-    ),
-    _Notification(
-      id: '4',
-      title: 'Battery Low',
-      message: 'Your Nebu Robot battery is at 15%',
-      type: 'toys',
-      timestamp: DateTime.now().subtract(const Duration(days: 2)),
-      isRead: true,
-    ),
-    _Notification(
-      id: '5',
-      title: 'Order Delivered',
-      message: 'Your order #ORD-001 has been delivered',
-      type: 'orders',
-      timestamp: DateTime.now().subtract(const Duration(days: 3)),
-      isRead: true,
-    ),
-  ];
+  Future<void> _dismissNotification(_Notification notification) async {
+    final service = ref.read(notificationServiceProvider);
+    await service.deleteNotification(notification.id);
+    if (!mounted) return;
+    setState(() {
+      _notifications.remove(notification);
+    });
+  }
 }
 
 class _NotificationCard extends StatelessWidget {
@@ -366,7 +379,6 @@ class _NotificationCard extends StatelessWidget {
   }
 }
 
-// Mock model
 class _Notification {
   _Notification({
     required this.id,

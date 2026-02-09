@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/constants/app_routes.dart';
+import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
 
 class PrivacySettingsScreen extends ConsumerStatefulWidget {
@@ -248,9 +250,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           content: Text('privacy.manage_in_settings'.tr()),
           action: SnackBarAction(
             label: 'privacy.open_settings'.tr(),
-            onPressed: () {
-              // TODO(dev): Open app settings
-            },
+            onPressed: openAppSettings,
           ),
         ),
       );
@@ -376,12 +376,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
               Navigator.pop(context);
               final confirmed = await _confirmDeleteAccount();
               if ((confirmed ?? false) && mounted) {
-                // TODO(dev): Implement account deletion
-                await ref.read(authProvider.notifier).logout();
-                if (!context.mounted) {
-                  return;
-                }
-                context.go(AppRoutes.welcome.path);
+                await _performAccountDeletion();
               }
             },
             style: ElevatedButton.styleFrom(
@@ -393,6 +388,29 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _performAccountDeletion() async {
+    try {
+      final userService = ref.read(userServiceProvider);
+      await userService.deleteOwnAccount();
+      await ref.read(authProvider.notifier).logout();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('privacy.account_deleted_success'.tr())),
+      );
+      context.go(AppRoutes.welcome.path);
+    } on Exception catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString().replaceFirst('Exception: ', ''),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Future<bool?> _confirmDeleteAccount() {

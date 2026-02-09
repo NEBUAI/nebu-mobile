@@ -313,42 +313,47 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     );
   }
 
-  Widget _buildAdditionalSettings(bool isDark) => Column(
-    children: [
-      _buildSettingTile(
-        title: 'Haptic Feedback',
-        subtitle: 'Vibration feedback for interactions',
-        icon: Icons.vibration,
-        value: true,
-        onChanged: (value) {
-          // TODO(duvet05): Implement haptic feedback setting
-        },
-        isDark: isDark,
-      ),
-      const SizedBox(height: 12),
-      _buildSettingTile(
-        title: 'Auto-save',
-        subtitle: 'Automatically save your work',
-        icon: Icons.save,
-        value: true,
-        onChanged: (value) {
-          // TODO(duvet05): Implement auto-save setting
-        },
-        isDark: isDark,
-      ),
-      const SizedBox(height: 12),
-      _buildSettingTile(
-        title: 'Analytics',
-        subtitle: 'Help us improve the app',
-        icon: Icons.analytics,
-        value: false,
-        onChanged: (value) {
-          // TODO(duvet05): Implement analytics setting
-        },
-        isDark: isDark,
-      ),
-    ],
-  );
+  Widget _buildAdditionalSettings(bool isDark) {
+    final state = ref.watch(setupWizardProvider);
+    final notifier = ref.read(setupWizardProvider.notifier);
+
+    return Column(
+      children: [
+        _buildSettingTile(
+          title: 'Haptic Feedback',
+          subtitle: 'Vibration feedback for interactions',
+          icon: Icons.vibration,
+          value: state.hapticFeedback,
+          onChanged: (value) {
+            notifier.updateHapticFeedback(enabled: value);
+          },
+          isDark: isDark,
+        ),
+        const SizedBox(height: 12),
+        _buildSettingTile(
+          title: 'Auto-save',
+          subtitle: 'Automatically save your work',
+          icon: Icons.save,
+          value: state.autoSave,
+          onChanged: (value) {
+            notifier.updateAutoSave(enabled: value);
+          },
+          isDark: isDark,
+        ),
+        const SizedBox(height: 12),
+        _buildSettingTile(
+          title: 'Analytics',
+          subtitle: 'Help us improve the app',
+          icon: Icons.analytics,
+          value: state.analyticsEnabled,
+          onChanged: (value) {
+            notifier.updateAnalyticsEnabled(enabled: value);
+          },
+          isDark: isDark,
+        ),
+      ],
+    );
+  }
 
   Widget _buildSettingTile({
     required String title,

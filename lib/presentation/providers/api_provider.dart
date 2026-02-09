@@ -12,6 +12,8 @@ import '../../data/services/device_service.dart';
 import '../../data/services/esp32_wifi_config_service.dart';
 import '../../data/services/iot_service.dart';
 import '../../data/services/local_child_data_service.dart';
+import '../../data/services/notification_service.dart';
+import '../../data/services/order_service.dart';
 import '../../data/services/toy_service.dart';
 import '../../data/services/user_service.dart';
 import '../../data/services/user_setup_service.dart';
@@ -109,6 +111,18 @@ final userSetupServiceProvider = Provider<UserSetupService>((ref) {
   final apiService = ref.watch(apiServiceProvider);
   final logger = ref.watch(loggerProvider);
   return UserSetupService(apiService: apiService, logger: logger);
+});
+
+final notificationServiceProvider = Provider<NotificationService>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return NotificationService(apiService: apiService, logger: logger);
+});
+
+final orderServiceProvider = Provider<OrderService>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return OrderService(apiService: apiService, logger: logger);
 });
 
 final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((

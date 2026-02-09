@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Estado inmutable para el asistente de configuración
 @immutable
@@ -17,6 +18,9 @@ class SetupWizardState {
     this.microphonePermission = false,
     this.cameraPermission = false,
     this.notificationsPermission = false,
+    this.hapticFeedback = true,
+    this.autoSave = true,
+    this.analyticsEnabled = false,
   });
 
   final int currentStep;
@@ -36,6 +40,11 @@ class SetupWizardState {
   final bool cameraPermission;
   final bool notificationsPermission;
 
+  // Additional settings
+  final bool hapticFeedback;
+  final bool autoSave;
+  final bool analyticsEnabled;
+
   static const int totalSteps = 7;
 
   SetupWizardState copyWith({
@@ -51,6 +60,9 @@ class SetupWizardState {
     bool? microphonePermission,
     bool? cameraPermission,
     bool? notificationsPermission,
+    bool? hapticFeedback,
+    bool? autoSave,
+    bool? analyticsEnabled,
   }) => SetupWizardState(
       currentStep: currentStep ?? this.currentStep,
       isCompleted: isCompleted ?? this.isCompleted,
@@ -65,6 +77,9 @@ class SetupWizardState {
       cameraPermission: cameraPermission ?? this.cameraPermission,
       notificationsPermission:
           notificationsPermission ?? this.notificationsPermission,
+      hapticFeedback: hapticFeedback ?? this.hapticFeedback,
+      autoSave: autoSave ?? this.autoSave,
+      analyticsEnabled: analyticsEnabled ?? this.analyticsEnabled,
     );
 
   double get progress => (currentStep + 1) / totalSteps;
@@ -148,16 +163,16 @@ class SetupWizardNotifier extends Notifier<SetupWizardState> {
     // Navigation se maneja desde la UI con GoRouter
   }
 
-  void _saveSetupData() {
-    // Save all setup preferences
-    // This would typically use SharedPreferences or a local database
-    debugPrint('Saving setup data:');
-    debugPrint('User: ${state.userName}');
-    debugPrint('Email: ${state.userEmail}');
-    debugPrint('Language: ${state.selectedLanguage}');
-    debugPrint('Theme: ${state.selectedTheme}');
-    debugPrint('Notifications: ${state.notificationsEnabled}');
-    debugPrint('Voice: ${state.voiceEnabled}');
+  Future<void> _saveSetupData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('setup_language', state.selectedLanguage);
+    await prefs.setString('setup_theme', state.selectedTheme);
+    await prefs.setBool('setup_notifications', state.notificationsEnabled);
+    await prefs.setBool('setup_voice', state.voiceEnabled);
+    await prefs.setBool('setup_haptic_feedback', state.hapticFeedback);
+    await prefs.setBool('setup_auto_save', state.autoSave);
+    await prefs.setBool('setup_analytics', state.analyticsEnabled);
+    await prefs.setBool('setup_completed', true);
   }
 
   // Update methods para cada campo del formulario
@@ -199,6 +214,18 @@ class SetupWizardNotifier extends Notifier<SetupWizardState> {
 
   void updateNotificationsPermission({required bool granted}) {
     state = state.copyWith(notificationsPermission: granted);
+  }
+
+  void updateHapticFeedback({required bool enabled}) {
+    state = state.copyWith(hapticFeedback: enabled);
+  }
+
+  void updateAutoSave({required bool enabled}) {
+    state = state.copyWith(autoSave: enabled);
+  }
+
+  void updateAnalyticsEnabled({required bool enabled}) {
+    state = state.copyWith(analyticsEnabled: enabled);
   }
 }
 

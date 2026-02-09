@@ -2,28 +2,62 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OrdersScreen extends ConsumerWidget {
+import '../providers/api_provider.dart';
+
+class OrdersScreen extends ConsumerStatefulWidget {
   const OrdersScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+  ConsumerState<OrdersScreen> createState() => _OrdersScreenState();
+}
 
-    // Mock data - Replace with actual orders from provider
-    final orders = _getMockOrders();
+class _OrdersScreenState extends ConsumerState<OrdersScreen> {
+  List<_Order> _orders = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOrders();
+  }
+
+  Future<void> _loadOrders() async {
+    setState(() => _isLoading = true);
+    try {
+      final service = ref.read(orderServiceProvider);
+      final data = await service.getMyOrders();
+      if (!mounted) return;
+      setState(() {
+        _orders = data.map((json) => _Order.fromJson(json)).toList();
+        _isLoading = false;
+      });
+    } on Exception {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(title: Text('orders.title'.tr()), elevation: 0),
-      body: orders.isEmpty
-          ? _buildEmptyState(theme)
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: orders.length,
-              itemBuilder: (context, index) {
-                final order = orders[index];
-                return _OrderCard(order: order);
-              },
-            ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _orders.isEmpty
+              ? _buildEmptyState(theme)
+              : RefreshIndicator(
+                  onRefresh: _loadOrders,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _orders.length,
+                    itemBuilder: (context, index) {
+                      final order = _orders[index];
+                      return _OrderCard(order: order);
+                    },
+                  ),
+                ),
     );
   }
 
@@ -54,33 +88,6 @@ class OrdersScreen extends ConsumerWidget {
       ],
     ),
   );
-
-  List<_Order> _getMockOrders() => [
-    // TODO(dev): Replace with actual API call
-    _Order(
-      id: 'ORD-001',
-      date: DateTime.now().subtract(const Duration(days: 2)),
-      status: 'delivered',
-      items: [
-        _OrderItem(name: 'Nebu Robot - Blue', quantity: 1, price: 149.99),
-        _OrderItem(name: 'Extra Battery Pack', quantity: 2, price: 29.99),
-      ],
-    ),
-    _Order(
-      id: 'ORD-002',
-      date: DateTime.now().subtract(const Duration(days: 15)),
-      status: 'shipped',
-      items: [
-        _OrderItem(name: 'Nebu Robot - Pink', quantity: 1, price: 149.99),
-      ],
-    ),
-    _Order(
-      id: 'ORD-003',
-      date: DateTime.now().subtract(const Duration(days: 30)),
-      status: 'cancelled',
-      items: [_OrderItem(name: 'Accessory Kit', quantity: 1, price: 39.99)],
-    ),
-  ];
 }
 
 class _OrderCard extends StatelessWidget {
@@ -91,10 +98,7 @@ class _OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final total = order.items.fold<double>(
-      0,
-      (sum, item) => sum + (item.price * item.quantity),
-    );
+    final total = order.totalPrice;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -113,7 +117,7 @@ class _OrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    order.id,
+                    order.orderNumber,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -159,7 +163,7 @@ class _OrderCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '\$${(item.price * item.quantity).toStringAsFixed(2)}',
+                        '\$${item.subtotal.toStringAsFixed(2)}',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
@@ -202,23 +206,24 @@ class _OrderCard extends StatelessWidget {
     Color color;
     String label;
 
-    switch (status) {
-      case 'delivered':
+    switch (status.toUpperCase()) {
+      case 'DELIVERED':
         color = Colors.green;
         label = 'orders.status_delivered'.tr();
-        break;
-      case 'shipped':
+      case 'SHIPPED':
         color = Colors.blue;
         label = 'orders.status_shipped'.tr();
-        break;
-      case 'processing':
+      case 'PROCESSING':
+      case 'CONFIRMED':
         color = Colors.orange;
         label = 'orders.status_processing'.tr();
-        break;
-      case 'cancelled':
+      case 'CANCELLED':
         color = Colors.red;
         label = 'orders.status_cancelled'.tr();
-        break;
+      case 'PENDING':
+      case 'RESERVED':
+        color = Colors.amber;
+        label = 'orders.status_processing'.tr();
       default:
         color = Colors.grey;
         label = status;
@@ -273,10 +278,7 @@ class _OrderDetailsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final total = order.items.fold<double>(
-      0,
-      (sum, item) => sum + (item.price * item.quantity),
-    );
+    final total = order.totalPrice;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.7,
@@ -310,14 +312,14 @@ class _OrderDetailsSheet extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              order.id,
+              order.orderNumber,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.primary,
               ),
             ),
             const SizedBox(height: 24),
 
-            // Status timeline (mock)
+            // Status timeline
             _buildStatusTimeline(theme),
             const SizedBox(height: 24),
 
@@ -347,7 +349,8 @@ class _OrderDetailsSheet extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Actions
-            if (order.status != 'cancelled' && order.status != 'delivered')
+            if (order.status.toUpperCase() != 'CANCELLED' &&
+                order.status.toUpperCase() != 'DELIVERED')
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -387,35 +390,45 @@ class _OrderDetailsSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusTimeline(ThemeData theme) => Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Column(
-      children: [
-        _buildTimelineItem(
-          'orders.timeline_placed'.tr(),
-          true,
-          theme,
-          isFirst: true,
-        ),
-        _buildTimelineItem('orders.timeline_processing'.tr(), true, theme),
-        _buildTimelineItem(
-          'orders.timeline_shipped'.tr(),
-          order.status == 'shipped' || order.status == 'delivered',
-          theme,
-        ),
-        _buildTimelineItem(
-          'orders.timeline_delivered'.tr(),
-          order.status == 'delivered',
-          theme,
-          isLast: true,
-        ),
-      ],
-    ),
-  );
+  Widget _buildStatusTimeline(ThemeData theme) {
+    final upperStatus = order.status.toUpperCase();
+    final statusOrder = ['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED'];
+    final currentIndex = statusOrder.indexOf(upperStatus);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          _buildTimelineItem(
+            'orders.timeline_placed'.tr(),
+            currentIndex >= 0,
+            theme,
+            isFirst: true,
+          ),
+          _buildTimelineItem(
+            'orders.timeline_processing'.tr(),
+            currentIndex >= 1,
+            theme,
+          ),
+          _buildTimelineItem(
+            'orders.timeline_shipped'.tr(),
+            currentIndex >= 2,
+            theme,
+          ),
+          _buildTimelineItem(
+            'orders.timeline_delivered'.tr(),
+            currentIndex >= 3,
+            theme,
+            isLast: true,
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildTimelineItem(
     String label,
@@ -485,7 +498,7 @@ class _OrderDetailsSheet extends StatelessWidget {
           ),
         ),
         Text(
-          '\$${(item.price * item.quantity).toStringAsFixed(2)}',
+          '\$${item.subtotal.toStringAsFixed(2)}',
           style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -521,23 +534,62 @@ class _OrderDetailsSheet extends StatelessWidget {
   );
 }
 
-// Mock models
 class _Order {
   _Order({
     required this.id,
+    required this.orderNumber,
     required this.date,
     required this.status,
+    required this.totalPrice,
     required this.items,
   });
+
+  factory _Order.fromJson(Map<String, dynamic> json) {
+    final itemsList = json['items'] as List<dynamic>? ?? [];
+    return _Order(
+      id: json['id'] as String? ?? '',
+      orderNumber: json['orderNumber'] as String? ?? json['id'] as String? ?? '',
+      date: DateTime.tryParse(json['createdAt'] as String? ?? '') ??
+          DateTime.now(),
+      status: json['status'] as String? ?? 'PENDING',
+      totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? 0,
+      items: itemsList
+          .map((e) => _OrderItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
   final String id;
+  final String orderNumber;
   final DateTime date;
   final String status;
+  final double totalPrice;
   final List<_OrderItem> items;
 }
 
 class _OrderItem {
-  _OrderItem({required this.name, required this.quantity, required this.price});
+  _OrderItem({
+    required this.name,
+    required this.quantity,
+    required this.unitPrice,
+    required this.subtotal,
+  });
+
+  factory _OrderItem.fromJson(Map<String, dynamic> json) {
+    final quantity = json['quantity'] as int? ?? 1;
+    final unitPrice = (json['unitPrice'] as num?)?.toDouble() ?? 0;
+    return _OrderItem(
+      name: json['productName'] as String? ??
+          (json['product'] as Map<String, dynamic>?)?['name'] as String? ??
+          'Item',
+      quantity: quantity,
+      unitPrice: unitPrice,
+      subtotal: (json['subtotal'] as num?)?.toDouble() ?? unitPrice * quantity,
+    );
+  }
+
   final String name;
   final int quantity;
-  final double price;
+  final double unitPrice;
+  final double subtotal;
 }
