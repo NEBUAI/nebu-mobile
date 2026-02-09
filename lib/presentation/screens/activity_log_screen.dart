@@ -38,7 +38,9 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
       data: (user) => user?.id,
       orElse: () => null,
     );
-    if (userId == null) return;
+    if (userId == null) {
+      return;
+    }
 
     await ref
         .read(activityNotifierProvider.notifier)
@@ -68,7 +70,9 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
       data: (user) => user?.id,
       orElse: () => null,
     );
-    if (userId == null) return;
+    if (userId == null) {
+      return;
+    }
 
     await ref.read(activityNotifierProvider.notifier).refresh(userId: userId);
   }

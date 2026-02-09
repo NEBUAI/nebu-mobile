@@ -30,7 +30,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
     }
 
     return Card(
-      margin: const EdgeInsets.all(0),
+      margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -61,8 +61,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                       setState(() => _isUpdatingVolume = true);
                       try {
                         final success = await setVolume(value.toInt());
-                        if (!success && mounted) {
-                          if (!mounted) return;
+                        if (!success && context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Failed to set volume'),
@@ -123,8 +122,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                           setState(() => _isUpdatingMute = true);
                           try {
                             final success = await setMute(value);
-                            if (!success && mounted) {
-                              if (!mounted) return;
+                            if (!success && context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Failed to toggle mute'),

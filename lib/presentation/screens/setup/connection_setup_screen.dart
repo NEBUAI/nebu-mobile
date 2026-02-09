@@ -102,7 +102,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
   }
 
   Future<void> _startScan() async {
-    if (_isScanning) return;
+    if (_isScanning) {
+      return;
+    }
 
     _logger.i('Starting Bluetooth scan...');
     setState(() {
@@ -131,11 +133,15 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       });
 
       Future<void>.delayed(const Duration(seconds: 15), () {
-        if (mounted) _stopScan();
+        if (mounted) {
+          _stopScan();
+        }
       });
     } on Exception catch (e) {
       _logger.e('Error starting scan: $e');
-      if (mounted) setState(() => _isScanning = false);
+      if (mounted) {
+        setState(() => _isScanning = false);
+      }
     }
   }
 
@@ -144,7 +150,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       await fbp.FlutterBluePlus.stopScan();
       await _scanSubscription?.cancel();
       _scanSubscription = null;
-      if (mounted) setState(() => _isScanning = false);
+      if (mounted) {
+        setState(() => _isScanning = false);
+      }
     } on Exception catch (e) {
       _logger.e('Error stopping scan: $e');
     }
@@ -159,7 +167,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       final esp32service = await ref.read(esp32WifiConfigServiceProvider.future);
       await esp32service.connectToESP32(device);
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       messenger.showSnackBar(
         SnackBar(
@@ -180,7 +190,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       setState(() => _selectedDevice = device);
     } on Exception catch (e) {
       _logger.e('Failed to connect: $e');
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       messenger.showSnackBar(
         SnackBar(
@@ -198,7 +210,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
         ),
       );
     } finally {
-      if (mounted) setState(() => _isConnecting = false);
+      if (mounted) {
+        setState(() => _isConnecting = false);
+      }
     }
   }
 
@@ -258,7 +272,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF6B4EFF).withOpacity(0.1),
+                    color: const Color(0xFF6B4EFF).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Icon(
@@ -407,7 +421,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                               : 'Start Scan',
                       isLoading: _isScanning,
                       onPressed: () {
-                        if (_isScanning) return;
+                        if (_isScanning) {
+                          return;
+                        }
                         if (canProceed) {
                           context.push(AppRoutes.wifiSetup.path);
                         } else if (!_isBluetoothEnabled) {
@@ -461,7 +477,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF6B4EFF).withOpacity(0.1),
+                  color: const Color(0xFF6B4EFF).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(60),
                 ),
                 child: Center(
@@ -469,7 +485,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF6B4EFF).withOpacity(0.15),
+                      color: const Color(0xFF6B4EFF).withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: const Center(
@@ -515,7 +531,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
+              color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Icon(
@@ -564,7 +580,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: const Color(0xFF6B4EFF).withOpacity(0.1),
+                color: const Color(0xFF6B4EFF).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -619,7 +635,7 @@ class _BackButton extends StatelessWidget {
         width: 44,
         height: 44,
         decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
+          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(
@@ -652,7 +668,7 @@ class _StepIndicator extends StatelessWidget {
             decoration: BoxDecoration(
               color: isActive
                   ? const Color(0xFF6B4EFF)
-                  : const Color(0xFF6B4EFF).withOpacity(0.2),
+                  : const Color(0xFF6B4EFF).withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(4),
             ),
           );
@@ -685,7 +701,7 @@ class _PrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF6B4EFF).withOpacity(0.3),
+              color: const Color(0xFF6B4EFF).withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -729,8 +745,12 @@ class _DeviceCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   IconData _getSignalIcon() {
-    if (signal >= -50) return Icons.signal_cellular_4_bar_rounded;
-    if (signal >= -70) return Icons.signal_cellular_alt_rounded;
+    if (signal >= -50) {
+      return Icons.signal_cellular_4_bar_rounded;
+    }
+    if (signal >= -70) {
+      return Icons.signal_cellular_alt_rounded;
+    }
     return Icons.signal_cellular_alt_1_bar_rounded;
   }
 
@@ -746,8 +766,8 @@ class _DeviceCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF6B4EFF).withOpacity(0.08)
-              : colorScheme.surfaceContainerHighest.withOpacity(0.3),
+              ? const Color(0xFF6B4EFF).withValues(alpha: 0.08)
+              : colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color:
@@ -762,7 +782,7 @@ class _DeviceCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? const Color(0xFF6B4EFF).withOpacity(0.15)
+                    ? const Color(0xFF6B4EFF).withValues(alpha: 0.15)
                     : colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -888,7 +908,7 @@ class _BottomSheet extends StatelessWidget {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.1),
+              color: iconColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Icon(icon, color: iconColor, size: 32),
@@ -975,12 +995,12 @@ class _OptionCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSecondary
               ? Colors.grey[50]
-              : const Color(0xFF6B4EFF).withOpacity(0.08),
+              : const Color(0xFF6B4EFF).withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSecondary
                 ? Colors.grey[200]!
-                : const Color(0xFF6B4EFF).withOpacity(0.3),
+                : const Color(0xFF6B4EFF).withValues(alpha: 0.3),
           ),
         ),
         child: Row(
@@ -991,7 +1011,7 @@ class _OptionCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isSecondary
                     ? Colors.grey[100]
-                    : const Color(0xFF6B4EFF).withOpacity(0.15),
+                    : const Color(0xFF6B4EFF).withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(

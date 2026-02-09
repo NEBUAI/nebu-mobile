@@ -52,7 +52,7 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
         isLoading: false,
         isSetupComplete: true,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       // Si no existe setup, no es un error crítico
       state = state.copyWith(isLoading: false, isSetupComplete: false);
     }
@@ -95,7 +95,7 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
       );
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(isSaving: false, error: e.toString());
       return false;
     }
@@ -141,7 +141,7 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
       }
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(isSaving: false, error: e.toString());
       return false;
     }
@@ -152,7 +152,9 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
     required String userId,
     required UserProfile profile,
   }) async {
-    if (state.setup == null) return false;
+    if (state.setup == null) {
+      return false;
+    }
 
     state = state.copyWith(isSaving: true);
 
@@ -171,7 +173,7 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
       state = state.copyWith(setup: setup, isSaving: false);
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(isSaving: false, error: e.toString());
       return false;
     }
@@ -182,7 +184,9 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
     required String userId,
     required NotificationSettings notifications,
   }) async {
-    if (state.setup == null) return false;
+    if (state.setup == null) {
+      return false;
+    }
 
     state = state.copyWith(isSaving: true);
 
@@ -201,7 +205,7 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
       state = state.copyWith(setup: setup, isSaving: false);
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(isSaving: false, error: e.toString());
       return false;
     }
@@ -212,7 +216,9 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
     required String userId,
     required VoiceSettings voice,
   }) async {
-    if (state.setup == null) return false;
+    if (state.setup == null) {
+      return false;
+    }
 
     state = state.copyWith(isSaving: true);
 
@@ -230,7 +236,7 @@ class UserSetupNotifier extends Notifier<UserSetupState> {
       state = state.copyWith(setup: setup, isSaving: false);
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(isSaving: false, error: e.toString());
       return false;
     }

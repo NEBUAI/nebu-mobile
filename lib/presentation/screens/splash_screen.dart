@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -78,7 +80,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     await Future<void>.delayed(const Duration(milliseconds: 600));
 
     // 5. Navegar a la siguiente pantalla
-    _navigateToNextScreen();
+    unawaited(_navigateToNextScreen());
   }
 
   Future<void> _navigateToNextScreen() async {

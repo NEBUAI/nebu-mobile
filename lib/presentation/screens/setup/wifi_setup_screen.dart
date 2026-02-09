@@ -43,7 +43,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
     final esp32service = await ref.read(esp32WifiConfigServiceProvider.future);
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     _statusSubscription = esp32service.statusStream.listen(
       (status) {
@@ -808,9 +810,15 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
   }
 
   IconData _signalIcon(int rssi) {
-    if (rssi >= -50) return Icons.network_wifi;
-    if (rssi >= -70) return Icons.network_wifi_3_bar;
-    if (rssi >= -80) return Icons.network_wifi_2_bar;
+    if (rssi >= -50) {
+      return Icons.network_wifi;
+    }
+    if (rssi >= -70) {
+      return Icons.network_wifi_3_bar;
+    }
+    if (rssi >= -80) {
+      return Icons.network_wifi_2_bar;
+    }
     return Icons.network_wifi_1_bar;
   }
 
@@ -951,7 +959,7 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: _networks.length,
-      separatorBuilder: (_, __) =>
+      separatorBuilder: (_, _) =>
           const Divider(color: Colors.white12, height: 1, indent: 56),
       itemBuilder: (context, index) {
         final network = _networks[index];

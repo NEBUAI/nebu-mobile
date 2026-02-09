@@ -61,7 +61,9 @@ class _SimpleUserRegistrationScreenState
 
       _logger.d('User created successfully: ${user.id}');
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       setState(() {
         _isLoading = false;
@@ -79,7 +81,7 @@ class _SimpleUserRegistrationScreenState
       // para asignar el juguete al usuario
       await Future<void>.delayed(const Duration(seconds: 1));
       if (mounted) {
-        context.push(AppRoutes.connectionSetup.path);
+        await context.push(AppRoutes.connectionSetup.path);
       }
     } on Exception catch (e) {
       _logger.e('Error creating user: $e');

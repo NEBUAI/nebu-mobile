@@ -8,7 +8,7 @@
 ///   --dart-define=API_URL=https://api.nebu.ai \
 ///   --dart-define=API_KEY=your_api_key
 /// ```
-class AppConfig {
+abstract final class AppConfig {
   // Environment
   static const environment = String.fromEnvironment(
     'ENV',
@@ -58,7 +58,9 @@ class AppConfig {
 
   /// Obtener la URL de la API (prioriza dart-define sobre .env)
   static String getApiUrl() {
-    if (apiUrl.isNotEmpty) return apiUrl;
+    if (apiUrl.isNotEmpty) {
+      return apiUrl;
+    }
     if (_runtimeApiUrl != null && _runtimeApiUrl!.isNotEmpty) {
       return _runtimeApiUrl!;
     }
@@ -67,7 +69,9 @@ class AppConfig {
 
   /// Obtener la API Key (prioriza dart-define sobre .env)
   static String getApiKey() {
-    if (apiKey.isNotEmpty) return apiKey;
+    if (apiKey.isNotEmpty) {
+      return apiKey;
+    }
     if (_runtimeApiKey != null && _runtimeApiKey!.isNotEmpty) {
       return _runtimeApiKey!;
     }
@@ -77,7 +81,9 @@ class AppConfig {
 
   /// Obtener la URL de WebSocket (prioriza dart-define sobre .env)
   static String getWsUrl() {
-    if (wsUrl.isNotEmpty) return wsUrl;
+    if (wsUrl.isNotEmpty) {
+      return wsUrl;
+    }
     if (_runtimeWsUrl != null && _runtimeWsUrl!.isNotEmpty) {
       return _runtimeWsUrl!;
     }
@@ -102,7 +108,7 @@ class AppConfig {
 
     try {
       getApiUrl();
-    } catch (e) {
+    } on Exception catch (e) {
       errors.add('❌ API_URL no configurada');
     }
 
@@ -130,7 +136,9 @@ Crash Reporting: $shouldEnableCrashReporting
 ''';
 
   static String _maskUrl(String url) {
-    if (url.isEmpty) return '[NOT SET]';
+    if (url.isEmpty) {
+      return '[NOT SET]';
+    }
     if (isProduction) {
       // En producción, ocultar parte de la URL
       final uri = Uri.parse(url);

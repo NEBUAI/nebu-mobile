@@ -257,11 +257,8 @@ class IoTDevicesNotifier extends Notifier<IoTDevicesState> {
 
   // Get a specific device by ID
   IoTDevice? getDeviceById(String deviceId) {
-    try {
-      return state.devices.firstWhere((d) => d.id == deviceId);
-    } on StateError {
-      return null;
-    }
+    final index = state.devices.indexWhere((d) => d.id == deviceId);
+    return index == -1 ? null : state.devices[index];
   }
 
   // Generate LiveKit token for device
@@ -284,9 +281,6 @@ final iotDevicesProvider =
 // Provider for a specific device (auto-updated when devices state changes)
 final deviceProvider = Provider.family<IoTDevice?, String>((ref, deviceId) {
   final devicesState = ref.watch(iotDevicesProvider);
-  try {
-    return devicesState.devices.firstWhere((d) => d.id == deviceId);
-  } on StateError {
-    return null;
-  }
+  final index = devicesState.devices.indexWhere((d) => d.id == deviceId);
+  return index == -1 ? null : devicesState.devices[index];
 });

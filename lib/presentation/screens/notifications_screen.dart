@@ -126,7 +126,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
 
   void _markAllAsRead() {
     setState(() {
-      // TODO: Implement mark all as read
+      // TODO(dev): Implement mark all as read
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('notifications.marked_all_read'.tr())),
@@ -149,7 +149,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   List<_Notification> _getMockNotifications() {
-    // TODO: Replace with actual API call
+    // TODO(dev): Replace with actual API call
     return [
       _Notification(
         id: '1',

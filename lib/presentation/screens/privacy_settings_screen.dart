@@ -249,7 +249,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           action: SnackBarAction(
             label: 'privacy.open_settings'.tr(),
             onPressed: () {
-              // TODO: Open app settings
+              // TODO(dev): Open app settings
             },
           ),
         ),
@@ -376,11 +376,10 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
               Navigator.pop(context);
               final confirmed = await _confirmDeleteAccount();
               if ((confirmed ?? false) && mounted) {
-                // TODO: Implement account deletion
+                // TODO(dev): Implement account deletion
                 await ref.read(authProvider.notifier).logout();
-                if (mounted) {
-                  context.go(AppRoutes.welcome.path);
-                }
+                if (!context.mounted) return;
+                context.go(AppRoutes.welcome.path);
               }
             },
             style: ElevatedButton.styleFrom(

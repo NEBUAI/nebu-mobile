@@ -37,7 +37,7 @@ class AuthNotifier extends AsyncNotifier<User?> {
           return user;
         }
       }
-    } catch (e, st) {
+    } on Exception catch (e, st) {
       // If loading fails, treat as unauthenticated
       ref
           .read(loggerProvider)
@@ -67,7 +67,7 @@ class AuthNotifier extends AsyncNotifier<User?> {
               '✅ [AUTH] Successfully migrated $migratedCount activities for user $newUserId',
             );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       // Log error but don't fail the login/register process
       ref
           .read(loggerProvider)
@@ -183,7 +183,7 @@ class AuthNotifier extends AsyncNotifier<User?> {
       await authService.logout();
       await prefs.remove(StorageKeys.user);
       state = const AsyncValue.data(null);
-    } catch (e, st) {
+    } on Exception catch (e, st) {
       state = AsyncValue.error(e, st);
     }
   }

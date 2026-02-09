@@ -62,8 +62,9 @@ class ToyService {
 
       final response = await _apiService.get<List<dynamic>>('/toys/my-toys');
 
-      _logger.d('🎮 [TOY_SERVICE] Raw response type: ${response.runtimeType}');
-      _logger.d('🎮 [TOY_SERVICE] Response: $response');
+      _logger
+        ..d('🎮 [TOY_SERVICE] Raw response type: ${response.runtimeType}')
+        ..d('🎮 [TOY_SERVICE] Response: $response');
 
       if (response.isEmpty) {
         _logger.i('🎮 [TOY_SERVICE] No toys found, returning empty list');
@@ -79,10 +80,11 @@ class ToyService {
           _logger.d('🎮 [TOY_SERVICE] Parsing toy $i: ${json['name'] ?? 'unknown'}');
           final toy = Toy.fromJson(json);
           toys.add(toy);
-        } catch (e, stack) {
-          _logger.e('🎮 [TOY_SERVICE] Error parsing toy $i: $e');
-          _logger.e('🎮 [TOY_SERVICE] Stack trace: $stack');
-          _logger.e('🎮 [TOY_SERVICE] Raw data: ${response[i]}');
+        } on Exception catch (e, stack) {
+          _logger
+            ..e('🎮 [TOY_SERVICE] Error parsing toy $i: $e')
+            ..e('🎮 [TOY_SERVICE] Stack trace: $stack')
+            ..e('🎮 [TOY_SERVICE] Raw data: ${response[i]}');
           // Continue parsing other toys instead of failing completely
         }
       }
@@ -90,9 +92,10 @@ class ToyService {
       _logger.i('🎮 [TOY_SERVICE] Successfully parsed ${toys.length} toys');
       return toys;
     } on DioException catch (e) {
-      _logger.e('🎮 [TOY_SERVICE] DioException: ${e.message}');
-      _logger.e('🎮 [TOY_SERVICE] Status code: ${e.response?.statusCode}');
-      _logger.e('🎮 [TOY_SERVICE] Response data: ${e.response?.data}');
+      _logger
+        ..e('🎮 [TOY_SERVICE] DioException: ${e.message}')
+        ..e('🎮 [TOY_SERVICE] Status code: ${e.response?.statusCode}')
+        ..e('🎮 [TOY_SERVICE] Response data: ${e.response?.data}');
 
       if (e.response?.statusCode == 404) {
         _logger.i('🎮 [TOY_SERVICE] 404 - No toys found, returning empty list');
@@ -102,9 +105,10 @@ class ToyService {
         throw Exception('No autorizado. Por favor, inicia sesión nuevamente.');
       }
       throw Exception('Error al obtener los juguetes: ${e.message}');
-    } catch (e, stack) {
-      _logger.e('🎮 [TOY_SERVICE] Unexpected error: $e');
-      _logger.e('🎮 [TOY_SERVICE] Stack trace: $stack');
+    } on Exception catch (e, stack) {
+      _logger
+        ..e('🎮 [TOY_SERVICE] Unexpected error: $e')
+        ..e('🎮 [TOY_SERVICE] Stack trace: $stack');
       throw Exception('Error inesperado al obtener los juguetes: $e');
     }
   }

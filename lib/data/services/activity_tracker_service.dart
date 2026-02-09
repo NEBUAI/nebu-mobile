@@ -72,7 +72,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked toy connection: ${toy.name}');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking toy connection: $e');
@@ -101,7 +101,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked toy disconnection: ${toy.name}');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking toy disconnection: $e');
@@ -126,7 +126,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked voice command: $command');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking voice command: $e');
@@ -155,7 +155,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked error: $errorMessage');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking error activity: $e');
@@ -180,7 +180,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked play session start');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking play session: $e');
@@ -209,7 +209,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked interaction: $description');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking interaction: $e');
@@ -238,7 +238,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked update: $updateDescription');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking update: $e');
@@ -268,7 +268,7 @@ class ActivityTrackerService {
           );
 
       _ref.read(loggerProvider).i('📊 [ACTIVITY_TRACKER] Tracked chat message');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking chat message: $e');
@@ -291,7 +291,7 @@ class ActivityTrackerService {
           );
 
       _ref.read(loggerProvider).i('📊 [ACTIVITY_TRACKER] Tracked sleep mode');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking sleep: $e');
@@ -314,7 +314,7 @@ class ActivityTrackerService {
           );
 
       _ref.read(loggerProvider).i('📊 [ACTIVITY_TRACKER] Tracked wake mode');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking wake: $e');
@@ -350,7 +350,7 @@ class ActivityTrackerService {
       _ref
           .read(loggerProvider)
           .i('📊 [ACTIVITY_TRACKER] Tracked setup completion for $childName');
-    } catch (e) {
+    } on Exception catch (e) {
       _ref
           .read(loggerProvider)
           .e('❌ [ACTIVITY_TRACKER] Error tracking setup completion: $e');

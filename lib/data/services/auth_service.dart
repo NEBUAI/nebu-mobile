@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,12 +36,12 @@ class AuthService {
         data: {'email': identifier, 'password': password},
       );
 
-      print('🔐 [AUTH_SERVICE] Login response data: ${response.data}');
+      debugPrint('🔐 [AUTH_SERVICE] Login response data: ${response.data}');
 
       // Use fromBackend to handle NestJS response format
       final authResponse = AuthResponse.fromBackend(response.data!);
 
-      print('🔐 [AUTH_SERVICE] Parsed user: ${authResponse.user?.toJson()}');
+      debugPrint('🔐 [AUTH_SERVICE] Parsed user: ${authResponse.user?.toJson()}');
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);

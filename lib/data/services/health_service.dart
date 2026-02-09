@@ -25,7 +25,7 @@ class HealthService {
 
       _logger.i('Backend health check successful: ${response['status']}');
       return response;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Health check failed: $e');
       rethrow;
     }
@@ -37,7 +37,7 @@ class HealthService {
     try {
       final response = await checkHealth();
       return response['status'] == 'ok';
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Backend readiness check failed: $e');
       return false;
     }
@@ -48,7 +48,7 @@ class HealthService {
     try {
       final response = await checkHealth();
       return response['version'] as String?;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to get backend version: $e');
       return null;
     }
@@ -59,7 +59,7 @@ class HealthService {
     try {
       final response = await checkHealth();
       return response['environment'] as String?;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to get backend environment: $e');
       return null;
     }
@@ -70,7 +70,7 @@ class HealthService {
     try {
       final response = await checkHealth();
       return response['uptime'] as int?;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to get backend uptime: $e');
       return null;
     }
@@ -81,7 +81,7 @@ class HealthService {
     try {
       final response = await checkHealth();
       return HealthStatus.fromJson(response);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to get detailed health status: $e');
       rethrow;
     }

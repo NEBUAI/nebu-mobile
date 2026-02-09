@@ -4,15 +4,16 @@ import 'package:logger/logger.dart';
 import 'app_config.dart';
 
 /// Helper para cargar configuración desde .env en desarrollo
-class ConfigLoader {
+abstract final class ConfigLoader {
   static final _logger = Logger();
 
   /// Inicializar configuración
   /// - En desarrollo: Carga desde .env
   /// - En producción: Usa valores de dart-define
   static Future<void> initialize() async {
-    _logger.i('🔧 Initializing app configuration...');
-    _logger.i('🔧 Environment: ${AppConfig.environment}');
+    _logger
+      ..i('🔧 Initializing app configuration...')
+      ..i('🔧 Environment: ${AppConfig.environment}');
 
     if (AppConfig.isDevelopment || AppConfig.isStaging) {
       try {
@@ -29,8 +30,9 @@ class ConfigLoader {
 
         _logger.i('✅ Runtime config set from .env');
       } catch (e) {
-        _logger.e('❌ Error loading .env file: $e');
-        _logger.e('⚠️  Make sure .env exists (copy from .env.example)');
+        _logger
+          ..e('❌ Error loading .env file: $e')
+          ..e('⚠️  Make sure .env exists (copy from .env.example)');
         rethrow;
       }
     } else {

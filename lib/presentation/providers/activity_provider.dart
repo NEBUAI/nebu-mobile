@@ -56,7 +56,9 @@ class ActivityNotifier extends Notifier<ActivityState> {
     int limit = 20,
     bool append = false,
   }) async {
-    if (state.isLoading) return;
+    if (state.isLoading) {
+      return;
+    }
 
     state = state.copyWith(isLoading: true);
 
@@ -83,7 +85,7 @@ class ActivityNotifier extends Notifier<ActivityState> {
         hasMore: hasMore,
         currentPage: page,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -97,7 +99,9 @@ class ActivityNotifier extends Notifier<ActivityState> {
     DateTime? endDate,
     int limit = 20,
   }) async {
-    if (!state.hasMore || state.isLoading) return;
+    if (!state.hasMore || state.isLoading) {
+      return;
+    }
 
     await loadActivities(
       userId: userId,
@@ -134,7 +138,7 @@ class ActivityNotifier extends Notifier<ActivityState> {
       state = state.copyWith(activities: [activity, ...state.activities]);
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
       return false;
     }
@@ -145,7 +149,7 @@ class ActivityNotifier extends Notifier<ActivityState> {
     try {
       final stats = await _activityService.getActivityStats(userId);
       state = state.copyWith(stats: stats);
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }
   }
@@ -183,7 +187,9 @@ final activityNotifierProvider =
 final activitiesByTypeProvider = Provider.family<List<Activity>, ActivityType?>(
   (ref, type) {
     final state = ref.watch(activityNotifierProvider);
-    if (type == null) return state.activities;
+    if (type == null) {
+      return state.activities;
+    }
     return state.activities.where((a) => a.type == type).toList();
   },
 );
@@ -194,7 +200,9 @@ final activitiesByToyProvider = Provider.family<List<Activity>, String?>((
   toyId,
 ) {
   final state = ref.watch(activityNotifierProvider);
-  if (toyId == null) return state.activities;
+  if (toyId == null) {
+    return state.activities;
+  }
   return state.activities.where((a) => a.toyId == toyId).toList();
 });
 

@@ -25,10 +25,18 @@ class IoTService {
       _logger.i('Fetching all IoT devices...');
 
       final queryParameters = <String, dynamic>{};
-      if (userId != null) queryParameters['userId'] = userId;
-      if (status != null) queryParameters['status'] = status.name;
-      if (deviceType != null) queryParameters['deviceType'] = deviceType.name;
-      if (location != null) queryParameters['location'] = location;
+      if (userId != null) {
+        queryParameters['userId'] = userId;
+      }
+      if (status != null) {
+        queryParameters['status'] = status.name;
+      }
+      if (deviceType != null) {
+        queryParameters['deviceType'] = deviceType.name;
+      }
+      if (location != null) {
+        queryParameters['location'] = location;
+      }
 
       final response = await _apiService.get<List<dynamic>>(
         '/iot/devices',
@@ -200,10 +208,18 @@ class IoTService {
       _logger.i('Updating sensor data for device: $deviceId');
 
       final data = <String, dynamic>{};
-      if (temperature != null) data['temperature'] = temperature;
-      if (humidity != null) data['humidity'] = humidity;
-      if (batteryLevel != null) data['batteryLevel'] = batteryLevel;
-      if (signalStrength != null) data['signalStrength'] = signalStrength;
+      if (temperature != null) {
+        data['temperature'] = temperature;
+      }
+      if (humidity != null) {
+        data['humidity'] = humidity;
+      }
+      if (batteryLevel != null) {
+        data['batteryLevel'] = batteryLevel;
+      }
+      if (signalStrength != null) {
+        data['signalStrength'] = signalStrength;
+      }
 
       final response = await _apiService.patch<Map<String, dynamic>>(
         '/iot/devices/$deviceId/sensor-data',

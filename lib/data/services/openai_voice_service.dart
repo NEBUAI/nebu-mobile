@@ -72,7 +72,7 @@ class OpenAIVoiceService {
   final AudioRecorder _recorder;
   late final AudioPlayer _audioPlayer;
 
-  VoiceAgentConfig? _config;
+  late VoiceAgentConfig _config;
   bool _isInitialized = false;
   VoiceAgentStatus _status = VoiceAgentStatus.idle;
   final List<ConversationMessage> _conversation = [];
@@ -248,12 +248,12 @@ class OpenAIVoiceService {
       final response = await _dio.post<Map<String, dynamic>>(
         'https://api.openai.com/v1/chat/completions',
         data: {
-          'model': _config!.model,
+          'model': _config.model,
           'messages': [
             {
               'role': 'system',
               'content':
-                  'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config!.language}.',
+                  'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config.language}.',
             },
             ...conversationMessages,
             {
@@ -324,7 +324,7 @@ class OpenAIVoiceService {
         data: {
           'model': 'tts-1',
           'input': text,
-          'voice': _config!.voice,
+          'voice': _config.voice,
           'response_format': 'mp3',
         },
         options: Options(responseType: ResponseType.bytes),
@@ -368,12 +368,12 @@ class OpenAIVoiceService {
       final response = await _dio.post<Map<String, dynamic>>(
         'https://api.openai.com/v1/chat/completions',
         data: {
-          'model': _config!.model,
+          'model': _config.model,
           'messages': [
             {
               'role': 'system',
               'content':
-                  'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config!.language}.',
+                  'Eres Nebu, un asistente de IA útil y amigable. Responde en ${_config.language}.',
             },
             ...conversationMessages,
             {'role': 'user', 'content': text},

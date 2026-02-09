@@ -140,9 +140,13 @@ class WiFiService {
       // Mapear a WiFiNetwork, filtrar SSIDs vacios, 5GHz y deduplicar
       final networkMap = <String, WiFiNetwork>{};
       for (final ap in accessPoints) {
-        if (ap.ssid.isEmpty) continue;
+        if (ap.ssid.isEmpty) {
+          continue;
+        }
         // ESP32 solo soporta 2.4GHz (frecuencias < 3000 MHz)
-        if (ap.frequency >= 3000) continue;
+        if (ap.frequency >= 3000) {
+          continue;
+        }
         final existing = networkMap[ap.ssid];
         if (existing == null || ap.level > existing.rssi) {
           networkMap[ap.ssid] = WiFiNetwork(
@@ -181,12 +185,11 @@ class WiFiService {
     WiFiCredentials credentials,
   ) async {
     try {
-      _logger.i('Attempting to connect to WiFi: ${credentials.ssid}');
-
-      /// TODO: Implement actual WiFi connection using a native plugin
-      /// This functionality requires system permissions and appropriate plugin
-
-      _logger.w('WiFi connection not implemented - requires native plugin');
+      // TODO(dev): Implement actual WiFi connection using a native plugin
+      // This functionality requires system permissions and appropriate plugin
+      _logger
+        ..i('Attempting to connect to WiFi: ${credentials.ssid}')
+        ..w('WiFi connection not implemented - requires native plugin');
 
       const result = WiFiConnectionResult(
         success: false,
