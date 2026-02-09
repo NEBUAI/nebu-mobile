@@ -106,7 +106,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 40),
                   if (authState.hasError && !authState.isLoading)
-                    _ErrorBanner(message: authState.error.toString()),
+                    _ErrorBanner(
+                      message: authState.error
+                          .toString()
+                          .replaceFirst('Exception: ', ''),
+                    ),
                   const SizedBox(height: 20),
                   _CustomTextField(
                     controller: _identifierController,

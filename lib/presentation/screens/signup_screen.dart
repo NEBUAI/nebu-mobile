@@ -121,7 +121,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                   // Error message
                   if (authState.hasError && !authState.isLoading) ...[
-                    _ErrorBanner(message: authState.error.toString()),
+                    _ErrorBanner(
+                      message: authState.error
+                          .toString()
+                          .replaceFirst('Exception: ', ''),
+                    ),
                     const SizedBox(height: 20),
                   ],
 
