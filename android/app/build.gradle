@@ -57,6 +57,7 @@ play {
     serviceAccountCredentials = file("../service-account.json")
     track = "internal" // internal, alpha, beta, production
     defaultToAppBundles = true
+    releaseStatus = com.github.triplet.gradle.androidpublisher.ReleaseStatus.DRAFT
 }
 
 flutter {
