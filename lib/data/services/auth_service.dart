@@ -53,8 +53,7 @@ class AuthService {
     } on DioException catch (e) {
       return AuthResponse(
         success: false,
-        error:
-            (e.response?.data['message'] as String?) ??
+        error: _extractErrorMessage(e) ??
             'Login failed. Please check your credentials.',
       );
     } on Exception {
@@ -93,8 +92,7 @@ class AuthService {
     } on DioException catch (e) {
       return AuthResponse(
         success: false,
-        error:
-            (e.response?.data['message'] as String?) ??
+        error: _extractErrorMessage(e) ??
             'Registration failed. Please try again.',
       );
     } on Exception {
@@ -194,6 +192,19 @@ class AuthService {
         error: 'An unexpected error occurred.',
       );
     }
+  }
+
+  /// Extract error message from backend response (supports 'message' and 'error' fields)
+  static String? _extractErrorMessage(DioException e) {
+    final data = e.response?.data;
+    if (data is Map<String, dynamic>) {
+      final message = data['message'];
+      if (message is String) return message;
+      if (message is List) return message.join(', ');
+      final error = data['error'];
+      if (error is String) return error;
+    }
+    return null;
   }
 
   // Token Management

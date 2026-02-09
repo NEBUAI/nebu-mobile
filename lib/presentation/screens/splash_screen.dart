@@ -67,19 +67,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   Future<void> _startAnimations() async {
-    // 1. Animar el ícono del gatito
+    if (!mounted) return;
     await _iconController.forward();
 
-    // 2. Esperar un poco
+    if (!mounted) return;
     await Future<void>.delayed(const Duration(milliseconds: 200));
 
-    // 3. Animar el texto "FLOW"
+    if (!mounted) return;
     await _textController.forward();
 
-    // 4. Esperar antes de navegar
+    if (!mounted) return;
     await Future<void>.delayed(const Duration(milliseconds: 600));
 
-    // 5. Navegar a la siguiente pantalla
     unawaited(_navigateToNextScreen());
   }
 
