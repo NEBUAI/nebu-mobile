@@ -140,4 +140,48 @@ class UserService {
       throw Exception('Error inesperado al obtener el usuario');
     }
   }
+
+  /// Eliminar cuenta propia (hard delete)
+  /// Elimina permanentemente la cuenta y todos los datos asociados
+  Future<String> deleteOwnAccount({String? reason}) async {
+    try {
+      _logger.d('Deleting own account');
+
+      final response = await _apiService.delete<Map<String, dynamic>>(
+        '/users/me',
+        data: reason != null ? {'reason': reason} : null,
+      );
+
+      _logger.d('Account deleted successfully');
+      return response['message'] as String? ?? 'Cuenta eliminada exitosamente';
+    } on DioException catch (e) {
+      _logger.e('Error deleting account: ${e.message}');
+      throw Exception('Error al eliminar la cuenta: ${e.response?.data['message'] ?? e.message}');
+    } on Exception catch (e) {
+      _logger.e('Unexpected error deleting account: $e');
+      throw Exception('Error inesperado al eliminar la cuenta');
+    }
+  }
+
+  /// Eliminar datos personales (anonymize)
+  /// Anonimiza los datos del usuario pero mantiene la cuenta activa
+  Future<String> deleteOwnData({String? reason}) async {
+    try {
+      _logger.d('Deleting own data');
+
+      final response = await _apiService.delete<Map<String, dynamic>>(
+        '/users/me/data',
+        data: reason != null ? {'reason': reason} : null,
+      );
+
+      _logger.d('Personal data deleted successfully');
+      return response['message'] as String? ?? 'Datos personales eliminados exitosamente';
+    } on DioException catch (e) {
+      _logger.e('Error deleting personal data: ${e.message}');
+      throw Exception('Error al eliminar los datos: ${e.response?.data['message'] ?? e.message}');
+    } on Exception catch (e) {
+      _logger.e('Unexpected error deleting personal data: $e');
+      throw Exception('Error inesperado al eliminar los datos');
+    }
+  }
 }
