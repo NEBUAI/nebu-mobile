@@ -74,6 +74,13 @@ class AuthNotifier extends AsyncNotifier<User?> {
     }
   }
 
+  /// Clear any previous error state (e.g. when navigating between login/signup)
+  void clearError() {
+    if (state.hasError) {
+      state = const AsyncValue.data(null);
+    }
+  }
+
   Future<void> login({required String identifier, required String password}) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {

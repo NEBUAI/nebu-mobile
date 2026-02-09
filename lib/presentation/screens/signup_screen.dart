@@ -23,6 +23,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   bool _obscureConfirmPassword = true;
 
   @override
+  void initState() {
+    super.initState();
+    // Clear any previous auth errors (e.g. from login screen)
+    ref.read(authProvider.notifier).clearError();
+  }
+
+  @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
