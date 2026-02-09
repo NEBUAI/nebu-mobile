@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config/config.dart';
 
@@ -99,6 +100,27 @@ class TermsOfServiceScreen extends ConsumerWidget {
               theme,
               'terms.termination_title'.tr(),
               'terms.termination_content'.tr(),
+            ),
+
+            // Account Deletion
+            _buildSection(
+              theme,
+              'terms.delete_title'.tr(),
+              'terms.delete_content'.tr(),
+            ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: () async {
+                  await _openExternalLink(
+                    context,
+                    Config.deleteAccountUrl,
+                  );
+                },
+                icon: const Icon(Icons.person_off_outlined),
+                label: Text('terms.delete_button'.tr()),
+              ),
             ),
 
             // Disclaimers
@@ -216,6 +238,16 @@ class TermsOfServiceScreen extends ConsumerWidget {
             style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
           ),
         ),
+
+    Future<void> _openExternalLink(BuildContext context, String url) async {
+      final uri = Uri.parse(url);
+      final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (!success && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('profile.link_error'.tr())),
+        );
+      }
+    }
       ],
     ),
   );

@@ -28,6 +28,11 @@ abstract final class Config {
   static const Duration animationShort = Duration(milliseconds: 200);
   static const Duration animationMedium = Duration(milliseconds: 300);
   static const Duration animationLong = Duration(milliseconds: 500);
+  static const String privacyPolicyUrl = 'https://flow-telligence.com/privacy';
+  static const String deleteAccountUrl =
+      'https://flow-telligence.com/privacy#delete-account';
+  static const String deleteDataUrl =
+      'https://flow-telligence.com/privacy#delete-data';
 
   // ============================================
   // Backend API

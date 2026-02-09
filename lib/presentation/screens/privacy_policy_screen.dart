@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config/config.dart';
 
@@ -89,6 +90,34 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             _buildBulletPoint(theme, 'privacy_policy.rights_2'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.rights_3'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.rights_4'.tr()),
+            const SizedBox(height: 16),
+
+            // Account & Data Deletion
+            _buildSection(
+              theme,
+              'privacy_policy.delete_title'.tr(),
+              'privacy_policy.delete_content'.tr(),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 12,
+              children: [
+                TextButton.icon(
+                  onPressed: () async {
+                    await _openExternalLink(context, Config.deleteAccountUrl);
+                  },
+                  icon: const Icon(Icons.person_off_outlined),
+                  label: Text('privacy_policy.delete_account_button'.tr()),
+                ),
+                TextButton.icon(
+                  onPressed: () async {
+                    await _openExternalLink(context, Config.deleteDataUrl);
+                  },
+                  icon: const Icon(Icons.delete_sweep_outlined),
+                  label: Text('privacy_policy.delete_data_button'.tr()),
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
 
             // Data Security
@@ -191,4 +220,14 @@ class PrivacyPolicyScreen extends ConsumerWidget {
       ],
     ),
   );
+
+  Future<void> _openExternalLink(BuildContext context, String url) async {
+    final uri = Uri.parse(url);
+    final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!success && context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('profile.link_error'.tr())));
+    }
+  }
 }

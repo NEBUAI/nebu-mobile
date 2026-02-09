@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config/config.dart';
 import '../../core/constants/app_routes.dart';
@@ -322,6 +323,19 @@ class ProfileScreen extends ConsumerWidget {
                       context.push(AppRoutes.privacySettings.path);
                     },
                   ),
+                  Divider(height: 1, indent: 56, color: theme.dividerColor),
+                  _SettingsTile(
+                    theme: theme,
+                    icon: Icons.delete_outline,
+                    title: 'profile.delete_account'.tr(),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.grey,
+                    ),
+                    onTap: () {
+                      _showDeleteAccountDialog(context);
+                    },
+                  ),
                 ],
               ),
 
@@ -435,6 +449,39 @@ class ProfileScreen extends ConsumerWidget {
       ],
     ),
   );
+}
+
+void _showDeleteAccountDialog(BuildContext context) {
+  showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('profile.delete_account'.tr()),
+      content: Text('profile.delete_account_description'.tr()),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('profile.delete_account_cancel'.tr()),
+        ),
+        TextButton(
+          onPressed: () async {
+            Navigator.pop(context);
+            await _openExternalLink(context, Config.deleteAccountUrl);
+          },
+          child: Text('profile.delete_account_action'.tr()),
+        ),
+      ],
+    ),
+  );
+}
+
+Future<void> _openExternalLink(BuildContext context, String url) async {
+  final uri = Uri.parse(url);
+  final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
+  if (!success && context.mounted) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('profile.link_error'.tr())));
+  }
 }
 
 void _showHelpDialog(BuildContext context) {
