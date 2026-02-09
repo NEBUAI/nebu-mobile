@@ -238,19 +238,19 @@ class TermsOfServiceScreen extends ConsumerWidget {
             style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
           ),
         ),
-
-    Future<void> _openExternalLink(BuildContext context, String url) async {
-      final uri = Uri.parse(url);
-      final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
-      if (!success && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('profile.link_error'.tr())),
-        );
-      }
-    }
       ],
     ),
   );
+
+  Future<void> _openExternalLink(BuildContext context, String url) async {
+    final uri = Uri.parse(url);
+    final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!success && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('profile.link_error'.tr())),
+      );
+    }
+  }
 
   Widget _buildContactRow(ThemeData theme, IconData icon, String text) => Row(
     children: [
