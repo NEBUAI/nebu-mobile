@@ -271,7 +271,12 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   Future<void> _showWifiNetworksSheet() async {
-    final wifiService = WiFiService(logger: logger.Logger());
+    final esp32Service = await ref.read(esp32WifiConfigServiceProvider.future);
+    if (!mounted) return;
+    final wifiService = WiFiService(
+      logger: logger.Logger(),
+      esp32WifiConfigService: esp32Service,
+    );
 
     await showModalBottomSheet<void>(
       context: context,

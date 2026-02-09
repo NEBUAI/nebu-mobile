@@ -153,7 +153,6 @@ class OpenAIVoiceService {
   }
 
   /// Cargar conversación desde almacenamiento local
-  // TODO(dev): Implement conversation loading when needed
   // ignore: unused_element
   Future<void> _loadConversation() async {
     try {

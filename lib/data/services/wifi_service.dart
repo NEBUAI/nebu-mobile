@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wifi_scan/wifi_scan.dart';
+import 'esp32_wifi_config_service.dart';
 
 /// Red WiFi
 class WiFiNetwork {
@@ -81,8 +82,13 @@ class WiFiConnectionResult {
 
 /// Servicio WiFi
 class WiFiService {
-  WiFiService({required Logger logger}) : _logger = logger;
+  WiFiService({
+    required Logger logger,
+    required ESP32WifiConfigService esp32WifiConfigService,
+  }) : _logger = logger,
+       _esp32WifiConfigService = esp32WifiConfigService;
   final Logger _logger;
+  final ESP32WifiConfigService _esp32WifiConfigService;
 
   bool _isScanning = false;
   WiFiNetwork? _currentNetwork;
@@ -180,36 +186,69 @@ class WiFiService {
     }
   }
 
-  /// Conectar a una red WiFi
+  /// Enviar credenciales WiFi al ESP32 via BLE para que se conecte a la red
   Future<WiFiConnectionResult> connectToNetwork(
     WiFiCredentials credentials,
   ) async {
     try {
-      // TODO(dev): Implement actual WiFi connection using a native plugin
-      // This functionality requires system permissions and appropriate plugin
-      _logger
-        ..i('Attempting to connect to WiFi: ${credentials.ssid}')
-        ..w('WiFi connection not implemented - requires native plugin');
+      _logger.i('Sending WiFi credentials to ESP32: ${credentials.ssid}');
 
-      const result = WiFiConnectionResult(
-        success: false,
-        message:
-            'WiFi connection not implemented. Use backend API to configure robot WiFi.',
+      final configResult = await _esp32WifiConfigService.sendWifiCredentials(
+        ssid: credentials.ssid,
+        password: credentials.password,
       );
+
+      if (!configResult.success) {
+        final result = WiFiConnectionResult(
+          success: false,
+          message: configResult.message,
+        );
+        _connectionController.add(result);
+        return result;
+      }
+
+      // Esperar a que el ESP32 reporte su estado de conexión
+      final status = await _esp32WifiConfigService.statusStream
+          .where(
+            (s) =>
+                s == ESP32WifiStatus.connected || s == ESP32WifiStatus.failed,
+          )
+          .first
+          .timeout(const Duration(seconds: 15), onTimeout: () {
+            _logger.w('Timeout waiting for ESP32 WiFi connection status');
+            return ESP32WifiStatus.failed;
+          });
+
+      final success = status == ESP32WifiStatus.connected;
+
+      final result = WiFiConnectionResult(
+        success: success,
+        message: success
+            ? 'ESP32 connected to ${credentials.ssid}'
+            : 'ESP32 failed to connect to ${credentials.ssid}',
+        connectedNetwork: success
+            ? WiFiNetwork(
+                ssid: credentials.ssid,
+                rssi: 0,
+                security: 'WPA2',
+                frequency: 2400,
+                isConnected: true,
+              )
+            : null,
+      );
+
+      if (success) {
+        _currentNetwork = result.connectedNetwork;
+      }
 
       _connectionController.add(result);
-
-      throw UnimplementedError(
-        'WiFi connection requires a native plugin or should be handled via backend API. '
-        'For robot WiFi configuration, use RobotService.configureWiFi() instead.',
-      );
+      return result;
     } on Exception catch (e) {
-      _logger.e('Error connecting to WiFi: $e');
+      _logger.e('Error sending WiFi credentials to ESP32: $e');
       final result = WiFiConnectionResult(
         success: false,
-        message: 'Connection failed: $e',
+        message: 'Failed to configure ESP32 WiFi: $e',
       );
-
       _connectionController.add(result);
       return result;
     }

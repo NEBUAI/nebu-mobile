@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:record/record.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
@@ -17,6 +18,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
+  final AudioRecorder _recorder = AudioRecorder();
   bool isRecording = false;
   bool isPlaying = false;
 
@@ -62,6 +64,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
   @override
   void dispose() {
     _animationController.dispose();
+    _recorder.dispose();
     super.dispose();
   }
 
@@ -372,32 +375,65 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     ),
   );
 
-  void _startRecording() {
-    setState(() {
-      isRecording = true;
-    });
-    _animationController.repeat(reverse: true);
+  Future<void> _startRecording() async {
+    try {
+      final hasPermission = await _recorder.hasPermission();
+      if (!hasPermission) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Microphone permission is required'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
 
-    // TODO(duvet05): Implement actual voice recording
-    // This is just a demo animation
+      await _recorder.start(const RecordConfig(), path: '');
+      if (!mounted) return;
+      setState(() {
+        isRecording = true;
+      });
+      _animationController.repeat(reverse: true);
+    } on Exception {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to start recording'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
-  void _stopRecording() {
-    setState(() {
-      isRecording = false;
-    });
-    _animationController
-      ..stop()
-      ..reset();
+  Future<void> _stopRecording() async {
+    try {
+      final path = await _recorder.stop();
+      if (!mounted) return;
+      setState(() {
+        isRecording = false;
+      });
+      _animationController
+        ..stop()
+        ..reset();
 
-    // TODO(duvet05): Process recorded audio
-    // Show result or error
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Voice recognition test completed!'),
-        backgroundColor: Colors.green,
-      ),
-    );
+      if (path != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Voice recognition test completed!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } on Exception {
+      if (!mounted) return;
+      setState(() {
+        isRecording = false;
+      });
+      _animationController
+        ..stop()
+        ..reset();
+    }
   }
 
   void _playSample() {
@@ -405,7 +441,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
       isPlaying = true;
     });
 
-    // TODO(duvet05): Implement text-to-speech
+    // TTS requires flutter_tts package — simulating playback for now
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {

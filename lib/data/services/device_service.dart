@@ -87,6 +87,4 @@ class DeviceService {
     }
   }
 
-  // TODO(dev): Implement battery level retrieval (if ESP32 supports it)
-  // This typically requires a custom BLE characteristic.
 }

@@ -4,10 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../providers/api_provider.dart';
+import '../providers/auth_provider.dart';
 
 // State
 class QRScannerState {
-
   QRScannerState({
     required this.scannedCode,
     required this.isProcessing,
@@ -22,10 +23,10 @@ class QRScannerState {
     bool? isProcessing,
     MobileScannerController? scannerController,
   }) => QRScannerState(
-      scannedCode: scannedCode ?? this.scannedCode,
-      isProcessing: isProcessing ?? this.isProcessing,
-      scannerController: scannerController ?? this.scannerController,
-    );
+    scannedCode: scannedCode ?? this.scannedCode,
+    isProcessing: isProcessing ?? this.isProcessing,
+    scannerController: scannerController ?? this.scannerController,
+  );
 }
 
 // Notifier
@@ -50,47 +51,108 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
 
     state = state.copyWith(isProcessing: true, scannedCode: code);
 
-    // Process QR code (could be device ID, pairing code, etc.)
     _processQRCode(code, context);
   }
 
-  void _processQRCode(String code, BuildContext context) {
-    // TODO(dev): Implement QR code processing logic
-    // Could be used for device pairing, configuration, etc.
+  Future<void> _processQRCode(String code, BuildContext context) async {
+    // Check if code looks like a MAC address (e.g. AA:BB:CC:DD:EE:FF)
+    final macRegex = RegExp(r'^([0-9A-Fa-f]{2}[:\-]){5}[0-9A-Fa-f]{2}$');
+    final isMacAddress = macRegex.hasMatch(code.trim());
 
-    showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('QR Code Scanned'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Scanned successfully!'),
-            const SizedBox(height: 8),
-            Text(
-              'Code: $code',
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+    if (isMacAddress) {
+      await _assignToyByMac(code.trim(), context);
+    } else {
+      // Show generic scanned code dialog for non-MAC QR codes
+      if (!context.mounted) {
+        return;
+      }
+      showDialog<String>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('qr_scanner.scanned'.tr()),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('qr_scanner.unrecognized_format'.tr()),
+              const SizedBox(height: 8),
+              Text(
+                code,
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                state = state.copyWith(isProcessing: false);
+              },
+              child: Text('qr_scanner.scan_again'.tr()),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              state = state.copyWith(isProcessing: false);
-            },
-            child: const Text('Scan Again'),
+      );
+    }
+  }
+
+  Future<void> _assignToyByMac(String macAddress, BuildContext context) async {
+    final user = ref.read(authProvider).value;
+    if (user == null) {
+      state = state.copyWith(isProcessing: false);
+      return;
+    }
+
+    try {
+      final toyService = ref.read(toyServiceProvider);
+      final result = await toyService.assignToy(
+        macAddress: macAddress,
+        userId: user.id,
+      );
+
+      if (!context.mounted) return;
+      showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          icon: const Icon(Icons.check_circle, color: Colors.green, size: 48),
+          title: Text('qr_scanner.toy_assigned'.tr()),
+          content: Text(
+            'qr_scanner.toy_assigned_desc'.tr(
+              args: [result.toy?.name ?? macAddress],
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop(code);
-            },
-            child: const Text('Use Code'),
-          ),
-        ],
-      ),
-    );
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(context).pop();
+              },
+              child: Text('qr_scanner.done'.tr()),
+            ),
+          ],
+        ),
+      );
+    } on Exception catch (e) {
+      if (!context.mounted) return;
+      final message = e.toString().replaceFirst('Exception: ', '');
+      showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          icon: const Icon(Icons.error, color: Colors.red, size: 48),
+          title: Text('qr_scanner.assignment_failed'.tr()),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                state = state.copyWith(isProcessing: false);
+              },
+              child: Text('qr_scanner.scan_again'.tr()),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
 
@@ -149,62 +211,62 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
   }
 
   Widget _buildScannerOverlay() => Center(
-      child: Container(
-        width: 250,
-        height: 250,
-        decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.primaryLight, width: 3),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Stack(
-          children: [
-            // Corner indicators
-            Positioned(top: 0, left: 0, child: _buildCorner(true, true)),
-            Positioned(top: 0, right: 0, child: _buildCorner(true, false)),
-            Positioned(bottom: 0, left: 0, child: _buildCorner(false, true)),
-            Positioned(bottom: 0, right: 0, child: _buildCorner(false, false)),
-          ],
-        ),
+    child: Container(
+      width: 250,
+      height: 250,
+      decoration: BoxDecoration(
+        border: Border.all(color: AppTheme.primaryLight, width: 3),
+        borderRadius: BorderRadius.circular(20),
       ),
-    );
+      child: Stack(
+        children: [
+          // Corner indicators
+          Positioned(top: 0, left: 0, child: _buildCorner(true, true)),
+          Positioned(top: 0, right: 0, child: _buildCorner(true, false)),
+          Positioned(bottom: 0, left: 0, child: _buildCorner(false, true)),
+          Positioned(bottom: 0, right: 0, child: _buildCorner(false, false)),
+        ],
+      ),
+    ),
+  );
 
   Widget _buildCorner(bool top, bool left) => Container(
-      width: 30,
-      height: 30,
-      decoration: BoxDecoration(
-        border: Border(
-          top: top
-              ? const BorderSide(color: AppTheme.primaryLight, width: 4)
-              : BorderSide.none,
-          left: left
-              ? const BorderSide(color: AppTheme.primaryLight, width: 4)
-              : BorderSide.none,
-          bottom: !top
-              ? const BorderSide(color: AppTheme.primaryLight, width: 4)
-              : BorderSide.none,
-          right: !left
-              ? const BorderSide(color: AppTheme.primaryLight, width: 4)
-              : BorderSide.none,
-        ),
+    width: 30,
+    height: 30,
+    decoration: BoxDecoration(
+      border: Border(
+        top: top
+            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            : BorderSide.none,
+        left: left
+            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            : BorderSide.none,
+        bottom: !top
+            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            : BorderSide.none,
+        right: !left
+            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            : BorderSide.none,
       ),
-    );
+    ),
+  );
 
   Widget _buildInstructions() => Positioned(
-      bottom: 50,
-      left: 0,
-      right: 0,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 32),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.7),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: const Text(
-          'Position the QR code within the frame to scan',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontSize: 14),
-        ),
+    bottom: 50,
+    left: 0,
+    right: 0,
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.7),
+        borderRadius: BorderRadius.circular(12),
       ),
-    );
+      child: const Text(
+        'Position the QR code within the frame to scan',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ),
+    ),
+  );
 }
