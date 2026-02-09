@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants/app_config.dart';
+import '../../core/config/config.dart';
 import '../../core/constants/storage_keys.dart';
 import '../../presentation/providers/auth_provider.dart' as auth;
 
@@ -31,10 +31,9 @@ class LanguageNotifier extends AsyncNotifier<LanguageState> {
   // Load language from storage
   Future<LanguageState> _loadLanguage() async {
     final languageCode =
-        _prefs?.getString(StorageKeys.language) ??
-        AppConfig.languageEnglish;
+        _prefs?.getString(StorageKeys.language) ?? Config.languageEnglish;
 
-    if (AppConfig.supportedLanguages.contains(languageCode)) {
+    if (Config.supportedLanguages.contains(languageCode)) {
       return LanguageState(
         locale: Locale(languageCode),
         languageCode: languageCode,
@@ -45,36 +44,33 @@ class LanguageNotifier extends AsyncNotifier<LanguageState> {
 
   // Set language
   Future<void> setLanguage(String languageCode) async {
-    if (!AppConfig.supportedLanguages.contains(languageCode)) {
+    if (!Config.supportedLanguages.contains(languageCode)) {
       return;
     }
 
     await _prefs?.setString(StorageKeys.language, languageCode);
 
     state = AsyncValue.data(
-      LanguageState(
-        locale: Locale(languageCode),
-        languageCode: languageCode,
-      ),
+      LanguageState(locale: Locale(languageCode), languageCode: languageCode),
     );
   }
 
   // Set to English
   Future<void> setEnglish() async {
-    await setLanguage(AppConfig.languageEnglish);
+    await setLanguage(Config.languageEnglish);
   }
 
   // Set to Spanish
   Future<void> setSpanish() async {
-    await setLanguage(AppConfig.languageSpanish);
+    await setLanguage(Config.languageSpanish);
   }
 
   // Toggle between EN and ES
   Future<void> toggleLanguage() async {
     final currentState = state.value;
-    final newLanguage = currentState?.languageCode == AppConfig.languageEnglish
-        ? AppConfig.languageSpanish
-        : AppConfig.languageEnglish;
+    final newLanguage = currentState?.languageCode == Config.languageEnglish
+        ? Config.languageSpanish
+        : Config.languageEnglish;
 
     await setLanguage(newLanguage);
   }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_config.dart';
+import '../../core/config/config.dart';
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
 import '../providers/api_provider.dart';
@@ -23,10 +23,18 @@ class ProfileScreen extends ConsumerWidget {
     if (user != null) {
       ref.read(loggerProvider).d('📱 [PROFILE] User data: ${user.toJson()}');
       ref.read(loggerProvider).d('📱 [PROFILE] user.name: ${user.name}');
-      ref.read(loggerProvider).d('📱 [PROFILE] user.username: ${user.username}');
-      ref.read(loggerProvider).d('📱 [PROFILE] user.firstName: ${user.firstName}');
-      ref.read(loggerProvider).d('📱 [PROFILE] user.lastName: ${user.lastName}');
-      ref.read(loggerProvider).d('📱 [PROFILE] user.fullName: ${user.fullName}');
+      ref
+          .read(loggerProvider)
+          .d('📱 [PROFILE] user.username: ${user.username}');
+      ref
+          .read(loggerProvider)
+          .d('📱 [PROFILE] user.firstName: ${user.firstName}');
+      ref
+          .read(loggerProvider)
+          .d('📱 [PROFILE] user.lastName: ${user.lastName}');
+      ref
+          .read(loggerProvider)
+          .d('📱 [PROFILE] user.fullName: ${user.fullName}');
       ref.read(loggerProvider).d('📱 [PROFILE] user.email: ${user.email}');
     }
 
@@ -66,7 +74,9 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
+                      color: Colors.black.withValues(
+                        alpha: isDark ? 0.3 : 0.08,
+                      ),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -116,7 +126,9 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             'profile.view_profile'.tr(),
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.6,
+                              ),
                             ),
                           ),
                         ],
@@ -193,7 +205,9 @@ class ProfileScreen extends ConsumerWidget {
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('profile.notifications_coming_soon'.tr()),
+                          content: Text(
+                            'profile.notifications_coming_soon'.tr(),
+                          ),
                         ),
                       );
                     },
@@ -231,7 +245,9 @@ class ProfileScreen extends ConsumerWidget {
                       onChanged: (value) {
                         ref.read(themeProvider.notifier).toggleDarkMode();
                       },
-                      activeTrackColor: AppTheme.primaryLight.withValues(alpha: 0.5),
+                      activeTrackColor: AppTheme.primaryLight.withValues(
+                        alpha: 0.5,
+                      ),
                       thumbColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.selected)) {
                           return AppTheme.primaryLight;
@@ -334,9 +350,11 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.info_outline,
                     title: 'profile.about'.tr(),
                     trailing: Text(
-                      'v${AppConfig.appVersion}',
+                      'v${Config.appVersion}',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -430,11 +448,23 @@ void _showHelpDialog(BuildContext context) {
         children: [
           Text('profile.help_need_help'.tr()),
           const SizedBox(height: 16),
-          _buildHelpOption(Icons.email, 'profile.help_email'.tr(), 'support@nebu.ai'),
+          _buildHelpOption(
+            Icons.email,
+            'profile.help_email'.tr(),
+            'support@nebu.ai',
+          ),
           const SizedBox(height: 8),
-          _buildHelpOption(Icons.phone, 'profile.help_phone'.tr(), '+1 (555) 123-4567'),
+          _buildHelpOption(
+            Icons.phone,
+            'profile.help_phone'.tr(),
+            '+1 (555) 123-4567',
+          ),
           const SizedBox(height: 8),
-          _buildHelpOption(Icons.chat, 'profile.help_chat'.tr(), 'profile.help_chat_hours'.tr()),
+          _buildHelpOption(
+            Icons.chat,
+            'profile.help_chat'.tr(),
+            'profile.help_chat_hours'.tr(),
+          ),
         ],
       ),
       actions: [
@@ -448,24 +478,24 @@ void _showHelpDialog(BuildContext context) {
 }
 
 Widget _buildHelpOption(IconData icon, String title, String subtitle) => Row(
-    children: [
-      Icon(icon, size: 20),
-      const SizedBox(width: 12),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(subtitle, style: const TextStyle(fontSize: 12)),
-        ],
-      ),
-    ],
-  );
+  children: [
+    Icon(icon, size: 20),
+    const SizedBox(width: 12),
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(subtitle, style: const TextStyle(fontSize: 12)),
+      ],
+    ),
+  ],
+);
 
 void _showAboutDialog(BuildContext context) {
   showAboutDialog(
     context: context,
-    applicationName: AppConfig.appName,
-    applicationVersion: AppConfig.appVersion,
+    applicationName: Config.appName,
+    applicationVersion: Config.appVersion,
     applicationIcon: Container(
       width: 64,
       height: 64,
@@ -477,9 +507,7 @@ void _showAboutDialog(BuildContext context) {
     ),
     children: [
       const SizedBox(height: 16),
-      Text(
-        'profile.about_description'.tr(),
-      ),
+      Text('profile.about_description'.tr()),
       const SizedBox(height: 8),
       Text('profile.about_copyright'.tr()),
     ],

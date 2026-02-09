@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/app_config.dart';
+import '../../core/config/config.dart';
 
 class TermsOfServiceScreen extends ConsumerWidget {
   const TermsOfServiceScreen({super.key});
@@ -12,10 +12,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('terms.title'.tr()),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: Text('terms.title'.tr()), elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -41,7 +38,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
             _buildSection(
               theme,
               'terms.introduction_title'.tr(),
-              'terms.introduction_content'.tr(args: [AppConfig.appName]),
+              'terms.introduction_content'.tr(args: [Config.appName]),
             ),
 
             // Acceptance
@@ -143,7 +140,9 @@ class TermsOfServiceScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                color: theme.colorScheme.primaryContainer.withValues(
+                  alpha: 0.3,
+                ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -184,57 +183,48 @@ class TermsOfServiceScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSection(ThemeData theme, String title, String content) => Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            content,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-
-  Widget _buildBulletPoint(ThemeData theme, String text) => Padding(
-      padding: const EdgeInsets.only(left: 16, bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '• ',
-            style: theme.textTheme.bodyMedium,
-          ),
-          Expanded(
-            child: Text(
-              text,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                height: 1.5,
+  Widget _buildSection(ThemeData theme, String title, String content) =>
+      Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-        ],
-      ),
-    );
+            const SizedBox(height: 8),
+            Text(
+              content,
+              style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+            ),
+          ],
+        ),
+      );
 
-  Widget _buildContactRow(ThemeData theme, IconData icon, String text) => Row(
+  Widget _buildBulletPoint(ThemeData theme, String text) => Padding(
+    padding: const EdgeInsets.only(left: 16, bottom: 8),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 18, color: theme.colorScheme.primary),
-        const SizedBox(width: 8),
-        Text(
-          text,
-          style: theme.textTheme.bodyMedium,
+        Text('• ', style: theme.textTheme.bodyMedium),
+        Expanded(
+          child: Text(
+            text,
+            style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+          ),
         ),
       ],
-    );
+    ),
+  );
+
+  Widget _buildContactRow(ThemeData theme, IconData icon, String text) => Row(
+    children: [
+      Icon(icon, size: 18, color: theme.colorScheme.primary),
+      const SizedBox(width: 8),
+      Text(text, style: theme.textTheme.bodyMedium),
+    ],
+  );
 }

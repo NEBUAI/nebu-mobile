@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/config/config.dart';
 import 'core/config/config_loader.dart';
-import 'core/constants/app_config.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'presentation/providers/theme_provider.dart';
@@ -44,7 +44,7 @@ class NebuApp extends ConsumerWidget {
 
     return themeAsync.when(
       data: (themeState) => MaterialApp.router(
-        title: AppConfig.appName,
+        title: Config.appName,
         debugShowCheckedModeBanner: false,
 
         // Localization
@@ -61,12 +61,12 @@ class NebuApp extends ConsumerWidget {
         routerConfig: router,
       ),
       loading: () => const MaterialApp(
-        title: AppConfig.appName,
+        title: Config.appName,
         debugShowCheckedModeBanner: false,
         home: Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
       error: (_, _) => const MaterialApp(
-        title: AppConfig.appName,
+        title: Config.appName,
         debugShowCheckedModeBanner: false,
         home: Scaffold(body: Center(child: Text('Error loading theme'))),
       ),

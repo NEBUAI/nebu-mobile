@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
+import '../../core/config/config.dart';
 import '../../core/constants/storage_keys.dart';
-import '../../core/utils/env_config.dart';
 
 class ApiService {
   ApiService({
@@ -19,17 +19,15 @@ class ApiService {
   final Logger _logger;
 
   void _setupDio() {
-    dio.options.baseUrl = EnvConfig.urlBackend;
-    dio.options.connectTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
-    dio.options.receiveTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
+    dio.options.baseUrl = Config.apiBaseUrl;
+    dio.options.connectTimeout = Config.apiTimeout;
+    dio.options.receiveTimeout = Config.apiTimeout;
 
     // Request interceptor - Add auth token
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await _secureStorage.read(
-            key: StorageKeys.accessToken,
-          );
+          final token = await _secureStorage.read(key: StorageKeys.accessToken);
 
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
@@ -102,7 +100,7 @@ class ApiService {
     );
 
     // Logging interceptor (only in debug mode)
-    if (EnvConfig.isDebugMode) {
+    if (Config.enableDebugLogs) {
       dio.interceptors.add(
         LogInterceptor(
           requestBody: true,

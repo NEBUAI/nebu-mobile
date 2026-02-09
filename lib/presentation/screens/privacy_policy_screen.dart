@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/app_config.dart';
+import '../../core/config/config.dart';
 
 class PrivacyPolicyScreen extends ConsumerWidget {
   const PrivacyPolicyScreen({super.key});
@@ -38,9 +38,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             _buildSection(
               theme,
               'privacy_policy.introduction_title'.tr(),
-              'privacy_policy.introduction_content'.tr(
-                args: [AppConfig.appName],
-              ),
+              'privacy_policy.introduction_content'.tr(args: [Config.appName]),
             ),
 
             // Information We Collect

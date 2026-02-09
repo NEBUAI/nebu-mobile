@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:logger/logger.dart';
 
-import '../../core/utils/env_config.dart';
+import '../../core/config/config.dart';
 
 /// Configuración de LiveKit
 class LiveKitConfig {
@@ -83,7 +83,7 @@ class LiveKitService {
       // Usar servidor local en desarrollo, demo server como fallback
       final serverUrl =
           config.serverUrl ??
-          (EnvConfig.isDevelopment
+          (Config.isDevelopment
               ? 'ws://localhost:7880'
               : 'wss://livekit-demo.livekit.cloud');
 
@@ -166,13 +166,13 @@ class LiveKitService {
   ) async {
     try {
       // En desarrollo, usar token demo simple
-      if (EnvConfig.isDevelopment) {
+      if (Config.isDevelopment) {
         return _createSimpleToken(participantName, roomName);
       }
 
       // En producción, obtener token del servidor
       final response = await _dio.post<Map<String, dynamic>>(
-        '${EnvConfig.apiBaseUrl}/livekit/token',
+        '${Config.apiBaseUrl}/livekit/token',
         data: {'participantName': participantName, 'roomName': roomName},
       );
 

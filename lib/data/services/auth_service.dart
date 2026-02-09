@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/config/config.dart';
 import '../../core/constants/storage_keys.dart';
-import '../../core/utils/env_config.dart';
 import '../models/user.dart';
 
 class AuthService {
@@ -15,9 +15,9 @@ class AuthService {
   }) : _dio = dio,
        _prefs = prefs,
        _secureStorage = secureStorage {
-    _dio.options.baseUrl = EnvConfig.urlBackend;
-    _dio.options.connectTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
-    _dio.options.receiveTimeout = Duration(milliseconds: EnvConfig.apiTimeout);
+    _dio.options.baseUrl = Config.apiBaseUrl;
+    _dio.options.connectTimeout = Config.apiTimeout;
+    _dio.options.receiveTimeout = Config.apiTimeout;
   }
   final Dio _dio;
   final SharedPreferences _prefs;
@@ -41,7 +41,9 @@ class AuthService {
       // Use fromBackend to handle NestJS response format
       final authResponse = AuthResponse.fromBackend(response.data!);
 
-      debugPrint('🔐 [AUTH_SERVICE] Parsed user: ${authResponse.user?.toJson()}');
+      debugPrint(
+        '🔐 [AUTH_SERVICE] Parsed user: ${authResponse.user?.toJson()}',
+      );
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);

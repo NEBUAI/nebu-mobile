@@ -1,17 +1,16 @@
 import 'package:dio/dio.dart';
 
-import '../config/app_config.dart';
+import '../config/config.dart';
 
-/// Ejemplo de servicio HTTP usando AppConfig
+/// Ejemplo de servicio HTTP usando Config
 class ApiClient {
-
   ApiClient() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: AppConfig.getApiUrl(),
+        baseUrl: Config.apiBaseUrl,
         headers: {
-          if (AppConfig.getApiKey().isNotEmpty)
-            'Authorization': 'Bearer ${AppConfig.getApiKey()}',
+          if (Config.apiKey.isNotEmpty)
+            'Authorization': 'Bearer ${Config.apiKey}',
           'Content-Type': 'application/json',
         },
         connectTimeout: const Duration(seconds: 10),
@@ -20,7 +19,7 @@ class ApiClient {
     );
 
     // Logging solo en desarrollo
-    if (AppConfig.shouldShowDebugLogs) {
+    if (Config.enableDebugLogs) {
       _dio.interceptors.add(
         LogInterceptor(requestBody: true, responseBody: true),
       );
