@@ -173,11 +173,14 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _InfoRow(
-                    label: 'ID',
-                    value: '${toy.iotDeviceId.substring(0, 12)}...',
-                    theme: theme,
-                  ),
+                  if (toy.iotDeviceId != null)
+                    _InfoRow(
+                      label: 'ID',
+                      value: toy.iotDeviceId!.length > 12
+                          ? '${toy.iotDeviceId!.substring(0, 12)}...'
+                          : toy.iotDeviceId!,
+                      theme: theme,
+                    ),
                   if (toy.model != null)
                     _InfoRow(
                       label: 'Modelo',

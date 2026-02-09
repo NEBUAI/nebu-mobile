@@ -558,7 +558,9 @@ class _Order {
       date: DateTime.tryParse(json['createdAt'] as String? ?? '') ??
           DateTime.now(),
       status: json['status'] as String? ?? 'PENDING',
-      totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? 0,
+      totalPrice: (json['totalPrice'] as num?)?.toDouble() ??
+          (json['totalAmount'] as num?)?.toDouble() ??
+          0,
       items: itemsList
           .map((e) => _OrderItem.fromJson(e as Map<String, dynamic>))
           .toList(),

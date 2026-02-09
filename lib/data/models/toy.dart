@@ -8,18 +8,26 @@ enum ToyStatus {
   active,
   @JsonValue('inactive')
   inactive,
+  @JsonValue('connected')
+  connected,
+  @JsonValue('disconnected')
+  disconnected,
   @JsonValue('maintenance')
   maintenance,
+  @JsonValue('error')
+  error,
+  @JsonValue('blocked')
+  blocked,
 }
 
 @freezed
 abstract class Toy with _$Toy {
   const factory Toy({
     required String id,
-    required String iotDeviceId,
     required String name,
     required ToyStatus status,
-    required String userId,
+    String? iotDeviceId,
+    String? userId,
     String? model,
     String? manufacturer,
     String? firmwareVersion,

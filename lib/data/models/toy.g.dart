@@ -8,10 +8,10 @@ part of 'toy.dart';
 
 _Toy _$ToyFromJson(Map<String, dynamic> json) => _Toy(
   id: json['id'] as String,
-  iotDeviceId: json['iotDeviceId'] as String,
   name: json['name'] as String,
   status: $enumDecode(_$ToyStatusEnumMap, json['status']),
-  userId: json['userId'] as String,
+  iotDeviceId: json['iotDeviceId'] as String?,
+  userId: json['userId'] as String?,
   model: json['model'] as String?,
   manufacturer: json['manufacturer'] as String?,
   firmwareVersion: json['firmwareVersion'] as String?,
@@ -33,9 +33,9 @@ _Toy _$ToyFromJson(Map<String, dynamic> json) => _Toy(
 
 Map<String, dynamic> _$ToyToJson(_Toy instance) => <String, dynamic>{
   'id': instance.id,
-  'iotDeviceId': instance.iotDeviceId,
   'name': instance.name,
   'status': _$ToyStatusEnumMap[instance.status]!,
+  'iotDeviceId': instance.iotDeviceId,
   'userId': instance.userId,
   'model': instance.model,
   'manufacturer': instance.manufacturer,
@@ -53,7 +53,11 @@ Map<String, dynamic> _$ToyToJson(_Toy instance) => <String, dynamic>{
 const _$ToyStatusEnumMap = {
   ToyStatus.active: 'active',
   ToyStatus.inactive: 'inactive',
+  ToyStatus.connected: 'connected',
+  ToyStatus.disconnected: 'disconnected',
   ToyStatus.maintenance: 'maintenance',
+  ToyStatus.error: 'error',
+  ToyStatus.blocked: 'blocked',
 };
 
 _CreateToyRequest _$CreateToyRequestFromJson(Map<String, dynamic> json) =>
