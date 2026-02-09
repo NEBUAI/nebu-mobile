@@ -37,41 +37,52 @@ import '../../presentation/screens/terms_of_service_screen.dart';
 import '../../presentation/screens/toy_settings_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
 
-// Router provider that exposes the GoRouter instance
+/// Notifier that bridges Riverpod auth state changes to GoRouter's refreshListenable
+class _AuthChangeNotifier extends ChangeNotifier {
+  void notify() => notifyListeners();
+}
+
+final _authChangeNotifier = _AuthChangeNotifier();
+
+// Router provider - created once, uses refreshListenable for auth state changes
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
-  return AppRouter(authState).router;
+  // Listen to auth changes and trigger GoRouter redirect re-evaluation
+  ref.listen(authProvider, (_, __) {
+    _authChangeNotifier.notify();
+  });
+
+  return GoRouter(
+    initialLocation: AppRoutes.splash.path,
+    debugLogDiagnostics: true,
+    refreshListenable: _authChangeNotifier,
+    redirect: (context, state) {
+      final authState = ref.read(authProvider);
+      return AppRouter._redirectLogic(authState, state);
+    },
+    routes: AppRouter._getRoutesStatic(),
+    errorBuilder: (context, state) => Scaffold(
+      body: Center(child: Text('Page not found: ${state.error?.message}')),
+    ),
+  );
 });
 
 class AppRouter {
-  AppRouter(AsyncValue<User?> authState)
-    : router = GoRouter(
-        initialLocation: AppRoutes.splash.path,
-        debugLogDiagnostics: true,
-        redirect: (context, state) => _redirectLogic(authState, state),
-        routes: _getRoutesStatic(),
-        errorBuilder: (context, state) => Scaffold(
-          body: Center(child: Text('Page not found: ${state.error?.message}')),
-        ),
-      );
-
-  final GoRouter router;
+  AppRouter._();
 
   static String? _redirectLogic(
     AsyncValue<User?> authState,
     GoRouterState state,
   ) {
     final isAuthenticated = authState.value != null;
+    final isLoading = authState.isLoading;
     final location = state.matchedLocation;
 
-    // Allow splash screen to be shown only on initial load
-    // If we're coming from login/signup, skip splash
+    // While auth is still loading, don't redirect — stay on current page
+    if (isLoading) return null;
+
+    // Splash screen: redirect once auth state is resolved
     if (location == AppRoutes.splash.path) {
-      // If auth state is loaded (not initial app startup), redirect appropriately
-      if (!authState.isLoading) {
-        return isAuthenticated ? AppRoutes.home.path : AppRoutes.welcome.path;
-      }
-      return null; // Allow splash on initial load
+      return isAuthenticated ? AppRoutes.home.path : AppRoutes.welcome.path;
     }
 
     // Routes accessible only when not authenticated
@@ -83,13 +94,11 @@ class AppRouter {
 
     if (isAuthenticated) {
       // If authenticated, redirect from unauthenticated-only routes directly to home
-      // This will NOT go through splash
       if (unauthenticatedRoutes.contains(location)) {
         return AppRoutes.home.path;
       }
     } else {
       // For unauthenticated users, only a specific set of routes are allowed.
-      // All other routes will redirect to the welcome screen.
       final allowedUnauthRoutes = [
         ...unauthenticatedRoutes,
         AppRoutes.home.path,
