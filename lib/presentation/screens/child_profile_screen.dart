@@ -105,7 +105,7 @@ class ChildProfileScreen extends ConsumerWidget {
                 ),
                 if (childAge != null)
                   Text(
-                    'child_profile.age'.tr(args: [childAge.toString()]),
+                    'child_profile.age'.tr(args: [childAge]),
                     style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
               ],
