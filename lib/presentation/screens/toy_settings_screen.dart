@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
@@ -248,6 +249,31 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                     ),
                     const SizedBox(height: 8),
                     const ESP32AudioControls(),
+
+                    const SizedBox(height: 24),
+
+                    // Walkie Talkie
+                    Text(
+                      'walkie_talkie.title'.tr(),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton.icon(
+                      onPressed: widget.toy.iotDeviceId != null
+                          ? () => context.push(
+                                AppRoutes.walkieTalkie.path,
+                                extra: widget.toy,
+                              )
+                          : null,
+                      icon: const Icon(Icons.record_voice_over),
+                      label: Text('walkie_talkie.open_button'.tr()),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 48),
+                        backgroundColor: AppTheme.primaryLight,
+                      ),
+                    ),
 
                     const SizedBox(height: 32),
 

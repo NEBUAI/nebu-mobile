@@ -9,8 +9,10 @@ import '../../data/services/api_service.dart';
 import '../../data/services/auth_service.dart';
 import '../../data/services/bluetooth_service.dart';
 import '../../data/services/device_service.dart';
+import '../../data/services/device_token_service.dart';
 import '../../data/services/esp32_wifi_config_service.dart';
 import '../../data/services/iot_service.dart';
+import '../../data/services/livekit_service.dart';
 import '../../data/services/local_child_data_service.dart';
 import '../../data/services/notification_service.dart';
 import '../../data/services/order_service.dart';
@@ -130,6 +132,18 @@ final voiceSessionServiceProvider = Provider<VoiceSessionService>((ref) {
   final apiService = ref.watch(apiServiceProvider);
   final logger = ref.watch(loggerProvider);
   return VoiceSessionService(apiService: apiService, logger: logger);
+});
+
+final liveKitServiceProvider = Provider<LiveKitService>((ref) {
+  final logger = ref.watch(loggerProvider);
+  final dio = ref.watch(dioProvider);
+  return LiveKitService(logger: logger, dio: dio);
+});
+
+final deviceTokenServiceProvider = Provider<DeviceTokenService>((ref) {
+  final logger = ref.watch(loggerProvider);
+  final dio = ref.watch(apiServiceProvider).dio;
+  return DeviceTokenService(logger: logger, dio: dio);
 });
 
 final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((

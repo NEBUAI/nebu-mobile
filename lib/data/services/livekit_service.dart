@@ -69,6 +69,8 @@ class LiveKitService {
       StreamController<LiveKitConnectionStatus>.broadcast();
   final StreamController<IoTDeviceData> _deviceDataController =
       StreamController<IoTDeviceData>.broadcast();
+  final StreamController<List<RemoteParticipant>> _participantsController =
+      StreamController<List<RemoteParticipant>>.broadcast();
 
   // Callbacks
   void Function(IoTDeviceData)? onDeviceDataCallback;
@@ -128,9 +130,11 @@ class LiveKitService {
       })
       ..on<ParticipantConnectedEvent>((event) {
         _logger.i('Participant connected: ${event.participant.identity}');
+        _participantsController.add(_room?.remoteParticipants.values.toList() ?? []);
       })
       ..on<ParticipantDisconnectedEvent>((event) {
         _logger.i('Participant disconnected: ${event.participant.identity}');
+        _participantsController.add(_room?.remoteParticipants.values.toList() ?? []);
       });
   }
 
@@ -294,6 +298,9 @@ class LiveKitService {
   /// Stream de datos de dispositivos
   Stream<IoTDeviceData> get deviceDataStream => _deviceDataController.stream;
 
+  /// Stream de participantes remotos
+  Stream<List<RemoteParticipant>> get participantsStream => _participantsController.stream;
+
   /// Desconectar de LiveKit
   Future<void> disconnect() async {
     try {
@@ -311,6 +318,7 @@ class LiveKitService {
     await disconnect();
     await _statusController.close();
     await _deviceDataController.close();
+    await _participantsController.close();
     _logger.i('LiveKit Service disposed');
   }
 }

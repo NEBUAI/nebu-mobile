@@ -28,7 +28,8 @@ enum AppRoutes {
   favoritesSetup('/setup/favorites'),
   worldInfoSetup('/setup/world-info'),
   localChildSetup('/setup/local-child'),
-  childProfile('/child-profile');
+  childProfile('/child-profile'),
+  walkieTalkie('/walkie-talkie');
 
   const AppRoutes(this.path);
   final String path;

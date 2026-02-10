@@ -502,6 +502,23 @@
     "no_devices": "No IoT devices found.",
     "type": "Type: {0}"
   },
+  "walkie_talkie": {
+    "title": "Walkie Talkie",
+    "open_button": "Talk to Toy",
+    "connecting": "Connecting...",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "error": "Connection Error",
+    "hold_to_talk": "Hold to Talk",
+    "talking": "Talking...",
+    "end_session": "End Session",
+    "waiting_for_toy": "Waiting for toy to connect...",
+    "toy_connected": "Toy is connected",
+    "connection_failed": "Failed to connect. Please try again.",
+    "retry": "Retry",
+    "mic_permission_required": "Microphone permission is required for walkie-talkie",
+    "no_iot_device": "No IoT device associated with this toy"
+  },
   "auth": {
     "welcome_back": "Welcome back",
     "sign_in_subtitle_long": "Sign in to continue your adventure",
