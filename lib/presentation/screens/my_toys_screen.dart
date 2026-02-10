@@ -34,17 +34,17 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Eliminar juguete'),
-        content: Text('¿Estás seguro de que deseas eliminar "${toy.name}"?'),
+        title: Text('toys.delete_title'.tr()),
+        content: Text('toys.delete_confirm'.tr(args: [toy.name])),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
+            child: Text('common.cancel'.tr()),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Eliminar'),
+            child: Text('common.delete'.tr()),
           ),
         ],
       ),
@@ -59,7 +59,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${toy.name} eliminado correctamente'),
+            content: Text('toys.deleted_success'.tr(args: [toy.name])),
             backgroundColor: Colors.green,
           ),
         );
@@ -68,7 +68,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al eliminar: $e'),
+            content: Text('toys.delete_error'.tr(args: ['$e'])),
             backgroundColor: Colors.red,
           ),
         );
@@ -165,7 +165,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Dispositivo IoT',
+                        'toys.iot_device'.tr(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -183,25 +183,25 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     ),
                   if (toy.model != null)
                     _InfoRow(
-                      label: 'Modelo',
+                      label: 'toys.model'.tr(),
                       value: toy.model!,
                       theme: theme,
                     ),
                   if (toy.firmwareVersion != null)
                     _InfoRow(
-                      label: 'Firmware',
+                      label: 'toys.firmware'.tr(),
                       value: toy.firmwareVersion!,
                       theme: theme,
                     ),
                   if (toy.batteryLevel != null)
                     _InfoRow(
-                      label: 'Batería',
+                      label: 'toys.battery'.tr(),
                       value: toy.batteryLevel!,
                       theme: theme,
                     ),
                   if (toy.signalStrength != null)
                     _InfoRow(
-                      label: 'Señal',
+                      label: 'toys.signal'.tr(),
                       value: toy.signalStrength!,
                       theme: theme,
                     ),
@@ -295,7 +295,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _loadToys,
-              tooltip: 'Recargar',
+              tooltip: 'toys.reload'.tr(),
             ),
         ],
       ),
@@ -379,14 +379,14 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No tienes juguetes registrados',
+                            'toys.no_toys_title'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Agrega tu primer juguete para comenzar',
+                            'toys.no_toys_subtitle'.tr(),
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),

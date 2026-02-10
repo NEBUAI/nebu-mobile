@@ -157,6 +157,16 @@
       "skip": "Omitir"
     }
   },
+  "splash": {
+    "app_name": "FLOW",
+    "powered_by": "Powered by Nebu"
+  },
+  "nav": {
+    "home": "Inicio",
+    "activity": "Actividad",
+    "my_toys": "Mis Juguetes",
+    "profile": "Perfil"
+  },
   "home": {
     "title": "Inicio",
     "my_active_toys": "My Active Toys",
@@ -297,21 +307,68 @@
     "offline": "Desconectado",
     "type": "Tipo",
     "configure": "Configurar Juguete",
-    "remove": "Eliminar Juguete"
+    "remove": "Eliminar Juguete",
+    "error_loading": "Error al cargar juguetes",
+    "delete_title": "Eliminar juguete",
+    "delete_confirm": "¿Estás seguro de que deseas eliminar \"{0}\"?",
+    "deleted_success": "{0} eliminado correctamente",
+    "delete_error": "Error al eliminar: {0}",
+    "no_toys_title": "No tienes juguetes registrados",
+    "no_toys_subtitle": "Agrega tu primer juguete para comenzar",
+    "reload": "Recargar",
+    "iot_device": "Dispositivo IoT",
+    "model": "Modelo",
+    "firmware": "Firmware",
+    "battery": "Batería",
+    "signal": "Señal"
   },
   "device_management": {
     "title": "Gestión de Dispositivos",
     "coming_soon": "Pantalla de Gestión de Dispositivos - Próximamente"
   },
+  "voice_setup": {
+    "title": "Configuración de Voz",
+    "subtitle": "Configura tus preferencias de interacción por voz",
+    "test_your_voice": "Prueba Tu Voz",
+    "test_hint": "Toca el micrófono para probar el reconocimiento de voz",
+    "listening": "Escuchando...",
+    "playing": "Reproduciendo...",
+    "play_sample": "Reproducir Muestra",
+    "voice_settings": "Ajustes de Voz",
+    "voice_recognition": "Reconocimiento de Voz",
+    "voice_recognition_desc": "Habilitar comandos de voz y dictado",
+    "voice_synthesis": "Síntesis de Voz",
+    "voice_synthesis_desc": "Respuestas de texto a voz",
+    "wake_word": "Detección de Palabra Clave",
+    "wake_word_desc": "Activar con \"Hey Nebu\"",
+    "noise_cancellation": "Cancelación de Ruido",
+    "noise_cancellation_desc": "Reducir el ruido de fondo",
+    "mic_permission_required": "Se requiere permiso de micrófono",
+    "recording_failed": "Error al iniciar la grabación",
+    "test_completed": "¡Prueba de reconocimiento de voz completada!",
+    "sample_played": "¡Audio de muestra reproducido!"
+  },
   "qr_scanner": {
     "title": "Escáner QR",
-    "coming_soon": "Escáner QR - Próximamente"
+    "coming_soon": "Escáner QR - Próximamente",
+    "scan_hint": "Posiciona el código QR dentro del marco para escanearlo",
+    "invalid_wifi_qr": "Código QR de WiFi inválido",
+    "wifi_loaded": "Credenciales WiFi cargadas desde QR",
+    "wifi_name_error": "No se pudo obtener el nombre del WiFi",
+    "location_permission_required": "Se requiere permiso de ubicación para obtener el nombre del WiFi"
   },
   "auth": {
+    "welcome_back": "Bienvenido de nuevo",
+    "sign_in_subtitle_long": "Inicia sesión para continuar tu aventura",
     "sign_in": "Iniciar Sesión",
     "sign_in_subtitle": "Inicia sesión para guardar automáticamente tus datos",
     "sign_up": "Registrarse",
     "sign_up_subtitle": "Crea una cuenta para guardar tus datos",
+    "create_account": "Crear cuenta",
+    "create_account_subtitle": "Comienza tu aventura con nosotros hoy",
+    "username_or_email": "Usuario o Correo",
+    "username_or_email_hint": "Ingresa tu usuario o correo",
+    "username_or_email_required": "Ingresa tu usuario o correo",
     "first_name": "Nombre",
     "last_name": "Apellido",
     "email": "Correo Electrónico",
@@ -319,10 +376,13 @@
     "confirm_password": "Confirmar Contraseña",
     "forgot_password": "¿Olvidaste tu Contraseña?",
     "or_continue_with": "O continuar con",
+    "or": "o",
+    "continue_with_google": "Continuar con Google",
     "sign_in_google": "Iniciar sesión con Google",
     "sign_up_google": "Registrarse con Google",
     "no_account": "¿No tienes una cuenta?",
     "already_have_account": "¿Ya tienes una cuenta?",
+    "required": "Requerido",
     "first_name_required": "El nombre es requerido",
     "last_name_required": "El apellido es requerido",
     "email_required": "El correo electrónico es requerido",

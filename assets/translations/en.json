@@ -157,6 +157,16 @@
       "skip": "Skip"
     }
   },
+  "splash": {
+    "app_name": "FLOW",
+    "powered_by": "Powered by Nebu"
+  },
+  "nav": {
+    "home": "Home",
+    "activity": "Activity",
+    "my_toys": "My Toys",
+    "profile": "Profile"
+  },
   "home": {
     "title": "Home",
     "my_active_toys": "My Active Toys",
@@ -288,7 +298,7 @@
   },
   "toys": {
     "title": "My Toys",
-    "my_toys": "toys.my_toys",
+    "my_toys": "My Toys",
     "my_active_toys": "My Active Toys",
     "add_toy": "Add Toy",
     "setup_new_toy": "Setup New Toy",
@@ -297,21 +307,68 @@
     "offline": "Offline",
     "type": "Type",
     "configure": "Configure Toy",
-    "remove": "Remove Toy"
+    "remove": "Remove Toy",
+    "error_loading": "Error loading toys",
+    "delete_title": "Delete Toy",
+    "delete_confirm": "Are you sure you want to delete \"{0}\"?",
+    "deleted_success": "{0} deleted successfully",
+    "delete_error": "Error deleting: {0}",
+    "no_toys_title": "You have no registered toys",
+    "no_toys_subtitle": "Add your first toy to get started",
+    "reload": "Reload",
+    "iot_device": "IoT Device",
+    "model": "Model",
+    "firmware": "Firmware",
+    "battery": "Battery",
+    "signal": "Signal"
   },
   "device_management": {
     "title": "Device Management",
     "coming_soon": "Device Management Screen - Coming Soon"
   },
+  "voice_setup": {
+    "title": "Voice Setup",
+    "subtitle": "Configure your voice interaction preferences",
+    "test_your_voice": "Test Your Voice",
+    "test_hint": "Tap the microphone to test voice recognition",
+    "listening": "Listening...",
+    "playing": "Playing...",
+    "play_sample": "Play Sample",
+    "voice_settings": "Voice Settings",
+    "voice_recognition": "Voice Recognition",
+    "voice_recognition_desc": "Enable voice commands and dictation",
+    "voice_synthesis": "Voice Synthesis",
+    "voice_synthesis_desc": "Text-to-speech responses",
+    "wake_word": "Wake Word Detection",
+    "wake_word_desc": "Activate with \"Hey Nebu\"",
+    "noise_cancellation": "Noise Cancellation",
+    "noise_cancellation_desc": "Reduce background noise",
+    "mic_permission_required": "Microphone permission is required",
+    "recording_failed": "Failed to start recording",
+    "test_completed": "Voice recognition test completed!",
+    "sample_played": "Sample audio played!"
+  },
   "qr_scanner": {
     "title": "QR Scanner",
-    "coming_soon": "QR Scanner - Coming Soon"
+    "coming_soon": "QR Scanner - Coming Soon",
+    "scan_hint": "Position the QR code within the frame to scan",
+    "invalid_wifi_qr": "Invalid WiFi QR Code",
+    "wifi_loaded": "WiFi credentials loaded from QR",
+    "wifi_name_error": "Could not fetch WiFi name",
+    "location_permission_required": "Location permission is required to get WiFi name"
   },
   "auth": {
+    "welcome_back": "Welcome back",
+    "sign_in_subtitle_long": "Sign in to continue your adventure",
     "sign_in": "Sign In",
     "sign_in_subtitle": "Login to automatically save your data",
     "sign_up": "Sign Up",
     "sign_up_subtitle": "Create an account to save your data",
+    "create_account": "Create account",
+    "create_account_subtitle": "Start your journey with us today",
+    "username_or_email": "Username or Email",
+    "username_or_email_hint": "Enter your username or email",
+    "username_or_email_required": "Please enter your username or email",
     "first_name": "First Name",
     "last_name": "Last Name",
     "email": "Email",
@@ -319,10 +376,13 @@
     "confirm_password": "Confirm Password",
     "forgot_password": "Forgot Password?",
     "or_continue_with": "Or continue with",
+    "or": "or",
+    "continue_with_google": "Continue with Google",
     "sign_in_google": "Sign in with Google",
     "sign_up_google": "Sign up with Google",
     "no_account": "Don't have an account?",
     "already_have_account": "Already have an account?",
+    "required": "Required",
     "first_name_required": "First name is required",
     "last_name_required": "Last name is required",
     "email_required": "Email is required",

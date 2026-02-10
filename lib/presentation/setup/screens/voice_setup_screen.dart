@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:record/record.dart';
@@ -26,26 +27,26 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
 
   final List<Map<String, dynamic>> voiceSettings = [
     {
-      'title': 'Voice Recognition',
-      'description': 'Enable voice commands and dictation',
+      'title': 'voice_setup.voice_recognition',
+      'description': 'voice_setup.voice_recognition_desc',
       'icon': Icons.mic,
       'enabled': true,
     },
     {
-      'title': 'Voice Synthesis',
-      'description': 'Text-to-speech responses',
+      'title': 'voice_setup.voice_synthesis',
+      'description': 'voice_setup.voice_synthesis_desc',
       'icon': Icons.volume_up,
       'enabled': true,
     },
     {
-      'title': 'Wake Word Detection',
-      'description': 'Activate with "Hey Nebu"',
+      'title': 'voice_setup.wake_word',
+      'description': 'voice_setup.wake_word_desc',
       'icon': Icons.hearing,
       'enabled': false,
     },
     {
-      'title': 'Noise Cancellation',
-      'description': 'Reduce background noise',
+      'title': 'voice_setup.noise_cancellation',
+      'description': 'voice_setup.noise_cancellation_desc',
       'icon': Icons.noise_control_off,
       'enabled': true,
     },
@@ -94,9 +95,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
               const SizedBox(height: 40),
 
               // Title
-              const GradientText(
-                'Voice Setup',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              GradientText(
+                'voice_setup.title'.tr(),
+                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
 
@@ -104,7 +105,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
 
               // Subtitle
               Text(
-                'Configure your voice interaction preferences',
+                'voice_setup.subtitle'.tr(),
                 style: TextStyle(
                   fontSize: 16,
                   color: isDark ? Colors.grey[300] : Colors.grey[600],
@@ -136,7 +137,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
               Column(
                 children: [
                   CustomButton(
-                    text: 'Continue',
+                    text: 'common.continue'.tr(),
                     onPressed: notifier.nextStep,
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
@@ -145,7 +146,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                   TextButton(
                     onPressed: notifier.previousStep,
                     child: Text(
-                      'Back',
+                      'common.back'.tr(),
                       style: TextStyle(
                         color: isDark ? Colors.grey[400] : Colors.grey[600],
                         fontSize: 16,
@@ -182,9 +183,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     ),
     child: Column(
       children: [
-        const Text(
-          'Test Your Voice',
-          style: TextStyle(
+        Text(
+          'voice_setup.test_your_voice'.tr(),
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -194,7 +195,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         const SizedBox(height: 16),
 
         Text(
-          'Tap the microphone to test voice recognition',
+          'voice_setup.test_hint'.tr(),
           style: TextStyle(
             fontSize: 14,
             color: Colors.white.withValues(alpha: 0.8),
@@ -240,9 +241,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         const SizedBox(height: 20),
 
         if (isRecording)
-          const Text(
-            'Listening...',
-            style: TextStyle(
+          Text(
+            'voice_setup.listening'.tr(),
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
               fontWeight: FontWeight.w500,
@@ -253,7 +254,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
 
         // Test playback button
         CustomButton(
-          text: isPlaying ? 'Playing...' : 'Play Sample',
+          text: isPlaying ? 'voice_setup.playing'.tr() : 'voice_setup.play_sample'.tr(),
           onPressed: isPlaying ? null : _playSample,
           variant: ButtonVariant.secondary,
           isLoading: isPlaying,
@@ -289,9 +290,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
               ),
             ),
             const SizedBox(width: 12),
-            const Text(
-              'Voice Settings',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            Text(
+              'voice_setup.voice_settings'.tr(),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -342,14 +343,14 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                title.tr(),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
-                description,
+                description.tr(),
                 style: TextStyle(
                   fontSize: 12,
                   color: isDark ? Colors.grey[400] : Colors.grey[600],
@@ -385,8 +386,8 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
           return;
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Microphone permission is required'),
+          SnackBar(
+            content: Text('voice_setup.mic_permission_required'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -406,8 +407,8 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         return;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to start recording'),
+        SnackBar(
+          content: Text('voice_setup.recording_failed'.tr()),
           backgroundColor: Colors.red,
         ),
       );
@@ -429,8 +430,8 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
 
       if (path != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Voice recognition test completed!'),
+          SnackBar(
+            content: Text('voice_setup.test_completed'.tr()),
             backgroundColor: Colors.green,
           ),
         );
@@ -460,8 +461,8 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
           isPlaying = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Sample audio played!'),
+          SnackBar(
+            content: Text('voice_setup.sample_played'.tr()),
             backgroundColor: Colors.blue,
           ),
         );

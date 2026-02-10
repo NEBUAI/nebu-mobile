@@ -219,7 +219,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     if (!qrData.startsWith('WIFI:')) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Invalid WiFi QR Code')));
+      ).showSnackBar(SnackBar(content: Text('qr_scanner.invalid_wifi_qr'.tr())));
       return;
     }
 
@@ -234,7 +234,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         }
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('WiFi credentials loaded from QR')),
+        SnackBar(content: Text('qr_scanner.wifi_loaded'.tr())),
       );
     }
   }
@@ -251,7 +251,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           });
         } else if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not fetch WiFi name')),
+            SnackBar(content: Text('qr_scanner.wifi_name_error'.tr())),
           );
         }
       } on Exception catch (e) {
@@ -263,8 +263,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       }
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Location permission is required to get WiFi name'),
+        SnackBar(
+          content: Text('qr_scanner.location_permission_required'.tr()),
         ),
       );
     }

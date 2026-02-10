@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -149,7 +150,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 child: Opacity(
                   opacity: _textOpacityAnimation.value,
                   child: Text(
-                    'FLOW',
+                    'splash.app_name'.tr(),
                     style: GoogleFonts.poppins(
                       fontSize: 64,
                       fontWeight: FontWeight.bold,
@@ -176,7 +177,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               builder: (context, child) => Opacity(
                 opacity: _textOpacityAnimation.value,
                 child: Text(
-                  'Powered by Nebu',
+                  'splash.powered_by'.tr(),
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w300,

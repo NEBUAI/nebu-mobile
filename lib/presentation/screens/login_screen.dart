@@ -90,7 +90,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   _BackButton(onPressed: () => context.pop()),
                   const SizedBox(height: 32),
                   Text(
-                    'Welcome back',
+                    'auth.welcome_back'.tr(),
                     style: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.5,
@@ -99,7 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue your adventure',
+                    'auth.sign_in_subtitle_long'.tr(),
                     style: textTheme.titleMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -114,13 +114,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 20),
                   _CustomTextField(
                     controller: _identifierController,
-                    label: 'Username or Email',
-                    hintText: 'Enter your username or email',
+                    label: 'auth.username_or_email'.tr(),
+                    hintText: 'auth.username_or_email_hint'.tr(),
                     keyboardType: TextInputType.text,
                     prefixIcon: Icons.person_outline_rounded,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your username or email';
+                        return 'auth.username_or_email_required'.tr();
                       }
                       return null;
                     },
@@ -128,7 +128,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 20),
                   _CustomTextField(
                     controller: _passwordController,
-                    label: 'Password',
+                    label: 'auth.password'.tr(),
                     obscureText: _obscurePassword,
                     prefixIcon: Icons.lock_outline_rounded,
                     suffixIcon: _obscurePassword
@@ -153,7 +153,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: GestureDetector(
                       onTap: () {},
                       child: Text(
-                        'Forgot password?',
+                        'auth.forgot_password'.tr(),
                         style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.primary,
                           fontWeight: FontWeight.w600,
@@ -163,7 +163,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 32),
                   _PrimaryButton(
-                    text: 'Sign In',
+                    text: 'auth.sign_in'.tr(),
                     isLoading: authState.isLoading,
                     onPressed: _handleEmailLogin,
                   ),
@@ -171,7 +171,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   _OrDivider(),
                   const SizedBox(height: 24),
                   _GoogleButton(
-                    text: 'Continue with Google',
+                    text: 'auth.continue_with_google'.tr(),
                     isLoading: authState.isLoading,
                     onPressed: _handleGoogleSignIn,
                   ),
@@ -181,7 +181,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account? ",
+                          '${'auth.no_account'.tr()} ',
                           style: textTheme.bodyMedium?.copyWith(
                             color: Colors.grey[600],
                           ),
@@ -189,7 +189,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         GestureDetector(
                           onTap: () => context.push(AppRoutes.signUp.path),
                           child: Text(
-                            'Sign Up',
+                            'auth.sign_up'.tr(),
                             style: textTheme.bodyMedium?.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
@@ -446,7 +446,7 @@ class _OrDivider extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'or',
+            'auth.or'.tr(),
             style: textTheme.bodySmall?.copyWith(
               color: Colors.grey[500],
               fontWeight: FontWeight.w500,

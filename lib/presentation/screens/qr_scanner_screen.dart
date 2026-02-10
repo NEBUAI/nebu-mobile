@@ -266,10 +266,10 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
         color: Colors.black.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Text(
-        'Position the QR code within the frame to scan',
+      child: Text(
+        'qr_scanner.scan_hint'.tr(),
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white, fontSize: 14),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
       ),
     ),
   );

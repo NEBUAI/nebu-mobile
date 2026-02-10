@@ -84,7 +84,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity Log'),
+        title: Text('activity_log.title'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -209,7 +209,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
           ),
           const SizedBox(height: 32),
           Text(
-            'No Activities',
+            'activity_log.empty_title'.tr(),
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -218,7 +218,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
             child: Text(
-              'Your toy interactions and activities will appear here',
+              'activity_log.empty_message'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
@@ -296,15 +296,15 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
     };
 
   String _getActivityTitle(ActivityType type) => switch (type) {
-      ActivityType.voiceCommand => 'Voice Command',
-      ActivityType.connection => 'Connection',
-      ActivityType.interaction => 'Interaction',
-      ActivityType.update => 'Update',
+      ActivityType.voiceCommand => 'activity_log.voice_command'.tr(),
+      ActivityType.connection => 'activity_log.connection'.tr(),
+      ActivityType.interaction => 'activity_log.interaction'.tr(),
+      ActivityType.update => 'activity_log.update'.tr(),
       ActivityType.error => 'Error',
-      ActivityType.play => 'Play',
-      ActivityType.sleep => 'Sleep',
-      ActivityType.wake => 'Wake',
-      ActivityType.chat => 'Chat',
+      ActivityType.play => 'activity_log.play'.tr(),
+      ActivityType.sleep => 'activity_log.sleep'.tr(),
+      ActivityType.wake => 'activity_log.wake'.tr(),
+      ActivityType.chat => 'activity_log.chat'.tr(),
     };
 
   String _formatTimestamp(DateTime timestamp) {
@@ -312,13 +312,13 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
     final difference = now.difference(timestamp);
 
     if (difference.inMinutes < 1) {
-      return 'Just now';
+      return 'activity_log.just_now'.tr();
     } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
+      return 'activity_log.minutes_ago'.tr(args: ['${difference.inMinutes}']);
     } else if (difference.inDays < 1) {
-      return '${difference.inHours}h ago';
+      return 'activity_log.hours_ago'.tr(args: ['${difference.inHours}']);
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return 'activity_log.days_ago'.tr(args: ['${difference.inDays}']);
     } else {
       return DateFormat('MMM d').format(timestamp);
     }

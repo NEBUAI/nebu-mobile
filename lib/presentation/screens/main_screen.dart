@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_routes.dart';
@@ -13,14 +14,14 @@ class MainScreen extends StatelessWidget {
       currentIndex: _calculateSelectedIndex(context),
       onTap: (index) => _onItemTapped(index, context),
       type: BottomNavigationBarType.fixed,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      items: [
+        BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'nav.home'.tr()),
         BottomNavigationBarItem(
-          icon: Icon(Icons.history),
-          label: 'Registro de actividad',
+          icon: const Icon(Icons.history),
+          label: 'nav.activity'.tr(),
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'My Toys'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(icon: const Icon(Icons.dashboard), label: 'nav.my_toys'.tr()),
+        BottomNavigationBarItem(icon: const Icon(Icons.person), label: 'nav.profile'.tr()),
       ],
     ),
   );

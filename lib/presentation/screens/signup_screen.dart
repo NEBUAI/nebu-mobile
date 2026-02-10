@@ -102,7 +102,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                   // Header
                   Text(
-                    'Create account',
+                    'auth.create_account'.tr(),
                     style: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.5,
@@ -111,7 +111,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Start your journey with us today',
+                    'auth.create_account_subtitle'.tr(),
                     style: textTheme.titleMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -135,12 +135,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       Expanded(
                         child: _CustomTextField(
                           controller: _firstNameController,
-                          label: 'First name',
+                          label: 'auth.first_name'.tr(),
                           prefixIcon: Icons.person_outline_rounded,
                           textCapitalization: TextCapitalization.words,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Required';
+                              return 'auth.required'.tr();
                             }
                             return null;
                           },
@@ -150,12 +150,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       Expanded(
                         child: _CustomTextField(
                           controller: _lastNameController,
-                          label: 'Last name',
+                          label: 'auth.last_name'.tr(),
                           prefixIcon: Icons.person_outline_rounded,
                           textCapitalization: TextCapitalization.words,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Required';
+                              return 'auth.required'.tr();
                             }
                             return null;
                           },
@@ -169,7 +169,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   // Email field
                   _CustomTextField(
                     controller: _emailController,
-                    label: 'Email',
+                    label: 'auth.email'.tr(),
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: Icons.mail_outline_rounded,
                     validator: (value) {
@@ -188,7 +188,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   // Password field
                   _CustomTextField(
                     controller: _passwordController,
-                    label: 'Password',
+                    label: 'auth.password'.tr(),
                     obscureText: _obscurePassword,
                     prefixIcon: Icons.lock_outline_rounded,
                     suffixIcon: _obscurePassword
@@ -213,7 +213,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   // Confirm Password field
                   _CustomTextField(
                     controller: _confirmPasswordController,
-                    label: 'Confirm password',
+                    label: 'auth.confirm_password'.tr(),
                     obscureText: _obscureConfirmPassword,
                     prefixIcon: Icons.lock_outline_rounded,
                     suffixIcon: _obscureConfirmPassword
@@ -238,7 +238,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                   // Sign up button
                   _PrimaryButton(
-                    text: 'Create Account',
+                    text: 'auth.create_account'.tr(),
                     isLoading: authState.isLoading,
                     onPressed: _handleEmailSignUp,
                   ),
@@ -252,7 +252,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                   // Google button
                   _GoogleButton(
-                    text: 'Continue with Google',
+                    text: 'auth.continue_with_google'.tr(),
                     isLoading: authState.isLoading,
                     onPressed: _handleGoogleSignUp,
                   ),
@@ -265,7 +265,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Already have an account? ',
+                          "${'auth.already_have_account'.tr()} ",
                           style: textTheme.bodyMedium?.copyWith(
                             color: Colors.grey[600],
                           ),
@@ -273,7 +273,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         GestureDetector(
                           onTap: () => context.pop(),
                           child: Text(
-                            'Sign In',
+                            'auth.sign_in'.tr(),
                             style: textTheme.bodyMedium?.copyWith(
                               color: const Color(0xFF6B4EFF),
                               fontWeight: FontWeight.w600,
@@ -528,7 +528,7 @@ class _OrDivider extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'or',
+            'auth.or'.tr(),
             style: textTheme.bodySmall?.copyWith(
               color: Colors.grey[500],
               fontWeight: FontWeight.w500,
