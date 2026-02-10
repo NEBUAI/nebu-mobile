@@ -17,7 +17,7 @@ class ChildProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Child Profile'),
+        title: Text('child_profile.title'.tr()),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -31,7 +31,7 @@ class ChildProfileScreen extends ConsumerWidget {
           return _buildChildProfileState(context, service, colorScheme);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+        error: (error, stackTrace) => Center(child: Text('child_profile.error'.tr(args: [error.toString()]))),
       ),
     );
   }
@@ -46,15 +46,15 @@ class ChildProfileScreen extends ConsumerWidget {
       children: [
         const Icon(Icons.child_care, size: 80, color: Colors.grey),
         const SizedBox(height: 20),
-        const Text(
-          'No Child Data Found',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        Text(
+          'child_profile.no_data_title'.tr(),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
-        const Text(
-          'Please set up a child profile to continue.',
+        Text(
+          'child_profile.no_data_subtitle'.tr(),
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
         ),
         const SizedBox(height: 30),
         ElevatedButton(
@@ -63,7 +63,7 @@ class ChildProfileScreen extends ConsumerWidget {
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
           ),
-          child: const Text('Set Up Profile'),
+          child: Text('child_profile.setup_profile'.tr()),
         ),
       ],
     ),
@@ -105,7 +105,7 @@ class ChildProfileScreen extends ConsumerWidget {
                 ),
                 if (childAge != null)
                   Text(
-                    'Age: $childAge',
+                    'child_profile.age'.tr(args: [childAge.toString()]),
                     style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
               ],
@@ -113,7 +113,7 @@ class ChildProfileScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 30),
           const Divider(),
-          _buildSectionTitle('Personality'),
+          _buildSectionTitle('child_profile.personality'.tr()),
           Wrap(
             spacing: 8,
             children: [
@@ -137,7 +137,7 @@ class ChildProfileScreen extends ConsumerWidget {
                 onPressed: () => _confirmDelete(context, service, colorScheme),
                 icon: Icon(Icons.delete, color: colorScheme.error),
                 label: Text(
-                  'Delete Profile',
+                  'child_profile.delete_profile'.tr(),
                   style: TextStyle(color: colorScheme.error),
                 ),
               ),
@@ -182,19 +182,19 @@ class ChildProfileScreen extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text(
-          'Are you sure you want to delete this child profile? This action cannot be undone.',
+        title: Text('child_profile.confirm_deletion_title'.tr()),
+        content: Text(
+          'child_profile.confirm_deletion_message'.tr(),
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('Cancel'),
+            child: Text('common.cancel'.tr()),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           TextButton(
-            child: Text('Delete', style: TextStyle(color: colorScheme.error)),
+            child: Text('common.delete'.tr(), style: TextStyle(color: colorScheme.error)),
             onPressed: () async {
               await service.clearChildData();
               if (!context.mounted) {

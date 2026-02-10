@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +15,7 @@ class IoTDevicesScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('IoT Devices'),
+        title: Text('iot_devices.title'.tr()),
       ),
       body: iotDevicesState.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -26,10 +27,10 @@ class IoTDevicesScreen extends ConsumerWidget {
                   ),
                 )
               : iotDevicesState.devices.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Text(
-                        'No IoT devices found.',
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                        'iot_devices.no_devices'.tr(),
+                        style: const TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     )
                   : ListView.builder(
@@ -53,9 +54,14 @@ class IoTDevicesScreen extends ConsumerWidget {
                               device.name,
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            subtitle: Text(
-                              'ID: ${device.id}\nType: ${device.deviceType?.toString().split('.').last ?? 'Unknown'}',
-                              style: TextStyle(color: Colors.grey[600]),
+                            subtitle: Builder(
+                              builder: (context) {
+                                final deviceType = device.deviceType?.toString().split('.').last ?? 'toy_settings.unknown'.tr();
+                                return Text(
+                                  'ID: ${device.id}\nType: $deviceType',
+                                  style: TextStyle(color: Colors.grey[600]),
+                                );
+                              },
                             ),
                             trailing: Icon(
                               Icons.circle,

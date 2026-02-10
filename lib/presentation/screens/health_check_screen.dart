@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
@@ -63,7 +64,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text('Backend Health Check'),
+      title: Text('health_check.title'.tr()),
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
     ),
     body: Padding(
@@ -83,7 +84,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
                     ),
                   )
                 : const Icon(Icons.refresh),
-            label: Text(_isLoading ? 'Checking...' : 'Check Backend Health'),
+            label: Text(_isLoading ? 'health_check.checking'.tr() : 'health_check.check_button'.tr()),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(16),
               backgroundColor: Colors.blue,
@@ -104,7 +105,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
                         Icon(Icons.error, color: Colors.red.shade700),
                         const SizedBox(width: 8),
                         Text(
-                          'Error',
+                          'health_check.error'.tr(),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -194,9 +195,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Information',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          'health_check.information'.tr(),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         _buildInfoRow('Version', status.version),
@@ -216,9 +217,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Memory Usage',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          'health_check.memory_usage'.tr(),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         _buildInfoRow('Heap Used', '${memory.heapUsed.toStringAsFixed(2)} MB'),
@@ -240,9 +241,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Health Checks',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          'health_check.health_checks'.tr(),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         _buildCheckRow('Database', checks.database),
@@ -261,9 +262,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Performance',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          'health_check.performance'.tr(),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         _buildInfoRow('Response Time', '${performance.responseTime}ms'),

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../providers/api_provider.dart';
@@ -177,7 +178,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             children: [
               const Icon(Icons.check_circle, color: Colors.white, size: 20),
               const SizedBox(width: 12),
-              Text('Connected to ${device.platformName}'),
+              Text('setup.connection.connected_to'.tr(args: [device.platformName])),
             ],
           ),
           backgroundColor: const Color(0xFF4CAF50),
@@ -196,11 +197,11 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
 
       messenger.showSnackBar(
         SnackBar(
-          content: const Row(
+          content: Row(
             children: [
-              Icon(Icons.error_outline, color: Colors.white, size: 20),
-              SizedBox(width: 12),
-              Expanded(child: Text('Connection failed. Please try again.')),
+              const Icon(Icons.error_outline, color: Colors.white, size: 20),
+              const SizedBox(width: 12),
+              Expanded(child: Text('setup.connection.connection_failed'.tr())),
             ],
           ),
           backgroundColor: const Color(0xFFE53935),
@@ -223,9 +224,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       builder: (context) => _BottomSheet(
         icon: Icons.bluetooth_disabled_rounded,
         iconColor: const Color(0xFF6B4EFF),
-        title: 'Enable Bluetooth',
-        description: 'Bluetooth is required to connect to your Nebu device.',
-        primaryText: 'Enable Bluetooth',
+        title: 'setup.connection.enable_bluetooth_title'.tr(),
+        description: 'setup.connection.enable_bluetooth_message'.tr(),
+        primaryText: 'setup.connection.enable_bluetooth_title'.tr(),
         primaryOnPressed: () async {
           Navigator.pop(context);
           try {
@@ -236,7 +237,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             _logger.e('Error turning on Bluetooth: $e');
           }
         },
-        secondaryText: 'Cancel',
+        secondaryText: 'common.cancel'.tr(),
         secondaryOnPressed: () => Navigator.pop(context),
       ),
     );
@@ -283,7 +284,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Setup Options',
+                  'setup.connection.setup_options'.tr(),
                   style: textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: Colors.black,
@@ -291,7 +292,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Choose how you want to proceed',
+                  'setup.connection.setup_options_desc'.tr(),
                   style: textTheme.bodyMedium?.copyWith(
                     color: Colors.grey[600],
                   ),
@@ -301,8 +302,8 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 // Option 1: Configure Locally
                 _OptionCard(
                   icon: Icons.phone_android_rounded,
-                  title: 'Configure Locally',
-                  description: 'Set up child info without a device',
+                  title: 'setup.connection.configure_locally'.tr(),
+                  description: 'setup.connection.configure_locally_desc'.tr(),
                   onTap: () {
                     Navigator.pop(context);
                     context.push(AppRoutes.localChildSetup.path);
@@ -314,8 +315,8 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 // Option 2: Skip
                 _OptionCard(
                   icon: Icons.arrow_forward_rounded,
-                  title: 'Skip Setup',
-                  description: 'Continue to home and set up later',
+                  title: 'setup.connection.skip_setup'.tr(),
+                  description: 'setup.connection.skip_setup_desc'.tr(),
                   isSecondary: true,
                   onTap: () {
                     Navigator.pop(context);
@@ -337,15 +338,15 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       builder: (context) => _BottomSheet(
         icon: Icons.security_rounded,
         iconColor: const Color(0xFFFF9800),
-        title: 'Permissions Required',
+        title: 'setup.connection.permissions_required_title'.tr(),
         description:
-            'Bluetooth and location permissions are needed to find your device.',
-        primaryText: 'Open Settings',
+            'setup.connection.permissions_denied_desc'.tr(),
+        primaryText: 'setup.connection.open_settings'.tr(),
         primaryOnPressed: () {
           Navigator.pop(context);
           openAppSettings();
         },
-        secondaryText: 'Cancel',
+        secondaryText: 'common.cancel'.tr(),
         secondaryOnPressed: () => Navigator.pop(context),
       ),
     );
@@ -385,7 +386,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
 
                     // Title section
                     Text(
-                      'Connect Your Device',
+                      'setup.connection.title'.tr(),
                       style: textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.5,
@@ -394,8 +395,8 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     const SizedBox(height: 8),
                     Text(
                       _isScanning
-                          ? 'Searching for nearby devices...'
-                          : "Let's connect your Nebu toy",
+                          ? 'setup.connection.searching'.tr()
+                          : 'setup.connection.subtitle'.tr(),
                       style: textTheme.titleMedium?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -415,10 +416,10 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     // Bottom buttons
                     _PrimaryButton(
                       text: _isScanning
-                          ? 'Scanning...'
+                          ? 'setup.connection.scanning'.tr()
                           : canProceed
-                              ? 'Continue'
-                              : 'Start Scan',
+                              ? 'common.continue'.tr()
+                              : 'setup.connection.start_scan'.tr(),
                       isLoading: _isScanning,
                       onPressed: () {
                         if (_isScanning) {
@@ -441,7 +442,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: Text(
-                          'Skip for now',
+                          'setup.connection.skip_for_now'.tr(),
                           style: textTheme.bodyMedium?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w500,
@@ -502,14 +503,14 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
           ),
           const SizedBox(height: 32),
           Text(
-            'Looking for devices',
+            'setup.connection.looking_for_devices'.tr(),
             style: textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Make sure your Nebu is turned on',
+            'setup.connection.make_sure_on'.tr(),
             style: textTheme.bodyLarge?.copyWith(
               color: colorScheme.onSurfaceVariant,
             ),
@@ -542,14 +543,14 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
           ),
           const SizedBox(height: 24),
           Text(
-            'Ready to connect',
+            'setup.connection.ready_to_connect'.tr(),
             style: textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Tap "Start Scan" to find your Nebu device',
+            'setup.connection.start_scan_hint'.tr(),
             style: textTheme.bodyLarge?.copyWith(
               color: colorScheme.onSurfaceVariant,
             ),
@@ -570,7 +571,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
         Row(
           children: [
             Text(
-              'Available Devices',
+              'setup.connection.available_devices'.tr(),
               style: textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: colorScheme.onSurface,
@@ -606,7 +607,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
               return _DeviceCard(
                 name: device.platformName.isNotEmpty
                     ? device.platformName
-                    : 'Unknown Device',
+                    : 'setup.connection.unknown_device'.tr(),
                 signal: result.rssi,
                 isSelected: isSelected,
                 isConnecting: isConnecting,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -48,8 +49,8 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Toy settings updated successfully'),
+          SnackBar(
+            content: Text('toy_settings.update_success'.tr()),
             backgroundColor: Colors.green,
           ),
         );
@@ -58,7 +59,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to update toy settings: $e'),
+            content: Text('toy_settings.update_error'.tr(args: [e.toString()])),
             backgroundColor: Colors.red,
           ),
         );
@@ -78,8 +79,8 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Toy removed successfully'),
+          SnackBar(
+            content: Text('toy_settings.remove_success'.tr()),
             backgroundColor: Colors.green,
           ),
         );
@@ -89,7 +90,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to remove toy: $e'),
+            content: Text('toy_settings.remove_error'.tr(args: [e.toString()])),
             backgroundColor: Colors.red,
           ),
         );
@@ -102,12 +103,12 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Remove Toy'),
-        content: Text('Are you sure you want to remove ${widget.toy.name}?'),
+        title: Text('toy_settings.remove_title'.tr()),
+        content: Text('toy_settings.remove_confirm'.tr(args: [widget.toy.name])),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text('common.cancel'.tr()),
           ),
           TextButton(
             onPressed: () {
@@ -115,7 +116,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
               _deleteToy();
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Remove'),
+            child: Text('common.delete'.tr()),
           ),
         ],
       ),
@@ -127,7 +128,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Toy Settings')),
+      appBar: AppBar(title: Text('toy_settings.title'.tr())),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -155,7 +156,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              widget.toy.model ?? 'Unknown Model',
+                              widget.toy.model ?? 'toy_settings.unknown_model'.tr(),
                               style: theme.textTheme.titleLarge,
                             ),
                             const SizedBox(height: 8),
@@ -174,7 +175,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
 
                     // Name Setting
                     Text(
-                      'Toy Name',
+                      'toy_settings.toy_name'.tr(),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -183,7 +184,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                     TextFormField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        hintText: 'Enter toy name',
+                        hintText: 'toy_settings.toy_name_hint'.tr(),
                         prefixIcon: const Icon(Icons.label),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -191,7 +192,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a toy name';
+                          return 'toy_settings.toy_name_required'.tr();
                         }
                         return null;
                       },
@@ -201,7 +202,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
 
                     // Device Status
                     Text(
-                      'Device Status',
+                      'toy_settings.device_status'.tr(),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -213,22 +214,22 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         child: Column(
                           children: [
                             _buildStatusRow(
-                              'Status',
+                              'toy_settings.status'.tr(),
                               widget.toy.status.toString().split('.').last,
                               theme,
                             ),
                             const Divider(),
                             if (widget.toy.batteryLevel != null)
                               _buildStatusRow(
-                                'Battery',
+                                'toy_settings.battery'.tr(),
                                 widget.toy.batteryLevel!,
                                 theme,
                               ),
                             if (widget.toy.batteryLevel != null)
                               const Divider(),
                             _buildStatusRow(
-                              'Model',
-                              widget.toy.model ?? 'Unknown',
+                              'toy_settings.model'.tr(),
+                              widget.toy.model ?? 'toy_settings.unknown'.tr(),
                               theme,
                             ),
                           ],
@@ -240,7 +241,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
 
                     // Audio Controls (Volume & Mute)
                     Text(
-                      'Audio Controls',
+                      'toy_settings.audio_controls'.tr(),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -257,7 +258,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         minimumSize: const Size(double.infinity, 48),
                         backgroundColor: AppTheme.primaryLight,
                       ),
-                      child: const Text('Save Changes'),
+                      child: Text('toy_settings.save_changes'.tr()),
                     ),
 
                     const SizedBox(height: 16),
@@ -266,9 +267,9 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                     OutlinedButton.icon(
                       onPressed: _showDeleteConfirmation,
                       icon: const Icon(Icons.delete, color: Colors.red),
-                      label: const Text(
-                        'Remove Toy',
-                        style: TextStyle(color: Colors.red),
+                      label: Text(
+                        'toy_settings.remove_title'.tr(),
+                        style: const TextStyle(color: Colors.red),
                       ),
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Colors.red),

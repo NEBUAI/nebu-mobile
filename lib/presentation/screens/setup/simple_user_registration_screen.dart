@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -71,8 +72,8 @@ class _SimpleUserRegistrationScreenState
 
       // Mostrar mensaje de éxito
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Usuario registrado exitosamente'),
+        SnackBar(
+          content: Text('simple_registration.success'.tr()),
           backgroundColor: Colors.green,
         ),
       );
@@ -97,7 +98,7 @@ class _SimpleUserRegistrationScreenState
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Registro Simple'), elevation: 0),
+      appBar: AppBar(title: Text('simple_registration.title'.tr()), elevation: 0),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -108,7 +109,7 @@ class _SimpleUserRegistrationScreenState
               children: [
                 // Título
                 Text(
-                  'Crea tu Cuenta',
+                  'simple_registration.create_account'.tr(),
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -118,7 +119,7 @@ class _SimpleUserRegistrationScreenState
 
                 // Descripción
                 Text(
-                  'Regístrate para conectar tu juguete Nebu',
+                  'simple_registration.subtitle'.tr(),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -129,15 +130,15 @@ class _SimpleUserRegistrationScreenState
                 // Nombre
                 CustomInput(
                   controller: _firstNameController,
-                  label: 'Nombre',
-                  hint: 'Ej: Juan',
+                  label: 'simple_registration.first_name'.tr(),
+                  hint: 'simple_registration.first_name_hint'.tr(),
                   prefixIcon: const Icon(Icons.person),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Por favor ingresa tu nombre';
+                      return 'simple_registration.first_name_required'.tr();
                     }
                     if (value.trim().length < 2) {
-                      return 'El nombre debe tener al menos 2 caracteres';
+                      return 'simple_registration.first_name_short'.tr();
                     }
                     return null;
                   },
@@ -147,15 +148,15 @@ class _SimpleUserRegistrationScreenState
                 // Apellido
                 CustomInput(
                   controller: _lastNameController,
-                  label: 'Apellido',
-                  hint: 'Ej: Pérez',
+                  label: 'simple_registration.last_name'.tr(),
+                  hint: 'simple_registration.last_name_hint'.tr(),
                   prefixIcon: const Icon(Icons.person_outline),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Por favor ingresa tu apellido';
+                      return 'simple_registration.last_name_required'.tr();
                     }
                     if (value.trim().length < 2) {
-                      return 'El apellido debe tener al menos 2 caracteres';
+                      return 'simple_registration.last_name_short'.tr();
                     }
                     return null;
                   },
@@ -165,18 +166,18 @@ class _SimpleUserRegistrationScreenState
                 // Email
                 CustomInput(
                   controller: _emailController,
-                  label: 'Email',
-                  hint: 'ejemplo@correo.com',
+                  label: 'simple_registration.email'.tr(),
+                  hint: 'simple_registration.email_hint'.tr(),
                   prefixIcon: const Icon(Icons.email),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Por favor ingresa tu email';
+                      return 'simple_registration.email_required'.tr();
                     }
                     if (!RegExp(
                       r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                     ).hasMatch(value.trim())) {
-                      return 'Por favor ingresa un email válido';
+                      return 'simple_registration.email_invalid'.tr();
                     }
                     return null;
                   },
@@ -186,16 +187,16 @@ class _SimpleUserRegistrationScreenState
                 // Contraseña
                 CustomInput(
                   controller: _passwordController,
-                  label: 'Contraseña',
-                  hint: 'Mínimo 8 caracteres',
+                  label: 'simple_registration.password'.tr(),
+                  hint: 'simple_registration.password_hint'.tr(),
                   prefixIcon: const Icon(Icons.lock),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa una contraseña';
+                      return 'simple_registration.password_required'.tr();
                     }
                     if (value.length < 8) {
-                      return 'La contraseña debe tener al menos 8 caracteres';
+                      return 'simple_registration.password_short'.tr();
                     }
                     return null;
                   },
@@ -233,7 +234,7 @@ class _SimpleUserRegistrationScreenState
 
                 // Botón de registro
                 CustomButton(
-                  text: 'Registrarse',
+                  text: 'simple_registration.register'.tr(),
                   onPressed: _isLoading ? null : _registerUser,
                   isLoading: _isLoading,
                 ),
@@ -254,7 +255,7 @@ class _SimpleUserRegistrationScreenState
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Después de registrarte, podrás conectar tu juguete Nebu',
+                        'simple_registration.info_text'.tr(),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),

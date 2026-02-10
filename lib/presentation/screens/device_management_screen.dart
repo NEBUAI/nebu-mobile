@@ -30,13 +30,13 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
       await ref.read(toyProvider.notifier).deleteToy(toyId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Device removed successfully')),
+          SnackBar(content: Text('device_management.remove_success'.tr())),
         );
       }
     } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to remove device: $e')),
+          SnackBar(content: Text('device_management.remove_error'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -192,8 +192,8 @@ class _DeviceCard extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (toy.model != null) Text('Model: ${toy.model}'),
-            Text('Status: ${toy.status.name}'),
+            if (toy.model != null) Text('device_management.model'.tr(args: [toy.model ?? ''])),
+            Text('device_management.status'.tr(args: [toy.status.name])),
           ],
         ),
         trailing: IconButton(
@@ -202,12 +202,12 @@ class _DeviceCard extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Remove Device'),
-                content: Text('Are you sure you want to remove ${toy.name}?'),
+                title: Text('device_management.remove_title'.tr()),
+                content: Text('device_management.remove_confirm'.tr(args: [toy.name])),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel'),
+                    child: Text('common.cancel'.tr()),
                   ),
                   TextButton(
                     onPressed: () {
@@ -215,7 +215,7 @@ class _DeviceCard extends StatelessWidget {
                       onDelete();
                     },
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: const Text('Remove'),
+                    child: Text('common.delete'.tr()),
                   ),
                 ],
               ),

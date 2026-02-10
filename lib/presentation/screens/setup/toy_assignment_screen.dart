@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -68,7 +69,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
         // Mostrar mensaje de éxito
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.message ?? 'Juguete asignado exitosamente'),
+            content: Text(response.message ?? 'toy_assignment.success'.tr()),
             backgroundColor: Colors.green,
           ),
         );
@@ -77,7 +78,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
         Navigator.of(context).pop(response.toy);
       } else {
         setState(() {
-          _errorMessage = response.message ?? 'No se pudo asignar el juguete';
+          _errorMessage = response.message ?? 'toy_assignment.error'.tr();
           _isLoading = false;
         });
       }
@@ -95,7 +96,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Configurar Juguete'), elevation: 0),
+      appBar: AppBar(title: Text('toy_assignment.title'.tr()), elevation: 0),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -121,7 +122,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
 
                 // Título
                 Text(
-                  'Conecta tu Juguete',
+                  'toy_assignment.heading'.tr(),
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -131,8 +132,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
 
                 // Descripción
                 Text(
-                  'Estás a punto de asignar este juguete a tu cuenta. '
-                  'Puedes darle un nombre personalizado para identificarlo fácilmente.',
+                  'toy_assignment.description'.tr(),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -155,7 +155,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Dispositivo',
+                            'toy_assignment.device'.tr(),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
@@ -178,8 +178,8 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
                 // Campo de nombre del juguete
                 CustomInput(
                   controller: _toyNameController,
-                  label: 'Nombre del Juguete (Opcional)',
-                  hint: 'Ej: Mi Robot Favorito',
+                  label: 'toy_assignment.toy_name'.tr(),
+                  hint: 'toy_assignment.toy_name_hint'.tr(),
                   prefixIcon: const Icon(Icons.edit),
                 ),
                 const SizedBox(height: 24),
@@ -217,7 +217,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
 
                 // Botón de asignar
                 CustomButton(
-                  text: 'Asignar Juguete',
+                  text: 'toy_assignment.assign'.tr(),
                   onPressed: _isLoading ? null : _assignToy,
                   isLoading: _isLoading,
                 ),
@@ -228,7 +228,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
                   onPressed: _isLoading
                       ? null
                       : () => Navigator.of(context).pop(),
-                  child: const Text('Cancelar'),
+                  child: Text('common.cancel'.tr()),
                 ),
               ],
             ),

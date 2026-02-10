@@ -68,7 +68,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Google Sign-Up failed: $e')),
+          SnackBar(content: Text('auth.google_signup_failed_detail'.tr(args: [e.toString()]))),
         );
       }
     }

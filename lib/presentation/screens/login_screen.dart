@@ -60,7 +60,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Google Sign-In failed: $e')),
+          SnackBar(content: Text('auth.google_signin_failed_detail'.tr(args: [e.toString()]))),
         );
       }
     }

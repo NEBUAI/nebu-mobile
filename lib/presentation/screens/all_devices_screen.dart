@@ -46,13 +46,13 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
       await ref.read(toyProvider.notifier).deleteToy(toyId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Device removed successfully')),
+          SnackBar(content: Text('device_management.remove_success'.tr())),
         );
       }
     } on Exception catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to remove device: $e')),
+          SnackBar(content: Text('device_management.remove_error'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -64,7 +64,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Devices'),
+        title: Text('all_devices.title'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -73,9 +73,9 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'My Toys', icon: Icon(Icons.smart_toy)),
-            Tab(text: 'IoT Devices', icon: Icon(Icons.router)),
+          tabs: [
+            Tab(text: 'all_devices.tab_toys'.tr(), icon: const Icon(Icons.smart_toy)),
+            Tab(text: 'all_devices.tab_iot'.tr(), icon: const Icon(Icons.router)),
           ],
         ),
       ),
@@ -229,10 +229,10 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
     }
 
     if (iotDevicesState.devices.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'No IoT devices found.',
-          style: TextStyle(fontSize: 18, color: Colors.grey),
+          'all_devices.no_iot_devices'.tr(),
+          style: const TextStyle(fontSize: 18, color: Colors.grey),
         ),
       );
     }
@@ -261,7 +261,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
-                'ID: ${device.id}\nType: ${device.deviceType?.toString().split('.').last ?? 'Unknown'}',
+                'ID: ${device.id}\nType: ${device.deviceType?.toString().split('.').last ?? 'toy_settings.unknown'.tr()}',
                 style: TextStyle(color: Colors.grey[600]),
               ),
               trailing: Icon(
@@ -310,8 +310,8 @@ class _ToyCard extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (toy.model != null) Text('Model: ${toy.model}'),
-            Text('Status: ${toy.status.name}'),
+            if (toy.model != null) Text('device_management.model'.tr(args: [toy.model ?? ''])),
+            Text('device_management.status'.tr(args: [toy.status.name])),
           ],
         ),
         trailing: IconButton(
@@ -320,12 +320,12 @@ class _ToyCard extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Remove Device'),
-                content: Text('Are you sure you want to remove ${toy.name}?'),
+                title: Text('device_management.remove_title'.tr()),
+                content: Text('device_management.remove_confirm'.tr(args: [toy.name])),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel'),
+                    child: Text('common.cancel'.tr()),
                   ),
                   TextButton(
                     onPressed: () {
@@ -333,7 +333,7 @@ class _ToyCard extends StatelessWidget {
                       onDelete();
                     },
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: const Text('Remove'),
+                    child: Text('common.delete'.tr()),
                   ),
                 ],
               ),

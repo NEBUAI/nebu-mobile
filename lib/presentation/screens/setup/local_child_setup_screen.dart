@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -28,18 +29,18 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
   bool _isSaving = false;
 
   final List<Map<String, String>> _ageGroups = [
-    {'value': '3-5', 'label': '3-5 years', 'icon': '👶'},
-    {'value': '6-8', 'label': '6-8 years', 'icon': '🧒'},
-    {'value': '9-12', 'label': '9-12 years', 'icon': '👦'},
-    {'value': '13+', 'label': '13+ years', 'icon': '👨'},
+    {'value': '3-5', 'label': 'setup.local_child.age_3_5', 'icon': '👶'},
+    {'value': '6-8', 'label': 'setup.local_child.age_6_8', 'icon': '🧒'},
+    {'value': '9-12', 'label': 'setup.local_child.age_9_12', 'icon': '👦'},
+    {'value': '13+', 'label': 'setup.local_child.age_13_plus', 'icon': '👨'},
   ];
 
   final List<Map<String, String>> _personalities = [
-    {'value': 'friendly', 'label': 'Friendly & Cheerful', 'icon': '😊'},
-    {'value': 'curious', 'label': 'Curious & Adventurous', 'icon': '🔍'},
-    {'value': 'calm', 'label': 'Calm & Patient', 'icon': '😌'},
-    {'value': 'energetic', 'label': 'Energetic & Playful', 'icon': '⚡'},
-    {'value': 'creative', 'label': 'Creative & Imaginative', 'icon': '🎨'},
+    {'value': 'friendly', 'label': 'setup.local_child.friendly', 'icon': '😊'},
+    {'value': 'curious', 'label': 'setup.local_child.curious', 'icon': '🔍'},
+    {'value': 'calm', 'label': 'setup.local_child.calm', 'icon': '😌'},
+    {'value': 'energetic', 'label': 'setup.local_child.energetic', 'icon': '⚡'},
+    {'value': 'creative', 'label': 'setup.local_child.creative', 'icon': '🎨'},
   ];
 
   @override
@@ -85,8 +86,8 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
 
     if (_selectedAge == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select an age group'),
+        SnackBar(
+          content: Text('setup.local_child.select_age_group'.tr()),
           backgroundColor: Colors.orange,
         ),
       );
@@ -95,8 +96,8 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
 
     if (_selectedPersonality == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a personality'),
+        SnackBar(
+          content: Text('setup.local_child.select_personality'.tr()),
           backgroundColor: Colors.orange,
         ),
       );
@@ -154,8 +155,8 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Child information saved successfully!'),
+        SnackBar(
+          content: Text('setup.local_child.save_success'.tr()),
           backgroundColor: Colors.green,
         ),
       );
@@ -171,7 +172,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error saving data: $e'),
+          content: Text('setup.local_child.save_error'.tr(args: [e.toString()])),
           backgroundColor: Colors.red,
         ),
       );
@@ -251,7 +252,7 @@ Communication style:
 
                           // Title
                           Text(
-                            'Child Information',
+                            'setup.local_child.child_info_title'.tr(),
                             style: theme.textTheme.headlineSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppTheme.primaryLight,
@@ -261,7 +262,7 @@ Communication style:
                           const SizedBox(height: 8),
 
                           Text(
-                            'Set up Nebu for your child without connecting a device',
+                            'setup.local_child.child_info_subtitle'.tr(),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: Colors.grey[600],
                             ),
@@ -273,8 +274,8 @@ Communication style:
                           TextFormField(
                             controller: _childNameController,
                             decoration: InputDecoration(
-                              labelText: "Child's Name",
-                              hintText: "Enter your child's name",
+                              labelText: 'setup.local_child.child_name'.tr(),
+                              hintText: 'setup.local_child.child_name_hint'.tr(),
                               prefixIcon: const Icon(Icons.person),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -282,7 +283,7 @@ Communication style:
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'Please enter a name';
+                                return 'setup.local_child.child_name_required'.tr();
                               }
                               return null;
                             },
@@ -292,7 +293,7 @@ Communication style:
 
                           // Age Selection
                           Text(
-                            'Age Group',
+                            'setup.local_child.age_group'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -338,7 +339,7 @@ Communication style:
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        age['label']!,
+                                        age['label']!.tr(),
                                         style: TextStyle(
                                           color: isSelected
                                               ? Colors.white
@@ -357,7 +358,7 @@ Communication style:
 
                           // Personality Selection
                           Text(
-                            'Preferred Personality',
+                            'setup.local_child.preferred_personality'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -402,7 +403,7 @@ Communication style:
                                       const SizedBox(width: 16),
                                       Expanded(
                                         child: Text(
-                                          personality['label']!,
+                                          personality['label']!.tr(),
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: isSelected
@@ -430,7 +431,7 @@ Communication style:
 
                           // Custom Prompt (Optional)
                           Text(
-                            'Custom Instructions (Optional)',
+                            'setup.local_child.custom_instructions'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -439,7 +440,7 @@ Communication style:
                           const SizedBox(height: 8),
 
                           Text(
-                            'Add any special instructions or preferences for how Nebu should interact with your child',
+                            'setup.local_child.custom_instructions_desc'.tr(),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.grey[600],
                             ),
@@ -452,7 +453,7 @@ Communication style:
                             maxLines: 6,
                             decoration: InputDecoration(
                               hintText:
-                                  'e.g., Focus on science topics, avoid scary stories, encourage reading...',
+                                  'setup.local_child.custom_instructions_hint'.tr(),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -482,7 +483,7 @@ Communication style:
                                     ),
                                   )
                                 : Text(
-                                    'Save & Continue',
+                                    'setup.local_child.save_continue'.tr(),
                                     style: theme.textTheme.titleMedium
                                         ?.copyWith(
                                           color: Colors.white,
@@ -513,7 +514,7 @@ Communication style:
         icon: const Icon(Icons.arrow_back, color: Colors.white),
       ),
       Text(
-        'Local Setup',
+        'setup.local_child.title'.tr(),
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
           color: Colors.white,
           fontWeight: FontWeight.bold,
