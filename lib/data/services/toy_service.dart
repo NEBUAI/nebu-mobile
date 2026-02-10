@@ -244,6 +244,31 @@ class ToyService {
     }
   }
 
+  /// Desasignar un juguete de la cuenta del usuario
+  Future<AssignToyResponse> unassignToy(String id) async {
+    try {
+      _logger.d('Unassigning toy: $id');
+
+      final response = await _apiService.post<Map<String, dynamic>>(
+        '/toys/$id/unassign',
+      );
+
+      _logger.d('Toy unassigned successfully');
+      return AssignToyResponse.fromJson(response);
+    } on DioException catch (e) {
+      _logger.e('Error unassigning toy: ${e.message}');
+      if (e.response?.statusCode == 404) {
+        throw Exception('Juguete no encontrado');
+      } else if (e.response?.statusCode == 409) {
+        throw Exception('No tienes permiso para liberar este juguete');
+      }
+      throw Exception('Error al liberar el juguete: ${e.message}');
+    } on Exception catch (e) {
+      _logger.e('Unexpected error unassigning toy: $e');
+      throw Exception('Error inesperado al liberar el juguete');
+    }
+  }
+
   /// Eliminar un juguete
   Future<void> deleteToy(String id) async {
     try {

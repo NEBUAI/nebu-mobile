@@ -17,6 +17,7 @@ import '../../data/services/order_service.dart';
 import '../../data/services/toy_service.dart';
 import '../../data/services/user_service.dart';
 import '../../data/services/user_setup_service.dart';
+import '../../data/services/voice_session_service.dart';
 
 // Low-level dependency providers
 
@@ -123,6 +124,12 @@ final orderServiceProvider = Provider<OrderService>((ref) {
   final apiService = ref.watch(apiServiceProvider);
   final logger = ref.watch(loggerProvider);
   return OrderService(apiService: apiService, logger: logger);
+});
+
+final voiceSessionServiceProvider = Provider<VoiceSessionService>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  final logger = ref.watch(loggerProvider);
+  return VoiceSessionService(apiService: apiService, logger: logger);
 });
 
 final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((
