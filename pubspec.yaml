@@ -2,7 +2,7 @@ name: nebu_mobile_flutter
 description: "Nebu Mobile Application - Flutter Migration from React Native"
 publish_to: 'none'
 
-version: 1.0.2+5
+version: 1.0.3+6
 
 environment:
   sdk: ^3.8.0
