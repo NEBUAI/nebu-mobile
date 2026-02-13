@@ -2,7 +2,7 @@
 
 **Aplicación móvil para configuración y gestión de juguetes inteligentes con ESP32**
 
-Nebu Mobile es una aplicación Flutter que permite a los usuarios configurar y gestionar juguetes inteligentes equipados con ESP32. La app facilita la conexión WiFi del dispositivo, el seguimiento de actividades del usuario, y la integración con servicios de IA a través de LiveKit Cloud.
+Nebu Mobile es una aplicación Flutter que permite a los usuarios configurar y gestionar juguetes inteligentes equipados con ESP32. La app facilita la conexión WiFi del dispositivo, el seguimiento de actividades del usuario, y la integración con servicios de IA a través de LiveKit Cloud. hECHO POR DUVET05
 
 ---
 
