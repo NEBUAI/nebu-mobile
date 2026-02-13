@@ -142,16 +142,20 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
     );
   }
 
-  Widget _buildErrorState(WalkieTalkieState state) => Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      const Icon(Icons.error_outline, size: 48, color: Colors.red),
-      const SizedBox(height: 12),
-      Text(
-        'walkie_talkie.connection_failed'.tr(),
-        style: const TextStyle(color: Colors.red, fontSize: 16),
-        textAlign: TextAlign.center,
-      ),
+  Widget _buildErrorState(WalkieTalkieState state) {
+    final errorKey = state.error ?? 'connection_failed';
+    final translationKey = 'walkie_talkie.$errorKey';
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(Icons.error_outline, size: 48, color: Colors.red),
+        const SizedBox(height: 12),
+        Text(
+          translationKey.tr(),
+          style: const TextStyle(color: Colors.red, fontSize: 16),
+          textAlign: TextAlign.center,
+        ),
       const SizedBox(height: 16),
       ElevatedButton.icon(
         onPressed: () =>
@@ -164,4 +168,5 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
       ),
     ],
   );
+  }
 }

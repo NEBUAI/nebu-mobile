@@ -27,6 +27,7 @@ abstract class Toy with _$Toy {
     required String name,
     required ToyStatus status,
     String? iotDeviceId,
+    String? iotDeviceStatus,
     String? userId,
     String? model,
     String? manufacturer,

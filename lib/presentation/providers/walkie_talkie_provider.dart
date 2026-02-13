@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/toy.dart';
-import '../../data/services/device_token_service.dart';
+import '../../data/services/api_service.dart';
 import '../../data/services/livekit_service.dart';
 import '../../data/services/voice_session_service.dart';
 import 'api_provider.dart';
@@ -56,7 +57,7 @@ final walkieTalkieProvider =
 
 class WalkieTalkieNotifier extends Notifier<WalkieTalkieState> {
   late LiveKitService _liveKitService;
-  late DeviceTokenService _deviceTokenService;
+  late ApiService _apiService;
   late VoiceSessionService _voiceSessionService;
 
   StreamSubscription<LiveKitConnectionStatus>? _statusSub;
@@ -65,7 +66,7 @@ class WalkieTalkieNotifier extends Notifier<WalkieTalkieState> {
   @override
   WalkieTalkieState build() {
     _liveKitService = ref.read(liveKitServiceProvider);
-    _deviceTokenService = ref.read(deviceTokenServiceProvider);
+    _apiService = ref.read(apiServiceProvider);
     _voiceSessionService = ref.read(voiceSessionServiceProvider);
 
     ref.onDispose(_cleanup);
@@ -85,26 +86,32 @@ class WalkieTalkieNotifier extends Notifier<WalkieTalkieState> {
     state = state.copyWith(phase: WalkieTalkiePhase.connecting);
 
     try {
-      // 1. Get LiveKit token for this device
-      final tokenResponse = await _deviceTokenService.requestDeviceToken(
-        toy.iotDeviceId!,
+      // 1. Get parent token to join the toy's active LiveKit room
+      final tokenResponse = await _apiService.post<Map<String, dynamic>>(
+        '/livekit/token/user',
+        data: {'toyId': toy.id},
       );
+
+      final token = tokenResponse['token'] as String;
+      final roomName = tokenResponse['roomName'] as String;
+      final serverUrl = tokenResponse['serverUrl'] as String;
 
       // 2. Create voice session on backend
       final user = ref.read(authProvider).value;
       final sessionResponse = await _voiceSessionService.createSession(
         userId: user?.id ?? 'anonymous',
-        sessionToken: tokenResponse.accessToken,
-        roomName: tokenResponse.roomName,
+        sessionToken: token,
+        roomName: roomName,
       );
       final sessionId = sessionResponse['id'] as String?;
 
-      // 3. Connect to LiveKit room
+      // 3. Connect to LiveKit room using server URL from backend
       await _liveKitService.connect(
         LiveKitConfig(
-          roomName: tokenResponse.roomName,
+          serverUrl: serverUrl,
+          roomName: roomName,
           participantName: user?.firstName ?? user?.id ?? 'parent',
-          token: tokenResponse.accessToken,
+          token: token,
         ),
       );
 
@@ -122,7 +129,22 @@ class WalkieTalkieNotifier extends Notifier<WalkieTalkieState> {
       state = state.copyWith(
         phase: WalkieTalkiePhase.connected,
         sessionId: sessionId,
-        roomName: tokenResponse.roomName,
+        roomName: roomName,
+      );
+    } on DioException catch (e) {
+      // Handle specific backend errors
+      final statusCode = e.response?.statusCode;
+      final String errorKey;
+      if (statusCode == 400) {
+        errorKey = 'toy_not_connected';
+      } else if (statusCode == 404) {
+        errorKey = 'no_iot_device';
+      } else {
+        errorKey = 'connection_failed';
+      }
+      state = state.copyWith(
+        phase: WalkieTalkiePhase.error,
+        error: errorKey,
       );
     } on Exception catch (e) {
       state = state.copyWith(

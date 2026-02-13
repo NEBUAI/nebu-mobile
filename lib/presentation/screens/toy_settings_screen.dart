@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,15 +24,36 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
   late final TextEditingController _nameController;
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  late Toy _currentToy;
+  Timer? _statusTimer;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.toy.name);
+    _currentToy = _currentToy;
+    _nameController = TextEditingController(text: _currentToy.name);
+    _refreshToyStatus();
+    _statusTimer = Timer.periodic(
+      const Duration(seconds: 30),
+      (_) => _refreshToyStatus(),
+    );
+  }
+
+  Future<void> _refreshToyStatus() async {
+    try {
+      final updated =
+          await ref.read(toyProvider.notifier).getToyById(_currentToy.id);
+      if (mounted) {
+        setState(() => _currentToy = updated);
+      }
+    } on Exception catch (_) {
+      // Ignore refresh errors silently
+    }
   }
 
   @override
   void dispose() {
+    _statusTimer?.cancel();
     _nameController.dispose();
     super.dispose();
   }
@@ -44,7 +67,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
 
     try {
       await ref.read(toyProvider.notifier).updateToy(
-            id: widget.toy.id,
+            id: _currentToy.id,
             name: _nameController.text,
           );
 
@@ -76,7 +99,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
     setState(() => _isLoading = true);
 
     try {
-      await ref.read(toyProvider.notifier).deleteToy(widget.toy.id);
+      await ref.read(toyProvider.notifier).deleteToy(_currentToy.id);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -105,7 +128,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('toy_settings.remove_title'.tr()),
-        content: Text('toy_settings.remove_confirm'.tr(args: [widget.toy.name])),
+        content: Text('toy_settings.remove_confirm'.tr(args: [_currentToy.name])),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -157,12 +180,12 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              widget.toy.model ?? 'toy_settings.unknown_model'.tr(),
+                              _currentToy.model ?? 'toy_settings.unknown_model'.tr(),
                               style: theme.textTheme.titleLarge,
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'ID: ${widget.toy.iotDeviceId}',
+                              'ID: ${_currentToy.iotDeviceId}',
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.disabledColor,
                               ),
@@ -216,21 +239,32 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                           children: [
                             _buildStatusRow(
                               'toy_settings.status'.tr(),
-                              widget.toy.status.toString().split('.').last,
+                              _currentToy.status.toString().split('.').last,
                               theme,
                             ),
                             const Divider(),
-                            if (widget.toy.batteryLevel != null)
+                            if (_currentToy.iotDeviceStatus != null)
+                              _buildStatusRow(
+                                'toy_settings.device_connection'.tr(),
+                                _currentToy.iotDeviceStatus!,
+                                theme,
+                                statusColor: _currentToy.iotDeviceStatus == 'online'
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                            if (_currentToy.iotDeviceStatus != null)
+                              const Divider(),
+                            if (_currentToy.batteryLevel != null)
                               _buildStatusRow(
                                 'toy_settings.battery'.tr(),
-                                widget.toy.batteryLevel!,
+                                _currentToy.batteryLevel!,
                                 theme,
                               ),
-                            if (widget.toy.batteryLevel != null)
+                            if (_currentToy.batteryLevel != null)
                               const Divider(),
                             _buildStatusRow(
                               'toy_settings.model'.tr(),
-                              widget.toy.model ?? 'toy_settings.unknown'.tr(),
+                              _currentToy.model ?? 'toy_settings.unknown'.tr(),
                               theme,
                             ),
                           ],
@@ -261,10 +295,10 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                     ),
                     const SizedBox(height: 8),
                     ElevatedButton.icon(
-                      onPressed: widget.toy.iotDeviceId != null
+                      onPressed: _currentToy.iotDeviceId != null
                           ? () => context.push(
                                 AppRoutes.walkieTalkie.path,
-                                extra: widget.toy,
+                                extra: _currentToy,
                               )
                           : null,
                       icon: const Icon(Icons.record_voice_over),
@@ -274,6 +308,17 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         backgroundColor: AppTheme.primaryLight,
                       ),
                     ),
+                    if (_currentToy.iotDeviceId == null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'walkie_talkie.no_iot_device'.tr(),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white.withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ),
 
                     const SizedBox(height: 32),
 
@@ -309,7 +354,12 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
     );
   }
 
-  Widget _buildStatusRow(String label, String value, ThemeData theme) => Row(
+  Widget _buildStatusRow(
+    String label,
+    String value,
+    ThemeData theme, {
+    Color? statusColor,
+  }) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
@@ -318,11 +368,28 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
               color: theme.disabledColor,
             ),
           ),
-          Text(
-            value,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (statusColor != null) ...[
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: statusColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 6),
+              ],
+              Text(
+                value,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: statusColor,
+                ),
+              ),
+            ],
           ),
         ],
       );

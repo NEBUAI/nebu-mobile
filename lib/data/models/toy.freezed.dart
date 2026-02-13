@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Toy {
 
- String get id; String get name; ToyStatus get status; String? get iotDeviceId; String? get userId; String? get model; String? get manufacturer; String? get firmwareVersion; Map<String, dynamic>? get capabilities; Map<String, dynamic>? get settings; String? get notes; String? get batteryLevel; String? get signalStrength; DateTime? get lastConnected; DateTime? get createdAt; DateTime? get updatedAt;
+ String get id; String get name; ToyStatus get status; String? get iotDeviceId; String? get iotDeviceStatus; String? get userId; String? get model; String? get manufacturer; String? get firmwareVersion; Map<String, dynamic>? get capabilities; Map<String, dynamic>? get settings; String? get notes; String? get batteryLevel; String? get signalStrength; DateTime? get lastConnected; DateTime? get createdAt; DateTime? get updatedAt;
 /// Create a copy of Toy
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ToyCopyWith<Toy> get copyWith => _$ToyCopyWithImpl<Toy>(this as Toy, _$identity
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Toy&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.status, status) || other.status == status)&&(identical(other.iotDeviceId, iotDeviceId) || other.iotDeviceId == iotDeviceId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.model, model) || other.model == model)&&(identical(other.manufacturer, manufacturer) || other.manufacturer == manufacturer)&&(identical(other.firmwareVersion, firmwareVersion) || other.firmwareVersion == firmwareVersion)&&const DeepCollectionEquality().equals(other.capabilities, capabilities)&&const DeepCollectionEquality().equals(other.settings, settings)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.batteryLevel, batteryLevel) || other.batteryLevel == batteryLevel)&&(identical(other.signalStrength, signalStrength) || other.signalStrength == signalStrength)&&(identical(other.lastConnected, lastConnected) || other.lastConnected == lastConnected)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Toy&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.status, status) || other.status == status)&&(identical(other.iotDeviceId, iotDeviceId) || other.iotDeviceId == iotDeviceId)&&(identical(other.iotDeviceStatus, iotDeviceStatus) || other.iotDeviceStatus == iotDeviceStatus)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.model, model) || other.model == model)&&(identical(other.manufacturer, manufacturer) || other.manufacturer == manufacturer)&&(identical(other.firmwareVersion, firmwareVersion) || other.firmwareVersion == firmwareVersion)&&const DeepCollectionEquality().equals(other.capabilities, capabilities)&&const DeepCollectionEquality().equals(other.settings, settings)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.batteryLevel, batteryLevel) || other.batteryLevel == batteryLevel)&&(identical(other.signalStrength, signalStrength) || other.signalStrength == signalStrength)&&(identical(other.lastConnected, lastConnected) || other.lastConnected == lastConnected)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,status,iotDeviceId,userId,model,manufacturer,firmwareVersion,const DeepCollectionEquality().hash(capabilities),const DeepCollectionEquality().hash(settings),notes,batteryLevel,signalStrength,lastConnected,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,name,status,iotDeviceId,iotDeviceStatus,userId,model,manufacturer,firmwareVersion,const DeepCollectionEquality().hash(capabilities),const DeepCollectionEquality().hash(settings),notes,batteryLevel,signalStrength,lastConnected,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'Toy(id: $id, name: $name, status: $status, iotDeviceId: $iotDeviceId, userId: $userId, model: $model, manufacturer: $manufacturer, firmwareVersion: $firmwareVersion, capabilities: $capabilities, settings: $settings, notes: $notes, batteryLevel: $batteryLevel, signalStrength: $signalStrength, lastConnected: $lastConnected, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'Toy(id: $id, name: $name, status: $status, iotDeviceId: $iotDeviceId, iotDeviceStatus: $iotDeviceStatus, userId: $userId, model: $model, manufacturer: $manufacturer, firmwareVersion: $firmwareVersion, capabilities: $capabilities, settings: $settings, notes: $notes, batteryLevel: $batteryLevel, signalStrength: $signalStrength, lastConnected: $lastConnected, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ToyCopyWith<$Res>  {
   factory $ToyCopyWith(Toy value, $Res Function(Toy) _then) = _$ToyCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, ToyStatus status, String? iotDeviceId, String? userId, String? model, String? manufacturer, String? firmwareVersion, Map<String, dynamic>? capabilities, Map<String, dynamic>? settings, String? notes, String? batteryLevel, String? signalStrength, DateTime? lastConnected, DateTime? createdAt, DateTime? updatedAt
+ String id, String name, ToyStatus status, String? iotDeviceId, String? iotDeviceStatus, String? userId, String? model, String? manufacturer, String? firmwareVersion, Map<String, dynamic>? capabilities, Map<String, dynamic>? settings, String? notes, String? batteryLevel, String? signalStrength, DateTime? lastConnected, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -65,12 +65,13 @@ class _$ToyCopyWithImpl<$Res>
 
 /// Create a copy of Toy
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? status = null,Object? iotDeviceId = freezed,Object? userId = freezed,Object? model = freezed,Object? manufacturer = freezed,Object? firmwareVersion = freezed,Object? capabilities = freezed,Object? settings = freezed,Object? notes = freezed,Object? batteryLevel = freezed,Object? signalStrength = freezed,Object? lastConnected = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? status = null,Object? iotDeviceId = freezed,Object? iotDeviceStatus = freezed,Object? userId = freezed,Object? model = freezed,Object? manufacturer = freezed,Object? firmwareVersion = freezed,Object? capabilities = freezed,Object? settings = freezed,Object? notes = freezed,Object? batteryLevel = freezed,Object? signalStrength = freezed,Object? lastConnected = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ToyStatus,iotDeviceId: freezed == iotDeviceId ? _self.iotDeviceId : iotDeviceId // ignore: cast_nullable_to_non_nullable
+as String?,iotDeviceStatus: freezed == iotDeviceStatus ? _self.iotDeviceStatus : iotDeviceStatus // ignore: cast_nullable_to_non_nullable
 as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String?,model: freezed == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
 as String?,manufacturer: freezed == manufacturer ? _self.manufacturer : manufacturer // ignore: cast_nullable_to_non_nullable
@@ -168,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  ToyStatus status,  String? iotDeviceId,  String? userId,  String? model,  String? manufacturer,  String? firmwareVersion,  Map<String, dynamic>? capabilities,  Map<String, dynamic>? settings,  String? notes,  String? batteryLevel,  String? signalStrength,  DateTime? lastConnected,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  ToyStatus status,  String? iotDeviceId,  String? iotDeviceStatus,  String? userId,  String? model,  String? manufacturer,  String? firmwareVersion,  Map<String, dynamic>? capabilities,  Map<String, dynamic>? settings,  String? notes,  String? batteryLevel,  String? signalStrength,  DateTime? lastConnected,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Toy() when $default != null:
-return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.userId,_that.model,_that.manufacturer,_that.firmwareVersion,_that.capabilities,_that.settings,_that.notes,_that.batteryLevel,_that.signalStrength,_that.lastConnected,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.iotDeviceStatus,_that.userId,_that.model,_that.manufacturer,_that.firmwareVersion,_that.capabilities,_that.settings,_that.notes,_that.batteryLevel,_that.signalStrength,_that.lastConnected,_that.createdAt,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -189,10 +190,10 @@ return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.userId,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  ToyStatus status,  String? iotDeviceId,  String? userId,  String? model,  String? manufacturer,  String? firmwareVersion,  Map<String, dynamic>? capabilities,  Map<String, dynamic>? settings,  String? notes,  String? batteryLevel,  String? signalStrength,  DateTime? lastConnected,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  ToyStatus status,  String? iotDeviceId,  String? iotDeviceStatus,  String? userId,  String? model,  String? manufacturer,  String? firmwareVersion,  Map<String, dynamic>? capabilities,  Map<String, dynamic>? settings,  String? notes,  String? batteryLevel,  String? signalStrength,  DateTime? lastConnected,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Toy():
-return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.userId,_that.model,_that.manufacturer,_that.firmwareVersion,_that.capabilities,_that.settings,_that.notes,_that.batteryLevel,_that.signalStrength,_that.lastConnected,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.iotDeviceStatus,_that.userId,_that.model,_that.manufacturer,_that.firmwareVersion,_that.capabilities,_that.settings,_that.notes,_that.batteryLevel,_that.signalStrength,_that.lastConnected,_that.createdAt,_that.updatedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +210,10 @@ return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.userId,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  ToyStatus status,  String? iotDeviceId,  String? userId,  String? model,  String? manufacturer,  String? firmwareVersion,  Map<String, dynamic>? capabilities,  Map<String, dynamic>? settings,  String? notes,  String? batteryLevel,  String? signalStrength,  DateTime? lastConnected,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  ToyStatus status,  String? iotDeviceId,  String? iotDeviceStatus,  String? userId,  String? model,  String? manufacturer,  String? firmwareVersion,  Map<String, dynamic>? capabilities,  Map<String, dynamic>? settings,  String? notes,  String? batteryLevel,  String? signalStrength,  DateTime? lastConnected,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Toy() when $default != null:
-return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.userId,_that.model,_that.manufacturer,_that.firmwareVersion,_that.capabilities,_that.settings,_that.notes,_that.batteryLevel,_that.signalStrength,_that.lastConnected,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.iotDeviceStatus,_that.userId,_that.model,_that.manufacturer,_that.firmwareVersion,_that.capabilities,_that.settings,_that.notes,_that.batteryLevel,_that.signalStrength,_that.lastConnected,_that.createdAt,_that.updatedAt);case _:
   return null;
 
 }
@@ -224,13 +225,14 @@ return $default(_that.id,_that.name,_that.status,_that.iotDeviceId,_that.userId,
 @JsonSerializable()
 
 class _Toy implements Toy {
-  const _Toy({required this.id, required this.name, required this.status, this.iotDeviceId, this.userId, this.model, this.manufacturer, this.firmwareVersion, final  Map<String, dynamic>? capabilities, final  Map<String, dynamic>? settings, this.notes, this.batteryLevel, this.signalStrength, this.lastConnected, this.createdAt, this.updatedAt}): _capabilities = capabilities,_settings = settings;
+  const _Toy({required this.id, required this.name, required this.status, this.iotDeviceId, this.iotDeviceStatus, this.userId, this.model, this.manufacturer, this.firmwareVersion, final  Map<String, dynamic>? capabilities, final  Map<String, dynamic>? settings, this.notes, this.batteryLevel, this.signalStrength, this.lastConnected, this.createdAt, this.updatedAt}): _capabilities = capabilities,_settings = settings;
   factory _Toy.fromJson(Map<String, dynamic> json) => _$ToyFromJson(json);
 
 @override final  String id;
 @override final  String name;
 @override final  ToyStatus status;
 @override final  String? iotDeviceId;
+@override final  String? iotDeviceStatus;
 @override final  String? userId;
 @override final  String? model;
 @override final  String? manufacturer;
@@ -273,16 +275,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Toy&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.status, status) || other.status == status)&&(identical(other.iotDeviceId, iotDeviceId) || other.iotDeviceId == iotDeviceId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.model, model) || other.model == model)&&(identical(other.manufacturer, manufacturer) || other.manufacturer == manufacturer)&&(identical(other.firmwareVersion, firmwareVersion) || other.firmwareVersion == firmwareVersion)&&const DeepCollectionEquality().equals(other._capabilities, _capabilities)&&const DeepCollectionEquality().equals(other._settings, _settings)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.batteryLevel, batteryLevel) || other.batteryLevel == batteryLevel)&&(identical(other.signalStrength, signalStrength) || other.signalStrength == signalStrength)&&(identical(other.lastConnected, lastConnected) || other.lastConnected == lastConnected)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Toy&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.status, status) || other.status == status)&&(identical(other.iotDeviceId, iotDeviceId) || other.iotDeviceId == iotDeviceId)&&(identical(other.iotDeviceStatus, iotDeviceStatus) || other.iotDeviceStatus == iotDeviceStatus)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.model, model) || other.model == model)&&(identical(other.manufacturer, manufacturer) || other.manufacturer == manufacturer)&&(identical(other.firmwareVersion, firmwareVersion) || other.firmwareVersion == firmwareVersion)&&const DeepCollectionEquality().equals(other._capabilities, _capabilities)&&const DeepCollectionEquality().equals(other._settings, _settings)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.batteryLevel, batteryLevel) || other.batteryLevel == batteryLevel)&&(identical(other.signalStrength, signalStrength) || other.signalStrength == signalStrength)&&(identical(other.lastConnected, lastConnected) || other.lastConnected == lastConnected)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,status,iotDeviceId,userId,model,manufacturer,firmwareVersion,const DeepCollectionEquality().hash(_capabilities),const DeepCollectionEquality().hash(_settings),notes,batteryLevel,signalStrength,lastConnected,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,name,status,iotDeviceId,iotDeviceStatus,userId,model,manufacturer,firmwareVersion,const DeepCollectionEquality().hash(_capabilities),const DeepCollectionEquality().hash(_settings),notes,batteryLevel,signalStrength,lastConnected,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'Toy(id: $id, name: $name, status: $status, iotDeviceId: $iotDeviceId, userId: $userId, model: $model, manufacturer: $manufacturer, firmwareVersion: $firmwareVersion, capabilities: $capabilities, settings: $settings, notes: $notes, batteryLevel: $batteryLevel, signalStrength: $signalStrength, lastConnected: $lastConnected, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'Toy(id: $id, name: $name, status: $status, iotDeviceId: $iotDeviceId, iotDeviceStatus: $iotDeviceStatus, userId: $userId, model: $model, manufacturer: $manufacturer, firmwareVersion: $firmwareVersion, capabilities: $capabilities, settings: $settings, notes: $notes, batteryLevel: $batteryLevel, signalStrength: $signalStrength, lastConnected: $lastConnected, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -293,7 +295,7 @@ abstract mixin class _$ToyCopyWith<$Res> implements $ToyCopyWith<$Res> {
   factory _$ToyCopyWith(_Toy value, $Res Function(_Toy) _then) = __$ToyCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, ToyStatus status, String? iotDeviceId, String? userId, String? model, String? manufacturer, String? firmwareVersion, Map<String, dynamic>? capabilities, Map<String, dynamic>? settings, String? notes, String? batteryLevel, String? signalStrength, DateTime? lastConnected, DateTime? createdAt, DateTime? updatedAt
+ String id, String name, ToyStatus status, String? iotDeviceId, String? iotDeviceStatus, String? userId, String? model, String? manufacturer, String? firmwareVersion, Map<String, dynamic>? capabilities, Map<String, dynamic>? settings, String? notes, String? batteryLevel, String? signalStrength, DateTime? lastConnected, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -310,12 +312,13 @@ class __$ToyCopyWithImpl<$Res>
 
 /// Create a copy of Toy
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? status = null,Object? iotDeviceId = freezed,Object? userId = freezed,Object? model = freezed,Object? manufacturer = freezed,Object? firmwareVersion = freezed,Object? capabilities = freezed,Object? settings = freezed,Object? notes = freezed,Object? batteryLevel = freezed,Object? signalStrength = freezed,Object? lastConnected = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? status = null,Object? iotDeviceId = freezed,Object? iotDeviceStatus = freezed,Object? userId = freezed,Object? model = freezed,Object? manufacturer = freezed,Object? firmwareVersion = freezed,Object? capabilities = freezed,Object? settings = freezed,Object? notes = freezed,Object? batteryLevel = freezed,Object? signalStrength = freezed,Object? lastConnected = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_Toy(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ToyStatus,iotDeviceId: freezed == iotDeviceId ? _self.iotDeviceId : iotDeviceId // ignore: cast_nullable_to_non_nullable
+as String?,iotDeviceStatus: freezed == iotDeviceStatus ? _self.iotDeviceStatus : iotDeviceStatus // ignore: cast_nullable_to_non_nullable
 as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String?,model: freezed == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
 as String?,manufacturer: freezed == manufacturer ? _self.manufacturer : manufacturer // ignore: cast_nullable_to_non_nullable

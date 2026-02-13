@@ -420,6 +420,7 @@
     "toy_name_required": "Por favor ingresa un nombre para el juguete",
     "device_status": "Estado del Dispositivo",
     "status": "Estado",
+    "device_connection": "Conexión",
     "battery": "Batería",
     "model": "Modelo",
     "unknown_model": "Modelo Desconocido",
@@ -511,7 +512,8 @@
     "connection_failed": "No pudimos conectar con el juguete. Intentemos de nuevo!",
     "retry": "Reintentar",
     "mic_permission_required": "Necesitamos acceso al micrófono para que puedas hablar con tu juguete!",
-    "no_iot_device": "Este juguete aún no tiene un dispositivo conectado"
+    "no_iot_device": "Este juguete aún no tiene un dispositivo conectado",
+    "toy_not_connected": "Tu juguete no está conectado. ¡Asegúrate de que esté encendido y conectado al Wi-Fi!"
   },
   "auth": {
     "welcome_back": "Bienvenido de nuevo",

@@ -427,6 +427,7 @@
     "toy_name_required": "Please enter a toy name",
     "device_status": "Device Status",
     "status": "Status",
+    "device_connection": "Connection",
     "battery": "Battery",
     "model": "Model",
     "unknown_model": "Unknown Model",
@@ -518,7 +519,8 @@
     "connection_failed": "Couldn't connect to the toy. Let's try again!",
     "retry": "Retry",
     "mic_permission_required": "We need microphone access so you can talk to your toy!",
-    "no_iot_device": "This toy doesn't have a connected device yet"
+    "no_iot_device": "This toy doesn't have a connected device yet",
+    "toy_not_connected": "Your toy isn't online right now. Make sure it's turned on and connected to Wi-Fi!"
   },
   "auth": {
     "welcome_back": "Welcome back",
