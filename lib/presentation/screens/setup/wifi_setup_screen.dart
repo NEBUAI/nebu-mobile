@@ -502,6 +502,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                             _buildTitle(theme),
                             const SizedBox(height: 40),
                             _buildQuickActions(theme),
+                            const SizedBox(height: 12),
+                            _buildHotspotHint(),
                             const SizedBox(height: 16),
                             _buildSsidInput(theme),
                             const SizedBox(height: 20),
@@ -521,6 +523,22 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       ),
     );
   }
+
+  Widget _buildHotspotHint() => Row(
+    children: [
+      Icon(Icons.info_outline, size: 14, color: Colors.white.withAlpha(179)),
+      const SizedBox(width: 6),
+      Expanded(
+        child: Text(
+          'setup.wifi.hotspot_hint'.tr(),
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.white.withAlpha(179),
+          ),
+        ),
+      ),
+    ],
+  );
 
   Widget _buildQuickActions(ThemeData theme) => Wrap(
     alignment: WrapAlignment.spaceEvenly,
