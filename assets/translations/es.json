@@ -559,6 +559,12 @@
     "google_signin_failed_detail": "Error al iniciar sesión con Google: {0}",
     "google_signup_failed_detail": "Error al registrarse con Google: {0}",
     "forgot_password_coming_soon": "Recuperación de contraseña próximamente",
+    "forgot_password_title": "Restablecer Contraseña",
+    "forgot_password_body": "Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.",
+    "forgot_password_email_hint": "tu@correo.com",
+    "forgot_password_send": "Enviar Enlace",
+    "forgot_password_success": "Si ese correo está registrado, recibirás un enlace de restablecimiento pronto.",
+    "forgot_password_error": "Algo salió mal. Por favor intenta de nuevo.",
     "sign_up_coming_soon": "Registro próximamente"
   },
   "common": {

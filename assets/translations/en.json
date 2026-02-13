@@ -566,6 +566,12 @@
     "google_signin_failed_detail": "Google Sign-In failed: {0}",
     "google_signup_failed_detail": "Google Sign-Up failed: {0}",
     "forgot_password_coming_soon": "Password recovery coming soon",
+    "forgot_password_title": "Reset Password",
+    "forgot_password_body": "Enter your email and we'll send you a link to reset your password.",
+    "forgot_password_email_hint": "your@email.com",
+    "forgot_password_send": "Send Reset Link",
+    "forgot_password_success": "If that email is registered, you'll receive a reset link shortly.",
+    "forgot_password_error": "Something went wrong. Please try again.",
     "sign_up_coming_soon": "Sign up coming soon"
   },
   "common": {

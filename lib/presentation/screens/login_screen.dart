@@ -44,6 +44,84 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
   }
 
+  void _showForgotPasswordDialog() {
+    final emailController = TextEditingController(
+      text: _identifierController.text.contains('@')
+          ? _identifierController.text.trim()
+          : '',
+    );
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) {
+        var isSending = false;
+
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) => AlertDialog(
+            title: Text('auth.forgot_password_title'.tr()),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('auth.forgot_password_body'.tr()),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: 'auth.forgot_password_email_hint'.tr(),
+                    prefixIcon: const Icon(Icons.email_outlined),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text('common.cancel'.tr()),
+              ),
+              TextButton(
+                onPressed: isSending
+                    ? null
+                    : () async {
+                        final email = emailController.text.trim();
+                        if (email.isEmpty || !email.contains('@')) return;
+
+                        setDialogState(() => isSending = true);
+                        final success = await ref
+                            .read(authProvider.notifier)
+                            .requestPasswordReset(email);
+                        if (!ctx.mounted) return;
+                        Navigator.pop(ctx);
+
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? 'auth.forgot_password_success'.tr()
+                                    : 'auth.forgot_password_error'.tr(),
+                              ),
+                              backgroundColor:
+                                  success ? Colors.green : Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                child: isSending
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text('auth.forgot_password_send'.tr()),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _handleGoogleSignIn() async {
     try {
       final googleSignIn = ref.read(googleSignInProvider);
@@ -151,7 +229,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: _showForgotPasswordDialog,
                       child: Text(
                         'auth.forgot_password'.tr(),
                         style: textTheme.bodyMedium?.copyWith(
