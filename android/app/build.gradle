@@ -59,7 +59,7 @@ play {
     defaultToAppBundles = true
     // DRAFT = Requiere revisión manual en Play Console
     // COMPLETED = Se publica automáticamente a testers
-    releaseStatus = com.github.triplet.gradle.androidpublisher.ReleaseStatus.COMPLETED
+    releaseStatus = com.github.triplet.gradle.androidpublisher.ReleaseStatus.DRAFT
 }
 
 flutter {
