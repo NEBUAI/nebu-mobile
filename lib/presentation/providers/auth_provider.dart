@@ -201,4 +201,12 @@ class AuthNotifier extends AsyncNotifier<User?> {
     final authService = await ref.read(authServiceProvider.future);
     return authService.requestPasswordReset(email);
   }
+
+  Future<bool> resetPassword({
+    required String token,
+    required String newPassword,
+  }) async {
+    final authService = await ref.read(authServiceProvider.future);
+    return authService.resetPassword(token: token, newPassword: newPassword);
+  }
 }

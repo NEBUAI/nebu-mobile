@@ -84,27 +84,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ? null
                     : () async {
                         final email = emailController.text.trim();
-                        if (email.isEmpty || !email.contains('@')) return;
+                        if (email.isEmpty || !email.contains('@')) {
+                          return;
+                        }
 
                         setDialogState(() => isSending = true);
                         final success = await ref
                             .read(authProvider.notifier)
                             .requestPasswordReset(email);
-                        if (!ctx.mounted) return;
+                        if (!ctx.mounted) {
+                          return;
+                        }
                         Navigator.pop(ctx);
 
                         if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                success
-                                    ? 'auth.forgot_password_success'.tr()
-                                    : 'auth.forgot_password_error'.tr(),
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'auth.forgot_password_success'.tr()),
+                                backgroundColor: Colors.green,
                               ),
-                              backgroundColor:
-                                  success ? Colors.green : Colors.red,
-                            ),
-                          );
+                            );
+                            _showResetPasswordDialog();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('auth.forgot_password_error'.tr()),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         }
                       },
                 child: isSending
@@ -114,6 +125,135 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : Text('auth.forgot_password_send'.tr()),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showResetPasswordDialog() {
+    final tokenController = TextEditingController();
+    final passwordController = TextEditingController();
+    final confirmController = TextEditingController();
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) {
+        var isSubmitting = false;
+        String? errorText;
+
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) => AlertDialog(
+            title: Text('auth.reset_password_title'.tr()),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('auth.reset_password_body'.tr()),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: tokenController,
+                    decoration: InputDecoration(
+                      hintText: 'auth.reset_password_token_hint'.tr(),
+                      prefixIcon: const Icon(Icons.key_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'auth.reset_password_new_password_hint'.tr(),
+                      prefixIcon: const Icon(Icons.lock_outline),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: confirmController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'auth.reset_password_confirm_hint'.tr(),
+                      prefixIcon: const Icon(Icons.lock_outline),
+                    ),
+                  ),
+                  if (errorText != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      errorText!,
+                      style: const TextStyle(color: Colors.red, fontSize: 13),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text('common.cancel'.tr()),
+              ),
+              TextButton(
+                onPressed: isSubmitting
+                    ? null
+                    : () async {
+                        final token = tokenController.text.trim();
+                        final password = passwordController.text;
+                        final confirm = confirmController.text;
+
+                        if (token.isEmpty) {
+                          return;
+                        }
+                        if (password.length < 8) {
+                          setDialogState(() {
+                            errorText =
+                                'auth.reset_password_too_short'.tr();
+                          });
+                          return;
+                        }
+                        if (password != confirm) {
+                          setDialogState(() {
+                            errorText =
+                                'auth.reset_password_mismatch'.tr();
+                          });
+                          return;
+                        }
+
+                        setDialogState(() {
+                          isSubmitting = true;
+                          errorText = null;
+                        });
+
+                        final success = await ref
+                            .read(authProvider.notifier)
+                            .resetPassword(
+                                token: token, newPassword: password);
+                        if (!ctx.mounted) {
+                          return;
+                        }
+                        Navigator.pop(ctx);
+
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? 'auth.reset_password_success'.tr()
+                                    : 'auth.reset_password_error'.tr(),
+                              ),
+                              backgroundColor:
+                                  success ? Colors.green : Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                child: isSubmitting
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text('auth.reset_password_submit'.tr()),
               ),
             ],
           ),
