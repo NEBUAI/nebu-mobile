@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/config/config.dart';
@@ -12,9 +12,11 @@ class AuthService {
     required Dio dio,
     required SharedPreferences prefs,
     required FlutterSecureStorage secureStorage,
+    required Logger logger,
   }) : _dio = dio,
        _prefs = prefs,
-       _secureStorage = secureStorage {
+       _secureStorage = secureStorage,
+       _logger = logger {
     _dio.options.baseUrl = Config.apiBaseUrl;
     _dio.options.connectTimeout = Config.apiTimeout;
     _dio.options.receiveTimeout = Config.apiTimeout;
@@ -22,6 +24,7 @@ class AuthService {
   final Dio _dio;
   final SharedPreferences _prefs;
   final FlutterSecureStorage _secureStorage;
+  final Logger _logger;
 
   // Email/Password Authentication
   Future<AuthResponse> login({
@@ -36,14 +39,10 @@ class AuthService {
         data: {'email': identifier, 'password': password},
       );
 
-      debugPrint('🔐 [AUTH_SERVICE] Login response data: ${response.data}');
+      _logger.d('[AUTH] Login response received');
 
       // Use fromBackend to handle NestJS response format
       final authResponse = AuthResponse.fromBackend(response.data!);
-
-      debugPrint(
-        '🔐 [AUTH_SERVICE] Parsed user: ${authResponse.user?.toJson()}',
-      );
 
       if (authResponse.success && authResponse.tokens != null) {
         await _storeTokens(authResponse.tokens!);
@@ -248,7 +247,10 @@ class AuthService {
         data: {'refreshToken': refreshToken},
       );
 
-      final newAccessToken = response.data?['accessToken'] as String;
+      final newAccessToken = response.data?['accessToken'] as String?;
+      if (newAccessToken == null) {
+        throw Exception('No access token in refresh response');
+      }
       await _secureStorage.write(
         key: StorageKeys.accessToken,
         value: newAccessToken,

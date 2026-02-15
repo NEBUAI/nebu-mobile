@@ -221,7 +221,8 @@
     "scan_qr": "Escanear QR",
     "devices": "Dispositivos",
     "activity_log": "Registro de actividad",
-    "setup_new_toy": "Configurar Nuevo Juguete"
+    "setup_new_toy": "Configurar Nuevo Juguete",
+    "devices_error": "No se pudieron cargar los dispositivos conectados. Intenta de nuevo."
   },
   "profile": {
     "title": "Perfil",

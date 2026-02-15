@@ -22,20 +22,18 @@ class AuthNotifier extends AsyncNotifier<User?> {
   Future<User?> _loadUserFromStorage() async {
     try {
       final authService = await ref.watch(authServiceProvider.future);
-      final prefs = await ref.watch(sharedPreferencesProvider.future);
+      final secureStorage = ref.watch(secureStorageProvider);
 
       final isAuthenticated = await authService.isAuthenticated();
       if (isAuthenticated) {
-        final userJson = prefs.getString(StorageKeys.user);
+        final userJson = await secureStorage.read(key: StorageKeys.user);
         if (userJson != null) {
           final user = User.fromJson(json.decode(userJson) as Map<String, dynamic>);
-          ref.read(loggerProvider).d('👤 [AUTH] Loaded user from storage: ${user.toJson()}');
-          ref.read(loggerProvider).d('👤 [AUTH] User.name getter returns: ${user.name}');
+          ref.read(loggerProvider).d('👤 [AUTH] Loaded user from secure storage');
           return user;
         }
       }
     } on Exception catch (e, st) {
-      // If loading fails, treat as unauthenticated
       ref
           .read(loggerProvider)
           .e('Failed to load user from storage', error: e, stackTrace: st);
@@ -44,10 +42,12 @@ class AuthNotifier extends AsyncNotifier<User?> {
   }
 
   Future<void> _saveUser(User user) async {
-    final prefs = await ref.read(sharedPreferencesProvider.future);
-    ref.read(loggerProvider).d('💾 [AUTH] Saving user to storage: ${user.toJson()}');
-    ref.read(loggerProvider).d('💾 [AUTH] User.name getter returns: ${user.name}');
-    await prefs.setString(StorageKeys.user, json.encode(user.toJson()));
+    final secureStorage = ref.read(secureStorageProvider);
+    await secureStorage.write(
+      key: StorageKeys.user,
+      value: json.encode(user.toJson()),
+    );
+    ref.read(loggerProvider).d('💾 [AUTH] User saved to secure storage');
   }
 
   /// Migrate activities from local UUID to authenticated user
@@ -183,9 +183,9 @@ class AuthNotifier extends AsyncNotifier<User?> {
     state = const AsyncValue.loading();
     try {
       final authService = await ref.read(authServiceProvider.future);
-      final prefs = await ref.read(sharedPreferencesProvider.future);
+      final secureStorage = ref.read(secureStorageProvider);
       await authService.logout();
-      await prefs.remove(StorageKeys.user);
+      await secureStorage.delete(key: StorageKeys.user);
       state = const AsyncValue.data(null);
     } on Exception catch (e, st) {
       state = AsyncValue.error(e, st);

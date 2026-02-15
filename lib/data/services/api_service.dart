@@ -17,6 +17,7 @@ class ApiService {
   final Dio dio;
   final FlutterSecureStorage _secureStorage;
   final Logger _logger;
+  bool _isRefreshing = false;
 
   void _setupDio() {
     dio.options.baseUrl = Config.apiBaseUrl;
@@ -53,14 +54,14 @@ class ApiService {
             ..e('Error message: ${error.message}');
 
           // Handle 401 Unauthorized - Try to refresh token
-          if (error.response?.statusCode == 401) {
+          if (error.response?.statusCode == 401 && !_isRefreshing) {
             final refreshToken = await _secureStorage.read(
               key: StorageKeys.refreshToken,
             );
 
             if (refreshToken != null && refreshToken.isNotEmpty) {
+              _isRefreshing = true;
               try {
-                // Try to refresh the token
                 final refreshResponse = await dio.post<Map<String, dynamic>>(
                   '/auth/refresh',
                   data: {'refreshToken': refreshToken},
@@ -72,7 +73,10 @@ class ApiService {
                 );
 
                 final newAccessToken =
-                    refreshResponse.data?['accessToken'] as String;
+                    refreshResponse.data?['accessToken'] as String?;
+                if (newAccessToken == null) {
+                  throw Exception('No access token in refresh response');
+                }
                 await _secureStorage.write(
                   key: StorageKeys.accessToken,
                   value: newAccessToken,
@@ -84,10 +88,11 @@ class ApiService {
                 final retryResponse = await dio.fetch<dynamic>(
                   error.requestOptions,
                 );
+                _isRefreshing = false;
                 return handler.resolve(retryResponse);
               } on Exception catch (e) {
+                _isRefreshing = false;
                 _logger.e('Token refresh failed: $e');
-                // Clear tokens and redirect to login
                 await _secureStorage.delete(key: StorageKeys.accessToken);
                 await _secureStorage.delete(key: StorageKeys.refreshToken);
               }

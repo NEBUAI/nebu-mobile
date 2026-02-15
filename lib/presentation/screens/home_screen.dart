@@ -111,67 +111,47 @@ class HomeScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: theme.colorScheme.error.withValues(alpha: 0.3),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.error_outline,
-                size: 32,
-                color: theme.colorScheme.error,
-              ),
-              const SizedBox(height: 8),
-              SelectableText(
-                'connectedDevicesProvider Error: $error\n\nStack: ${stack.toString().substring(0, 200)}',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onErrorContainer,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+        error: (_, _) => _buildErrorBanner(
+          theme,
+          'home.devices_error'.tr(),
         ),
       );
-    } on Exception catch (e, stack) {
-      // Catch ProviderException here
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: theme.colorScheme.error.withValues(alpha: 0.3),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 32,
-              color: theme.colorScheme.error,
-            ),
-            const SizedBox(height: 8),
-            SelectableText(
-              'ProviderException in home: $e\n\nStack: ${stack.toString().substring(0, 200)}',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onErrorContainer,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+    } on Exception {
+      return _buildErrorBanner(
+        theme,
+        'home.devices_error'.tr(),
       );
     }
   }
+
+  Widget _buildErrorBanner(ThemeData theme, String message) => Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: theme.colorScheme.error.withValues(alpha: 0.3),
+      ),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.error_outline,
+          size: 32,
+          color: theme.colorScheme.error,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          message,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onErrorContainer,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  );
 
   Widget _buildNoToysPlaceholder(ThemeData theme) => Container(
       padding: const EdgeInsets.all(24),

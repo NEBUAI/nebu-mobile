@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/constants/storage_keys.dart';
+
 /// Estado inmutable para el asistente de configuración
 @immutable
 class SetupWizardState {
@@ -165,14 +167,14 @@ class SetupWizardNotifier extends Notifier<SetupWizardState> {
 
   Future<void> _saveSetupData() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('setup_language', state.selectedLanguage);
-    await prefs.setString('setup_theme', state.selectedTheme);
-    await prefs.setBool('setup_notifications', state.notificationsEnabled);
-    await prefs.setBool('setup_voice', state.voiceEnabled);
-    await prefs.setBool('setup_haptic_feedback', state.hapticFeedback);
-    await prefs.setBool('setup_auto_save', state.autoSave);
-    await prefs.setBool('setup_analytics', state.analyticsEnabled);
-    await prefs.setBool('setup_completed', true);
+    await prefs.setString(StorageKeys.setupLanguage, state.selectedLanguage);
+    await prefs.setString(StorageKeys.setupTheme, state.selectedTheme);
+    await prefs.setBool(StorageKeys.setupNotifications, state.notificationsEnabled);
+    await prefs.setBool(StorageKeys.setupVoice, state.voiceEnabled);
+    await prefs.setBool(StorageKeys.setupHapticFeedback, state.hapticFeedback);
+    await prefs.setBool(StorageKeys.setupAutoSave, state.autoSave);
+    await prefs.setBool(StorageKeys.setupAnalytics, state.analyticsEnabled);
+    await prefs.setBool(StorageKeys.setupCompleted, true);
   }
 
   // Update methods para cada campo del formulario

@@ -59,7 +59,13 @@ final authServiceProvider = FutureProvider<AuthService>((ref) async {
   final dio = ref.watch(dioProvider);
   final prefs = await ref.watch(sharedPreferencesProvider.future);
   final secureStorage = ref.watch(secureStorageProvider);
-  return AuthService(dio: dio, prefs: prefs, secureStorage: secureStorage);
+  final logger = ref.watch(loggerProvider);
+  return AuthService(
+    dio: dio,
+    prefs: prefs,
+    secureStorage: secureStorage,
+    logger: logger,
+  );
 });
 
 final bluetoothServiceProvider = Provider<BluetoothService>((ref) {

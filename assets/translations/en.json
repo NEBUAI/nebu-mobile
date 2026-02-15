@@ -221,7 +221,8 @@
     "scan_qr": "Scan QR",
     "devices": "Devices",
     "activity_log": "Activity Log",
-    "setup_new_toy": "Setup New Toy"
+    "setup_new_toy": "Setup New Toy",
+    "devices_error": "Could not load connected devices. Please try again."
   },
   "profile": {
     "title": "Profile",
