@@ -19,7 +19,6 @@ abstract final class Config {
   // App Constants
   // ============================================
   static const String appName = 'Nebu Mobile';
-  static const String appVersion = '1.0.1';
   static const Duration apiTimeout = Duration(seconds: 30);
   static const int maxRetries = 3;
   static const String languageEnglish = 'en';
@@ -96,7 +95,7 @@ abstract final class Config {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📱 Nebu Mobile Configuration
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-App: $appName v$appVersion
+App: $appName
 Environment: $environment
 API URL: $apiBaseUrl
 Debug Logs: $enableDebugLogs

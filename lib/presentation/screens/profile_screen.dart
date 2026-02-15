@@ -19,6 +19,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final user = authState.value;
+    final appVersion = ref.watch(packageInfoProvider).whenData((info) => info.version).value ?? '';
 
     // Debug logging
     if (user != null) {
@@ -364,7 +365,7 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.info_outline,
                     title: 'profile.about'.tr(),
                     trailing: Text(
-                      'v${Config.appVersion}',
+                      'v$appVersion',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.5,
@@ -372,7 +373,7 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                     ),
                     onTap: () {
-                      _showAboutDialog(context);
+                      _showAboutDialog(context, appVersion);
                     },
                   ),
                 ],
@@ -538,11 +539,11 @@ Widget _buildHelpOption(IconData icon, String title, String subtitle) => Row(
   ],
 );
 
-void _showAboutDialog(BuildContext context) {
+void _showAboutDialog(BuildContext context, String appVersion) {
   showAboutDialog(
     context: context,
     applicationName: Config.appName,
-    applicationVersion: Config.appVersion,
+    applicationVersion: appVersion,
     applicationIcon: Container(
       width: 64,
       height: 64,

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/services/activity_service.dart';
@@ -158,3 +159,7 @@ final localChildDataServiceProvider = FutureProvider<LocalChildDataService>((
   final prefs = await ref.watch(sharedPreferencesProvider.future);
   return LocalChildDataService(prefs);
 });
+
+final packageInfoProvider = FutureProvider<PackageInfo>(
+  (ref) => PackageInfo.fromPlatform(),
+);
