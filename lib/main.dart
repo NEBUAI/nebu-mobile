@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,8 +19,10 @@ void main() async {
   try {
     await ConfigLoader.initialize();
   } on Exception catch (e) {
-    debugPrint('❌ Error loading configuration: $e');
-    debugPrint('⚠️  Make sure .env exists (copy from .env.example)');
+    if (kDebugMode) {
+      debugPrint('❌ Error loading configuration: $e');
+      debugPrint('⚠️  Make sure .env exists (copy from .env.example)');
+    }
     // En desarrollo, podemos continuar con valores por defecto
     // En producción, esto fallará si no hay dart-define
   }

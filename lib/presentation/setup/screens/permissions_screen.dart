@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -244,7 +245,9 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
         _showPermissionDeniedDialog('Microphone');
       }
     } on Exception catch (e) {
-      debugPrint('Error requesting microphone permission: $e');
+      if (kDebugMode) {
+        debugPrint('Error requesting microphone permission: $e');
+      }
     } finally {
       setState(() {
         isLoading = false;
@@ -267,7 +270,9 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
         _showPermissionDeniedDialog('Notifications');
       }
     } on Exception catch (e) {
-      debugPrint('Error requesting notification permission: $e');
+      if (kDebugMode) {
+        debugPrint('Error requesting notification permission: $e');
+      }
     } finally {
       setState(() {
         isLoading = false;
@@ -290,7 +295,9 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
         _showPermissionDeniedDialog('Camera');
       }
     } on Exception catch (e) {
-      debugPrint('Error requesting camera permission: $e');
+      if (kDebugMode) {
+        debugPrint('Error requesting camera permission: $e');
+      }
     } finally {
       setState(() {
         isLoading = false;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -31,15 +32,21 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   Timer? _timeoutTimer;
   final _networkInfo = NetworkInfo();
 
+  void _log(String message) {
+    if (kDebugMode) {
+      _log(message);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    debugPrint('🎬 [WIFI_SCREEN] Initializing WiFi setup screen');
+    _log('🎬 [WIFI_SCREEN] Initializing WiFi setup screen');
     _subscribeToWifiStatus();
   }
 
   Future<void> _subscribeToWifiStatus() async {
-    debugPrint('🔔 [WIFI_SCREEN] Subscribing to ESP32 status stream');
+    _log('🔔 [WIFI_SCREEN] Subscribing to ESP32 status stream');
 
     final esp32service = await ref.read(esp32WifiConfigServiceProvider.future);
 
@@ -49,10 +56,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
     _statusSubscription = esp32service.statusStream.listen(
       (status) {
-        debugPrint('🔔 [WIFI_SCREEN] Received status update: $status');
+        _log('🔔 [WIFI_SCREEN] Received status update: $status');
 
         if (!mounted) {
-          debugPrint('⚠️  [WIFI_SCREEN] Widget not mounted, ignoring status');
+          _log('⚠️  [WIFI_SCREEN] Widget not mounted, ignoring status');
           return;
         }
 
@@ -60,11 +67,11 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
         switch (status) {
           case ESP32WifiStatus.idle:
-            debugPrint('💤 [WIFI_SCREEN] Status IDLE - no action required');
+            _log('💤 [WIFI_SCREEN] Status IDLE - no action required');
             break;
 
           case ESP32WifiStatus.connecting:
-            debugPrint('🔵 [WIFI_SCREEN] Status CONNECTING - showing snackbar');
+            _log('🔵 [WIFI_SCREEN] Status CONNECTING - showing snackbar');
             messenger.showSnackBar(
               SnackBar(
                 content: Text('setup.wifi.status_connecting'.tr()),
@@ -75,7 +82,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             break;
 
           case ESP32WifiStatus.reconnecting:
-            debugPrint(
+            _log(
               '🔄 [WIFI_SCREEN] Status RECONNECTING - showing snackbar',
             );
             messenger.showSnackBar(
@@ -88,7 +95,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             break;
 
           case ESP32WifiStatus.connected:
-            debugPrint(
+            _log(
               '✅ [WIFI_SCREEN] Status CONNECTED - navigating to next step',
             );
 
@@ -109,14 +116,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             // Continuar al siguiente paso
             unawaited(Future<void>.delayed(const Duration(seconds: 1), () {
               if (mounted) {
-                debugPrint('➡️  [WIFI_SCREEN] Navigating to ToyNameSetup');
+                _log('➡️  [WIFI_SCREEN] Navigating to ToyNameSetup');
                 context.push(AppRoutes.toyNameSetup.path);
               }
             }));
             break;
 
           case ESP32WifiStatus.failed:
-            debugPrint('❌ [WIFI_SCREEN] Status FAILED - showing retry option');
+            _log('❌ [WIFI_SCREEN] Status FAILED - showing retry option');
 
             // Cancelar timeout si existe
             _timeoutTimer?.cancel();
@@ -141,10 +148,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         }
       },
       onError: (Object error) {
-        debugPrint('❌ [WIFI_SCREEN] Stream error: $error');
+        _log('❌ [WIFI_SCREEN] Stream error: $error');
 
         if (!mounted) {
-          debugPrint('⚠️  [WIFI_SCREEN] Widget not mounted, ignoring error');
+          _log('⚠️  [WIFI_SCREEN] Widget not mounted, ignoring error');
           return;
         }
 
@@ -165,10 +172,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         }
       },
       onDone: () {
-        debugPrint('⚠️  [WIFI_SCREEN] Status stream closed');
+        _log('⚠️  [WIFI_SCREEN] Status stream closed');
 
         if (!mounted) {
-          debugPrint(
+          _log(
             '⚠️  [WIFI_SCREEN] Widget not mounted, ignoring stream close',
           );
           return;
@@ -193,17 +200,17 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       },
     );
 
-    debugPrint('✅ [WIFI_SCREEN] Subscribed to status stream successfully');
+    _log('✅ [WIFI_SCREEN] Subscribed to status stream successfully');
   }
 
   @override
   void dispose() {
-    debugPrint('🔚 [WIFI_SCREEN] Disposing WiFi setup screen');
+    _log('🔚 [WIFI_SCREEN] Disposing WiFi setup screen');
     _ssidController.dispose();
     _passwordController.dispose();
     _statusSubscription?.cancel();
     _timeoutTimer?.cancel();
-    debugPrint('🔚 [WIFI_SCREEN] Disposed successfully');
+    _log('🔚 [WIFI_SCREEN] Disposed successfully');
     super.dispose();
   }
 
@@ -296,16 +303,16 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   Future<void> _connectToWifi() async {
-    debugPrint('📡 [WIFI_SCREEN] Connect button pressed');
+    _log('📡 [WIFI_SCREEN] Connect button pressed');
 
     if (!_formKey.currentState!.validate()) {
-      debugPrint('⚠️  [WIFI_SCREEN] Form validation failed');
+      _log('⚠️  [WIFI_SCREEN] Form validation failed');
       return;
     }
 
     // Prevenir múltiples llamadas simultáneas
     if (_isConnecting) {
-      debugPrint(
+      _log(
         '⚠️  [WIFI_SCREEN] Already connecting, ignoring duplicate request',
       );
       return;
@@ -313,8 +320,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
     final messenger = ScaffoldMessenger.of(context);
 
-    debugPrint('📡 [WIFI_SCREEN] Starting WiFi connection process');
-    debugPrint('📡 [WIFI_SCREEN] SSID: "${_ssidController.text.trim()}"');
+    _log('📡 [WIFI_SCREEN] Starting WiFi connection process');
+    _log('📡 [WIFI_SCREEN] SSID: "${_ssidController.text.trim()}"');
 
     setState(() {
       _isConnecting = true;
@@ -322,22 +329,22 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
     try {
       final service = await ref.read(esp32WifiConfigServiceProvider.future);
-      debugPrint('📤 [WIFI_SCREEN] Sending WiFi credentials to ESP32');
+      _log('📤 [WIFI_SCREEN] Sending WiFi credentials to ESP32');
 
       final result = await service.sendWifiCredentials(
         ssid: _ssidController.text.trim(),
         password: _passwordController.text,
       );
 
-      debugPrint(
+      _log(
         '📤 [WIFI_SCREEN] Send result: ${result.success ? "SUCCESS" : "FAILED"}',
       );
       if (!result.success) {
-        debugPrint('📤 [WIFI_SCREEN] Error message: ${result.message}');
+        _log('📤 [WIFI_SCREEN] Error message: ${result.message}');
       }
 
       if (result.success) {
-        debugPrint('✅ [WIFI_SCREEN] Credentials sent successfully');
+        _log('✅ [WIFI_SCREEN] Credentials sent successfully');
 
         messenger.showSnackBar(
           SnackBar(
@@ -347,31 +354,31 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         );
 
         // Iniciar timeout de 45 segundos
-        debugPrint('⏱️  [WIFI_SCREEN] Starting 45 second timeout timer');
+        _log('⏱️  [WIFI_SCREEN] Starting 45 second timeout timer');
         _timeoutTimer = Timer(const Duration(seconds: 45), () {
-          debugPrint('⏱️  [WIFI_SCREEN] Timeout reached after 45 seconds');
+          _log('⏱️  [WIFI_SCREEN] Timeout reached after 45 seconds');
           if (_isConnecting && mounted) {
             _showTimeoutDialog();
           }
         });
 
-        debugPrint('🔔 [WIFI_SCREEN] Waiting for status updates from ESP32');
+        _log('🔔 [WIFI_SCREEN] Waiting for status updates from ESP32');
         // El statusStream se encargará de actualizar la UI cuando el ESP32 responda
       } else {
-        debugPrint(
+        _log(
           '❌ [WIFI_SCREEN] Failed to send credentials: ${result.message}',
         );
         throw Exception(result.message);
       }
     } on Exception catch (e) {
-      debugPrint('❌ [WIFI_SCREEN] Exception during WiFi connection: $e');
+      _log('❌ [WIFI_SCREEN] Exception during WiFi connection: $e');
       final errorMsg = e.toString().toLowerCase();
 
       // Detectar tipo de error específico
       if (errorMsg.contains('disconnected') ||
           errorMsg.contains('connection') ||
           errorMsg.contains('not connected')) {
-        debugPrint('❌ [WIFI_SCREEN] BLE disconnection error detected');
+        _log('❌ [WIFI_SCREEN] BLE disconnection error detected');
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.error_ble_disconnected'.tr()),
@@ -381,7 +388,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         );
       } else if (errorMsg.contains('timeout') ||
           errorMsg.contains('timed out')) {
-        debugPrint('❌ [WIFI_SCREEN] BLE timeout error detected');
+        _log('❌ [WIFI_SCREEN] BLE timeout error detected');
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.error_ble_timeout'.tr()),
@@ -390,7 +397,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           ),
         );
       } else {
-        debugPrint('❌ [WIFI_SCREEN] Generic error: $e');
+        _log('❌ [WIFI_SCREEN] Generic error: $e');
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.error_send_credentials'.tr()),
@@ -406,7 +413,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   Future<void> _showTimeoutDialog() async {
-    debugPrint('⏱️  [WIFI_SCREEN] Showing timeout dialog to user');
+    _log('⏱️  [WIFI_SCREEN] Showing timeout dialog to user');
     final shouldContinue = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -416,14 +423,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              debugPrint('⏱️  [WIFI_SCREEN] User chose to keep waiting');
+              _log('⏱️  [WIFI_SCREEN] User chose to keep waiting');
               Navigator.of(context).pop(false);
             },
             child: Text('setup.wifi.keep_waiting'.tr()),
           ),
           ElevatedButton(
             onPressed: () {
-              debugPrint('⏱️  [WIFI_SCREEN] User chose to continue anyway');
+              _log('⏱️  [WIFI_SCREEN] User chose to continue anyway');
               Navigator.of(context).pop(true);
             },
             child: Text('setup.wifi.continue_anyway'.tr()),
@@ -433,13 +440,13 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     );
 
     if ((shouldContinue ?? false) && mounted) {
-      debugPrint('➡️  [WIFI_SCREEN] Continuing to next step despite timeout');
+      _log('➡️  [WIFI_SCREEN] Continuing to next step despite timeout');
       setState(() {
         _isConnecting = false;
       });
       await context.push(AppRoutes.toyNameSetup.path);
     } else {
-      debugPrint('⏱️  [WIFI_SCREEN] User still waiting for connection');
+      _log('⏱️  [WIFI_SCREEN] User still waiting for connection');
     }
   }
 
@@ -720,7 +727,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   );
 
   void _cancelConnection() {
-    debugPrint('🛑 [WIFI_SCREEN] User cancelled WiFi connection');
+    _log('🛑 [WIFI_SCREEN] User cancelled WiFi connection');
     _timeoutTimer?.cancel();
     setState(() {
       _isConnecting = false;
@@ -734,7 +741,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   void _skipWifiSetup() {
-    debugPrint('⏭️  [WIFI_SCREEN] User skipped WiFi setup');
+    _log('⏭️  [WIFI_SCREEN] User skipped WiFi setup');
     context.push(AppRoutes.toyNameSetup.path);
   }
 

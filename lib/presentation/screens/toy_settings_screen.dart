@@ -30,7 +30,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
   @override
   void initState() {
     super.initState();
-    _currentToy = _currentToy;
+    _currentToy = widget.toy;
     _nameController = TextEditingController(text: _currentToy.name);
     _refreshToyStatus();
     _statusTimer = Timer.periodic(
