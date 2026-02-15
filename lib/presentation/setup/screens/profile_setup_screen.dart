@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -56,15 +57,15 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
         ref.read(setupWizardProvider.notifier).updateAvatarUrl(image.path);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Photo captured successfully')),
+            SnackBar(content: Text('setup.profile.photo_captured'.tr())),
           );
         }
       }
-    } on Exception catch (e) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error accessing camera: $e')));
+        ).showSnackBar(SnackBar(content: Text('setup.profile.camera_error'.tr())));
       }
     }
   }
@@ -84,15 +85,15 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
         ref.read(setupWizardProvider.notifier).updateAvatarUrl(image.path);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Image selected successfully')),
+            SnackBar(content: Text('setup.profile.image_selected'.tr())),
           );
         }
       }
-    } on Exception catch (e) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error accessing gallery: $e')));
+        ).showSnackBar(SnackBar(content: Text('setup.profile.gallery_error'.tr())));
       }
     }
   }

@@ -254,11 +254,11 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             SnackBar(content: Text('qr_scanner.wifi_name_error'.tr())),
           );
         }
-      } on Exception catch (e) {
+      } on Exception {
         if (mounted) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text('Error: $e')));
+          ).showSnackBar(SnackBar(content: Text('setup.wifi.error_generic'.tr())));
         }
       }
     } else if (mounted) {
@@ -393,7 +393,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         debugPrint('❌ [WIFI_SCREEN] Generic error: $e');
         messenger.showSnackBar(
           SnackBar(
-            content: Text('Failed to send credentials: $e'),
+            content: Text('setup.wifi.error_send_credentials'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -547,12 +547,12 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     children: [
       _QuickActionButton(
         icon: Icons.qr_code_scanner,
-        label: 'QR Scan',
+        label: 'setup.wifi.qr_scan_label'.tr(),
         onPressed: _scanQrCode,
       ),
       _QuickActionButton(
         icon: Icons.wifi,
-        label: 'Current WiFi',
+        label: 'setup.wifi.current_wifi_label'.tr(),
         onPressed: _getCurrentWifi,
       ),
       _QuickActionButton(
@@ -886,19 +886,13 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
                   const Icon(Icons.error_outline, color: Colors.red, size: 48),
                   const SizedBox(height: 16),
                   Text(
-                    'Error scanning networks',
+                    'setup.wifi.scan_error'.tr(),
                     style: theme.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    _error!,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodySmall,
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _scanNetworks,
-                    child: const Text('Retry'),
+                    child: Text('common.retry'.tr()),
                   ),
                 ],
               ),
@@ -907,7 +901,7 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
             Padding(
               padding: const EdgeInsets.all(32),
               child: Text(
-                'No networks found',
+                'setup.wifi.no_networks_found'.tr(),
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleMedium,
               ),
@@ -924,7 +918,7 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
                     leading: const Icon(Icons.wifi),
                     title: Text(network.ssid),
                     subtitle: Text(
-                      'Signal: ${network.rssi} dBm',
+                      'setup.wifi.signal_info'.tr(args: ['${network.rssi}']),
                       style: theme.textTheme.bodySmall,
                     ),
                     trailing: const Icon(Icons.chevron_right),

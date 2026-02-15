@@ -82,7 +82,18 @@
       "no_networks_found": "No se encontraron redes",
       "scan_not_supported": "El escaneo de redes no está disponible en este dispositivo",
       "scan_error": "Error al buscar redes",
-      "hotspot_hint": "Si usas el hotspot de tu celular, escribe el nombre de la red manualmente — no aparecerá en el escaneo."
+      "hotspot_hint": "Si usas el hotspot de tu celular, escribe el nombre de la red manualmente — no aparecerá en el escaneo.",
+      "qr_scan_label": "Escanear QR",
+      "current_wifi_label": "WiFi Actual",
+      "error_generic": "Algo salió mal. Intenta de nuevo.",
+      "error_send_credentials": "No se pudieron enviar las credenciales. Intenta de nuevo.",
+      "signal_info": "Señal: {0} dBm"
+    },
+    "profile": {
+      "photo_captured": "¡Foto capturada!",
+      "camera_error": "No se pudo acceder a la cámara. Intenta de nuevo.",
+      "image_selected": "¡Imagen seleccionada!",
+      "gallery_error": "No se pudo acceder a la galería. Intenta de nuevo."
     },
     "toy_name": {
       "title": "Nombra Tu Juguete",
@@ -196,7 +207,7 @@
       "select_age_group": "Por favor selecciona un grupo de edad",
       "select_personality": "Por favor selecciona una personalidad",
       "save_success": "¡Información del niño guardada correctamente!",
-      "save_error": "Error al guardar datos: {0}"
+      "save_error": "No se pudieron guardar los datos. Intenta de nuevo."
     }
   },
   "splash": {
@@ -355,7 +366,7 @@
     "delete_title": "Eliminar juguete",
     "delete_confirm": "¿Estás seguro de que deseas eliminar \"{0}\"?",
     "deleted_success": "{0} eliminado correctamente",
-    "delete_error": "Error al eliminar: {0}",
+    "delete_error": "No se pudo eliminar el juguete. Intenta de nuevo.",
     "no_toys_title": "Aún no hay juguetes!",
     "no_toys_subtitle": "Agrega tu primer juguete Nebu y comienza la diversión!",
     "reload": "Recargar",
@@ -411,9 +422,9 @@
   "toy_settings": {
     "title": "Configuración del Juguete",
     "update_success": "Configuración del juguete actualizada correctamente",
-    "update_error": "Error al actualizar configuración: {0}",
+    "update_error": "No se pudo actualizar la configuración. Intenta de nuevo.",
     "remove_success": "Juguete eliminado correctamente",
-    "remove_error": "Error al eliminar juguete: {0}",
+    "remove_error": "No se pudo eliminar el juguete. Intenta de nuevo.",
     "remove_title": "Eliminar Juguete",
     "remove_confirm": "¿Estás seguro de que quieres eliminar {0}?",
     "toy_name": "Nombre del Juguete",
@@ -434,7 +445,8 @@
     "tab_toys": "Mis Juguetes",
     "tab_iot": "Dispositivos Conectados",
     "no_iot_devices": "No se encontraron dispositivos conectados.",
-    "type": "Tipo: {0}"
+    "type": "Tipo: {0}",
+    "error_iot": "No se pudieron cargar los dispositivos. Intenta de nuevo."
   },
   "child_profile": {
     "title": "Perfil del Niño",
@@ -558,8 +570,8 @@
     "google_login_cancelled": "Inicio de sesión con Google cancelado",
     "google_signup_error": "Error al registrarse con Google",
     "google_signup_cancelled": "Registro con Google cancelado",
-    "google_signin_failed_detail": "Error al iniciar sesión con Google: {0}",
-    "google_signup_failed_detail": "Error al registrarse con Google: {0}",
+    "google_signin_failed_detail": "Error al iniciar sesión con Google. Intenta de nuevo.",
+    "google_signup_failed_detail": "Error al registrarse con Google. Intenta de nuevo.",
     "forgot_password_coming_soon": "Recuperación de contraseña próximamente",
     "forgot_password_title": "Restablecer Contraseña",
     "forgot_password_body": "Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.",
@@ -579,6 +591,13 @@
     "reset_password_too_short": "La contraseña debe tener al menos 8 caracteres",
     "sign_up_coming_soon": "Registro próximamente"
   },
+  "audio_controls": {
+    "volume_error": "No se pudo cambiar el volumen. Intenta de nuevo.",
+    "muted": "Silenciado",
+    "unmuted": "Sonido activado",
+    "mute_error": "No se pudo silenciar. Intenta de nuevo.",
+    "updating": "Actualizando..."
+  },
   "common": {
     "next": "Siguiente",
     "back": "Atrás",
@@ -591,7 +610,8 @@
     "skip": "Omitir",
     "continue": "Continuar",
     "yes": "Sí",
-    "no": "No"
+    "no": "No",
+    "error_generic": "Algo salió mal. Intenta de nuevo."
   },
   "privacy": {
     "title": "Privacidad y Seguridad",

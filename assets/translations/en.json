@@ -82,7 +82,18 @@
       "no_networks_found": "No networks found",
       "scan_not_supported": "WiFi scanning is not available on this device",
       "scan_error": "Error scanning networks",
-      "hotspot_hint": "If you're using your phone's hotspot, type the network name manually — it won't appear in the scan."
+      "hotspot_hint": "If you're using your phone's hotspot, type the network name manually — it won't appear in the scan.",
+      "qr_scan_label": "QR Scan",
+      "current_wifi_label": "Current WiFi",
+      "error_generic": "Something went wrong. Please try again.",
+      "error_send_credentials": "Couldn't send credentials. Please try again.",
+      "signal_info": "Signal: {0} dBm"
+    },
+    "profile": {
+      "photo_captured": "Photo captured!",
+      "camera_error": "Couldn't access the camera. Please try again.",
+      "image_selected": "Image selected!",
+      "gallery_error": "Couldn't access the gallery. Please try again."
     },
     "toy_name": {
       "title": "Name Your Toy",
@@ -196,7 +207,7 @@
       "select_age_group": "Please select an age group",
       "select_personality": "Please select a personality",
       "save_success": "Child information saved successfully!",
-      "save_error": "Error saving data: {0}"
+      "save_error": "Couldn't save data. Please try again."
     }
   },
   "splash": {
@@ -355,7 +366,7 @@
     "delete_title": "Delete Toy",
     "delete_confirm": "Are you sure you want to delete \"{0}\"?",
     "deleted_success": "{0} deleted successfully",
-    "delete_error": "Error deleting: {0}",
+    "delete_error": "Couldn't delete the toy. Please try again.",
     "no_toys_title": "No toys yet!",
     "no_toys_subtitle": "Let's add your first Nebu toy and start the fun!",
     "reload": "Reload",
@@ -418,9 +429,9 @@
   "toy_settings": {
     "title": "Toy Settings",
     "update_success": "Toy settings updated successfully",
-    "update_error": "Failed to update toy settings: {0}",
+    "update_error": "Couldn't update toy settings. Please try again.",
     "remove_success": "Toy removed successfully",
-    "remove_error": "Failed to remove toy: {0}",
+    "remove_error": "Couldn't remove the toy. Please try again.",
     "remove_title": "Remove Toy",
     "remove_confirm": "Are you sure you want to remove {0}?",
     "toy_name": "Toy Name",
@@ -441,7 +452,8 @@
     "tab_toys": "My Toys",
     "tab_iot": "Connected Devices",
     "no_iot_devices": "No connected devices found.",
-    "type": "Type: {0}"
+    "type": "Type: {0}",
+    "error_iot": "Couldn't load devices. Please try again."
   },
   "child_profile": {
     "title": "Child Profile",
@@ -565,8 +577,8 @@
     "google_login_cancelled": "Google sign in was cancelled",
     "google_signup_error": "Google sign up failed",
     "google_signup_cancelled": "Google sign up was cancelled",
-    "google_signin_failed_detail": "Google Sign-In failed: {0}",
-    "google_signup_failed_detail": "Google Sign-Up failed: {0}",
+    "google_signin_failed_detail": "Google Sign-In failed. Please try again.",
+    "google_signup_failed_detail": "Google Sign-Up failed. Please try again.",
     "forgot_password_coming_soon": "Password recovery coming soon",
     "forgot_password_title": "Reset Password",
     "forgot_password_body": "Enter your email and we'll send you a link to reset your password.",
@@ -586,6 +598,13 @@
     "reset_password_too_short": "Password must be at least 8 characters",
     "sign_up_coming_soon": "Sign up coming soon"
   },
+  "audio_controls": {
+    "volume_error": "Couldn't change volume. Please try again.",
+    "muted": "Muted",
+    "unmuted": "Sound on",
+    "mute_error": "Couldn't toggle mute. Please try again.",
+    "updating": "Updating..."
+  },
   "common": {
     "next": "Next",
     "back": "Back",
@@ -598,7 +617,8 @@
     "skip": "Skip",
     "continue": "Continue",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "error_generic": "Something went wrong. Please try again."
   },
   "privacy": {
     "title": "Privacy & Security",

@@ -79,11 +79,11 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
           ),
         );
       }
-    } on Exception catch (e) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('toy_settings.update_error'.tr(args: [e.toString()])),
+            content: Text('toy_settings.update_error'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -110,11 +110,11 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
         );
         context.pop();
       }
-    } on Exception catch (e) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('toy_settings.remove_error'.tr(args: [e.toString()])),
+            content: Text('toy_settings.remove_error'.tr()),
             backgroundColor: Colors.red,
           ),
         );

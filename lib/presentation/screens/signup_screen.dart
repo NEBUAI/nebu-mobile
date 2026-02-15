@@ -65,10 +65,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       }
 
       await ref.read(authProvider.notifier).loginWithGoogle(idToken);
-    } on Exception catch (e) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('auth.google_signup_failed_detail'.tr(args: [e.toString()]))),
+          SnackBar(content: Text('auth.google_signup_failed_detail'.tr())),
         );
       }
     }

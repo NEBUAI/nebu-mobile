@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -63,10 +64,10 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                         final success = await setVolume(value.toInt());
                         if (!success && context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Failed to set volume'),
+                            SnackBar(
+                              content: Text('audio_controls.volume_error'.tr()),
                               backgroundColor: Colors.red,
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         }
@@ -110,7 +111,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    isMuted ? 'Muted' : 'Unmuted',
+                    isMuted ? 'audio_controls.muted'.tr() : 'audio_controls.unmuted'.tr(),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -124,10 +125,10 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                             final success = await setMute(mute: value);
                             if (!success && context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Failed to toggle mute'),
+                                SnackBar(
+                                  content: Text('audio_controls.mute_error'.tr()),
                                   backgroundColor: Colors.red,
-                                  duration: Duration(seconds: 2),
+                                  duration: const Duration(seconds: 2),
                                 ),
                               );
                             }
@@ -157,7 +158,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Updating...',
+                      'audio_controls.updating'.tr(),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),

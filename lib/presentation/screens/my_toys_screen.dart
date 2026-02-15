@@ -64,11 +64,11 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           ),
         );
       }
-    } on Exception catch (e) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('toys.delete_error'.tr(args: ['$e'])),
+            content: Text('toys.delete_error'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -272,7 +272,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       if (next.hasError && !next.isLoading) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error loading devices: ${next.error}'),
+            content: Text('toys.error_loading'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -467,7 +467,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               ),
             ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => RefreshIndicator(
+        error: (_, _) => RefreshIndicator(
           onRefresh: _loadToys,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -499,8 +499,8 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                         color: theme.colorScheme.error.withValues(alpha: 0.3),
                       ),
                     ),
-                    child: SelectableText(
-                      '$error',
+                    child: Text(
+                      'toys.error_loading'.tr(),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onErrorContainer,
                       ),

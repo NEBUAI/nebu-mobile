@@ -173,7 +173,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('setup.local_child.save_error'.tr(args: [e.toString()])),
+          content: Text('setup.local_child.save_error'.tr()),
           backgroundColor: Colors.red,
         ),
       );

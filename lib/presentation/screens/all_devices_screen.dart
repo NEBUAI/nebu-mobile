@@ -49,10 +49,10 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
           SnackBar(content: Text('device_management.remove_success'.tr())),
         );
       }
-    } on Exception catch (e) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('device_management.remove_error'.tr(args: [e.toString()]))),
+          SnackBar(content: Text('device_management.remove_error'.tr())),
         );
       }
     }
@@ -131,7 +131,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => RefreshIndicator(
+      error: (_, _) => RefreshIndicator(
         onRefresh: _refreshDevices,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -163,8 +163,8 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
                       color: theme.colorScheme.error.withValues(alpha: 0.3),
                     ),
                   ),
-                  child: SelectableText(
-                    '$error',
+                  child: Text(
+                    'device_management.error_loading'.tr(),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onErrorContainer,
                     ),
@@ -213,7 +213,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'Error: ${iotDevicesState.error}',
+              'all_devices.error_iot'.tr(),
               style: TextStyle(color: theme.colorScheme.error),
               textAlign: TextAlign.center,
             ),
