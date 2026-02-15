@@ -446,6 +446,7 @@
   "child_profile": {
     "title": "Child Profile",
     "error": "Error: {0}",
+    "error_generic": "Could not load profile. Please try again.",
     "no_data_title": "No profile yet",
     "no_data_subtitle": "Set up your child's profile so Nebu can personalize the experience!",
     "setup_profile": "Set Up Profile",

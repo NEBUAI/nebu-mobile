@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/storage_keys.dart';
 import '../../presentation/providers/api_provider.dart';
 
 /// Service to handle migration of activities from local UUID to authenticated user ID
@@ -10,15 +11,12 @@ class ActivityMigrationService {
 
   final Ref _ref;
 
-  static const String _localUserIdKey = 'local_user_id';
-  static const String _migrationCompletedKey = 'activities_migrated';
-
   /// Check if there are activities to migrate
   /// Returns the local UUID if it exists and hasn't been migrated yet
   Future<String?> getLocalUserIdForMigration() async {
     final prefs = await _ref.read(sharedPreferencesProvider.future);
-    final localUserId = prefs.getString(_localUserIdKey);
-    final migrationCompleted = prefs.getBool(_migrationCompletedKey) ?? false;
+    final localUserId = prefs.getString(StorageKeys.localUserId);
+    final migrationCompleted = prefs.getBool(StorageKeys.activitiesMigrated) ?? false;
 
     if (localUserId != null && !migrationCompleted) {
       _ref
@@ -61,10 +59,10 @@ class ActivityMigrationService {
 
       // Mark migration as completed
       final prefs = await _ref.read(sharedPreferencesProvider.future);
-      await prefs.setBool(_migrationCompletedKey, true);
+      await prefs.setBool(StorageKeys.activitiesMigrated, true);
 
       // Optionally remove the local user ID (keep it for reference)
-      // await prefs.remove(_localUserIdKey);
+      // await prefs.remove(StorageKeys.localUserId);
 
       _ref
           .read(loggerProvider)
@@ -84,22 +82,22 @@ class ActivityMigrationService {
   /// Reset migration state (for testing or cleanup)
   Future<void> resetMigrationState() async {
     final prefs = await _ref.read(sharedPreferencesProvider.future);
-    await prefs.remove(_migrationCompletedKey);
+    await prefs.remove(StorageKeys.activitiesMigrated);
     _ref.read(loggerProvider).d('🔄 [MIGRATION] Migration state reset');
   }
 
   /// Check if activities have been migrated
   Future<bool> isMigrationCompleted() async {
     final prefs = await _ref.read(sharedPreferencesProvider.future);
-    return prefs.getBool(_migrationCompletedKey) ?? false;
+    return prefs.getBool(StorageKeys.activitiesMigrated) ?? false;
   }
 
   /// Clear local user ID and migration state
   /// Use this when you want to start fresh (e.g., after logout)
   Future<void> clearMigrationData() async {
     final prefs = await _ref.read(sharedPreferencesProvider.future);
-    await prefs.remove(_localUserIdKey);
-    await prefs.remove(_migrationCompletedKey);
+    await prefs.remove(StorageKeys.localUserId);
+    await prefs.remove(StorageKeys.activitiesMigrated);
     _ref.read(loggerProvider).d('🗑️ [MIGRATION] Migration data cleared');
   }
 }

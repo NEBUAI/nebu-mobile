@@ -31,7 +31,7 @@ class ChildProfileScreen extends ConsumerWidget {
           return _buildChildProfileState(context, service, colorScheme);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('child_profile.error'.tr(args: [error.toString()]))),
+        error: (_, _) => Center(child: Text('child_profile.error_generic'.tr())),
       ),
     );
   }

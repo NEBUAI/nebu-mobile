@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../../core/constants/storage_keys.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/activity_tracker_service.dart';
 import '../../providers/api_provider.dart';
@@ -59,10 +60,10 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
   Future<void> _loadSavedData() async {
     final prefs = await ref.read(auth.sharedPreferencesProvider.future);
 
-    final savedName = prefs.getString('local_child_name');
-    final savedAge = prefs.getString('local_child_age');
-    final savedPersonality = prefs.getString('local_child_personality');
-    final savedPrompt = prefs.getString('local_custom_prompt');
+    final savedName = prefs.getString(StorageKeys.localChildName);
+    final savedAge = prefs.getString(StorageKeys.localChildAge);
+    final savedPersonality = prefs.getString(StorageKeys.localChildPersonality);
+    final savedPrompt = prefs.getString(StorageKeys.localCustomPrompt);
 
     if (savedName != null) {
       _childNameController.text = savedName;
@@ -113,24 +114,24 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
 
       // Save child information
       await prefs.setString(
-        'local_child_name',
+        StorageKeys.localChildName,
         _childNameController.text.trim(),
       );
-      await prefs.setString('local_child_age', _selectedAge!);
-      await prefs.setString('local_child_personality', _selectedPersonality!);
+      await prefs.setString(StorageKeys.localChildAge, _selectedAge!);
+      await prefs.setString(StorageKeys.localChildPersonality, _selectedPersonality!);
 
       // Save custom prompt
       final customPrompt = _customPromptController.text.trim();
       if (customPrompt.isNotEmpty) {
-        await prefs.setString('local_custom_prompt', customPrompt);
+        await prefs.setString(StorageKeys.localCustomPrompt, customPrompt);
       } else {
         // Generate default prompt based on selections
         final defaultPrompt = _generateDefaultPrompt();
-        await prefs.setString('local_custom_prompt', defaultPrompt);
+        await prefs.setString(StorageKeys.localCustomPrompt, defaultPrompt);
       }
 
       // Mark setup as completed locally
-      await prefs.setBool('setup_completed_locally', true);
+      await prefs.setBool(StorageKeys.setupCompletedLocally, true);
 
       ref
           .read(loggerProvider)

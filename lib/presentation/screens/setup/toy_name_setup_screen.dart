@@ -38,7 +38,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
     final prefs = await ref.read(
       auth_provider.sharedPreferencesProvider.future,
     );
-    final savedName = prefs.getString('setup_toy_name');
+    final savedName = prefs.getString(StorageKeys.setupToyName);
     if (savedName != null && savedName.isNotEmpty) {
       _controller.text = savedName;
     }
@@ -48,7 +48,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
     final prefs = await ref.read(
       auth_provider.sharedPreferencesProvider.future,
     );
-    await prefs.setString('setup_toy_name', _controller.text.trim());
+    await prefs.setString(StorageKeys.setupToyName, _controller.text.trim());
   }
 
   /// Registrar dispositivo ESP32 en el backend

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../core/constants/storage_keys.dart';
 import '../../data/models/activity.dart';
 import '../../presentation/providers/activity_provider.dart';
 import '../../presentation/providers/api_provider.dart';
@@ -33,11 +34,11 @@ class ActivityTrackerService {
 
     // Si no está autenticado, generar/recuperar UUID local
     final prefs = await _ref.read(sharedPreferencesProvider.future);
-    var localUserId = prefs.getString('local_user_id');
+    var localUserId = prefs.getString(StorageKeys.localUserId);
 
     if (localUserId == null) {
       localUserId = _uuid.v4();
-      await prefs.setString('local_user_id', localUserId);
+      await prefs.setString(StorageKeys.localUserId, localUserId);
       _ref
           .read(loggerProvider)
           .i('🆔 [ACTIVITY_TRACKER] Generated new local userId: $localUserId');

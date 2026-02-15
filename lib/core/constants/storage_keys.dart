@@ -20,4 +20,16 @@ class StorageKeys {
   static const String setupAutoSave = 'setup_auto_save';
   static const String setupAnalytics = 'setup_analytics';
   static const String setupCompleted = 'setup_completed';
+  static const String setupToyName = 'setup_toy_name';
+  static const String setupCompletedLocally = 'setup_completed_locally';
+
+  // Local Child Data
+  static const String localChildName = 'local_child_name';
+  static const String localChildAge = 'local_child_age';
+  static const String localChildPersonality = 'local_child_personality';
+  static const String localCustomPrompt = 'local_custom_prompt';
+
+  // Activity Migration
+  static const String localUserId = 'local_user_id';
+  static const String activitiesMigrated = 'activities_migrated';
 }

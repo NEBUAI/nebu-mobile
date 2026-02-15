@@ -439,6 +439,7 @@
   "child_profile": {
     "title": "Perfil del Niño",
     "error": "Error: {0}",
+    "error_generic": "No se pudo cargar el perfil. Intenta de nuevo.",
     "no_data_title": "Aún no hay perfil",
     "no_data_subtitle": "Configura el perfil de tu hijo para que Nebu personalice la experiencia!",
     "setup_profile": "Configurar Perfil",
