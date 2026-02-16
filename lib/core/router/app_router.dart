@@ -21,6 +21,7 @@ import '../../presentation/screens/privacy_policy_screen.dart';
 import '../../presentation/screens/privacy_settings_screen.dart';
 import '../../presentation/screens/profile_screen.dart';
 import '../../presentation/screens/qr_scanner_screen.dart';
+import '../../presentation/screens/settings_screen.dart';
 import '../../presentation/screens/setup/age_setup_screen.dart';
 import '../../presentation/screens/setup/connection_setup_screen.dart';
 import '../../presentation/screens/setup/favorites_setup_screen.dart';
@@ -105,8 +106,7 @@ class AppRouter {
         ...unauthenticatedRoutes,
         AppRoutes.home.path,
         AppRoutes.activityLog.path,
-        AppRoutes.myToys.path,
-        AppRoutes.profile.path,
+        AppRoutes.settings.path,
       ];
 
       final isSetupRoute = location.startsWith('/setup');
@@ -158,6 +158,11 @@ class AppRouter {
           path: AppRoutes.profile.path,
           pageBuilder: (_, _) =>
               const NoTransitionPage(child: ProfileScreen()),
+        ),
+        GoRoute(
+          path: AppRoutes.settings.path,
+          pageBuilder: (_, _) =>
+              const NoTransitionPage(child: SettingsScreen()),
         ),
       ],
     ),

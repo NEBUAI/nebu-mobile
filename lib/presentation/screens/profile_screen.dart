@@ -7,9 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/config/config.dart';
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_colors.dart';
-import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
-import '../providers/language_provider.dart';
 import '../providers/theme_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -19,31 +17,9 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final user = authState.value;
-    final appVersion = ref.watch(packageInfoProvider).whenData((info) => info.version).value ?? '';
-
-    // Debug logging
-    if (user != null) {
-      ref.read(loggerProvider).d('📱 [PROFILE] User data: ${user.toJson()}');
-      ref.read(loggerProvider).d('📱 [PROFILE] user.name: ${user.name}');
-      ref
-          .read(loggerProvider)
-          .d('📱 [PROFILE] user.username: ${user.username}');
-      ref
-          .read(loggerProvider)
-          .d('📱 [PROFILE] user.firstName: ${user.firstName}');
-      ref
-          .read(loggerProvider)
-          .d('📱 [PROFILE] user.lastName: ${user.lastName}');
-      ref
-          .read(loggerProvider)
-          .d('📱 [PROFILE] user.fullName: ${user.fullName}');
-      ref.read(loggerProvider).d('📱 [PROFILE] user.email: ${user.email}');
-    }
 
     final themeAsync = ref.watch(themeProvider);
-    final languageAsync = ref.watch(languageProvider);
     final themeState = themeAsync.value;
-    final languageState = languageAsync.value;
     final isDark = themeState?.isDarkMode ?? false;
     final theme = Theme.of(context);
 
@@ -219,96 +195,6 @@ class ProfileScreen extends ConsumerWidget {
 
               SizedBox(height: context.spacing.panelPadding),
 
-              // Settings Section Header
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 4, bottom: 12),
-                  child: Text(
-                    'profile.settings'.tr(),
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                ),
-              ),
-
-              // Settings Card
-              _SettingsCard(
-                theme: theme,
-                isDark: isDark,
-                children: [
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.dark_mode_outlined,
-                    title: 'profile.dark_mode'.tr(),
-                    trailing: Switch(
-                      value: themeState?.isDarkMode ?? false,
-                      onChanged: (value) {
-                        ref.read(themeProvider.notifier).toggleDarkMode();
-                      },
-                      activeTrackColor: context.colors.primary.withValues(
-                        alpha: 0.5,
-                      ),
-                      thumbColor: WidgetStateProperty.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return context.colors.primary;
-                        }
-                        return null;
-                      }),
-                    ),
-                  ),
-                  Divider(height: 1, indent: 56, color: theme.dividerColor),
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.language_outlined,
-                    title: 'profile.language'.tr(),
-                    trailing: DropdownButton<String>(
-                      value: languageState?.languageCode ?? 'en',
-                      underline: const SizedBox(),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      dropdownColor: theme.colorScheme.surface,
-                      items: const [
-                        DropdownMenuItem(
-                          value: 'en',
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('🇺🇸', style: TextStyle(fontSize: 20)),
-                              SizedBox(width: 8),
-                              Text('English'),
-                            ],
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: 'es',
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('🇪🇸', style: TextStyle(fontSize: 20)),
-                              SizedBox(width: 8),
-                              Text('Español'),
-                            ],
-                          ),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        if (value != null) {
-                          context.setLocale(Locale(value));
-                          ref
-                              .read(languageProvider.notifier)
-                              .setLanguage(value);
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
               // Account Section
               _SettingsCard(
                 theme: theme,
@@ -350,45 +236,6 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     onTap: () {
                       _showDeleteAccountDialog(context);
-                    },
-                  ),
-                ],
-              ),
-
-              SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
-              // Help & About Section
-              _SettingsCard(
-                theme: theme,
-                isDark: isDark,
-                children: [
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.help_outline,
-                    title: 'profile.help_support'.tr(),
-                    trailing: Icon(
-                      Icons.chevron_right,
-                      color: context.colors.grey400,
-                    ),
-                    onTap: () {
-                      _showHelpDialog(context);
-                    },
-                  ),
-                  Divider(height: 1, indent: 56, color: theme.dividerColor),
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.info_outline,
-                    title: 'profile.about'.tr(),
-                    trailing: Text(
-                      'v$appVersion',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      _showAboutDialog(context, appVersion);
                     },
                   ),
                 ],
@@ -498,83 +345,6 @@ Future<void> _openExternalLink(BuildContext context, String url) async {
       context,
     ).showSnackBar(SnackBar(content: Text('profile.link_error'.tr())));
   }
-}
-
-void _showHelpDialog(BuildContext context) {
-  showDialog<void>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text('profile.help_support_title'.tr()),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('profile.help_need_help'.tr()),
-          SizedBox(height: context.spacing.sectionTitleBottomMargin),
-          _buildHelpOption(
-            Icons.email,
-            'profile.help_email'.tr(),
-            'support@nebu.ai',
-          ),
-          SizedBox(height: context.spacing.titleBottomMarginSm),
-          _buildHelpOption(
-            Icons.phone,
-            'profile.help_phone'.tr(),
-            '+1 (555) 123-4567',
-          ),
-          SizedBox(height: context.spacing.titleBottomMarginSm),
-          _buildHelpOption(
-            Icons.chat,
-            'profile.help_chat'.tr(),
-            'profile.help_chat_hours'.tr(),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('profile.help_close'.tr()),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildHelpOption(IconData icon, String title, String subtitle) => Row(
-  children: [
-    Icon(icon, size: 20),
-    const SizedBox(width: 12),
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        Text(subtitle, style: const TextStyle(fontSize: 12)),
-      ],
-    ),
-  ],
-);
-
-void _showAboutDialog(BuildContext context, String appVersion) {
-  showAboutDialog(
-    context: context,
-    applicationName: Config.appName,
-    applicationVersion: appVersion,
-    applicationIcon: Container(
-      width: 64,
-      height: 64,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [context.colors.primary, context.colors.secondary]),
-        borderRadius: context.radius.panel,
-      ),
-      child: Icon(Icons.smart_toy, color: context.colors.textOnFilled, size: 32),
-    ),
-    children: [
-      SizedBox(height: context.spacing.sectionTitleBottomMargin),
-      Text('profile.about_description'.tr()),
-      SizedBox(height: context.spacing.titleBottomMarginSm),
-      Text('profile.about_copyright'.tr()),
-    ],
-  );
 }
 
 // Settings Card Widget

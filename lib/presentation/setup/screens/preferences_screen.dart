@@ -1,3 +1,4 @@
+import 'package:country_flags/country_flags.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,13 +17,13 @@ class PreferencesScreen extends ConsumerStatefulWidget {
 }
 
 class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
-  final List<Map<String, dynamic>> languages = [
-    {'code': 'en', 'name': 'English', 'flag': '🇺🇸'},
-    {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
-    {'code': 'fr', 'name': 'Français', 'flag': '🇫🇷'},
-    {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'},
-    {'code': 'pt', 'name': 'Português', 'flag': '🇵🇹'},
-    {'code': 'it', 'name': 'Italiano', 'flag': '🇮🇹'},
+  final List<Map<String, String>> languages = [
+    {'code': 'en', 'name': 'English'},
+    {'code': 'es', 'name': 'Español'},
+    {'code': 'fr', 'name': 'Français'},
+    {'code': 'de', 'name': 'Deutsch'},
+    {'code': 'pt', 'name': 'Português'},
+    {'code': 'it', 'name': 'Italiano'},
   ];
 
   final List<Map<String, dynamic>> themes = [
@@ -211,9 +212,10 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                 ),
                 child: Row(
                   children: [
-                    Text(
-                      language['flag'] as String,
-                      style: const TextStyle(fontSize: 24),
+                    CountryFlag.fromLanguageCode(
+                      language['code']!,
+                      height: 24,
+                      width: 32,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
