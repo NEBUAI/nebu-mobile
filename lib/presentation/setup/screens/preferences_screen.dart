@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../providers/language_provider.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
@@ -188,8 +190,12 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: context.radius.tile,
-              onTap: () =>
-                  notifier.updateSelectedLanguage(language['code'] as String),
+              onTap: () {
+                  final code = language['code'] as String;
+                  notifier.updateSelectedLanguage(code);
+                  context.setLocale(Locale(code));
+                  ref.read(languageProvider.notifier).setLanguage(code);
+                },
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(

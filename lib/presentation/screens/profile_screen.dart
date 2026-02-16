@@ -270,18 +270,33 @@ class ProfileScreen extends ConsumerWidget {
                         color: theme.colorScheme.onSurface,
                       ),
                       dropdownColor: theme.colorScheme.surface,
-                      items: [
+                      items: const [
                         DropdownMenuItem(
                           value: 'en',
-                          child: Text('profile.english'.tr()),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('🇺🇸', style: TextStyle(fontSize: 20)),
+                              SizedBox(width: 8),
+                              Text('English'),
+                            ],
+                          ),
                         ),
                         DropdownMenuItem(
                           value: 'es',
-                          child: Text('profile.spanish'.tr()),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('🇪🇸', style: TextStyle(fontSize: 20)),
+                              SizedBox(width: 8),
+                              Text('Español'),
+                            ],
+                          ),
                         ),
                       ],
                       onChanged: (value) {
                         if (value != null) {
+                          context.setLocale(Locale(value));
                           ref
                               .read(languageProvider.notifier)
                               .setLanguage(value);
