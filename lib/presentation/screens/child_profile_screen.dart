@@ -59,7 +59,7 @@ class ChildProfileScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 30),
         ElevatedButton(
-          onPressed: () => context.push(AppRoutes.localChildSetup.path),
+          onPressed: () => context.push(AppRoutes.toyNameSetup.path),
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
@@ -127,7 +127,7 @@ class ChildProfileScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextButton.icon(
-                onPressed: () => context.push(AppRoutes.localChildSetup.path),
+                onPressed: () => context.push(AppRoutes.toyNameSetup.path),
                 icon: Icon(Icons.edit, color: context.colors.grey500),
                 label: Text(
                   'profile.edit_profile'.tr(),

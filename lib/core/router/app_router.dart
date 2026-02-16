@@ -25,7 +25,6 @@ import '../../presentation/screens/settings_screen.dart';
 import '../../presentation/screens/setup/age_setup_screen.dart';
 import '../../presentation/screens/setup/connection_setup_screen.dart';
 import '../../presentation/screens/setup/favorites_setup_screen.dart';
-import '../../presentation/screens/setup/local_child_setup_screen.dart';
 import '../../presentation/screens/setup/personality_setup_screen.dart';
 import '../../presentation/screens/setup/toy_name_setup_screen.dart';
 import '../../presentation/screens/setup/voice_setup_screen.dart';
@@ -275,10 +274,6 @@ class AppRouter {
     GoRoute(
       path: AppRoutes.worldInfoSetup.path,
       builder: (_, _) => const WorldInfoSetupScreen(),
-    ),
-    GoRoute(
-      path: AppRoutes.localChildSetup.path,
-      builder: (_, _) => const LocalChildSetupScreen(),
     ),
   ];
 }

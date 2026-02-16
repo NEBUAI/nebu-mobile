@@ -27,7 +27,6 @@ enum AppRoutes {
   voiceSetup('/setup/voice'),
   favoritesSetup('/setup/favorites'),
   worldInfoSetup('/setup/world-info'),
-  localChildSetup('/setup/local-child'),
   childProfile('/child-profile'),
   walkieTalkie('/walkie-talkie'),
   settings('/settings');

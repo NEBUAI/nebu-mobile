@@ -308,7 +308,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   description: 'setup.connection.configure_locally_desc'.tr(),
                   onTap: () {
                     Navigator.pop(context);
-                    context.push(AppRoutes.localChildSetup.path);
+                    context.push(AppRoutes.toyNameSetup.path);
                   },
                 ),
 
