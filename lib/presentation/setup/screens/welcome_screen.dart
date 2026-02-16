@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
@@ -34,15 +34,15 @@ class WelcomeScreen extends ConsumerWidget {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: AppTheme.primaryGradient,
+                  gradient: LinearGradient(
+                    colors: [context.colors.primary, context.colors.secondary],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: AppTheme.primaryLight.withValues(alpha: 0.3),
+                      color: context.colors.primary.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -149,10 +149,10 @@ class WelcomeScreen extends ConsumerWidget {
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          color: AppTheme.primaryLight.withValues(alpha: 0.1),
+          color: context.colors.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Icon(icon, color: AppTheme.primaryLight, size: 24),
+        child: Icon(icon, color: context.colors.primary, size: 24),
       ),
       const SizedBox(width: 16),
       Expanded(

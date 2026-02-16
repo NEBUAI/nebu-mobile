@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 
 class WorldInfoSetupScreen extends StatelessWidget {
   const WorldInfoSetupScreen({super.key});
@@ -59,7 +59,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.check,
                       size: 60,
                       color: context.colors.primary,

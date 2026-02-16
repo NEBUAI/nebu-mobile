@@ -319,7 +319,6 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
           onChanged: (value) {
             notifier.updateHapticFeedback(enabled: value);
           },
-          isDark: isDark,
         ),
         const SizedBox(height: 12),
         _buildSettingTile(
@@ -330,7 +329,6 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
           onChanged: (value) {
             notifier.updateAutoSave(enabled: value);
           },
-          isDark: isDark,
         ),
         const SizedBox(height: 12),
         _buildSettingTile(
@@ -341,7 +339,6 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
           onChanged: (value) {
             notifier.updateAnalyticsEnabled(enabled: value);
           },
-          isDark: isDark,
         ),
       ],
     );
@@ -353,7 +350,6 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     required IconData icon,
     required bool value,
     required ValueChanged<bool> onChanged,
-    required bool isDark,
   }) => Row(
     children: [
       Icon(icon, color: context.colors.grey400, size: 20),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/app_colors.dart';
 import 'screens/completion_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/permissions_screen.dart';
@@ -19,9 +19,7 @@ class SetupWizardScreen extends ConsumerWidget {
     final pageController = ref.watch(setupWizardPageControllerProvider);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),

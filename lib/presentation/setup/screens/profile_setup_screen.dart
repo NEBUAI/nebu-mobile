@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_input.dart';
 import '../../widgets/gradient_text.dart';
@@ -102,12 +102,8 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     final SetupWizardState state = ref.watch(setupWizardProvider);
     final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -155,14 +151,14 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                       decoration: BoxDecoration(
                         gradient: state.avatarUrl.isNotEmpty
                             ? null
-                            : const LinearGradient(
-                                colors: AppTheme.primaryGradient,
+                            : LinearGradient(
+                                colors: [context.colors.primary, context.colors.secondary],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(
-                          color: AppTheme.primaryLight,
+                          color: context.colors.primary,
                           width: 3,
                         ),
                         image: state.avatarUrl.isNotEmpty
@@ -187,10 +183,10 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
 
                 TextButton(
                   onPressed: _showAvatarOptions,
-                  child: const Text(
+                  child: Text(
                     'Change Avatar',
                     style: TextStyle(
-                      color: AppTheme.primaryLight,
+                      color: context.colors.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -248,17 +244,17 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                          color: context.colors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: AppTheme.primaryLight.withValues(alpha: 0.3),
+                            color: context.colors.primary.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.privacy_tip,
-                              color: AppTheme.primaryLight,
+                              color: context.colors.primary,
                               size: 20,
                             ),
                             const SizedBox(width: 12),
@@ -348,7 +344,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
               itemCount: 8,
               itemBuilder: (context, index) {
                 final colors = [
-                  AppTheme.primaryLight,
+                  context.colors.primary,
                   Colors.teal,
                   Colors.orange,
                   Colors.pink,

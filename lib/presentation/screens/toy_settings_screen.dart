@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
 import '../widgets/esp32_audio_controls.dart';

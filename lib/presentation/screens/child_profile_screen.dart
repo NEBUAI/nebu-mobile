@@ -153,7 +153,7 @@ class ChildProfileScreen extends ConsumerWidget {
     padding: const EdgeInsets.symmetric(vertical: 16),
     child: Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
         color: context.colors.textNormal,

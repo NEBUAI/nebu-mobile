@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
@@ -22,12 +22,8 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
   Widget build(BuildContext context) {
     final SetupWizardState state = ref.watch(setupWizardProvider);
     final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -74,7 +70,6 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                           'Required for voice commands and audio features',
                       isGranted: state.microphonePermission,
                       onTap: _requestMicrophonePermission,
-                      isDark: isDark,
                     ),
                     const SizedBox(height: 16),
                     _buildPermissionCard(
@@ -83,7 +78,6 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                       description: 'Send you important updates and reminders',
                       isGranted: state.notificationsPermission,
                       onTap: _requestNotificationPermission,
-                      isDark: isDark,
                     ),
                     const SizedBox(height: 16),
                     _buildPermissionCard(
@@ -92,7 +86,6 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                       description: 'For photo capture and video features',
                       isGranted: state.cameraPermission,
                       onTap: _requestCameraPermission,
-                      isDark: isDark,
                       isOptional: true,
                     ),
                   ],
@@ -139,16 +132,15 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
     required String description,
     required bool isGranted,
     required VoidCallback onTap,
-    required bool isDark,
     bool isOptional = false,
   }) => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(
         color: isGranted
-            ? AppTheme.primaryLight
+            ? context.colors.primary
             : context.colors.grey700,
         width: 2,
       ),
@@ -160,13 +152,13 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
           height: 50,
           decoration: BoxDecoration(
             color: isGranted
-                ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                ? context.colors.primary.withValues(alpha: 0.1)
                 : context.colors.grey800,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
-            color: isGranted ? AppTheme.primaryLight : context.colors.grey400,
+            color: isGranted ? context.colors.primary : context.colors.grey400,
             size: 24,
           ),
         ),
@@ -222,7 +214,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
           onPressed: onTap,
           icon: Icon(
             isGranted ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: isGranted ? AppTheme.primaryLight : context.colors.grey400,
+            color: isGranted ? context.colors.primary : context.colors.grey400,
             size: 28,
           ),
         ),
