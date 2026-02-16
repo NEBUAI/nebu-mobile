@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../../core/theme/app_border_radius.dart';
 import '../../../core/theme/app_colors.dart';
 
 class AgeSetupScreen extends StatefulWidget {
@@ -94,14 +95,14 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                             _selectedAge = age['label'];
                           });
                         },
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: context.radius.panel,
                         child: Container(
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? context.colors.bgPrimary
                                 : context.colors.textOnFilled.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: context.radius.panel,
                             border: Border.all(
                               color: isSelected
                                   ? context.colors.bgPrimary

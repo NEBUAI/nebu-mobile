@@ -73,7 +73,7 @@ class ProfileScreen extends ConsumerWidget {
                 ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: context.radius.panel,
                   boxShadow: [
                     BoxShadow(
                       color: context.colors.textNormal.withValues(
@@ -384,7 +384,7 @@ class ProfileScreen extends ConsumerWidget {
               // Logout Button
               DecoratedBox(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: context.radius.tile,
                   boxShadow: [
                     BoxShadow(
                       color: context.colors.error.withValues(alpha: isDark ? 0.4 : 0.2),

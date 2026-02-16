@@ -617,12 +617,12 @@ class _GoogleButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Container(
           height: 56,
           decoration: BoxDecoration(
             color: context.colors.bgPrimary,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: context.radius.panel,
             border: Border.all(color: context.colors.grey700, width: 1.5),
           ),
           child: Row(
@@ -690,7 +690,7 @@ class _ErrorBanner extends StatelessWidget {
       padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: context.colors.errorBg,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: context.radius.tile,
         border: Border.all(color: context.colors.error),
       ),
       child: Row(

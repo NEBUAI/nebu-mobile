@@ -701,7 +701,7 @@ class _PrimaryButton extends StatelessWidget {
           gradient: LinearGradient(
             colors: [context.colors.primary100, context.colors.primary],
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           boxShadow: [
             BoxShadow(
               color: context.colors.primary.withValues(alpha: 0.3),
@@ -771,7 +771,7 @@ class _DeviceCard extends StatelessWidget {
           color: isSelected
               ? context.colors.primary.withValues(alpha: 0.08)
               : colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           border: Border.all(
             color:
                 isSelected ? context.colors.primary : colorScheme.outline,
