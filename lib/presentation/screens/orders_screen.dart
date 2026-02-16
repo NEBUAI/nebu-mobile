@@ -293,7 +293,7 @@ class _OrderDetailsSheet extends StatelessWidget {
       minChildSize: 0.5,
       expand: false,
       builder: (context, scrollController) => Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(context.spacing.pageMargin),
         child: ListView(
           controller: scrollController,
           children: [
@@ -308,7 +308,7 @@ class _OrderDetailsSheet extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
 
             // Title
             Text(
@@ -317,18 +317,18 @@ class _OrderDetailsSheet extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Text(
               order.orderNumber,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
 
             // Status timeline
             _buildStatusTimeline(context),
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
 
             // Items
             Text(
@@ -337,7 +337,7 @@ class _OrderDetailsSheet extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: context.spacing.paragraphBottomMarginSm),
             ...order.items.map((item) => _buildItemRow(item, theme)),
             const Divider(height: 32),
 
@@ -353,7 +353,7 @@ class _OrderDetailsSheet extends StatelessWidget {
               bold: true,
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
 
             // Actions
             if (order.status.toUpperCase() != 'CANCELLED' &&
@@ -375,7 +375,7 @@ class _OrderDetailsSheet extends StatelessWidget {
                 ),
                 child: Text('orders.track_order'.tr()),
               ),
-            const SizedBox(height: 12),
+            SizedBox(height: context.spacing.paragraphBottomMarginSm),
             OutlinedButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -404,7 +404,7 @@ class _OrderDetailsSheet extends StatelessWidget {
     final currentIndex = statusOrder.indexOf(upperStatus);
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
@@ -490,7 +490,7 @@ class _OrderDetailsSheet extends StatelessWidget {
   }
 
   Widget _buildItemRow(_OrderItem item, ThemeData theme) => Padding(
-    padding: const EdgeInsets.only(bottom: 12),
+    padding: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

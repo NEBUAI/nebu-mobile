@@ -154,14 +154,14 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           size: 100,
           color: theme.colorScheme.primary.withValues(alpha: 0.3),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: context.spacing.panelPadding),
         Text(
           'notifications.no_notifications'.tr(),
           style: theme.textTheme.titleLarge?.copyWith(
             color: theme.colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
         Text(
           'notifications.no_notifications_desc'.tr(),
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -243,7 +243,7 @@ class _NotificationCard extends StatelessWidget {
         child: Icon(Icons.delete, color: context.colors.textOnFilled),
       ),
       child: Card(
-        margin: const EdgeInsets.only(bottom: 12),
+        margin: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
         elevation: notification.isRead ? 0 : 2,
         color: notification.isRead
             ? theme.colorScheme.surface

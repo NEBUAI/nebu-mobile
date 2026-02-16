@@ -102,7 +102,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
         onRefresh: _refreshActivities,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +112,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
                   size: 64,
                   color: theme.colorScheme.error,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.sectionTitleBottomMargin),
                 Text(
                   'activity.error_loading'.tr(),
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -120,9 +120,9 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: context.spacing.paragraphBottomMarginSm),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(context.spacing.alertPadding),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(12),
@@ -138,7 +138,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: context.spacing.panelPadding),
                 ElevatedButton.icon(
                   onPressed: _loadActivities,
                   icon: const Icon(Icons.refresh),
@@ -171,7 +171,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
       onRefresh: _refreshActivities,
       child: ListView.builder(
         controller: _scrollController,
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.spacing.alertPadding),
         itemCount: state.activities.length + (state.isLoading ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= state.activities.length) {
@@ -207,14 +207,14 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
               color: theme.colorScheme.outline,
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: context.spacing.paragraphBottomMargin),
           Text(
             'activity_log.empty_title'.tr(),
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: context.spacing.sectionTitleBottomMargin),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
             child: Text(
@@ -234,7 +234,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
     final activityColor = _getColorForActivityType(context, activity.type);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: activityColor.withValues(alpha: 0.2),
