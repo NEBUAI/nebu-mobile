@@ -76,7 +76,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                 // Subtítulo
                 Text(

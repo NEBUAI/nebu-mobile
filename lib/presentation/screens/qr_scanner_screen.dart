@@ -75,7 +75,7 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('qr_scanner.unrecognized_format'.tr()),
-              const SizedBox(height: 8),
+              SizedBox(height: context.spacing.titleBottomMarginSm),
               Text(
                 code,
                 style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
@@ -261,7 +261,7 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
     right: 0,
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 32),
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: context.colors.textNormal.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(12),
