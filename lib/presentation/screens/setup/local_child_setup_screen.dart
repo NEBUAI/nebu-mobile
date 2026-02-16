@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../core/constants/storage_keys.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/activity_tracker_service.dart';
 import '../../providers/api_provider.dart';
@@ -89,7 +90,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('setup.local_child.select_age_group'.tr()),
-          backgroundColor: Colors.orange,
+          backgroundColor: context.colors.warning,
         ),
       );
       return;
@@ -99,7 +100,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('setup.local_child.select_personality'.tr()),
-          backgroundColor: Colors.orange,
+          backgroundColor: context.colors.warning,
         ),
       );
       return;
@@ -158,7 +159,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('setup.local_child.save_success'.tr()),
-          backgroundColor: Colors.green,
+          backgroundColor: context.colors.success,
         ),
       );
 
@@ -174,7 +175,7 @@ class _LocalChildSetupScreenState extends ConsumerState<LocalChildSetupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('setup.local_child.save_error'.tr()),
-          backgroundColor: Colors.red,
+          backgroundColor: context.colors.error,
         ),
       );
     } finally {
@@ -265,7 +266,7 @@ Communication style:
                           Text(
                             'setup.local_child.child_info_subtitle'.tr(),
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey[600],
+                              color: context.colors.grey400,
                             ),
                           ),
 
@@ -322,12 +323,12 @@ Communication style:
                                   decoration: BoxDecoration(
                                     color: isSelected
                                         ? AppTheme.primaryLight
-                                        : Colors.grey[100],
+                                        : AppColors.grey900Light,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: isSelected
                                           ? AppTheme.primaryLight
-                                          : Colors.grey[300]!,
+                                          : AppColors.grey700Light,
                                       width: 2,
                                     ),
                                   ),
@@ -386,12 +387,12 @@ Communication style:
                                         ? AppTheme.primaryLight.withValues(
                                             alpha: 0.1,
                                           )
-                                        : Colors.grey[50],
+                                        : AppColors.grey900Light,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: isSelected
                                           ? AppTheme.primaryLight
-                                          : Colors.grey[300]!,
+                                          : AppColors.grey700Light,
                                       width: 2,
                                     ),
                                   ),
@@ -443,7 +444,7 @@ Communication style:
                           Text(
                             'setup.local_child.custom_instructions_desc'.tr(),
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
+                              color: context.colors.grey400,
                             ),
                           ),
 

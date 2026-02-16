@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
 
 class AppTheme {
   AppTheme._();
 
   // ----------------- Color Definitions -----------------
 
-  // Light Theme Colors (Warmer Palette)
-  static const Color primaryLight = Color(0xFFF97316); // Orange 500
-  static const Color secondaryLight = Color(0xFFF43F5E); // Rose 500
-  static const Color backgroundLight = Color(0xFFFFF7ED); // Orange 50
-  static const Color surfaceLight = Colors.white;
-  static const Color errorLight = Color(0xFFEF4444);
-  static const Color onPrimaryLight = Colors.white;
-  static const Color onBackgroundLight = Color(0xFF431407); // Orange 950
+  // Light Theme Colors (Figma Design System)
+  static const Color primaryLight = AppColors.primaryMainLight; // #704ADD
+  static const Color secondaryLight = AppColors.secondaryMainLight; // #01649C
+  static const Color backgroundLight = AppColors.bgPrimaryLight; // #FFFFFF
+  static const Color surfaceLight = AppColors.bgPrimaryLight; // #FFFFFF
+  static const Color errorLight = AppColors.redMainLight; // #D61134
+  static const Color onPrimaryLight = AppColors.textFilledButtonLight; // #FFFFFF
+  static const Color onBackgroundLight = AppColors.textNormalLight; // #253059
 
-  // Dark Theme Colors (Warmer Palette)
-  static const Color primaryDark = Color(0xFFFB923C); // Orange 400
-  static const Color secondaryDark = Color(0xFFFB7185); // Rose 400
-  static const Color backgroundDark = Color(0xFF1C1917); // Stone 900
-  static const Color surfaceDark = Color(0xFF292524); // Stone 800
-  static const Color errorDark = Color(0xFFF87171);
-  static const Color onPrimaryDark = Colors.black;
-  static const Color onBackgroundDark = Color(0xFFFFF7ED); // Orange 50
+  // Dark Theme Colors (Figma Design System)
+  static const Color primaryDark = AppColors.primaryMainDark; // #AF94FF
+  static const Color secondaryDark = AppColors.secondaryMainDark; // #28B2FF
+  static const Color backgroundDark = AppColors.bgPrimaryDark; // #1C1A30
+  static const Color surfaceDark = AppColors.bgSecondaryDark; // #0B0B12
+  static const Color errorDark = AppColors.redMainDark; // #FF6984
+  static const Color onPrimaryDark = AppColors.textFilledButtonDark; // #000000 80%
+  static const Color onBackgroundDark = AppColors.textNormalDark; // #FFFFFF 90%
 
   // Gradient Colors
   static const List<Color> primaryGradient = [primaryLight, secondaryLight];
   static const List<Color> secondaryGradient = [
     secondaryLight,
-    Color(0xFFFB923C) // Warmer complement
+    AppColors.primary100Light, // #916AFF
   ];
 
   // ----------------- Color Schemes -----------------
@@ -35,7 +36,9 @@ class AppTheme {
   static ColorScheme get _lightColorScheme => const ColorScheme.light(
         primary: primaryLight,
         secondary: secondaryLight,
+        surface: surfaceLight,
         error: errorLight,
+        onPrimary: onPrimaryLight,
         onSecondary: Colors.white,
         onSurface: onBackgroundLight,
       );
@@ -45,6 +48,7 @@ class AppTheme {
         secondary: secondaryDark,
         surface: surfaceDark,
         error: errorDark,
+        onPrimary: onPrimaryDark,
         onSurface: onBackgroundDark,
       );
 
@@ -114,7 +118,7 @@ class AppTheme {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: surfaceLight,
           selectedItemColor: primaryLight,
-          unselectedItemColor: Colors.grey[400],
+          unselectedItemColor: AppColors.grey500Light,
           type: BottomNavigationBarType.fixed,
           elevation: 8,
         ),
@@ -146,7 +150,7 @@ class AppTheme {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: surfaceDark,
           selectedItemColor: primaryDark,
-          unselectedItemColor: Colors.grey[600],
+          unselectedItemColor: AppColors.grey500Dark,
           type: BottomNavigationBarType.fixed,
           elevation: 8,
         ),

@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
+
 class ConnectionStatusIndicator extends StatelessWidget {
   const ConnectionStatusIndicator({
     required this.phase,
@@ -16,10 +18,10 @@ class ConnectionStatusIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (Color dotColor, String statusText) = switch (phase) {
-      'connected' => (Colors.green, 'walkie_talkie.connected'.tr()),
-      'connecting' => (Colors.orange, 'walkie_talkie.connecting'.tr()),
-      'error' => (Colors.red, 'walkie_talkie.error'.tr()),
-      _ => (Colors.grey, 'walkie_talkie.disconnected'.tr()),
+      'connected' => (context.colors.success, 'walkie_talkie.connected'.tr()),
+      'connecting' => (context.colors.warning, 'walkie_talkie.connecting'.tr()),
+      'error' => (context.colors.error, 'walkie_talkie.error'.tr()),
+      _ => (context.colors.grey400, 'walkie_talkie.disconnected'.tr()),
     };
 
     return Column(

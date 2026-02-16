@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class SetupProgressIndicator extends StatelessWidget {
@@ -26,7 +27,7 @@ class SetupProgressIndicator extends StatelessWidget {
             ),
             Text(
               '${(progress * 100).toInt()}%',
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+              style: TextStyle(fontSize: 14, color: context.colors.grey400),
             ),
           ],
         ),
@@ -36,7 +37,7 @@ class SetupProgressIndicator extends StatelessWidget {
           child: LinearProgressIndicator(
             value: progress,
             minHeight: 8,
-            backgroundColor: Colors.grey.shade200,
+            backgroundColor: context.colors.grey800,
             valueColor: const AlwaysStoppedAnimation<Color>(
               AppTheme.primaryLight,
             ),

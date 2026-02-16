@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
@@ -105,7 +106,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 'Choose how you want to be notified',
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? Colors.grey[300] : Colors.grey[600],
+                  color: isDark ? AppColors.grey700Dark : AppColors.grey400Light,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -191,7 +192,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                     child: Text(
                       'Back',
                       style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
                         fontSize: 16,
                       ),
                     ),
@@ -217,7 +218,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     decoration: BoxDecoration(
       color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+      border: Border.all(color: isDark ? AppColors.grey700Dark : AppColors.grey800Light),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,7 +264,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           decoration: BoxDecoration(
             color: enabled
                 ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                : (isDark ? Colors.grey[700] : Colors.grey[200]),
+                : (isDark ? AppColors.grey700Dark : AppColors.grey800Light),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(

@@ -11,6 +11,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/esp32_wifi_config_service.dart';
 import '../../../data/services/wifi_service.dart';
@@ -76,7 +77,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             messenger.showSnackBar(
               SnackBar(
                 content: Text('setup.wifi.status_connecting'.tr()),
-                backgroundColor: Colors.blue,
+                backgroundColor: context.colors.info,
                 duration: const Duration(seconds: 2),
               ),
             );
@@ -89,7 +90,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             messenger.showSnackBar(
               SnackBar(
                 content: Text('setup.wifi.status_reconnecting'.tr()),
-                backgroundColor: Colors.orange,
+                backgroundColor: context.colors.warning,
                 duration: const Duration(seconds: 2),
               ),
             );
@@ -110,7 +111,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             messenger.showSnackBar(
               SnackBar(
                 content: Text('setup.wifi.status_connected'.tr()),
-                backgroundColor: Colors.green,
+                backgroundColor: context.colors.success,
               ),
             );
 
@@ -136,7 +137,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             messenger.showSnackBar(
               SnackBar(
                 content: Text('setup.wifi.status_failed'.tr()),
-                backgroundColor: Colors.red,
+                backgroundColor: context.colors.error,
                 duration: const Duration(seconds: 5),
                 action: SnackBarAction(
                   label: 'setup.wifi.retry'.tr(),
@@ -166,7 +167,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('setup.wifi.error_status_stream'.tr()),
-              backgroundColor: Colors.red,
+              backgroundColor: context.colors.error,
               duration: const Duration(seconds: 5),
             ),
           );
@@ -193,7 +194,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('setup.wifi.error_ble_disconnected'.tr()),
-              backgroundColor: Colors.red,
+              backgroundColor: context.colors.error,
               duration: const Duration(seconds: 5),
             ),
           );
@@ -350,7 +351,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.credentials_sent'.tr()),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colors.success,
           ),
         );
 
@@ -383,7 +384,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.error_ble_disconnected'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
             duration: const Duration(seconds: 5),
           ),
         );
@@ -393,7 +394,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.error_ble_timeout'.tr()),
-            backgroundColor: Colors.orange,
+            backgroundColor: context.colors.warning,
             duration: const Duration(seconds: 5),
           ),
         );
@@ -402,7 +403,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         messenger.showSnackBar(
           SnackBar(
             content: Text('setup.wifi.error_send_credentials'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
           ),
         );
       }
@@ -719,7 +720,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
               : 'setup.wifi.skip_button'.tr(),
           style: theme.textTheme.bodyLarge?.copyWith(
             color: _isConnecting
-                ? Colors.red.withAlpha(204)
+                ? AppColors.redMainLight.withAlpha(204)
                 : Colors.white.withAlpha(204),
           ),
         ),
@@ -736,7 +737,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('setup.wifi.connection_cancelled'.tr()),
-        backgroundColor: Colors.orange,
+        backgroundColor: context.colors.warning,
       ),
     );
   }
@@ -891,7 +892,7 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
               padding: const EdgeInsets.all(32),
               child: Column(
                 children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                  Icon(Icons.error_outline, color: context.colors.error, size: 48),
                   const SizedBox(height: 16),
                   Text(
                     'setup.wifi.scan_error'.tr(),

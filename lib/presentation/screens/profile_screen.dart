@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config/config.dart';
 import '../../core/constants/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
@@ -159,9 +160,9 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.child_care,
                     title: 'profile.child_profile'.tr(),
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.chevron_right,
-                      color: Colors.grey,
+                      color: context.colors.grey400,
                     ),
                     onTap: () {
                       context.push(AppRoutes.childProfile.path);
@@ -172,9 +173,9 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.receipt_long_outlined,
                     title: 'profile.your_orders'.tr(),
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.chevron_right,
-                      color: Colors.grey,
+                      color: context.colors.grey400,
                     ),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -195,13 +196,13 @@ class ProfileScreen extends ConsumerWidget {
                         Container(
                           width: 8,
                           height: 8,
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: context.colors.error,
                             shape: BoxShape.circle,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.chevron_right, color: Colors.grey),
+                        Icon(Icons.chevron_right, color: context.colors.grey400),
                       ],
                     ),
                     onTap: () {
@@ -303,9 +304,9 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.person_outline,
                     title: 'profile.edit_profile'.tr(),
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.chevron_right,
-                      color: Colors.grey,
+                      color: context.colors.grey400,
                     ),
                     onTap: () {
                       context.push(AppRoutes.editProfile.path);
@@ -316,9 +317,9 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.privacy_tip_outlined,
                     title: 'profile.privacy'.tr(),
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.chevron_right,
-                      color: Colors.grey,
+                      color: context.colors.grey400,
                     ),
                     onTap: () {
                       context.push(AppRoutes.privacySettings.path);
@@ -329,9 +330,9 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.delete_outline,
                     title: 'profile.delete_account'.tr(),
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.chevron_right,
-                      color: Colors.grey,
+                      color: context.colors.grey400,
                     ),
                     onTap: () {
                       _showDeleteAccountDialog(context);
@@ -351,9 +352,9 @@ class ProfileScreen extends ConsumerWidget {
                     theme: theme,
                     icon: Icons.help_outline,
                     title: 'profile.help_support'.tr(),
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.chevron_right,
-                      color: Colors.grey,
+                      color: context.colors.grey400,
                     ),
                     onTap: () {
                       _showHelpDialog(context);
@@ -387,7 +388,7 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
+                      color: context.colors.error.withValues(alpha: isDark ? 0.4 : 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -407,7 +408,7 @@ class ProfileScreen extends ConsumerWidget {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor: context.colors.error,
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -444,7 +445,7 @@ class ProfileScreen extends ConsumerWidget {
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, true),
-          style: TextButton.styleFrom(foregroundColor: Colors.red),
+          style: TextButton.styleFrom(foregroundColor: context.colors.error),
           child: Text('profile.logout'.tr()),
         ),
       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
@@ -101,14 +102,14 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                           height: 120,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Colors.green, Colors.greenAccent],
+                              colors: [AppColors.greenMainLight, AppColors.green100Light],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(60),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.green.withValues(alpha: 0.3),
+                                color: AppColors.greenMainLight.withValues(alpha: 0.3),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
@@ -144,7 +145,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                       'Welcome to Nebu! Your AI companion is ready to help you.',
                       style: TextStyle(
                         fontSize: 18,
-                        color: isDark ? Colors.grey[300] : Colors.grey[600],
+                        color: isDark ? AppColors.grey700Dark : AppColors.grey400Light,
                         height: 1.4,
                       ),
                       textAlign: TextAlign.center,
@@ -180,7 +181,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
     decoration: BoxDecoration(
       color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+      border: Border.all(color: isDark ? AppColors.grey700Dark : AppColors.grey800Light),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,7 +276,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                 value,
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
                 ),
               ),
             ],

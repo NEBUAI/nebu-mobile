@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 import '../../data/models/toy.dart';
 import '../providers/theme_provider.dart';
 import '../providers/toy_provider.dart';
@@ -43,7 +44,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: context.colors.error),
             child: Text('common.delete'.tr()),
           ),
         ],
@@ -60,7 +61,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('toys.deleted_success'.tr(args: [toy.name])),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colors.success,
           ),
         );
       }
@@ -69,7 +70,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('toys.delete_error'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
           ),
         );
       }
@@ -130,14 +131,14 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: isOnline
-                    ? Colors.green.withValues(alpha: 0.1)
-                    : Colors.red.withValues(alpha: 0.1),
+                    ? context.colors.success.withValues(alpha: 0.1)
+                    : context.colors.error.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 isOnline ? 'toys.online'.tr() : 'toys.offline'.tr(),
                 style: TextStyle(
-                  color: isOnline ? Colors.green : Colors.red,
+                  color: isOnline ? context.colors.success : context.colors.error,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -237,8 +238,8 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   _deleteToy(toy);
                 },
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.red,
-                  side: const BorderSide(color: Colors.red),
+                  foregroundColor: context.colors.error,
+                  side: BorderSide(color: context.colors.error),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -273,7 +274,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('toys.error_loading'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
           ),
         );
       }
@@ -607,8 +608,8 @@ class _ToyCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: isOnline
-                      ? Colors.green.withValues(alpha: 0.1)
-                      : Colors.red.withValues(alpha: 0.1),
+                      ? context.colors.success.withValues(alpha: 0.1)
+                      : context.colors.error.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -618,7 +619,7 @@ class _ToyCard extends StatelessWidget {
                       width: 6,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: isOnline ? Colors.green : Colors.red,
+                        color: isOnline ? context.colors.success : context.colors.error,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -627,7 +628,7 @@ class _ToyCard extends StatelessWidget {
                       isOnline ? 'toys.online'.tr() : 'toys.offline'.tr(),
                       style: TextStyle(
                         fontSize: 12,
-                        color: isOnline ? Colors.green : Colors.red,
+                        color: isOnline ? context.colors.success : context.colors.error,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

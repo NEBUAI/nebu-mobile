@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../providers/esp32_provider.dart';
 
 /// Widget de controles de audio para el ESP32
@@ -66,7 +67,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('audio_controls.volume_error'.tr()),
-                              backgroundColor: Colors.red,
+                              backgroundColor: context.colors.error,
                               duration: const Duration(seconds: 2),
                             ),
                           );
@@ -127,7 +128,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('audio_controls.mute_error'.tr()),
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: context.colors.error,
                                   duration: const Duration(seconds: 2),
                                 ),
                               );

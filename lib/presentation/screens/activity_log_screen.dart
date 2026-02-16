@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/activity.dart';
 import '../providers/activity_provider.dart';
@@ -284,15 +285,15 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
     };
 
   Color _getColorForActivityType(ActivityType type) => switch (type) {
-      ActivityType.voiceCommand => Colors.blue,
-      ActivityType.connection => Colors.green,
+      ActivityType.voiceCommand => AppColors.secondaryMainLight,
+      ActivityType.connection => AppColors.greenMainLight,
       ActivityType.interaction => AppTheme.primaryLight,
-      ActivityType.update => Colors.orange,
-      ActivityType.error => Colors.red,
-      ActivityType.play => Colors.purple,
-      ActivityType.sleep => Colors.indigo,
-      ActivityType.wake => Colors.amber,
-      ActivityType.chat => Colors.teal,
+      ActivityType.update => AppColors.amberMainLight,
+      ActivityType.error => AppColors.redMainLight,
+      ActivityType.play => AppColors.primaryMainLight,
+      ActivityType.sleep => AppColors.primaryN100Light,
+      ActivityType.wake => AppColors.amber100Light,
+      ActivityType.chat => AppColors.secondary100Light,
     };
 
   String _getActivityTitle(ActivityType type) => switch (type) {

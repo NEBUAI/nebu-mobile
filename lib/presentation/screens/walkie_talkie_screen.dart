@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/toy.dart';
 import '../providers/walkie_talkie_provider.dart';
@@ -31,7 +32,7 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('walkie_talkie.mic_permission_required'.tr()),
-          backgroundColor: Colors.red,
+          backgroundColor: context.colors.error,
         ),
       );
       return;
@@ -122,13 +123,13 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
                         Navigator.of(context).pop();
                       }
                     },
-                    icon: const Icon(Icons.call_end, color: Colors.red),
+                    icon: Icon(Icons.call_end, color: context.colors.error),
                     label: Text(
                       'walkie_talkie.end_session'.tr(),
-                      style: const TextStyle(color: Colors.red),
+                      style: TextStyle(color: context.colors.error),
                     ),
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.red),
+                      side: BorderSide(color: context.colors.error),
                       minimumSize: const Size(double.infinity, 48),
                     ),
                   ),
@@ -149,11 +150,11 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.error_outline, size: 48, color: Colors.red),
+        Icon(Icons.error_outline, size: 48, color: context.colors.error),
         const SizedBox(height: 12),
         Text(
           translationKey.tr(),
-          style: const TextStyle(color: Colors.red, fontSize: 16),
+          style: TextStyle(color: context.colors.error, fontSize: 16),
           textAlign: TextAlign.center,
         ),
       const SizedBox(height: 16),

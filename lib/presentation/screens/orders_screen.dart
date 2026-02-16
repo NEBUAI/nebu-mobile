@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../providers/api_provider.dart';
 
 class OrdersScreen extends ConsumerStatefulWidget {
@@ -214,24 +215,24 @@ class _OrderCard extends StatelessWidget {
 
     switch (status.toUpperCase()) {
       case 'DELIVERED':
-        color = Colors.green;
+        color = AppColors.greenMainLight;
         label = 'orders.status_delivered'.tr();
       case 'SHIPPED':
-        color = Colors.blue;
+        color = AppColors.secondaryMainLight;
         label = 'orders.status_shipped'.tr();
       case 'PROCESSING':
       case 'CONFIRMED':
-        color = Colors.orange;
+        color = AppColors.amberMainLight;
         label = 'orders.status_processing'.tr();
       case 'CANCELLED':
-        color = Colors.red;
+        color = AppColors.redMainLight;
         label = 'orders.status_cancelled'.tr();
       case 'PENDING':
       case 'RESERVED':
-        color = Colors.amber;
+        color = AppColors.amber100Light;
         label = 'orders.status_processing'.tr();
       default:
-        color = Colors.grey;
+        color = AppColors.grey400Light;
         label = status;
     }
 
@@ -302,7 +303,7 @@ class _OrderDetailsSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: context.colors.grey700,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -452,13 +453,13 @@ class _OrderDetailsSheet extends StatelessWidget {
               height: 20,
               color: completed
                   ? theme.colorScheme.primary
-                  : Colors.grey.withValues(alpha: 0.3),
+                  : AppColors.grey400Light.withValues(alpha: 0.3),
             ),
           Icon(
             completed ? Icons.check_circle : Icons.circle_outlined,
             color: completed
                 ? theme.colorScheme.primary
-                : Colors.grey.withValues(alpha: 0.5),
+                : AppColors.grey400Light.withValues(alpha: 0.5),
             size: 24,
           ),
           if (!isLast)
@@ -467,7 +468,7 @@ class _OrderDetailsSheet extends StatelessWidget {
               height: 20,
               color: completed
                   ? theme.colorScheme.primary
-                  : Colors.grey.withValues(alpha: 0.3),
+                  : AppColors.grey400Light.withValues(alpha: 0.3),
             ),
         ],
       ),

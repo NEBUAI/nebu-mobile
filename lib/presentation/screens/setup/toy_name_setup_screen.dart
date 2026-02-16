@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../core/constants/storage_keys.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/toy.dart';
 import '../../providers/api_provider.dart';
@@ -78,7 +79,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('setup.toy_name.error_not_authenticated'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
           ),
         );
       }

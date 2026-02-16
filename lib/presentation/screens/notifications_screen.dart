@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../providers/api_provider.dart';
 
 class NotificationsScreen extends ConsumerStatefulWidget {
@@ -236,7 +237,7 @@ class _NotificationCard extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: Colors.red,
+          color: context.colors.error,
           borderRadius: BorderRadius.circular(12),
         ),
         child: const Icon(Icons.delete, color: Colors.white),
@@ -357,11 +358,11 @@ class _NotificationCard extends StatelessWidget {
   Color _getTypeColor(String type, ThemeData theme) {
     switch (type) {
       case 'toys':
-        return Colors.blue;
+        return AppColors.secondaryMainLight;
       case 'orders':
-        return Colors.green;
+        return AppColors.greenMainLight;
       case 'system':
-        return Colors.orange;
+        return AppColors.amberMainLight;
       default:
         return theme.colorScheme.primary;
     }

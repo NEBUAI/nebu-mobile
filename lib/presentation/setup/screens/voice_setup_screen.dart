@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:record/record.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
@@ -108,7 +109,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 'voice_setup.subtitle'.tr(),
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? Colors.grey[300] : Colors.grey[600],
+                  color: isDark ? AppColors.grey700Dark : AppColors.grey400Light,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -148,7 +149,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                     child: Text(
                       'common.back'.tr(),
                       style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
                         fontSize: 16,
                       ),
                     ),
@@ -231,7 +232,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 child: Icon(
                   isRecording ? Icons.stop : Icons.mic,
                   size: 40,
-                  color: isRecording ? Colors.red : AppTheme.primaryLight,
+                  color: isRecording ? context.colors.error : AppTheme.primaryLight,
                 ),
               ),
             ),
@@ -269,7 +270,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     decoration: BoxDecoration(
       color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+      border: Border.all(color: isDark ? AppColors.grey700Dark : AppColors.grey800Light),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,12 +329,12 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
           decoration: BoxDecoration(
             color: enabled
                 ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                : (isDark ? Colors.grey[700] : Colors.grey[200]),
+                : (isDark ? AppColors.grey700Dark : AppColors.grey800Light),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: enabled ? AppTheme.primaryLight : Colors.grey[600],
+            color: enabled ? AppTheme.primaryLight : AppColors.grey400Light,
             size: 20,
           ),
         ),
@@ -353,7 +354,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 description.tr(),
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
                 ),
               ),
             ],
@@ -388,7 +389,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('voice_setup.mic_permission_required'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
           ),
         );
         return;
@@ -409,7 +410,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('voice_setup.recording_failed'.tr()),
-          backgroundColor: Colors.red,
+          backgroundColor: context.colors.error,
         ),
       );
     }
@@ -432,7 +433,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('voice_setup.test_completed'.tr()),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colors.success,
           ),
         );
       }
@@ -463,7 +464,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('voice_setup.sample_played'.tr()),
-            backgroundColor: Colors.blue,
+            backgroundColor: context.colors.info,
           ),
         );
       }

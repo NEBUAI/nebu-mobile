@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/constants/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
 
@@ -179,13 +180,13 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             theme,
             children: [
               ListTile(
-                leading: const Icon(Icons.delete_forever, color: Colors.red),
+                leading: Icon(Icons.delete_forever, color: context.colors.error),
                 title: Text(
                   'privacy.delete_account'.tr(),
-                  style: const TextStyle(color: Colors.red),
+                  style: TextStyle(color: context.colors.error),
                 ),
                 subtitle: Text('privacy.delete_account_desc'.tr()),
-                trailing: const Icon(Icons.chevron_right, color: Colors.red),
+                trailing: Icon(Icons.chevron_right, color: context.colors.error),
                 onTap: _showDeleteAccountDialog,
               ),
             ],
@@ -239,12 +240,12 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
         granted ? 'privacy.granted'.tr() : 'privacy.denied'.tr(),
         style: TextStyle(
           fontSize: 12,
-          color: granted ? Colors.green : Colors.orange,
+          color: granted ? context.colors.success : context.colors.warning,
         ),
       ),
       backgroundColor: granted
-          ? Colors.green.withValues(alpha: 0.1)
-          : Colors.orange.withValues(alpha: 0.1),
+          ? context.colors.success.withValues(alpha: 0.1)
+          : context.colors.warning.withValues(alpha: 0.1),
     ),
     onTap: () {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -328,7 +329,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
   ) => ListTile(
     leading: Icon(
       Icons.phone_android,
-      color: current ? Colors.green : Colors.grey,
+      color: current ? context.colors.success : context.colors.grey400,
     ),
     title: Text(device),
     subtitle: Text('$location • $time'),
@@ -338,7 +339,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
               'privacy.current'.tr(),
               style: const TextStyle(fontSize: 10),
             ),
-            backgroundColor: Colors.green.withValues(alpha: 0.1),
+            backgroundColor: context.colors.success.withValues(alpha: 0.1),
           )
         : null,
   );
@@ -349,7 +350,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
       builder: (context) => AlertDialog(
         title: Text(
           'privacy.delete_account'.tr(),
-          style: const TextStyle(color: Colors.red),
+          style: TextStyle(color: context.colors.error),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -382,7 +383,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: context.colors.error,
               foregroundColor: Colors.white,
             ),
             child: Text('privacy.delete_permanently'.tr()),
@@ -413,7 +414,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           content: Text(
             e.toString().replaceFirst('Exception: ', ''),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: context.colors.error,
         ),
       );
     }
@@ -452,13 +453,13 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('privacy.incorrect_confirmation'.tr()),
-                    backgroundColor: Colors.red,
+                    backgroundColor: AppColors.redMainLight,
                   ),
                 );
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.redMainLight,
               foregroundColor: Colors.white,
             ),
             child: Text('common.delete'.tr()),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class PushToTalkButton extends StatefulWidget {
@@ -62,13 +63,13 @@ class _PushToTalkButtonState extends State<PushToTalkButton>
     final Color iconColor;
 
     if (!widget.isEnabled) {
-      buttonColor = Colors.grey.shade300;
-      iconColor = Colors.grey.shade500;
+      buttonColor = context.colors.grey700;
+      iconColor = context.colors.grey500;
     } else if (widget.isTalking) {
       buttonColor = AppTheme.primaryLight;
       iconColor = Colors.white;
     } else {
-      buttonColor = Colors.grey.shade200;
+      buttonColor = context.colors.grey800;
       iconColor = AppTheme.primaryLight;
     }
 
@@ -126,7 +127,7 @@ class _PushToTalkButtonState extends State<PushToTalkButton>
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: widget.isTalking ? AppTheme.primaryLight : Colors.grey,
+            color: widget.isTalking ? AppTheme.primaryLight : context.colors.grey400,
           ),
         ),
       ],
