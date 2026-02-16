@@ -84,7 +84,8 @@ class SettingsScreen extends ConsumerWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               CountryFlag.fromLanguageCode('en',
-                                  height: 24, width: 32),
+                                  theme: const ImageTheme(
+                                      height: 24, width: 32)),
                               const SizedBox(width: 8),
                               const Text('English'),
                             ],
@@ -96,7 +97,8 @@ class SettingsScreen extends ConsumerWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               CountryFlag.fromLanguageCode('es',
-                                  height: 24, width: 32),
+                                  theme: const ImageTheme(
+                                      height: 24, width: 32)),
                               const SizedBox(width: 8),
                               const Text('Español'),
                             ],

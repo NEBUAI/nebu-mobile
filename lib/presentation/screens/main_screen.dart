@@ -49,14 +49,24 @@ class MainScreen extends ConsumerWidget {
   int _calculateSelectedIndex(BuildContext context, bool isLoggedIn) {
     final String location = GoRouterState.of(context).matchedLocation;
 
-    if (location.startsWith(AppRoutes.home.path)) return 0;
-    if (location.startsWith(AppRoutes.activityLog.path)) return 1;
+    if (location.startsWith(AppRoutes.home.path)) {
+      return 0;
+    }
+    if (location.startsWith(AppRoutes.activityLog.path)) {
+      return 1;
+    }
 
     if (isLoggedIn) {
-      if (location.startsWith(AppRoutes.myToys.path)) return 2;
-      if (location.startsWith(AppRoutes.profile.path)) return 3;
+      if (location.startsWith(AppRoutes.myToys.path)) {
+        return 2;
+      }
+      if (location.startsWith(AppRoutes.profile.path)) {
+        return 3;
+      }
     } else {
-      if (location.startsWith(AppRoutes.settings.path)) return 2;
+      if (location.startsWith(AppRoutes.settings.path)) {
+        return 2;
+      }
     }
 
     return 0;

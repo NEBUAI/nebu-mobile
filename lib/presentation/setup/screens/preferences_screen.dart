@@ -214,8 +214,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                   children: [
                     CountryFlag.fromLanguageCode(
                       language['code']!,
-                      height: 24,
-                      width: 32,
+                      theme: const ImageTheme(height: 24, width: 32),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
