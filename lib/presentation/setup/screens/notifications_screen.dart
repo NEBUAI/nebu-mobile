@@ -77,16 +77,16 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
               // Progress indicator
               SetupProgressIndicator(
                 currentStep: state.currentStep + 1,
                 totalSteps: SetupWizardState.totalSteps,
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Title
               const GradientText(
@@ -95,7 +95,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Subtitle
               Text(
@@ -108,7 +108,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Notifications content
               Expanded(
@@ -137,7 +137,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                             .toList(),
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: context.spacing.panelPadding),
 
                       // Quiet hours
                       _buildNotificationSection(
@@ -160,7 +160,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                             .toList(),
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: context.spacing.panelPadding),
 
                       // Notification preview
                       _buildNotificationPreview(),
@@ -178,7 +178,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   TextButton(
                     onPressed: notifier.previousStep,
                     child: Text(
@@ -192,7 +192,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: context.spacing.titleBottomMargin),
             ],
           ),
         ),

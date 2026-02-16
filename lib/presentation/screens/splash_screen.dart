@@ -141,7 +141,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               ),
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: context.spacing.paragraphBottomMargin),
 
             // Texto "FLOW" animado
             AnimatedBuilder(
@@ -170,7 +170,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               ),
             ),
 
-            const SizedBox(height: 12),
+            SizedBox(height: context.spacing.paragraphBottomMarginSm),
 
             // Subtítulo animado
             AnimatedBuilder(

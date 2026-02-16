@@ -26,16 +26,16 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
               // Progress indicator
               SetupProgressIndicator(
                 currentStep: state.currentStep + 1,
                 totalSteps: SetupWizardState.totalSteps,
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Title
               const GradientText(
@@ -44,7 +44,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Subtitle
               Text(
@@ -57,7 +57,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Permissions list
               Expanded(
@@ -71,7 +71,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                       isGranted: state.microphonePermission,
                       onTap: _requestMicrophonePermission,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
                     _buildPermissionCard(
                       icon: Icons.notifications,
                       title: 'Notifications',
@@ -79,7 +79,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                       isGranted: state.notificationsPermission,
                       onTap: _requestNotificationPermission,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
                     _buildPermissionCard(
                       icon: Icons.camera_alt,
                       title: 'Camera (Optional)',
@@ -104,7 +104,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                     isLoading: isLoading,
                     icon: Icons.arrow_forward,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   TextButton(
                     onPressed: notifier.previousStep,
                     child: Text(
@@ -118,7 +118,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: context.spacing.titleBottomMargin),
             ],
           ),
         ),

@@ -87,7 +87,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(context.spacing.pageMargin),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -119,14 +119,14 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     : theme.disabledColor,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
             Text(
               toy.name,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -143,10 +143,10 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
             // Device info section
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.spacing.alertPadding),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerHighest
                     .withValues(alpha: 0.3),
@@ -173,7 +173,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
                   if (toy.iotDeviceId != null)
                     _InfoRow(
                       label: 'ID',
@@ -209,7 +209,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -229,7 +229,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 label: Text('toys.configure'.tr()),
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: context.spacing.paragraphBottomMarginSm),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
@@ -249,7 +249,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 label: Text('toys.remove'.tr()),
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
           ],
         ),
       ),
@@ -304,7 +304,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
         data: (toys) => RefreshIndicator(
           onRefresh: _loadToys,
           child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(context.spacing.alertPadding),
                 children: [
                   // Header
                   Row(
@@ -356,13 +356,13 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.spacing.titleBottomMargin),
 
                   // Toy Cards from API
                   if (toys.isEmpty) ...[
                     // Empty state
                     Container(
-                      padding: const EdgeInsets.all(32),
+                      padding: EdgeInsets.all(context.spacing.paragraphBottomMargin),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(16),
@@ -378,14 +378,14 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             size: 64,
                             color: theme.disabledColor,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: context.spacing.sectionTitleBottomMargin),
                           Text(
                             'toys.no_toys_title'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: context.spacing.titleBottomMarginSm),
                           Text(
                             'toys.no_toys_subtitle'.tr(),
                             textAlign: TextAlign.center,
@@ -393,7 +393,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: context.spacing.titleBottomMargin),
                           ElevatedButton.icon(
                             onPressed: () => _addNewToy(context),
                             icon: const Icon(Icons.add),
@@ -423,10 +423,10 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   ],
 
                   if (toys.isNotEmpty) ...[
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
                     // Add more hint
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(context.spacing.panelPadding),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(16),
@@ -442,7 +442,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             size: 48,
                             color: theme.disabledColor,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: context.spacing.paragraphBottomMarginSm),
                           Text(
                             'toys.add_more_hint'.tr(),
                             textAlign: TextAlign.center,
@@ -451,7 +451,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                               height: 1.4,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: context.spacing.sectionTitleBottomMargin),
                           TextButton.icon(
                             onPressed: () => _addNewToy(context),
                             icon: const Icon(Icons.add),

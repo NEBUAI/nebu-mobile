@@ -37,16 +37,16 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
               // Progress indicator
               SetupProgressIndicator(
                 currentStep: state.currentStep + 1,
                 totalSteps: SetupWizardState.totalSteps,
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Title
               const GradientText(
@@ -55,7 +55,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Subtitle
               Text(
@@ -68,7 +68,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Preferences sections
               Expanded(
@@ -83,7 +83,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                         child: _buildLanguageSelector(),
                       ),
 
-                      const SizedBox(height: 32),
+                      SizedBox(height: context.spacing.paragraphBottomMargin),
 
                       // Theme selection
                       _buildSection(
@@ -92,7 +92,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                         child: _buildThemeSelector(),
                       ),
 
-                      const SizedBox(height: 32),
+                      SizedBox(height: context.spacing.paragraphBottomMargin),
 
                       // Additional preferences
                       _buildSection(
@@ -114,7 +114,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   TextButton(
                     onPressed: notifier.previousStep,
                     child: Text(
@@ -128,7 +128,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: context.spacing.titleBottomMargin),
             ],
           ),
         ),

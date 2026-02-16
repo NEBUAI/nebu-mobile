@@ -80,16 +80,16 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
               // Progress indicator
               SetupProgressIndicator(
                 currentStep: state.currentStep + 1,
                 totalSteps: SetupWizardState.totalSteps,
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Title
               GradientText(
@@ -98,7 +98,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Subtitle
               Text(
@@ -111,7 +111,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Voice test section
               Expanded(
@@ -121,7 +121,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                       // Voice test card
                       _buildVoiceTestCard(),
 
-                      const SizedBox(height: 32),
+                      SizedBox(height: context.spacing.paragraphBottomMargin),
 
                       // Voice settings
                       _buildVoiceSettings(),
@@ -139,7 +139,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   TextButton(
                     onPressed: notifier.previousStep,
                     child: Text(
@@ -153,7 +153,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: context.spacing.titleBottomMargin),
             ],
           ),
         ),

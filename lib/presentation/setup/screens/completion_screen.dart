@@ -71,10 +71,10 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
               // Progress indicator
               SetupProgressIndicator(
                 currentStep: state.currentStep + 1,
@@ -122,7 +122,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                       ),
                     ),
 
-                    const SizedBox(height: 40),
+                    SizedBox(height: context.spacing.largePageBottomMargin),
 
                     // Success title
                     const GradientText(
@@ -134,7 +134,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                       textAlign: TextAlign.center,
                     ),
 
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                     // Success message
                     Text(
@@ -164,7 +164,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                 icon: Icons.rocket_launch,
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: context.spacing.titleBottomMargin),
             ],
           ),
         ),

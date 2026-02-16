@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../providers/auth_provider.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -81,7 +82,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.spacing.alertPadding),
         child: Column(
           children: [
             _buildTextField(
@@ -90,14 +91,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               icon: Icons.person,
               colorScheme: colorScheme,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
             _buildTextField(
               controller: _lastNameController,
               label: 'auth.last_name'.tr(),
               icon: Icons.person_outline,
               colorScheme: colorScheme,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
             _buildTextField(
               controller: _emailController,
               label: 'auth.email'.tr(),

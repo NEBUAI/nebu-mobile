@@ -179,7 +179,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: context.spacing.titleBottomMargin),
 
                 TextButton(
                   onPressed: _showAvatarOptions,

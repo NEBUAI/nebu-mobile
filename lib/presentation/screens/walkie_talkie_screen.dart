@@ -63,10 +63,10 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
         appBar: AppBar(title: Text('walkie_talkie.title'.tr())),
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(context.spacing.pageMargin),
             child: Column(
               children: [
-                const SizedBox(height: 24),
+                SizedBox(height: context.spacing.panelPadding),
 
                 // Toy info
                 CircleAvatar(
@@ -78,13 +78,13 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
                     color: context.colors.primary,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: context.spacing.paragraphBottomMarginSm),
                 Text(
                   widget.toy.name,
                   style: theme.textTheme.titleLarge,
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: context.spacing.panelPadding),
 
                 // Connection status
                 ConnectionStatusIndicator(
@@ -133,7 +133,7 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
                     ),
                   ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: context.spacing.panelPadding),
               ],
             ),
           ),
@@ -150,13 +150,13 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(Icons.error_outline, size: 48, color: context.colors.error),
-        const SizedBox(height: 12),
+        SizedBox(height: context.spacing.paragraphBottomMarginSm),
         Text(
           translationKey.tr(),
           style: TextStyle(color: context.colors.error, fontSize: 16),
           textAlign: TextAlign.center,
         ),
-      const SizedBox(height: 16),
+      SizedBox(height: context.spacing.sectionTitleBottomMargin),
       ElevatedButton.icon(
         onPressed: () =>
             ref.read(walkieTalkieProvider.notifier).startSession(widget.toy),

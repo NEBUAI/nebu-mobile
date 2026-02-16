@@ -31,7 +31,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('privacy.title'.tr()), elevation: 0),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.spacing.alertPadding),
         children: [
           // Profile Visibility Section
           _buildSectionHeader('privacy.profile_visibility'.tr(), theme),
@@ -49,7 +49,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             ],
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: context.spacing.panelPadding),
 
           // Data Sharing Section
           _buildSectionHeader('privacy.data_sharing'.tr(), theme),
@@ -76,7 +76,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             ],
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: context.spacing.panelPadding),
 
           // App Permissions Section
           _buildSectionHeader('privacy.permissions'.tr(), theme),
@@ -117,7 +117,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             ],
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: context.spacing.panelPadding),
 
           // Account Data Section
           _buildSectionHeader('privacy.account_data'.tr(), theme),
@@ -142,7 +142,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             ],
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: context.spacing.panelPadding),
 
           // Legal Section
           _buildSectionHeader('privacy.legal'.tr(), theme),
@@ -172,7 +172,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             ],
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: context.spacing.panelPadding),
 
           // Danger Zone
           _buildSectionHeader('privacy.danger_zone'.tr(), theme),
@@ -192,7 +192,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             ],
           ),
 
-          const SizedBox(height: 32),
+          SizedBox(height: context.spacing.paragraphBottomMargin),
         ],
       ),
     );
@@ -357,12 +357,12 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('privacy.delete_account_warning'.tr()),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
             Text(
               'privacy.delete_account_consequences'.tr(),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Text('• ${'privacy.consequence_1'.tr()}'),
             Text('• ${'privacy.consequence_2'.tr()}'),
             Text('• ${'privacy.consequence_3'.tr()}'),
@@ -430,7 +430,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('privacy.type_delete_to_confirm'.tr()),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
             TextField(
               controller: controller,
               decoration: const InputDecoration(

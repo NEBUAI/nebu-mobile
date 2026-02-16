@@ -61,7 +61,7 @@ class ProfileScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Column(
             children: [
               // Profile Header Card - Simplified and Clean
@@ -148,7 +148,7 @@ class ProfileScreen extends ConsumerWidget {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Quick Access Items
               _SettingsCard(
@@ -217,7 +217,7 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: context.spacing.panelPadding),
 
               // Settings Section Header
               Align(
@@ -292,7 +292,7 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Account Section
               _SettingsCard(
@@ -340,7 +340,7 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Help & About Section
               _SettingsCard(
@@ -379,7 +379,7 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: context.spacing.panelPadding),
 
               // Logout Button
               DecoratedBox(
@@ -424,7 +424,7 @@ class ProfileScreen extends ConsumerWidget {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: context.spacing.panelPadding),
             ],
           ),
         ),
@@ -495,19 +495,19 @@ void _showHelpDialog(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('profile.help_need_help'.tr()),
-          const SizedBox(height: 16),
+          SizedBox(height: context.spacing.sectionTitleBottomMargin),
           _buildHelpOption(
             Icons.email,
             'profile.help_email'.tr(),
             'support@nebu.ai',
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: context.spacing.titleBottomMarginSm),
           _buildHelpOption(
             Icons.phone,
             'profile.help_phone'.tr(),
             '+1 (555) 123-4567',
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: context.spacing.titleBottomMarginSm),
           _buildHelpOption(
             Icons.chat,
             'profile.help_chat'.tr(),
@@ -554,9 +554,9 @@ void _showAboutDialog(BuildContext context, String appVersion) {
       child: Icon(Icons.smart_toy, color: context.colors.textOnFilled, size: 32),
     ),
     children: [
-      const SizedBox(height: 16),
+      SizedBox(height: context.spacing.sectionTitleBottomMargin),
       Text('profile.about_description'.tr()),
-      const SizedBox(height: 8),
+      SizedBox(height: context.spacing.titleBottomMarginSm),
       Text('profile.about_copyright'.tr()),
     ],
   );

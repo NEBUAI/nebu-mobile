@@ -101,7 +101,7 @@ class WelcomeScreen extends StatelessWidget {
                       onPressed: () => context.push(AppRoutes.login.path),
                     ),
 
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                     // Sign Up - Botón secundario
                     _SecondaryButton(
@@ -111,7 +111,7 @@ class WelcomeScreen extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: context.spacing.paragraphBottomMargin),
 
                 // Continuar sin cuenta
                 GestureDetector(
@@ -128,7 +128,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: context.spacing.panelPadding),
               ],
             ),
           ),

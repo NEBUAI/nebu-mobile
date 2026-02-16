@@ -21,7 +21,7 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(title: Text('home.title'.tr())),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -42,12 +42,12 @@ class HomeScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Active Toys List
               _buildActiveToysList(context, ref),
 
-              const SizedBox(height: 24),
+              SizedBox(height: context.spacing.panelPadding),
 
               // Quick Actions
               Text(
@@ -55,7 +55,7 @@ class HomeScreen extends ConsumerWidget {
                 style: theme.textTheme.titleLarge,
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               Expanded(
                 child: GridView.count(
@@ -198,7 +198,7 @@ class _DeviceBatteryCard extends ConsumerWidget {
     final batteryLevel = ref.watch(batteryLevelProvider(device));
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
       child: ListTile(
         leading: const Icon(Icons.bluetooth_connected),
         title: Text(
@@ -242,12 +242,12 @@ class _QuickActionCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 48, color: theme.colorScheme.primary),
-              const SizedBox(height: 12),
+              SizedBox(height: context.spacing.paragraphBottomMarginSm),
               Text(
                 title,
                 textAlign: TextAlign.center,
