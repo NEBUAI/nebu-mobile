@@ -495,7 +495,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     padding: EdgeInsets.all(context.spacing.alertPadding),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.tile,
                       border: Border.all(
                         color: theme.colorScheme.error.withValues(alpha: 0.3),
                       ),
@@ -553,10 +553,10 @@ class _ToyCard extends StatelessWidget {
       color: theme.colorScheme.surface,
       elevation: isDark ? 4 : 2,
       margin: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: context.radius.modal),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Padding(
           padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Row(

@@ -156,7 +156,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: context.radius.largeIcon,
                         border: Border.all(
                           color: context.colors.primary,
                           width: 3,
@@ -245,7 +245,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                         padding: EdgeInsets.all(context.spacing.alertPadding),
                         decoration: BoxDecoration(
                           color: context.colors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: context.radius.tile,
                           border: Border.all(
                             color: context.colors.primary.withValues(alpha: 0.3),
                           ),
@@ -366,7 +366,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: avatarColor.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.tile,
                       border: Border.all(
                         color: avatarColor.withValues(alpha: 0.5),
                         width: 2,

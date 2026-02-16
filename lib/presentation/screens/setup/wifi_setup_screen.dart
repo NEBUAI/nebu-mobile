@@ -679,7 +679,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     filled: true,
     fillColor: context.colors.textOnFilled.withAlpha(51),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: context.radius.input,
       borderSide: BorderSide.none,
     ),
     contentPadding: const EdgeInsets.all(20),
@@ -696,7 +696,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           foregroundColor: context.colors.primary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppRadius.button),
           ),
         ),
         child: _isConnecting
