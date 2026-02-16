@@ -218,7 +218,8 @@
     "home": "Home",
     "activity": "Activity",
     "my_toys": "My Toys",
-    "profile": "Profile"
+    "profile": "Profile",
+    "settings": "Settings"
   },
   "home": {
     "title": "Home",
