@@ -2,10 +2,13 @@ import 'package:country_flags/country_flags.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/config/config.dart';
+import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../providers/api_provider.dart';
+import '../providers/auth_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/theme_provider.dart';
 
@@ -14,6 +17,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isLoggedIn = ref.watch(authProvider).value != null;
     final appVersion =
         ref.watch(packageInfoProvider).whenData((info) => info.version).value ??
             '';
@@ -155,6 +159,33 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+
+              if (!isLoggedIn) ...[
+                SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton.icon(
+                    onPressed: () => context.go(AppRoutes.login.path),
+                    icon: const Icon(Icons.login),
+                    label: Text(
+                      'welcome.sign_in'.tr(),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: context.colors.textOnFilled,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.colors.primary,
+                      foregroundColor: context.colors.textOnFilled,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: context.radius.tile,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
 
               SizedBox(height: context.spacing.panelPadding),
             ],
