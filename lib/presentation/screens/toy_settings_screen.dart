@@ -172,7 +172,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                               radius: 40,
                               backgroundColor:
                                   context.colors.primary.withValues(alpha: 0.2),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.smart_toy,
                                 size: 48,
                                 color: context.colors.primary,

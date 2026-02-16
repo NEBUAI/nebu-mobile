@@ -254,9 +254,9 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
           final textTheme = Theme.of(context).textTheme;
 
           return Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: context.colors.textOnFilled,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
             padding: const EdgeInsets.all(24),
             child: Column(
@@ -278,7 +278,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     color: context.colors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.settings_rounded,
                     color: context.colors.primary,
                     size: 32,
@@ -491,7 +491,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                       color: context.colors.primary.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(40),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Icon(
                         Icons.bluetooth_searching_rounded,
                         size: 36,
@@ -698,7 +698,7 @@ class _PrimaryButton extends StatelessWidget {
       child: Container(
         height: 56,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             colors: [context.colors.primary100, context.colors.primary],
           ),
           borderRadius: BorderRadius.circular(16),
@@ -712,7 +712,7 @@ class _PrimaryButton extends StatelessWidget {
         ),
         child: Center(
           child: isLoading
-              ? const SizedBox(
+              ? SizedBox(
                   width: 24,
                   height: 24,
                   child: CircularProgressIndicator(
@@ -790,7 +790,7 @@ class _DeviceCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
               child: isConnecting
-                  ? const Center(
+                  ? Center(
                       child: SizedBox(
                         width: 22,
                         height: 22,
@@ -848,11 +848,11 @@ class _DeviceCard extends StatelessWidget {
               Container(
                 width: 24,
                 height: 24,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: context.colors.primary,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.check_rounded,
                   color: context.colors.textOnFilled,
                   size: 16,
@@ -890,9 +890,9 @@ class _BottomSheet extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: context.colors.textOnFilled,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.all(24),
       child: Column(
