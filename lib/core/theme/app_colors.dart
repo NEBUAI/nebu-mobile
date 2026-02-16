@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+export 'app_border_radius.dart';
 export 'app_spacing.dart';
 
 /// Color tokens exported from Figma design system.

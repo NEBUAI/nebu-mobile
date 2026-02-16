@@ -110,7 +110,7 @@ class AppTheme {
           color: surfaceLight,
           elevation: 2,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16))),
+              borderRadius: BorderRadius.all(Radius.circular(AppRadius.panel))),
         ),
         elevatedButtonTheme: _getElevatedButtonTheme(_lightColorScheme),
         outlinedButtonTheme: _getOutlinedButtonTheme(_lightColorScheme),
@@ -142,7 +142,7 @@ class AppTheme {
           color: surfaceDark,
           elevation: 2,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16))),
+              borderRadius: BorderRadius.all(Radius.circular(AppRadius.panel))),
         ),
         elevatedButtonTheme: _getElevatedButtonTheme(_darkColorScheme),
         outlinedButtonTheme: _getOutlinedButtonTheme(_darkColorScheme),
@@ -167,7 +167,7 @@ class AppTheme {
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.button)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       );
@@ -179,7 +179,7 @@ class AppTheme {
           foregroundColor: colorScheme.primary,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.button)),
           side: BorderSide(color: colorScheme.primary, width: 2),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
@@ -190,19 +190,19 @@ class AppTheme {
         filled: true,
         fillColor: colorScheme.surface,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.input),
           borderSide: BorderSide(color: colorScheme.onSurface.withValues(alpha: 0.12)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.input),
           borderSide: BorderSide(color: colorScheme.onSurface.withValues(alpha: 0.12)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.input),
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.input),
           borderSide: BorderSide(color: colorScheme.error),
         ),
         contentPadding:
