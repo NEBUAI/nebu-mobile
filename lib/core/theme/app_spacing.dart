@@ -7,8 +7,12 @@ import 'package:flutter/widgets.dart';
 enum _ScreenSize { small, normal, large }
 
 _ScreenSize _resolveScreenSize(double width) {
-  if (width < 360) return _ScreenSize.small;
-  if (width < 600) return _ScreenSize.normal;
+  if (width < 360) {
+    return _ScreenSize.small;
+  }
+  if (width < 600) {
+    return _ScreenSize.normal;
+  }
   return _ScreenSize.large;
 }
 
