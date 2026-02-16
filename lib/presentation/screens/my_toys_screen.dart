@@ -472,7 +472,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           onRefresh: _loadToys,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(context.spacing.pageMargin),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -482,7 +482,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     size: 64,
                     color: theme.colorScheme.error,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   Text(
                     'toys.error_loading'.tr(),
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -490,9 +490,9 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(context.spacing.alertPadding),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(12),
@@ -508,7 +508,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
                   ElevatedButton.icon(
                     onPressed: _loadToys,
                     icon: const Icon(Icons.refresh),
@@ -552,13 +552,13 @@ class _ToyCard extends StatelessWidget {
     return Card(
       color: theme.colorScheme.surface,
       elevation: isDark ? 4 : 2,
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Row(
             children: [
               // Toy Icon

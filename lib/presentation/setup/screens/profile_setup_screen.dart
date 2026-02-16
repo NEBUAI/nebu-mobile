@@ -217,7 +217,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: context.spacing.titleBottomMargin),
 
                       CustomInput(
                         label: 'Email Address',
@@ -242,7 +242,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
 
                       // Privacy note
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(context.spacing.alertPadding),
                         decoration: BoxDecoration(
                           color: context.colors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
@@ -283,7 +283,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                       isFullWidth: true,
                       icon: Icons.arrow_forward,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
                     TextButton(
                       onPressed: notifier.previousStep,
                       child: Text(
@@ -297,7 +297,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   ],
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: context.spacing.titleBottomMargin),
               ],
             ),
           ),

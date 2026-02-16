@@ -57,7 +57,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
               : RefreshIndicator(
                   onRefresh: _loadOrders,
                   child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(context.spacing.alertPadding),
                     itemCount: _orders.length,
                     itemBuilder: (context, index) {
                       final order = _orders[index];
@@ -77,14 +77,14 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
           size: 100,
           color: theme.colorScheme.primary.withValues(alpha: 0.3),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: context.spacing.panelPadding),
         Text(
           'orders.no_orders'.tr(),
           style: theme.textTheme.titleLarge?.copyWith(
             color: theme.colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
         Text(
           'orders.no_orders_desc'.tr(),
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -108,14 +108,14 @@ class _OrderCard extends StatelessWidget {
     final total = order.totalPrice;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: context.spacing.sectionTitleBottomMargin),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: () => _showOrderDetails(context, order),
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -132,7 +132,7 @@ class _OrderCard extends StatelessWidget {
                   _buildStatusChip(order.status, context),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: context.spacing.titleBottomMarginSm),
 
               // Date
               Row(
@@ -151,10 +151,10 @@ class _OrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: context.spacing.paragraphBottomMarginSm),
 
               const Divider(),
-              const SizedBox(height: 12),
+              SizedBox(height: context.spacing.paragraphBottomMarginSm),
 
               // Items
               ...order.items.map(
@@ -181,7 +181,7 @@ class _OrderCard extends StatelessWidget {
               ),
 
               const Divider(),
-              const SizedBox(height: 12),
+              SizedBox(height: context.spacing.paragraphBottomMarginSm),
 
               // Total
               Row(
