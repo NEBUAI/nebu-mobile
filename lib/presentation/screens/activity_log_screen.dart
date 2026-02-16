@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
 import '../../data/models/activity.dart';
 import '../providers/activity_provider.dart';
 import '../providers/auth_provider.dart';
@@ -146,7 +145,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
                   label: Text('common.retry'.tr()),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: context.colors.textOnFilled,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
@@ -185,7 +184,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
           }
 
           final activity = state.activities[index];
-          return _buildActivityCard(activity, theme);
+          return _buildActivityCard(context, activity, theme);
         },
       ),
     );
@@ -230,17 +229,16 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
       ),
     );
 
-  Widget _buildActivityCard(Activity activity, ThemeData theme) {
+  Widget _buildActivityCard(BuildContext context, Activity activity, ThemeData theme) {
     final icon = _getIconForActivityType(activity.type);
+    final activityColor = _getColorForActivityType(context, activity.type);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: _getColorForActivityType(
-            activity.type,
-          ).withValues(alpha: 0.2),
-          child: Icon(icon, color: _getColorForActivityType(activity.type)),
+          backgroundColor: activityColor.withValues(alpha: 0.2),
+          child: Icon(icon, color: activityColor),
         ),
         title: Text(
           _getActivityTitle(activity.type),
@@ -284,16 +282,16 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
       ActivityType.chat => Icons.chat,
     };
 
-  Color _getColorForActivityType(ActivityType type) => switch (type) {
-      ActivityType.voiceCommand => AppColors.secondaryMainLight,
-      ActivityType.connection => AppColors.greenMainLight,
-      ActivityType.interaction => AppTheme.primaryLight,
-      ActivityType.update => AppColors.amberMainLight,
-      ActivityType.error => AppColors.redMainLight,
-      ActivityType.play => AppColors.primaryMainLight,
-      ActivityType.sleep => AppColors.primaryN100Light,
-      ActivityType.wake => AppColors.amber100Light,
-      ActivityType.chat => AppColors.secondary100Light,
+  Color _getColorForActivityType(BuildContext context, ActivityType type) => switch (type) {
+      ActivityType.voiceCommand => context.colors.secondary,
+      ActivityType.connection => context.colors.success,
+      ActivityType.interaction => context.colors.primary,
+      ActivityType.update => context.colors.warning,
+      ActivityType.error => context.colors.error,
+      ActivityType.play => context.colors.primary,
+      ActivityType.sleep => context.colors.primary,
+      ActivityType.wake => context.colors.warning100,
+      ActivityType.chat => context.colors.secondary100,
     };
 
   String _getActivityTitle(ActivityType type) => switch (type) {

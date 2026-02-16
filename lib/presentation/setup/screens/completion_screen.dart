@@ -67,12 +67,9 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
   Widget build(BuildContext context) {
     final SetupWizardState state = ref.watch(setupWizardProvider);
     final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -145,7 +142,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                       'Welcome to Nebu! Your AI companion is ready to help you.',
                       style: TextStyle(
                         fontSize: 18,
-                        color: isDark ? AppColors.grey700Dark : AppColors.grey400Light,
+                        color: context.colors.grey400,
                         height: 1.4,
                       ),
                       textAlign: TextAlign.center,
@@ -155,7 +152,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
               ),
 
               // Summary section
-              Expanded(flex: 2, child: _buildSummarySection(state, isDark)),
+              Expanded(flex: 2, child: _buildSummarySection(state)),
 
               // Action button
               CustomButton(

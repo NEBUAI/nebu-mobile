@@ -129,7 +129,7 @@ class _OrderCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  _buildStatusChip(order.status, theme),
+                  _buildStatusChip(order.status, context),
                 ],
               ),
               const SizedBox(height: 8),
@@ -209,30 +209,30 @@ class _OrderCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusChip(String status, ThemeData theme) {
+  Widget _buildStatusChip(String status, BuildContext context) {
     Color color;
     String label;
 
     switch (status.toUpperCase()) {
       case 'DELIVERED':
-        color = AppColors.greenMainLight;
+        color = context.colors.success;
         label = 'orders.status_delivered'.tr();
       case 'SHIPPED':
-        color = AppColors.secondaryMainLight;
+        color = context.colors.info;
         label = 'orders.status_shipped'.tr();
       case 'PROCESSING':
       case 'CONFIRMED':
-        color = AppColors.amberMainLight;
+        color = context.colors.warning;
         label = 'orders.status_processing'.tr();
       case 'CANCELLED':
-        color = AppColors.redMainLight;
+        color = context.colors.error;
         label = 'orders.status_cancelled'.tr();
       case 'PENDING':
       case 'RESERVED':
-        color = AppColors.amber100Light;
+        color = context.colors.warning100;
         label = 'orders.status_processing'.tr();
       default:
-        color = AppColors.grey400Light;
+        color = context.colors.grey400;
         label = status;
     }
 
@@ -327,7 +327,7 @@ class _OrderDetailsSheet extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Status timeline
-            _buildStatusTimeline(theme),
+            _buildStatusTimeline(context),
             const SizedBox(height: 24),
 
             // Items
@@ -397,7 +397,8 @@ class _OrderDetailsSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusTimeline(ThemeData theme) {
+  Widget _buildStatusTimeline(BuildContext context) {
+    final theme = Theme.of(context);
     final upperStatus = order.status.toUpperCase();
     final statusOrder = ['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED'];
     final currentIndex = statusOrder.indexOf(upperStatus);
@@ -413,23 +414,23 @@ class _OrderDetailsSheet extends StatelessWidget {
           _buildTimelineItem(
             'orders.timeline_placed'.tr(),
             currentIndex >= 0,
-            theme,
+            context,
             isFirst: true,
           ),
           _buildTimelineItem(
             'orders.timeline_processing'.tr(),
             currentIndex >= 1,
-            theme,
+            context,
           ),
           _buildTimelineItem(
             'orders.timeline_shipped'.tr(),
             currentIndex >= 2,
-            theme,
+            context,
           ),
           _buildTimelineItem(
             'orders.timeline_delivered'.tr(),
             currentIndex >= 3,
-            theme,
+            context,
             isLast: true,
           ),
         ],
@@ -440,10 +441,12 @@ class _OrderDetailsSheet extends StatelessWidget {
   Widget _buildTimelineItem(
     String label,
     bool completed,
-    ThemeData theme, {
+    BuildContext context, {
     bool isFirst = false,
     bool isLast = false,
-  }) => Row(
+  }) {
+    final theme = Theme.of(context);
+    return Row(
     children: [
       Column(
         children: [
@@ -453,13 +456,13 @@ class _OrderDetailsSheet extends StatelessWidget {
               height: 20,
               color: completed
                   ? theme.colorScheme.primary
-                  : AppColors.grey400Light.withValues(alpha: 0.3),
+                  : context.colors.grey400.withValues(alpha: 0.3),
             ),
           Icon(
             completed ? Icons.check_circle : Icons.circle_outlined,
             color: completed
                 ? theme.colorScheme.primary
-                : AppColors.grey400Light.withValues(alpha: 0.5),
+                : context.colors.grey400.withValues(alpha: 0.5),
             size: 24,
           ),
           if (!isLast)
@@ -468,7 +471,7 @@ class _OrderDetailsSheet extends StatelessWidget {
               height: 20,
               color: completed
                   ? theme.colorScheme.primary
-                  : AppColors.grey400Light.withValues(alpha: 0.3),
+                  : context.colors.grey400.withValues(alpha: 0.3),
             ),
         ],
       ),
@@ -484,6 +487,7 @@ class _OrderDetailsSheet extends StatelessWidget {
       ),
     ],
   );
+  }
 
   Widget _buildItemRow(_OrderItem item, ThemeData theme) => Padding(
     padding: const EdgeInsets.only(bottom: 12),

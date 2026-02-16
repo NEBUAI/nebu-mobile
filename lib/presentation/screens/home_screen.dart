@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 import '../providers/bluetooth_provider.dart';
 import '../providers/device_provider.dart';
 
@@ -213,7 +214,7 @@ class _DeviceBatteryCard extends ConsumerWidget {
             child: CircularProgressIndicator(strokeWidth: 2.5),
           ),
           error: (error, stack) =>
-              const Icon(Icons.error_outline, color: Colors.red),
+              Icon(Icons.error_outline, color: context.colors.error),
         ),
       ),
     );

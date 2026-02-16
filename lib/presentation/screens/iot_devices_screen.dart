@@ -24,14 +24,14 @@ class IoTDevicesScreen extends ConsumerWidget {
               ? Center(
                   child: Text(
                     'Error: ${iotDevicesState.error}',
-                    style: const TextStyle(color: Colors.red),
+                    style: TextStyle(color: context.colors.error),
                   ),
                 )
               : iotDevicesState.devices.isEmpty
                   ? Center(
                       child: Text(
                         'iot_devices.no_devices'.tr(),
-                        style: const TextStyle(fontSize: 18, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: context.colors.grey400),
                       ),
                     )
                   : ListView.builder(
@@ -60,13 +60,13 @@ class IoTDevicesScreen extends ConsumerWidget {
                                 final deviceType = device.deviceType?.toString().split('.').last ?? 'toy_settings.unknown'.tr();
                                 return Text(
                                   'ID: ${device.id}\nType: $deviceType',
-                                  style: TextStyle(color: Colors.grey[600]),
+                                  style: TextStyle(color: context.colors.grey400),
                                 );
                               },
                             ),
                             trailing: Icon(
                               Icons.circle,
-                              color: device.status == DeviceStatus.online ? Colors.green : Colors.red,
+                              color: device.status == DeviceStatus.online ? context.colors.success : context.colors.error,
                               size: 12,
                             ),
                           ),
@@ -76,7 +76,7 @@ class IoTDevicesScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => ref.read(iotDevicesProvider.notifier).fetchUserDevices(),
         backgroundColor: colorScheme.primary,
-        child: const Icon(Icons.refresh, color: Colors.white),
+        child: Icon(Icons.refresh, color: context.colors.textOnFilled),
       ),
     );
   }

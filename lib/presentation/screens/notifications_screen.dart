@@ -240,7 +240,7 @@ class _NotificationCard extends StatelessWidget {
           color: context.colors.error,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: const Icon(Icons.delete, color: Colors.white),
+        child: Icon(Icons.delete, color: context.colors.textOnFilled),
       ),
       child: Card(
         margin: const EdgeInsets.only(bottom: 12),
@@ -271,13 +271,13 @@ class _NotificationCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: _getTypeColor(
                       notification.type,
-                      theme,
+                      context,
                     ).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     _getTypeIcon(notification.type),
-                    color: _getTypeColor(notification.type, theme),
+                    color: _getTypeColor(notification.type, context),
                     size: 24,
                   ),
                 ),
@@ -355,16 +355,16 @@ class _NotificationCard extends StatelessWidget {
     }
   }
 
-  Color _getTypeColor(String type, ThemeData theme) {
+  Color _getTypeColor(String type, BuildContext context) {
     switch (type) {
       case 'toys':
-        return AppColors.secondaryMainLight;
+        return context.colors.secondary;
       case 'orders':
-        return AppColors.greenMainLight;
+        return context.colors.success;
       case 'system':
-        return AppColors.amberMainLight;
+        return context.colors.warning;
       default:
-        return theme.colorScheme.primary;
+        return context.colors.primary;
     }
   }
 

@@ -177,12 +177,12 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
         SnackBar(
           content: Row(
             children: [
-              const Icon(Icons.check_circle, color: Colors.white, size: 20),
+              Icon(Icons.check_circle, color: context.colors.textOnFilled, size: 20),
               const SizedBox(width: 12),
               Text('setup.connection.connected_to'.tr(args: [device.platformName])),
             ],
           ),
-          backgroundColor: const Color(0xFF4CAF50),
+          backgroundColor: context.colors.success,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           margin: const EdgeInsets.all(16),
@@ -200,12 +200,12 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
         SnackBar(
           content: Row(
             children: [
-              const Icon(Icons.error_outline, color: Colors.white, size: 20),
+              Icon(Icons.error_outline, color: context.colors.textOnFilled, size: 20),
               const SizedBox(width: 12),
               Expanded(child: Text('setup.connection.connection_failed'.tr())),
             ],
           ),
-          backgroundColor: const Color(0xFFE53935),
+          backgroundColor: context.colors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           margin: const EdgeInsets.all(16),
@@ -224,7 +224,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       backgroundColor: Colors.transparent,
       builder: (context) => _BottomSheet(
         icon: Icons.bluetooth_disabled_rounded,
-        iconColor: const Color(0xFF6B4EFF),
+        iconColor: context.colors.primary,
         title: 'setup.connection.enable_bluetooth_title'.tr(),
         description: 'setup.connection.enable_bluetooth_message'.tr(),
         primaryText: 'setup.connection.enable_bluetooth_title'.tr(),
@@ -254,7 +254,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
 
           return Container(
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: context.colors.textOnFilled,
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
             padding: const EdgeInsets.all(24),
@@ -265,7 +265,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: context.colors.grey700,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -274,12 +274,12 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF6B4EFF).withValues(alpha: 0.1),
+                    color: context.colors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Icon(
                     Icons.settings_rounded,
-                    color: Color(0xFF6B4EFF),
+                    color: context.colors.primary,
                     size: 32,
                   ),
                 ),
@@ -288,14 +288,14 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   'setup.connection.setup_options'.tr(),
                   style: textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: Colors.black,
+                    color: context.colors.textNormal,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'setup.connection.setup_options_desc'.tr(),
                   style: textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
+                    color: context.colors.grey400,
                   ),
                 ),
                 const SizedBox(height: 28),
@@ -338,7 +338,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
       backgroundColor: Colors.transparent,
       builder: (context) => _BottomSheet(
         icon: Icons.security_rounded,
-        iconColor: const Color(0xFFFF9800),
+        iconColor: context.colors.warning,
         title: 'setup.connection.permissions_required_title'.tr(),
         description:
             'setup.connection.permissions_denied_desc'.tr(),
@@ -479,7 +479,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF6B4EFF).withValues(alpha: 0.1),
+                  color: context.colors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(60),
                 ),
                 child: Center(
@@ -487,14 +487,14 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF6B4EFF).withValues(alpha: 0.15),
+                      color: context.colors.primary.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: const Center(
                       child: Icon(
                         Icons.bluetooth_searching_rounded,
                         size: 36,
-                        color: Color(0xFF6B4EFF),
+                        color: context.colors.primary,
                       ),
                     ),
                   ),
@@ -582,14 +582,14 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: const Color(0xFF6B4EFF).withValues(alpha: 0.1),
+                color: context.colors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 '${_scanResults.length}',
                 style: textTheme.labelSmall?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xFF6B4EFF),
+                  color: context.colors.primary,
                 ),
               ),
             ),
@@ -669,8 +669,8 @@ class _StepIndicator extends StatelessWidget {
             height: 8,
             decoration: BoxDecoration(
               color: isActive
-                  ? const Color(0xFF6B4EFF)
-                  : const Color(0xFF6B4EFF).withValues(alpha: 0.2),
+                  ? context.colors.primary
+                  : context.colors.primary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(4),
             ),
           );
@@ -698,12 +698,12 @@ class _PrimaryButton extends StatelessWidget {
         height: 56,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFF8B6FFF), Color(0xFF6B4EFF)],
+            colors: [context.colors.primary100, context.colors.primary],
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF6B4EFF).withValues(alpha: 0.3),
+              color: context.colors.primary.withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -716,13 +716,13 @@ class _PrimaryButton extends StatelessWidget {
                   height: 24,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(context.colors.textOnFilled),
                   ),
                 )
               : Text(
                   text,
                   style: textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
+                    color: context.colors.textOnFilled,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -768,12 +768,12 @@ class _DeviceCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF6B4EFF).withValues(alpha: 0.08)
+              ? context.colors.primary.withValues(alpha: 0.08)
               : colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color:
-                isSelected ? const Color(0xFF6B4EFF) : colorScheme.outline,
+                isSelected ? context.colors.primary : colorScheme.outline,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -784,7 +784,7 @@ class _DeviceCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? const Color(0xFF6B4EFF).withValues(alpha: 0.15)
+                    ? context.colors.primary.withValues(alpha: 0.15)
                     : colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -796,7 +796,7 @@ class _DeviceCard extends StatelessWidget {
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            Color(0xFF6B4EFF),
+                            context.colors.primary,
                           ),
                         ),
                       ),
@@ -804,7 +804,7 @@ class _DeviceCard extends StatelessWidget {
                   : Icon(
                       Icons.bluetooth_rounded,
                       color: isSelected
-                          ? const Color(0xFF6B4EFF)
+                          ? context.colors.primary
                           : colorScheme.onSurfaceVariant,
                       size: 24,
                     ),
@@ -819,7 +819,7 @@ class _DeviceCard extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: isSelected
-                          ? const Color(0xFF6B4EFF)
+                          ? context.colors.primary
                           : colorScheme.onSurface,
                     ),
                   ),
@@ -848,12 +848,12 @@ class _DeviceCard extends StatelessWidget {
                 width: 24,
                 height: 24,
                 decoration: const BoxDecoration(
-                  color: Color(0xFF6B4EFF),
+                  color: context.colors.primary,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.check_rounded,
-                  color: Colors.white,
+                  color: context.colors.textOnFilled,
                   size: 16,
                 ),
               ),
@@ -890,7 +890,7 @@ class _BottomSheet extends StatelessWidget {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: context.colors.textOnFilled,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.all(24),
@@ -901,7 +901,7 @@ class _BottomSheet extends StatelessWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: context.colors.grey700,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -920,7 +920,7 @@ class _BottomSheet extends StatelessWidget {
             title,
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w700,
-              color: Colors.black,
+              color: context.colors.textNormal,
             ),
           ),
           const SizedBox(height: 8),
@@ -928,7 +928,7 @@ class _BottomSheet extends StatelessWidget {
             description,
             textAlign: TextAlign.center,
             style: textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: context.colors.grey400,
               height: 1.4,
             ),
           ),
@@ -945,7 +945,7 @@ class _BottomSheet extends StatelessWidget {
                 child: Text(
                   primaryText,
                   style: textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
+                    color: context.colors.textOnFilled,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -960,7 +960,7 @@ class _BottomSheet extends StatelessWidget {
               child: Text(
                 secondaryText,
                 style: textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
+                  color: context.colors.grey400,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -996,13 +996,13 @@ class _OptionCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSecondary
-              ? Colors.grey[50]
-              : const Color(0xFF6B4EFF).withValues(alpha: 0.08),
+              ? context.colors.grey900
+              : context.colors.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSecondary
-                ? Colors.grey[200]!
-                : const Color(0xFF6B4EFF).withValues(alpha: 0.3),
+                ? context.colors.grey700
+                : context.colors.primary.withValues(alpha: 0.3),
           ),
         ),
         child: Row(
@@ -1012,13 +1012,13 @@ class _OptionCard extends StatelessWidget {
               height: 44,
               decoration: BoxDecoration(
                 color: isSecondary
-                    ? Colors.grey[100]
-                    : const Color(0xFF6B4EFF).withValues(alpha: 0.15),
+                    ? context.colors.grey800
+                    : context.colors.primary.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 icon,
-                color: isSecondary ? Colors.grey[600] : const Color(0xFF6B4EFF),
+                color: isSecondary ? context.colors.grey400 : context.colors.primary,
                 size: 22,
               ),
             ),
@@ -1032,15 +1032,15 @@ class _OptionCard extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: isSecondary
-                          ? Colors.grey[700]
-                          : const Color(0xFF6B4EFF),
+                          ? context.colors.grey300
+                          : context.colors.primary,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     description,
                     style: textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[500],
+                      color: context.colors.grey500,
                     ),
                   ),
                 ],
@@ -1049,7 +1049,7 @@ class _OptionCard extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios_rounded,
               size: 16,
-              color: Colors.grey[400],
+              color: context.colors.grey500,
             ),
           ],
         ),

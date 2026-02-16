@@ -237,7 +237,7 @@ Communication style:
               Expanded(
                 child: DecoratedBox(
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: context.colors.textOnFilled,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(32),
                       topRight: Radius.circular(32),
@@ -323,12 +323,12 @@ Communication style:
                                   decoration: BoxDecoration(
                                     color: isSelected
                                         ? AppTheme.primaryLight
-                                        : AppColors.grey900Light,
+                                        : context.colors.grey900,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: isSelected
                                           ? AppTheme.primaryLight
-                                          : AppColors.grey700Light,
+                                          : context.colors.grey700,
                                       width: 2,
                                     ),
                                   ),
@@ -344,8 +344,8 @@ Communication style:
                                         age['label']!.tr(),
                                         style: TextStyle(
                                           color: isSelected
-                                              ? Colors.white
-                                              : Colors.black87,
+                                              ? context.colors.textOnFilled
+                                              : context.colors.textNormal,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -387,12 +387,12 @@ Communication style:
                                         ? AppTheme.primaryLight.withValues(
                                             alpha: 0.1,
                                           )
-                                        : AppColors.grey900Light,
+                                        : context.colors.grey900,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: isSelected
                                           ? AppTheme.primaryLight
-                                          : AppColors.grey700Light,
+                                          : context.colors.grey700,
                                       width: 2,
                                     ),
                                   ),
@@ -413,7 +413,7 @@ Communication style:
                                                 : FontWeight.w500,
                                             color: isSelected
                                                 ? AppTheme.primaryLight
-                                                : Colors.black87,
+                                                : context.colors.textNormal,
                                           ),
                                         ),
                                       ),
@@ -469,7 +469,7 @@ Communication style:
                             onPressed: _isSaving ? null : _saveData,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.primaryLight,
-                              foregroundColor: Colors.white,
+                              foregroundColor: context.colors.textOnFilled,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -481,14 +481,14 @@ Communication style:
                                     width: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.white,
+                                      color: context.colors.textOnFilled,
                                     ),
                                   )
                                 : Text(
                                     'setup.local_child.save_continue'.tr(),
                                     style: theme.textTheme.titleMedium
                                         ?.copyWith(
-                                          color: Colors.white,
+                                          color: context.colors.textOnFilled,
                                           fontWeight: FontWeight.bold,
                                         ),
                                   ),
@@ -513,12 +513,12 @@ Communication style:
     children: [
       IconButton(
         onPressed: () => context.pop(),
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
       ),
       Text(
         'setup.local_child.title'.tr(),
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: Colors.white,
+          color: context.colors.textOnFilled,
           fontWeight: FontWeight.bold,
         ),
       ),

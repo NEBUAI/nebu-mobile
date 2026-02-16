@@ -141,7 +141,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                 duration: const Duration(seconds: 5),
                 action: SnackBarAction(
                   label: 'setup.wifi.retry'.tr(),
-                  textColor: Colors.white,
+                  textColor: context.colors.textOnFilled,
                   onPressed: _connectToWifi,
                 ),
               ),
@@ -535,14 +535,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
   Widget _buildHotspotHint() => Row(
     children: [
-      Icon(Icons.info_outline, size: 14, color: Colors.white.withAlpha(179)),
+      Icon(Icons.info_outline, size: 14, color: context.colors.textOnFilled.withAlpha(179)),
       const SizedBox(width: 6),
       Expanded(
         child: Text(
           'setup.wifi.hotspot_hint'.tr(),
           style: TextStyle(
             fontSize: 12,
-            color: Colors.white.withAlpha(179),
+            color: context.colors.textOnFilled.withAlpha(179),
           ),
         ),
       ),
@@ -577,7 +577,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     children: [
       IconButton(
         onPressed: () => context.pop(),
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
       ),
       const Spacer(),
       _buildProgressIndicator(2, 7), // This is now step 2
@@ -593,14 +593,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     children: [
       Text(
         'setup.wifi.title'.tr(),
-        style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
+        style: theme.textTheme.headlineMedium?.copyWith(color: context.colors.textOnFilled),
         textAlign: TextAlign.center,
       ),
       const SizedBox(height: 12),
       Text(
         'setup.wifi.subtitle'.tr(),
         style: theme.textTheme.bodyLarge?.copyWith(
-          color: Colors.white.withAlpha(230),
+          color: context.colors.textOnFilled.withAlpha(230),
         ),
         textAlign: TextAlign.center,
       ),
@@ -609,7 +609,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
   Widget _buildSsidInput(ThemeData theme) => TextFormField(
     controller: _ssidController,
-    style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+    style: theme.textTheme.titleMedium?.copyWith(color: context.colors.textOnFilled),
     decoration: _buildInputDecoration(theme, 'setup.wifi.ssid_hint'.tr()),
     validator: (value) {
       if (value == null || value.trim().isEmpty) {
@@ -633,14 +633,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   Widget _buildPasswordInput(ThemeData theme) => TextFormField(
     controller: _passwordController,
     obscureText: !_isPasswordVisible,
-    style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+    style: theme.textTheme.titleMedium?.copyWith(color: context.colors.textOnFilled),
     decoration: _buildInputDecoration(
       theme,
       'setup.wifi.password_hint'.tr(),
       suffixIcon: IconButton(
         icon: Icon(
           _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-          color: Colors.white.withAlpha(179),
+          color: context.colors.textOnFilled.withAlpha(179),
         ),
         onPressed: () {
           setState(() {
@@ -670,9 +670,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     Widget? suffixIcon,
   }) => InputDecoration(
     hintText: hintText,
-    hintStyle: TextStyle(color: Colors.white.withAlpha(128)),
+    hintStyle: TextStyle(color: context.colors.textOnFilled.withAlpha(128)),
     filled: true,
-    fillColor: Colors.white.withAlpha(51),
+    fillColor: context.colors.textOnFilled.withAlpha(51),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: BorderSide.none,
@@ -687,7 +687,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       ElevatedButton(
         onPressed: _isConnecting ? null : _connectToWifi,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
+          backgroundColor: context.colors.bgPrimary,
           foregroundColor: AppTheme.primaryLight,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
@@ -720,8 +720,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
               : 'setup.wifi.skip_button'.tr(),
           style: theme.textTheme.bodyLarge?.copyWith(
             color: _isConnecting
-                ? AppColors.redMainLight.withAlpha(204)
-                : Colors.white.withAlpha(204),
+                ? context.colors.error.withAlpha(204)
+                : context.colors.textOnFilled.withAlpha(204),
           ),
         ),
       ),
@@ -756,7 +756,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         width: index < current ? 24 : 8,
         height: 8,
         decoration: BoxDecoration(
-          color: index < current ? Colors.white : Colors.white.withAlpha(77),
+          color: index < current ? context.colors.textOnFilled : context.colors.textOnFilled.withAlpha(77),
           borderRadius: BorderRadius.circular(4),
         ),
       ),
@@ -783,17 +783,17 @@ class _QuickActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withAlpha(40),
+          color: context.colors.textOnFilled.withAlpha(40),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withAlpha(60)),
+          border: Border.all(color: context.colors.textOnFilled.withAlpha(60)),
         ),
         child: Column(
           children: [
-            Icon(icon, color: Colors.white, size: 28),
+            Icon(icon, color: context.colors.textOnFilled, size: 28),
             const SizedBox(height: 4),
             Text(
               label,
-              style: theme.textTheme.labelMedium?.copyWith(color: Colors.white),
+              style: theme.textTheme.labelMedium?.copyWith(color: context.colors.textOnFilled),
             ),
           ],
         ),
@@ -856,7 +856,7 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: context.colors.textOnFilled,
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(

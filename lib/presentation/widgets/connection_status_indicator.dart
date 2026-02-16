@@ -56,7 +56,7 @@ class ConnectionStatusIndicator extends StatelessWidget {
               : 'walkie_talkie.waiting_for_toy'.tr(),
           style: TextStyle(
             fontSize: 12,
-            color: Colors.grey.shade600,
+            color: context.colors.grey400,
           ),
         ),
       ],

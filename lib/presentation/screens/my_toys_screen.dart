@@ -219,7 +219,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
-                  foregroundColor: Colors.white,
+                  foregroundColor: context.colors.textOnFilled,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -400,7 +400,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                             label: Text('toys.setup_new_toy'.tr()),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.primary,
-                              foregroundColor: Colors.white,
+                              foregroundColor: context.colors.textOnFilled,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 24,
                                 vertical: 12,
@@ -515,7 +515,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                     label: Text('common.retry'.tr()),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: context.colors.textOnFilled,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 enum ButtonVariant { primary, secondary, outline }
@@ -38,7 +39,7 @@ class CustomButton extends StatelessWidget {
             height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: AlwaysStoppedAnimation<Color>(context.colors.textOnFilled),
             ),
           )
         else ...[
@@ -77,7 +78,7 @@ class CustomButton extends StatelessWidget {
             onPressed: isLoading ? null : onPressed,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
-              foregroundColor: Colors.white,
+              foregroundColor: context.colors.textOnFilled,
               shadowColor: Colors.transparent,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

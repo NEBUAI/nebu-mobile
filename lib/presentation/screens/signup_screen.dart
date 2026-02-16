@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/theme/app_colors.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
 
@@ -83,7 +84,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     // We only need to show error messages here
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -106,14 +107,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     style: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.5,
-                      color: Colors.black,
+                      color: context.colors.textNormal,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'auth.create_account_subtitle'.tr(),
                     style: textTheme.titleMedium?.copyWith(
-                      color: Colors.grey[600],
+                      color: context.colors.grey400,
                     ),
                   ),
 
@@ -267,7 +268,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         Text(
                           "${'auth.already_have_account'.tr()} ",
                           style: textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
+                            color: context.colors.grey400,
                           ),
                         ),
                         GestureDetector(
@@ -275,7 +276,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           child: Text(
                             'auth.sign_in'.tr(),
                             style: textTheme.bodyMedium?.copyWith(
-                              color: const Color(0xFF6B4EFF),
+                              color: context.colors.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -308,13 +309,13 @@ class _BackButton extends StatelessWidget {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: context.colors.grey900,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 18,
-            color: Colors.grey[800],
+            color: context.colors.grey200,
           ),
         ),
       );
@@ -352,17 +353,17 @@ class _CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       validator: validator,
       textCapitalization: textCapitalization,
-      style: textTheme.bodyLarge?.copyWith(color: Colors.black87),
+      style: textTheme.bodyLarge?.copyWith(color: context.colors.textNormal),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+        labelStyle: textTheme.bodyMedium?.copyWith(color: context.colors.grey400),
         floatingLabelStyle: textTheme.bodySmall?.copyWith(
-          color: const Color(0xFF6B4EFF),
+          color: context.colors.primary,
           fontWeight: FontWeight.w500,
         ),
         prefixIcon: Icon(
           prefixIcon,
-          color: Colors.grey[400],
+          color: context.colors.grey500,
           size: 22,
         ),
         suffixIcon: suffixIcon != null
@@ -370,32 +371,32 @@ class _CustomTextField extends StatelessWidget {
                 onTap: onSuffixTap,
                 child: Icon(
                   suffixIcon,
-                  color: Colors.grey[400],
+                  color: context.colors.grey500,
                   size: 22,
                 ),
               )
             : null,
         filled: true,
-        fillColor: Colors.grey[50],
+        fillColor: context.colors.grey900,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey[200]!),
+          borderSide: BorderSide(color: context.colors.grey800),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFF6B4EFF), width: 1.5),
+          borderSide: BorderSide(color: context.colors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.red[300]!),
+          borderSide: BorderSide(color: context.colors.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.red[400]!, width: 1.5),
+          borderSide: BorderSide(color: context.colors.error, width: 1.5),
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 18),

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../data/models/iot_device.dart';
 import '../../data/models/toy.dart';
 import '../providers/iot_provider.dart';
@@ -178,7 +179,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
                   label: Text('common.retry'.tr()),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: context.colors.textOnFilled,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
@@ -232,7 +233,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
       return Center(
         child: Text(
           'all_devices.no_iot_devices'.tr(),
-          style: const TextStyle(fontSize: 18, color: Colors.grey),
+          style: TextStyle(fontSize: 18, color: context.colors.grey500),
         ),
       );
     }
@@ -262,13 +263,13 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
               ),
               subtitle: Text(
                 'ID: ${device.id}\nType: ${device.deviceType?.toString().split('.').last ?? 'toy_settings.unknown'.tr()}',
-                style: TextStyle(color: Colors.grey[600]),
+                style: TextStyle(color: context.colors.grey400),
               ),
               trailing: Icon(
                 Icons.circle,
                 color: device.status == DeviceStatus.online
-                    ? Colors.green
-                    : Colors.red,
+                    ? context.colors.success
+                    : context.colors.error,
                 size: 12,
               ),
             ),
@@ -299,11 +300,11 @@ class _ToyCard extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: isOnline
-              ? Colors.green.withValues(alpha: 0.1)
-              : Colors.grey.withValues(alpha: 0.1),
+              ? context.colors.success.withValues(alpha: 0.1)
+              : context.colors.grey500.withValues(alpha: 0.1),
           child: Icon(
             Icons.smart_toy,
-            color: isOnline ? Colors.green : Colors.grey,
+            color: isOnline ? context.colors.success : context.colors.grey500,
           ),
         ),
         title: Text(toy.name),
@@ -315,7 +316,7 @@ class _ToyCard extends StatelessWidget {
           ],
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: Colors.red),
+          icon: Icon(Icons.delete_outline, color: context.colors.error),
           onPressed: () {
             showDialog<void>(
               context: context,
@@ -332,7 +333,7 @@ class _ToyCard extends StatelessWidget {
                       Navigator.pop(context);
                       onDelete();
                     },
-                    style: TextButton.styleFrom(foregroundColor: Colors.red),
+                    style: TextButton.styleFrom(foregroundColor: context.colors.error),
                     child: Text('common.delete'.tr()),
                   ),
                 ],

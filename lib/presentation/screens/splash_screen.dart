@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -114,7 +115,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: const Color(0xFF6B4EFF),
+    backgroundColor: context.colors.primary,
     body: SafeArea(
       child: Center(
         child: Column(
@@ -131,8 +132,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     'assets/icon_flow.svg',
                     width: 120,
                     height: 120,
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
+                    colorFilter: ColorFilter.mode(
+                      context.colors.textOnFilled,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -154,11 +155,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     style: GoogleFonts.poppins(
                       fontSize: 64,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: context.colors.textOnFilled,
                       letterSpacing: 6,
                       shadows: [
                         Shadow(
-                          color: Colors.black.withValues(alpha: 0.25),
+                          color: context.colors.textNormal.withValues(alpha: 0.25),
                           offset: const Offset(0, 4),
                           blurRadius: 12,
                         ),
@@ -181,7 +182,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white.withValues(alpha: 0.85),
+                    color: context.colors.textOnFilled.withValues(alpha: 0.85),
                     letterSpacing: 2,
                   ),
                 ),

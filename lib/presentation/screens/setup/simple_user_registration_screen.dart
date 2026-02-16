@@ -75,7 +75,7 @@ class _SimpleUserRegistrationScreenState
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('simple_registration.success'.tr()),
-          backgroundColor: Colors.green,
+          backgroundColor: context.colors.success,
         ),
       );
 

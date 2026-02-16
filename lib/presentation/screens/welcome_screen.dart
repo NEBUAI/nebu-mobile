@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -15,14 +16,14 @@ class WelcomeScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFF8B6FFF),
-              Color(0xFF6B4EFF),
-              Color(0xFF5240D9),
+              context.colors.primary100,
+              context.colors.primary,
+              const Color(0xFF5240D9),
             ],
           ),
         ),
@@ -38,7 +39,7 @@ class WelcomeScreen extends StatelessWidget {
                   width: 140,
                   height: 140,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: context.colors.bgPrimary,
                     borderRadius: BorderRadius.circular(36),
                     boxShadow: [
                       // Sombra oscura
@@ -49,7 +50,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       // Luz superior
                       BoxShadow(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        color: context.colors.textOnFilled.withValues(alpha: 0.2),
                         blurRadius: 20,
                         offset: const Offset(-4, -4),
                       ),
@@ -68,7 +69,7 @@ class WelcomeScreen extends StatelessWidget {
                   'welcome.title'.tr(),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: Colors.white,
+                    color: context.colors.textOnFilled,
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.5,
                     height: 1.2,
@@ -82,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                   'welcome.subtitle'.tr(),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: context.colors.textOnFilled.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w400,
                     height: 1.5,
                   ),
@@ -120,7 +121,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: Text(
                       'welcome.continue_without_account'.tr(),
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: context.colors.textOnFilled.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -156,11 +157,11 @@ class _PrimaryButton extends StatelessWidget {
         child: Container(
           height: 56,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.colors.bgPrimary,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.15),
+                color: context.colors.textNormal.withValues(alpha: 0.15),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -169,8 +170,8 @@ class _PrimaryButton extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: const TextStyle(
-                color: Color(0xFF6B4EFF),
+              style: TextStyle(
+                color: context.colors.primary,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.3,
@@ -201,10 +202,10 @@ class _SecondaryButton extends StatelessWidget {
         child: Container(
           height: 56,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.1),
+            color: context.colors.textOnFilled.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.4),
+              color: context.colors.textOnFilled.withValues(alpha: 0.4),
               width: 1.5,
             ),
           ),
@@ -212,7 +213,7 @@ class _SecondaryButton extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.95),
+                color: context.colors.textOnFilled.withValues(alpha: 0.95),
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.3,

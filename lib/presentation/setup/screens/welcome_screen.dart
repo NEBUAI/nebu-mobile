@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
@@ -14,12 +15,8 @@ class WelcomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final SetupWizardState state = ref.watch(setupWizardProvider);
     final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -52,10 +49,10 @@ class WelcomeScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.psychology,
                   size: 60,
-                  color: Colors.white,
+                  color: context.colors.textOnFilled,
                 ),
               ),
 
@@ -75,7 +72,7 @@ class WelcomeScreen extends ConsumerWidget {
                 'Your AI-powered companion for productivity and creativity',
                 style: TextStyle(
                   fontSize: 18,
-                  color: isDark ? Colors.grey[300] : Colors.grey[600],
+                  color: context.colors.grey500,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -88,24 +85,24 @@ class WelcomeScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     _buildFeatureItem(
+                      context: context,
                       icon: Icons.mic,
                       title: 'Voice Commands',
                       description: 'Control your app with natural speech',
-                      isDark: isDark,
                     ),
                     const SizedBox(height: 24),
                     _buildFeatureItem(
+                      context: context,
                       icon: Icons.psychology,
                       title: 'AI Assistant',
                       description: 'Get intelligent help and suggestions',
-                      isDark: isDark,
                     ),
                     const SizedBox(height: 24),
                     _buildFeatureItem(
+                      context: context,
                       icon: Icons.notifications,
                       title: 'Smart Notifications',
                       description: 'Stay updated with personalized alerts',
-                      isDark: isDark,
                     ),
                   ],
                 ),
@@ -126,7 +123,7 @@ class WelcomeScreen extends ConsumerWidget {
                     child: Text(
                       'Skip Setup',
                       style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        color: context.colors.grey500,
                         fontSize: 16,
                       ),
                     ),
@@ -143,10 +140,10 @@ class WelcomeScreen extends ConsumerWidget {
   }
 
   Widget _buildFeatureItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String description,
-    required bool isDark,
   }) => Row(
     children: [
       Container(
@@ -172,7 +169,7 @@ class WelcomeScreen extends ConsumerWidget {
               description,
               style: TextStyle(
                 fontSize: 14,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
+                color: context.colors.grey500,
               ),
             ),
           ],

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_input.dart';
@@ -137,7 +138,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   'Tell us a bit about yourself to personalize your experience',
                   style: TextStyle(
                     fontSize: 16,
-                    color: isDark ? Colors.grey[300] : Colors.grey[600],
+                    color: context.colors.textLowPriority,
                     height: 1.4,
                   ),
                   textAlign: TextAlign.center,
@@ -173,10 +174,10 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                             : null,
                       ),
                       child: state.avatarUrl.isEmpty
-                          ? const Icon(
+                          ? Icon(
                               Icons.person_add,
                               size: 40,
-                              color: Colors.white,
+                              color: context.colors.textOnFilled,
                             )
                           : null,
                     ),
@@ -267,9 +268,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                                 'Your information is secure and will only be used to personalize your experience.',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: isDark
-                                      ? Colors.grey[300]
-                                      : Colors.grey[700],
+                                  color: context.colors.textLowPriority,
                                 ),
                               ),
                             ),
@@ -295,7 +294,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                       child: Text(
                         'Back',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[400] : Colors.grey[600],
+                          color: context.colors.textLowPriority,
                           fontSize: 16,
                         ),
                       ),

@@ -66,11 +66,11 @@ class _PushToTalkButtonState extends State<PushToTalkButton>
       buttonColor = context.colors.grey700;
       iconColor = context.colors.grey500;
     } else if (widget.isTalking) {
-      buttonColor = AppTheme.primaryLight;
-      iconColor = Colors.white;
+      buttonColor = context.colors.primary;
+      iconColor = context.colors.textOnFilled;
     } else {
       buttonColor = context.colors.grey800;
-      iconColor = AppTheme.primaryLight;
+      iconColor = context.colors.primary;
     }
 
     return Column(
@@ -96,14 +96,14 @@ class _PushToTalkButtonState extends State<PushToTalkButton>
                     boxShadow: widget.isTalking
                         ? [
                             BoxShadow(
-                              color: AppTheme.primaryLight.withValues(alpha: 0.4),
+                              color: context.colors.primary.withValues(alpha: 0.4),
                               blurRadius: 24,
                               spreadRadius: 4,
                             ),
                           ]
                         : [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
+                              color: context.colors.textNormal.withValues(alpha: 0.1),
                               blurRadius: 8,
                               spreadRadius: 1,
                             ),
@@ -127,7 +127,7 @@ class _PushToTalkButtonState extends State<PushToTalkButton>
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: widget.isTalking ? AppTheme.primaryLight : context.colors.grey400,
+            color: widget.isTalking ? context.colors.primary : context.colors.grey400,
           ),
         ),
       ],

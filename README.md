@@ -491,7 +491,8 @@ flutter test test/
 ### Android
 ```bash
 # Debug APK
-flutter build apk --debug
+
+
 
 # Release APK
 flutter build apk --release

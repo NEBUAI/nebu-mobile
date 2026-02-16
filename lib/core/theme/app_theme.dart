@@ -39,7 +39,7 @@ class AppTheme {
         surface: surfaceLight,
         error: errorLight,
         onPrimary: onPrimaryLight,
-        onSecondary: Colors.white,
+        onSecondary: AppColors.textFilledButtonLight,
         onSurface: onBackgroundLight,
       );
 
@@ -230,7 +230,7 @@ class AppTheme {
 
   static List<BoxShadow> get cardShadow => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.05),
+          color: AppColors.osMainLight.withValues(alpha: 0.05),
           blurRadius: 10,
           offset: const Offset(0, 4),
         ),

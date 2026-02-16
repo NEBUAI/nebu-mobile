@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
 
@@ -103,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               SnackBar(
                                 content: Text(
                                     'auth.forgot_password_success'.tr()),
-                                backgroundColor: Colors.green,
+                                backgroundColor: context.colors.success,
                               ),
                             );
                             _showResetPasswordDialog();
@@ -112,7 +113,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               SnackBar(
                                 content:
                                     Text('auth.forgot_password_error'.tr()),
-                                backgroundColor: Colors.red,
+                                backgroundColor: context.colors.error,
                               ),
                             );
                           }
@@ -182,7 +183,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 12),
                     Text(
                       errorText!,
-                      style: const TextStyle(color: Colors.red, fontSize: 13),
+                      style: TextStyle(color: context.colors.error, fontSize: 13),
                     ),
                   ],
                 ],
@@ -242,7 +243,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     : 'auth.reset_password_error'.tr(),
                               ),
                               backgroundColor:
-                                  success ? Colors.green : Colors.red,
+                                  success ? context.colors.success : context.colors.error,
                             ),
                           );
                         }
@@ -294,7 +295,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     // We only need to show error messages here
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -312,14 +313,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     style: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.5,
-                      color: Colors.black,
+                      color: context.colors.textNormal,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'auth.sign_in_subtitle_long'.tr(),
                     style: textTheme.titleMedium?.copyWith(
-                      color: Colors.grey[600],
+                      color: context.colors.grey400,
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -401,7 +402,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Text(
                           '${'auth.no_account'.tr()} ',
                           style: textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
+                            color: context.colors.grey400,
                           ),
                         ),
                         GestureDetector(
@@ -442,13 +443,13 @@ class _BackButton extends StatelessWidget {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: context.colors.grey900,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 18,
-            color: Colors.grey[800],
+            color: context.colors.grey200,
           ),
         ),
       );
@@ -485,19 +486,19 @@ class _CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
-      style: textTheme.bodyLarge?.copyWith(color: Colors.black87),
+      style: textTheme.bodyLarge?.copyWith(color: context.colors.textNormal),
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
-        hintStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
-        labelStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+        hintStyle: textTheme.bodyMedium?.copyWith(color: context.colors.grey500),
+        labelStyle: textTheme.bodyMedium?.copyWith(color: context.colors.grey400),
         floatingLabelStyle: textTheme.bodySmall?.copyWith(
           color: Theme.of(context).colorScheme.primary,
           fontWeight: FontWeight.w500,
         ),
         prefixIcon: Icon(
           prefixIcon,
-          color: Colors.grey[400],
+          color: context.colors.grey500,
           size: 22,
         ),
         suffixIcon: suffixIcon != null
@@ -505,20 +506,20 @@ class _CustomTextField extends StatelessWidget {
                 onTap: onSuffixTap,
                 child: Icon(
                   suffixIcon,
-                  color: Colors.grey[400],
+                  color: context.colors.grey500,
                   size: 22,
                 ),
               )
             : null,
         filled: true,
-        fillColor: Colors.grey[50],
+        fillColor: context.colors.grey900,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey[200]!),
+          borderSide: BorderSide(color: context.colors.grey700),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),

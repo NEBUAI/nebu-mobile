@@ -71,7 +71,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(response.message ?? 'toy_assignment.success'.tr()),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colors.success,
           ),
         );
 

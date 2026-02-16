@@ -124,7 +124,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('setup.toy_name.device_registered'.tr()),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colors.success,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -138,10 +138,10 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('setup.toy_name.error_registering_device'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
             action: SnackBarAction(
               label: 'common.retry'.tr(),
-              textColor: Colors.white,
+              textColor: context.colors.textOnFilled,
               onPressed: _registerDeviceIfNeeded,
             ),
           ),
@@ -176,7 +176,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryLight,
-              foregroundColor: Colors.white,
+              foregroundColor: context.colors.textOnFilled,
             ),
             child: Text('setup.connection.skip_setup'.tr()),
           ),
@@ -208,7 +208,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                     children: [
                       IconButton(
                         onPressed: () => context.pop(),
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
                       ),
                       const Spacer(),
                       _buildProgressIndicator(3, 7), // This is now step 3
@@ -235,7 +235,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                           Text(
                             'setup.toy_name.title'.tr(),
                             style: theme.textTheme.headlineMedium?.copyWith(
-                              color: Colors.white,
+                              color: context.colors.textOnFilled,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -245,7 +245,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                           Text(
                             'setup.toy_name.subtitle'.tr(),
                             style: theme.textTheme.bodyLarge?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: context.colors.textOnFilled.withValues(alpha: 0.9),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -256,16 +256,16 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                           TextFormField(
                             controller: _controller,
                             style: theme.textTheme.titleMedium?.copyWith(
-                              color: Colors.white,
+                              color: context.colors.textOnFilled,
                             ),
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               hintText: 'setup.toy_name.hint'.tr(),
                               hintStyle: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.5),
+                                color: context.colors.textOnFilled.withValues(alpha: 0.5),
                               ),
                               filled: true,
-                              fillColor: Colors.white.withValues(alpha: 0.2),
+                              fillColor: context.colors.textOnFilled.withValues(alpha: 0.2),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
@@ -308,7 +308,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                             }
                           },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: context.colors.bgPrimary,
                       foregroundColor: AppTheme.primaryLight,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -341,7 +341,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                     child: Text(
                       'setup.connection.skip_setup'.tr(),
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: context.colors.textOnFilled.withValues(alpha: 0.8),
                       ),
                     ),
                   ),
@@ -366,8 +366,8 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
         height: 8,
         decoration: BoxDecoration(
           color: index < current
-              ? Colors.white
-              : Colors.white.withValues(alpha: 0.3),
+              ? context.colors.textOnFilled
+              : context.colors.textOnFilled.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

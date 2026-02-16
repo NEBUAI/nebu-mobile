@@ -77,7 +77,7 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(
+                      color: context.colors.textNormal.withValues(
                         alpha: isDark ? 0.3 : 0.08,
                       ),
                       blurRadius: 10,
@@ -409,7 +409,7 @@ class ProfileScreen extends ConsumerWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: context.colors.error,
-                      foregroundColor: Colors.white,
+                      foregroundColor: context.colors.textOnFilled,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -418,7 +418,7 @@ class ProfileScreen extends ConsumerWidget {
                     child: Text(
                       'profile.logout'.tr(),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
+                        color: context.colors.textOnFilled,
                       ),
                     ),
                   ),
@@ -552,7 +552,7 @@ void _showAboutDialog(BuildContext context, String appVersion) {
         gradient: const LinearGradient(colors: AppTheme.primaryGradient),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Icon(Icons.smart_toy, color: Colors.white, size: 32),
+      child: Icon(Icons.smart_toy, color: context.colors.textOnFilled, size: 32),
     ),
     children: [
       const SizedBox(height: 16),
@@ -582,7 +582,7 @@ class _SettingsCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
+          color: context.colors.textNormal.withValues(alpha: isDark ? 0.3 : 0.08),
           blurRadius: 10,
           offset: const Offset(0, 2),
         ),

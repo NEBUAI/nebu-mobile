@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
 import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
 import '../widgets/esp32_audio_controls.dart';
@@ -76,7 +75,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('toy_settings.update_success'.tr()),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colors.success,
           ),
         );
       }
@@ -85,7 +84,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('toy_settings.update_error'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
           ),
         );
       }
@@ -106,7 +105,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('toy_settings.remove_success'.tr()),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colors.success,
           ),
         );
         context.pop();
@@ -116,7 +115,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('toy_settings.remove_error'.tr()),
-            backgroundColor: Colors.red,
+            backgroundColor: context.colors.error,
           ),
         );
         setState(() => _isLoading = false);
@@ -140,7 +139,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
               Navigator.pop(context);
               _deleteToy();
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: context.colors.error),
             child: Text('common.delete'.tr()),
           ),
         ],
@@ -172,11 +171,11 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                             CircleAvatar(
                               radius: 40,
                               backgroundColor:
-                                  AppTheme.primaryLight.withValues(alpha: 0.2),
+                                  context.colors.primary.withValues(alpha: 0.2),
                               child: const Icon(
                                 Icons.smart_toy,
                                 size: 48,
-                                color: AppTheme.primaryLight,
+                                color: context.colors.primary,
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -250,8 +249,8 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                                 _currentToy.iotDeviceStatus!,
                                 theme,
                                 statusColor: _currentToy.iotDeviceStatus == 'online'
-                                    ? Colors.green
-                                    : Colors.red,
+                                    ? context.colors.success
+                                    : context.colors.error,
                               ),
                             if (_currentToy.iotDeviceStatus != null)
                               const Divider(),
@@ -306,7 +305,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                       label: Text('walkie_talkie.open_button'.tr()),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 48),
-                        backgroundColor: AppTheme.primaryLight,
+                        backgroundColor: context.colors.primary,
                       ),
                     ),
                     if (_currentToy.iotDeviceId == null)
@@ -316,7 +315,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                           'walkie_talkie.no_iot_device'.tr(),
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white.withValues(alpha: 0.6),
+                            color: context.colors.textOnFilled.withValues(alpha: 0.6),
                           ),
                         ),
                       ),
@@ -328,7 +327,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                       onPressed: _updateToySettings,
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 48),
-                        backgroundColor: AppTheme.primaryLight,
+                        backgroundColor: context.colors.primary,
                       ),
                       child: Text('toy_settings.save_changes'.tr()),
                     ),
@@ -338,13 +337,13 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                     // Remove Toy Button
                     OutlinedButton.icon(
                       onPressed: _showDeleteConfirmation,
-                      icon: const Icon(Icons.delete, color: Colors.red),
+                      icon: Icon(Icons.delete, color: context.colors.error),
                       label: Text(
                         'toy_settings.remove_title'.tr(),
-                        style: const TextStyle(color: Colors.red),
+                        style: TextStyle(color: context.colors.error),
                       ),
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.red),
+                        side: BorderSide(color: context.colors.error),
                         minimumSize: const Size(double.infinity, 48),
                       ),
                     ),

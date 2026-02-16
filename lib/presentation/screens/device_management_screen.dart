@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../data/models/toy.dart';
 import '../providers/toy_provider.dart';
 
@@ -144,7 +145,7 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
                     label: Text('common.retry'.tr()),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: context.colors.textOnFilled,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,
@@ -181,11 +182,11 @@ class _DeviceCard extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: isOnline
-              ? Colors.green.withValues(alpha: 0.1)
-              : Colors.grey.withValues(alpha: 0.1),
+              ? context.colors.success.withValues(alpha: 0.1)
+              : context.colors.grey500.withValues(alpha: 0.1),
           child: Icon(
             Icons.smart_toy,
-            color: isOnline ? Colors.green : Colors.grey,
+            color: isOnline ? context.colors.success : context.colors.grey500,
           ),
         ),
         title: Text(toy.name),
@@ -197,7 +198,7 @@ class _DeviceCard extends StatelessWidget {
           ],
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: Colors.red),
+          icon: Icon(Icons.delete_outline, color: context.colors.error),
           onPressed: () {
             showDialog<void>(
               context: context,
@@ -214,7 +215,7 @@ class _DeviceCard extends StatelessWidget {
                       Navigator.pop(context);
                       onDelete();
                     },
-                    style: TextButton.styleFrom(foregroundColor: Colors.red),
+                    style: TextButton.styleFrom(foregroundColor: context.colors.error),
                     child: Text('common.delete'.tr()),
                   ),
                 ],

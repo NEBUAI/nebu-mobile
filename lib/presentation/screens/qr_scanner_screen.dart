@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
@@ -116,7 +117,7 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          icon: const Icon(Icons.check_circle, color: Colors.green, size: 48),
+          icon: Icon(Icons.check_circle, color: context.colors.success, size: 48),
           title: Text('qr_scanner.toy_assigned'.tr()),
           content: Text(
             'qr_scanner.toy_assigned_desc'.tr(
@@ -142,7 +143,7 @@ class QRScannerNotifier extends Notifier<QRScannerState> {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          icon: const Icon(Icons.error, color: Colors.red, size: 48),
+          icon: Icon(Icons.error, color: context.colors.error, size: 48),
           title: Text('qr_scanner.assignment_failed'.tr()),
           content: Text(message),
           actions: [
@@ -263,13 +264,13 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 32),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.7),
+        color: context.colors.textNormal.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         'qr_scanner.scan_hint'.tr(),
         textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: TextStyle(color: context.colors.textOnFilled, fontSize: 14),
       ),
     ),
   );

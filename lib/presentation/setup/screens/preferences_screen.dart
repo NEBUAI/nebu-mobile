@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
@@ -66,7 +67,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                 'Customize your app experience',
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? Colors.grey[300] : Colors.grey[600],
+                  color: context.colors.textLowPriority,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -127,7 +128,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                     child: Text(
                       'Back',
                       style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        color: context.colors.textLowPriority,
                         fontSize: 16,
                       ),
                     ),
@@ -153,7 +154,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     decoration: BoxDecoration(
       color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: isDark ? Colors.grey[700]! : Colors.grey[200]!),
+      border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +209,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                   border: Border.all(
                     color: isSelected
                         ? AppTheme.primaryLight
-                        : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
+                        : context.colors.grey700,
                   ),
                 ),
                 child: Row(
@@ -272,7 +273,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                   border: Border.all(
                     color: isSelected
                         ? AppTheme.primaryLight
-                        : (isDark ? Colors.grey[700]! : Colors.grey[200]!),
+                        : context.colors.grey700,
                   ),
                 ),
                 child: Row(
@@ -281,7 +282,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       theme['icon'] as IconData?,
                       color: isSelected
                           ? AppTheme.primaryLight
-                          : Colors.grey[600],
+                          : context.colors.grey400,
                       size: 20,
                     ),
                     const SizedBox(width: 12),
@@ -364,7 +365,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     required bool isDark,
   }) => Row(
     children: [
-      Icon(icon, color: Colors.grey[600], size: 20),
+      Icon(icon, color: context.colors.grey400, size: 20),
       const SizedBox(width: 12),
       Expanded(
         child: Column(
@@ -378,7 +379,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
               subtitle,
               style: TextStyle(
                 fontSize: 12,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
+                color: context.colors.textLowPriority,
               ),
             ),
           ],

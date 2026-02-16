@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class VoiceSetupScreen extends StatefulWidget {
@@ -56,7 +57,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   alignment: Alignment.centerLeft,
                   child: IconButton(
                     onPressed: () => context.pop(),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
                   ),
                 ),
 
@@ -71,7 +72,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                 Text(
                   'setup.voice.title'.tr(),
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: Colors.white,
+                    color: context.colors.textOnFilled,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -81,7 +82,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                 Text(
                   'setup.voice.subtitle'.tr(),
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: context.colors.textOnFilled.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -109,12 +110,12 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? Colors.white
-                                  : Colors.white.withValues(alpha: 0.2),
+                                  ? context.colors.bgPrimary
+                                  : context.colors.textOnFilled.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isSelected
-                                    ? Colors.white
+                                    ? context.colors.bgPrimary
                                     : Colors.transparent,
                                 width: 2,
                               ),
@@ -127,7 +128,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                     color: isSelected
                                         ? AppTheme.primaryLight
                                             .withValues(alpha: 0.1)
-                                        : Colors.white.withValues(alpha: 0.1),
+                                        : context.colors.textOnFilled.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Icon(
@@ -135,7 +136,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                     size: 28,
                                     color: isSelected
                                         ? AppTheme.primaryLight
-                                        : Colors.white,
+                                        : context.colors.textOnFilled,
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -150,7 +151,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                             ?.copyWith(
                                               color: isSelected
                                                   ? AppTheme.primaryLight
-                                                  : Colors.white,
+                                                  : context.colors.textOnFilled,
                                               fontWeight: FontWeight.w600,
                                             ),
                                       ),

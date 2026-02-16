@@ -216,7 +216,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: context.colors.textNormal.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -384,7 +384,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: context.colors.error,
-              foregroundColor: Colors.white,
+              foregroundColor: context.colors.textOnFilled,
             ),
             child: Text('privacy.delete_permanently'.tr()),
           ),
@@ -453,14 +453,14 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('privacy.incorrect_confirmation'.tr()),
-                    backgroundColor: AppColors.redMainLight,
+                    backgroundColor: context.colors.error,
                   ),
                 );
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.redMainLight,
-              foregroundColor: Colors.white,
+              backgroundColor: context.colors.error,
+              foregroundColor: context.colors.textOnFilled,
             ),
             child: Text('common.delete'.tr()),
           ),

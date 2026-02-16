@@ -45,7 +45,7 @@ class ChildProfileScreen extends ConsumerWidget {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.child_care, size: 80, color: Colors.grey),
+        Icon(Icons.child_care, size: 80, color: context.colors.grey500),
         const SizedBox(height: 20),
         Text(
           'child_profile.no_data_title'.tr(),
@@ -55,7 +55,7 @@ class ChildProfileScreen extends ConsumerWidget {
         Text(
           'child_profile.no_data_subtitle'.tr(),
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16, color: Colors.grey),
+          style: TextStyle(fontSize: 16, color: context.colors.grey500),
         ),
         const SizedBox(height: 30),
         ElevatedButton(
@@ -107,14 +107,14 @@ class ChildProfileScreen extends ConsumerWidget {
                 if (childAge != null)
                   Text(
                     'child_profile.age'.tr(args: [childAge]),
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(fontSize: 16, color: context.colors.grey500),
                   ),
               ],
             ),
           ),
           const SizedBox(height: 30),
           const Divider(),
-          _buildSectionTitle('child_profile.personality'.tr()),
+          _buildSectionTitle('child_profile.personality'.tr(), context),
           Wrap(
             spacing: 8,
             children: [
@@ -128,10 +128,10 @@ class ChildProfileScreen extends ConsumerWidget {
             children: [
               TextButton.icon(
                 onPressed: () => context.push(AppRoutes.localChildSetup.path),
-                icon: const Icon(Icons.edit, color: Colors.grey),
+                icon: Icon(Icons.edit, color: context.colors.grey500),
                 label: Text(
                   'profile.edit_profile'.tr(),
-                  style: const TextStyle(color: Colors.grey),
+                  style: TextStyle(color: context.colors.grey500),
                 ),
               ),
               TextButton.icon(
@@ -149,14 +149,14 @@ class ChildProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionTitle(String title) => Padding(
+  Widget _buildSectionTitle(String title, BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 16),
     child: Text(
       title,
       style: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: context.colors.textNormal,
       ),
     ),
   );

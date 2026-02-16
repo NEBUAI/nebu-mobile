@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../data/services/api_service.dart';
 import '../../data/services/health_service.dart';
 
@@ -75,26 +76,26 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           ElevatedButton.icon(
             onPressed: _isLoading ? null : _checkHealth,
             icon: _isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Colors.white,
+                      color: context.colors.textOnFilled,
                     ),
                   )
                 : const Icon(Icons.refresh),
             label: Text(_isLoading ? 'health_check.checking'.tr() : 'health_check.check_button'.tr()),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(16),
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
+              backgroundColor: context.colors.info,
+              foregroundColor: context.colors.textOnFilled,
             ),
           ),
           const SizedBox(height: 24),
           if (_errorMessage != null)
             Card(
-              color: Colors.red.shade50,
+              color: context.colors.errorBg,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -102,14 +103,14 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.error, color: Colors.red.shade700),
+                        Icon(Icons.error, color: context.colors.error),
                         const SizedBox(width: 8),
                         Text(
                           'health_check.error'.tr(),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.red.shade700,
+                            color: context.colors.error,
                           ),
                         ),
                       ],
@@ -117,7 +118,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
                     const SizedBox(height: 8),
                     Text(
                       _errorMessage!,
-                      style: TextStyle(color: Colors.red.shade900),
+                      style: TextStyle(color: context.colors.error),
                     ),
                   ],
                 ),
@@ -160,7 +161,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
       children: [
         Icon(
           isHealthy ? Icons.check_circle : Icons.warning,
-          color: isHealthy ? Colors.green : Colors.orange,
+          color: isHealthy ? context.colors.success : context.colors.warning,
           size: 32,
         ),
         const SizedBox(width: 12),
@@ -179,7 +180,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
                 'Status: ${status.status.toUpperCase()}',
                 style: TextStyle(
                   fontSize: 16,
-                  color: isHealthy ? Colors.green : Colors.orange,
+                  color: isHealthy ? context.colors.success : context.colors.warning,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -311,9 +312,9 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         const SizedBox(height: 4),
         LinearProgressIndicator(
           value: percent / 100,
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: context.colors.grey800,
           valueColor: AlwaysStoppedAnimation<Color>(
-            percent > 80 ? Colors.orange : Colors.blue,
+            percent > 80 ? context.colors.warning : context.colors.info,
           ),
         ),
       ],
@@ -335,14 +336,14 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           ),
           Icon(
             isHealthy ? Icons.check_circle : Icons.error,
-            color: isHealthy ? Colors.green : Colors.red,
+            color: isHealthy ? context.colors.success : context.colors.error,
             size: 20,
           ),
           const SizedBox(width: 8),
           Text(
             check.status.toUpperCase(),
             style: TextStyle(
-              color: isHealthy ? Colors.green : Colors.red,
+              color: isHealthy ? context.colors.success : context.colors.error,
               fontWeight: FontWeight.w600,
             ),
           ),

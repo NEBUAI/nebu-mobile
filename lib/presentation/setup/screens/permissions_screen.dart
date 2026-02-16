@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
@@ -55,7 +56,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                 'We need a few permissions to provide you with the best experience',
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? Colors.grey[300] : Colors.grey[600],
+                  color: context.colors.grey400,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -117,7 +118,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                     child: Text(
                       'Back',
                       style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        color: context.colors.grey400,
                         fontSize: 16,
                       ),
                     ),
@@ -149,7 +150,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
       border: Border.all(
         color: isGranted
             ? AppTheme.primaryLight
-            : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
+            : context.colors.grey700,
         width: 2,
       ),
     ),
@@ -161,12 +162,12 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
           decoration: BoxDecoration(
             color: isGranted
                 ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                : (isDark ? Colors.grey[700] : Colors.grey[200]),
+                : context.colors.grey800,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
-            color: isGranted ? AppTheme.primaryLight : Colors.grey[600],
+            color: isGranted ? AppTheme.primaryLight : context.colors.grey400,
             size: 24,
           ),
         ),
@@ -192,14 +193,14 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.orange.withValues(alpha: 0.1),
+                        color: context.colors.warning.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Optional',
                         style: TextStyle(
                           fontSize: 10,
-                          color: Colors.orange,
+                          color: context.colors.warning,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -212,7 +213,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                 description,
                 style: TextStyle(
                   fontSize: 14,
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  color: context.colors.grey400,
                 ),
               ),
             ],
@@ -222,7 +223,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
           onPressed: onTap,
           icon: Icon(
             isGranted ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: isGranted ? AppTheme.primaryLight : Colors.grey[600],
+            color: isGranted ? AppTheme.primaryLight : context.colors.grey400,
             size: 28,
           ),
         ),
