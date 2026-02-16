@@ -260,7 +260,7 @@ class _NotificationCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(12),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(context.spacing.alertPadding),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -322,7 +322,7 @@ class _NotificationCard extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: context.spacing.titleBottomMarginSm),
                       Text(
                         _formatTimestamp(notification.timestamp),
                         style: theme.textTheme.bodySmall?.copyWith(

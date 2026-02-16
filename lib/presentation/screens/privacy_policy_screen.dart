@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config/config.dart';
+import '../../core/theme/app_colors.dart';
 
 class PrivacyPolicyScreen extends ConsumerWidget {
   const PrivacyPolicyScreen({super.key});
@@ -15,7 +16,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text('privacy_policy.title'.tr()), elevation: 0),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.spacing.alertPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,14 +27,14 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Text(
               'privacy_policy.last_updated'.tr(args: ['December 9, 2025']),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
 
             // Introduction
             _buildSection(
@@ -52,7 +53,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             _buildBulletPoint(theme, 'privacy_policy.collect_2'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.collect_3'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.collect_4'.tr()),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
             // How We Use Your Information
             _buildSection(
@@ -64,7 +65,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             _buildBulletPoint(theme, 'privacy_policy.use_2'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.use_3'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.use_4'.tr()),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
             // Data Sharing
             _buildSection(
@@ -90,7 +91,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             _buildBulletPoint(theme, 'privacy_policy.rights_2'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.rights_3'.tr()),
             _buildBulletPoint(theme, 'privacy_policy.rights_4'.tr()),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
             // Account & Data Deletion
             _buildSection(
@@ -98,7 +99,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
               'privacy_policy.delete_title'.tr(),
               'privacy_policy.delete_content'.tr(),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Wrap(
               spacing: 12,
               children: [
@@ -118,7 +119,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
             // Data Security
             _buildSection(
@@ -141,9 +142,9 @@ class PrivacyPolicyScreen extends ConsumerWidget {
               'privacy_policy.contact_content'.tr(),
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.spacing.alertPadding),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primaryContainer.withValues(
                   alpha: 0.3,
@@ -177,7 +178,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
               ),
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: context.spacing.paragraphBottomMargin),
           ],
         ),
       ),

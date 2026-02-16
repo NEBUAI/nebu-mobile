@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config/config.dart';
+import '../../core/theme/app_colors.dart';
 
 class TermsOfServiceScreen extends ConsumerWidget {
   const TermsOfServiceScreen({super.key});
@@ -15,7 +16,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text('terms.title'.tr()), elevation: 0),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.spacing.alertPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,17 +27,18 @@ class TermsOfServiceScreen extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Text(
               'terms.last_updated'.tr(args: ['December 9, 2025']),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: context.spacing.panelPadding),
 
             // Introduction
             _buildSection(
+              context,
               theme,
               'terms.introduction_title'.tr(),
               'terms.introduction_content'.tr(args: [Config.appName]),
@@ -44,6 +46,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Acceptance
             _buildSection(
+              context,
               theme,
               'terms.acceptance_title'.tr(),
               'terms.acceptance_content'.tr(),
@@ -51,6 +54,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Use of Service
             _buildSection(
+              context,
               theme,
               'terms.use_title'.tr(),
               'terms.use_content'.tr(),
@@ -59,10 +63,11 @@ class TermsOfServiceScreen extends ConsumerWidget {
             _buildBulletPoint(theme, 'terms.use_2'.tr()),
             _buildBulletPoint(theme, 'terms.use_3'.tr()),
             _buildBulletPoint(theme, 'terms.use_4'.tr()),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
             // Account Responsibilities
             _buildSection(
+              context,
               theme,
               'terms.account_title'.tr(),
               'terms.account_content'.tr(),
@@ -70,6 +75,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Prohibited Activities
             _buildSection(
+              context,
               theme,
               'terms.prohibited_title'.tr(),
               'terms.prohibited_content'.tr(),
@@ -79,10 +85,11 @@ class TermsOfServiceScreen extends ConsumerWidget {
             _buildBulletPoint(theme, 'terms.prohibited_3'.tr()),
             _buildBulletPoint(theme, 'terms.prohibited_4'.tr()),
             _buildBulletPoint(theme, 'terms.prohibited_5'.tr()),
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
             // Intellectual Property
             _buildSection(
+              context,
               theme,
               'terms.ip_title'.tr(),
               'terms.ip_content'.tr(),
@@ -90,6 +97,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // User Content
             _buildSection(
+              context,
               theme,
               'terms.user_content_title'.tr(),
               'terms.user_content_content'.tr(),
@@ -97,6 +105,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Termination
             _buildSection(
+              context,
               theme,
               'terms.termination_title'.tr(),
               'terms.termination_content'.tr(),
@@ -104,11 +113,12 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Account Deletion
             _buildSection(
+              context,
               theme,
               'terms.delete_title'.tr(),
               'terms.delete_content'.tr(),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton.icon(
@@ -125,6 +135,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Disclaimers
             _buildSection(
+              context,
               theme,
               'terms.disclaimers_title'.tr(),
               'terms.disclaimers_content'.tr(),
@@ -132,6 +143,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Limitation of Liability
             _buildSection(
+              context,
               theme,
               'terms.liability_title'.tr(),
               'terms.liability_content'.tr(),
@@ -139,6 +151,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Changes to Terms
             _buildSection(
+              context,
               theme,
               'terms.changes_title'.tr(),
               'terms.changes_content'.tr(),
@@ -146,6 +159,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Governing Law
             _buildSection(
+              context,
               theme,
               'terms.law_title'.tr(),
               'terms.law_content'.tr(),
@@ -153,14 +167,15 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
             // Contact
             _buildSection(
+              context,
               theme,
               'terms.contact_title'.tr(),
               'terms.contact_content'.tr(),
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: context.spacing.sectionTitleBottomMargin),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.spacing.alertPadding),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primaryContainer.withValues(
                   alpha: 0.3,
@@ -190,24 +205,24 @@ class TermsOfServiceScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
                   _buildContactRow(theme, Icons.email, 'legal@nebu.ai'),
-                  const SizedBox(height: 8),
+                  SizedBox(height: context.spacing.titleBottomMarginSm),
                   _buildContactRow(theme, Icons.language, 'www.nebu.ai'),
                 ],
               ),
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: context.spacing.paragraphBottomMargin),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSection(ThemeData theme, String title, String content) =>
+  Widget _buildSection(BuildContext context, ThemeData theme, String title, String content) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.only(bottom: context.spacing.sectionTitleBottomMargin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -217,7 +232,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Text(
               content,
               style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
