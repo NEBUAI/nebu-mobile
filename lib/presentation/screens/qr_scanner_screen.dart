@@ -220,7 +220,7 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
       height: 250,
       decoration: BoxDecoration(
         border: Border.all(color: context.colors.primary, width: 3),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: context.radius.bottomSheet,
       ),
       child: Stack(
         children: [
@@ -264,7 +264,7 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
       padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: context.colors.textNormal.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: context.radius.tile,
       ),
       child: Text(
         'qr_scanner.scan_hint'.tr(),

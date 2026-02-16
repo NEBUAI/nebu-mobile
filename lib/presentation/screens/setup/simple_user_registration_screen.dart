@@ -210,7 +210,7 @@ class _SimpleUserRegistrationScreenState
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.errorContainer,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.input,
                     ),
                     child: Row(
                       children: [
@@ -246,7 +246,7 @@ class _SimpleUserRegistrationScreenState
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: context.radius.input,
                   ),
                   child: Column(
                     children: [

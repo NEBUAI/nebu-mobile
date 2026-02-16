@@ -169,7 +169,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: context.radius.bottomSheet,
       boxShadow: [
         BoxShadow(
           color: context.colors.primary.withValues(alpha: 0.3),
@@ -216,7 +216,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 height: 80,
                 decoration: BoxDecoration(
                   color: context.colors.bgPrimary,
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: context.radius.button,
                   boxShadow: [
                     BoxShadow(
                       color: context.colors.textNormal.withValues(alpha: 0.2),
@@ -265,7 +265,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: context.radius.panel,
       border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
@@ -278,7 +278,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
               height: 40,
               decoration: BoxDecoration(
                 color: context.colors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: context.radius.tile,
               ),
               child: Icon(
                 Icons.settings_voice,
@@ -324,7 +324,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
             color: enabled
                 ? context.colors.primary.withValues(alpha: 0.1)
                 : context.colors.grey700,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: context.radius.tile,
           ),
           child: Icon(
             icon,

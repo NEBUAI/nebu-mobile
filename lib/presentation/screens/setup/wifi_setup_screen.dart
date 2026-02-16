@@ -762,7 +762,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         height: 8,
         decoration: BoxDecoration(
           color: index < current ? context.colors.textOnFilled : context.colors.textOnFilled.withAlpha(77),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: context.radius.checkbox,
         ),
       ),
     ),
@@ -784,12 +784,12 @@ class _QuickActionButton extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: context.radius.input,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: context.colors.textOnFilled.withAlpha(40),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: context.radius.input,
           border: Border.all(color: context.colors.textOnFilled.withAlpha(60)),
         ),
         child: Column(

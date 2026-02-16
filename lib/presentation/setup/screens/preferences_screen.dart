@@ -144,7 +144,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: context.radius.panel,
       border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
@@ -157,7 +157,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
               height: 40,
               decoration: BoxDecoration(
                 color: context.colors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: context.radius.tile,
               ),
               child: Icon(icon, color: context.colors.primary, size: 20),
             ),
@@ -187,7 +187,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: context.radius.tile,
               onTap: () =>
                   notifier.updateSelectedLanguage(language['code'] as String),
               child: Container(
@@ -196,7 +196,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                   color: isSelected
                       ? context.colors.primary.withValues(alpha: 0.1)
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: context.radius.tile,
                   border: Border.all(
                     color: isSelected
                         ? context.colors.primary

@@ -568,7 +568,7 @@ class _ToyCard extends StatelessWidget {
                   color: isOnline
                       ? theme.colorScheme.primary.withValues(alpha: 0.15)
                       : theme.disabledColor.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: context.radius.panel,
                 ),
                 child: Icon(
                   Icons.smart_toy,
@@ -610,7 +610,7 @@ class _ToyCard extends StatelessWidget {
                   color: isOnline
                       ? context.colors.success.withValues(alpha: 0.1)
                       : context.colors.error.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: context.radius.bottomSheet,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
