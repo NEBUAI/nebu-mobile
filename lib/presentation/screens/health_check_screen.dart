@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
-import '../../core/theme/app_colors.dart';
 import '../../data/services/api_service.dart';
 import '../../data/services/health_service.dart';
 

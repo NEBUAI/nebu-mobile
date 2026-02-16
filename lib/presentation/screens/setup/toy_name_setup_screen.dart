@@ -175,7 +175,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
               context.go(AppRoutes.home.path);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryLight,
+              backgroundColor: context.colors.primary,
               foregroundColor: context.colors.textOnFilled,
             ),
             child: Text('setup.connection.skip_setup'.tr()),
@@ -193,7 +193,13 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
       resizeToAvoidBottomInset:
           true, // Asegura que el teclado no cause overflow
       body: DecoratedBox(
-        decoration: AppTheme.primaryGradientDecoration,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [context.colors.primary, context.colors.secondary],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -309,25 +315,25 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: context.colors.bgPrimary,
-                      foregroundColor: AppTheme.primaryLight,
+                      foregroundColor: context.colors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: _isRegistering
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 24,
                             width: 24,
                             child: CircularProgressIndicator(
                               strokeWidth: 3,
-                              color: AppTheme.primaryLight,
+                              color: context.colors.primary,
                             ),
                           )
                         : Text(
                             'setup.toy_name.next'.tr(),
                             style: theme.textTheme.titleMedium?.copyWith(
-                              color: AppTheme.primaryLight,
+                              color: context.colors.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

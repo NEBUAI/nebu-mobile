@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 
 class VoiceSetupScreen extends StatefulWidget {
   const VoiceSetupScreen({super.key});
@@ -45,7 +44,13 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
 
     return Scaffold(
       body: DecoratedBox(
-        decoration: AppTheme.primaryGradientDecoration,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [context.colors.primary, context.colors.secondary],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -126,7 +131,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AppTheme.primaryLight
+                                        ? context.colors.primary
                                             .withValues(alpha: 0.1)
                                         : context.colors.textOnFilled.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
@@ -135,7 +140,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                     voice['icon'] as IconData,
                                     size: 28,
                                     color: isSelected
-                                        ? AppTheme.primaryLight
+                                        ? context.colors.primary
                                         : context.colors.textOnFilled,
                                   ),
                                 ),
@@ -150,7 +155,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                         style: theme.textTheme.titleMedium
                                             ?.copyWith(
                                               color: isSelected
-                                                  ? AppTheme.primaryLight
+                                                  ? context.colors.primary
                                                   : context.colors.textOnFilled,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -161,9 +166,9 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                         style: theme.textTheme.bodyMedium
                                             ?.copyWith(
                                               color: isSelected
-                                                  ? AppTheme.primaryLight
+                                                  ? context.colors.primary
                                                       .withValues(alpha: 0.7)
-                                                  : Colors.white.withValues(alpha: 0.7),
+                                                  : context.colors.textOnFilled.withValues(alpha: 0.7),
                                             ),
                                       ),
                                     ],
@@ -172,7 +177,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                 if (isSelected)
                                   const Icon(
                                     Icons.check_circle,
-                                    color: AppTheme.primaryLight,
+                                    color: context.colors.primary,
                                   ),
                               ],
                             ),
@@ -191,10 +196,10 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                       ? () => context.go(AppRoutes.favoritesSetup.path)
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppTheme.primaryLight,
-                    disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
-                    disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+                    backgroundColor: context.colors.bgPrimary,
+                    foregroundColor: context.colors.primary,
+                    disabledBackgroundColor: context.colors.bgPrimary.withValues(alpha: 0.3),
+                    disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -203,7 +208,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   child: Text(
                     'common.next'.tr(),
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: AppTheme.primaryLight,
+                      color: context.colors.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -217,7 +222,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                   child: Text(
                     'setup.connection.skip_setup'.tr(),
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.8),
+                      color: context.colors.textOnFilled.withValues(alpha: 0.8),
                     ),
                   ),
                 ),
@@ -241,8 +246,8 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
         height: 8,
         decoration: BoxDecoration(
           color: index < current
-              ? Colors.white
-              : Colors.white.withValues(alpha: 0.3),
+              ? context.colors.textOnFilled
+              : context.colors.textOnFilled.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

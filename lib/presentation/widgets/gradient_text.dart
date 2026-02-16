@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/app_colors.dart';
 
 class GradientText extends StatelessWidget {
   const GradientText(
     this.text, {
     super.key,
     this.style,
-    this.gradientColors = AppTheme.primaryGradient,
+    this.gradientColors,
     this.textAlign,
   });
   final String text;
   final TextStyle? style;
-  final List<Color> gradientColors;
+  final List<Color>? gradientColors;
   final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) => ShaderMask(
     shaderCallback: (bounds) => LinearGradient(
-      colors: gradientColors,
+      colors: gradientColors ?? [context.colors.primary, context.colors.secondary],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),

@@ -9,7 +9,6 @@ import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_routes.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../providers/api_provider.dart';
 
 class ConnectionSetupScreen extends ConsumerStatefulWidget {

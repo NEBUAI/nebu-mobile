@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
 import '../../data/models/toy.dart';
 import '../providers/walkie_talkie_provider.dart';
 import '../widgets/connection_status_indicator.dart';
@@ -72,11 +71,11 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
                 // Toy info
                 CircleAvatar(
                   radius: 40,
-                  backgroundColor: AppTheme.primaryLight.withValues(alpha: 0.2),
-                  child: const Icon(
+                  backgroundColor: context.colors.primary.withValues(alpha: 0.2),
+                  child: Icon(
                     Icons.smart_toy,
                     size: 48,
-                    color: AppTheme.primaryLight,
+                    color: context.colors.primary,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -164,7 +163,7 @@ class _WalkieTalkieScreenState extends ConsumerState<WalkieTalkieScreen> {
         icon: const Icon(Icons.refresh),
         label: Text('walkie_talkie.retry'.tr()),
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.primaryLight,
+          backgroundColor: context.colors.primary,
         ),
       ),
     ],

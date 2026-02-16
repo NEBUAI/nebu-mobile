@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
 import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
 
@@ -220,7 +219,7 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
       width: 250,
       height: 250,
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.primaryLight, width: 3),
+        border: Border.all(color: context.colors.primary, width: 3),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Stack(
@@ -241,16 +240,16 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
     decoration: BoxDecoration(
       border: Border(
         top: top
-            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            ? BorderSide(color: context.colors.primary, width: 4)
             : BorderSide.none,
         left: left
-            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            ? BorderSide(color: context.colors.primary, width: 4)
             : BorderSide.none,
         bottom: !top
-            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            ? BorderSide(color: context.colors.primary, width: 4)
             : BorderSide.none,
         right: !left
-            ? const BorderSide(color: AppTheme.primaryLight, width: 4)
+            ? BorderSide(color: context.colors.primary, width: 4)
             : BorderSide.none,
       ),
     ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
@@ -34,12 +33,8 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
   Widget build(BuildContext context) {
     final SetupWizardState state = ref.watch(setupWizardProvider);
     final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -85,8 +80,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       _buildSection(
                         title: 'Language',
                         icon: Icons.language,
-                        child: _buildLanguageSelector(isDark),
-                        isDark: isDark,
+                        child: _buildLanguageSelector(),
                       ),
 
                       const SizedBox(height: 32),
@@ -95,8 +89,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       _buildSection(
                         title: 'Theme',
                         icon: Icons.palette,
-                        child: _buildThemeSelector(isDark),
-                        isDark: isDark,
+                        child: _buildThemeSelector(),
                       ),
 
                       const SizedBox(height: 32),
@@ -105,8 +98,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       _buildSection(
                         title: 'Additional Settings',
                         icon: Icons.settings,
-                        child: _buildAdditionalSettings(isDark),
-                        isDark: isDark,
+                        child: _buildAdditionalSettings(),
                       ),
                     ],
                   ),
@@ -148,11 +140,10 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     required String title,
     required IconData icon,
     required Widget child,
-    required bool isDark,
   }) => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(color: context.colors.grey700),
     ),
@@ -165,10 +156,10 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                color: context.colors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: AppTheme.primaryLight, size: 20),
+              child: Icon(icon, color: context.colors.primary, size: 20),
             ),
             const SizedBox(width: 12),
             Text(
@@ -183,7 +174,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     ),
   );
 
-  Widget _buildLanguageSelector(bool isDark) {
+  Widget _buildLanguageSelector() {
     final state = ref.watch(setupWizardProvider);
     final notifier = ref.read(setupWizardProvider.notifier);
 
@@ -203,12 +194,12 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                      ? context.colors.primary.withValues(alpha: 0.1)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected
-                        ? AppTheme.primaryLight
+                        ? context.colors.primary
                         : context.colors.grey700,
                   ),
                 ),
@@ -227,14 +218,14 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                           fontWeight: isSelected
                               ? FontWeight.w600
                               : FontWeight.normal,
-                          color: isSelected ? AppTheme.primaryLight : null,
+                          color: isSelected ? context.colors.primary : null,
                         ),
                       ),
                     ),
                     if (isSelected)
                       const Icon(
                         Icons.check_circle,
-                        color: AppTheme.primaryLight,
+                        color: context.colors.primary,
                         size: 20,
                       ),
                   ],
@@ -267,12 +258,12 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? AppTheme.primaryLight.withValues(alpha: 0.1)
+                      ? context.colors.primary.withValues(alpha: 0.1)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected
-                        ? AppTheme.primaryLight
+                        ? context.colors.primary
                         : context.colors.grey700,
                   ),
                 ),
@@ -281,7 +272,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                     Icon(
                       theme['icon'] as IconData?,
                       color: isSelected
-                          ? AppTheme.primaryLight
+                          ? context.colors.primary
                           : context.colors.grey400,
                       size: 20,
                     ),
@@ -294,14 +285,14 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                           fontWeight: isSelected
                               ? FontWeight.w600
                               : FontWeight.normal,
-                          color: isSelected ? AppTheme.primaryLight : null,
+                          color: isSelected ? context.colors.primary : null,
                         ),
                       ),
                     ),
                     if (isSelected)
                       const Icon(
                         Icons.check_circle,
-                        color: AppTheme.primaryLight,
+                        color: context.colors.primary,
                         size: 20,
                       ),
                   ],
@@ -388,7 +379,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
       Switch(
         value: value,
         onChanged: onChanged,
-        activeThumbColor: AppTheme.primaryLight,
+        activeThumbColor: context.colors.primary,
       ),
     ],
   );

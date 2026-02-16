@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
@@ -73,12 +72,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Widget build(BuildContext context) {
     final SetupWizardState state = ref.watch(setupWizardProvider);
     final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -106,7 +102,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 'Choose how you want to be notified',
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? AppColors.grey700Dark : AppColors.grey400Light,
+                  color: context.colors.grey400,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -136,11 +132,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                                     notification['enabled'] = value;
                                   });
                                 },
-                                isDark: isDark,
                               ),
                             )
                             .toList(),
-                        isDark: isDark,
                       ),
 
                       const SizedBox(height: 24),
@@ -161,17 +155,15 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                                     setting['enabled'] = value;
                                   });
                                 },
-                                isDark: isDark,
                               ),
                             )
                             .toList(),
-                        isDark: isDark,
                       ),
 
                       const SizedBox(height: 24),
 
                       // Notification preview
-                      _buildNotificationPreview(isDark),
+                      _buildNotificationPreview(),
                     ],
                   ),
                 ),
@@ -192,7 +184,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                     child: Text(
                       'Back',
                       style: TextStyle(
-                        color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
+                        color: context.colors.grey400,
                         fontSize: 16,
                       ),
                     ),
@@ -212,13 +204,12 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     required String title,
     required IconData icon,
     required List<Widget> children,
-    required bool isDark,
   }) => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: isDark ? AppColors.grey700Dark : AppColors.grey800Light),
+      border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,10 +220,10 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                color: context.colors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: AppTheme.primaryLight, size: 20),
+              child: Icon(icon, color: context.colors.primary, size: 20),
             ),
             const SizedBox(width: 12),
             Text(
@@ -253,7 +244,6 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     required IconData icon,
     required bool enabled,
     required ValueChanged<bool> onChanged,
-    required bool isDark,
   }) => Container(
     margin: const EdgeInsets.only(bottom: 12),
     child: Row(
@@ -263,13 +253,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           height: 40,
           decoration: BoxDecoration(
             color: enabled
-                ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                : (isDark ? AppColors.grey700Dark : AppColors.grey800Light),
+                ? context.colors.primary.withValues(alpha: 0.1)
+                : context.colors.grey700,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: enabled ? AppTheme.primaryLight : Colors.grey[600],
+            color: enabled ? context.colors.primary : context.colors.grey500,
             size: 20,
           ),
         ),
@@ -289,7 +279,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 description,
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  color: context.colors.grey400,
                 ),
               ),
             ],
@@ -298,17 +288,17 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         Switch(
           value: enabled,
           onChanged: onChanged,
-          activeThumbColor: AppTheme.primaryLight,
+          activeThumbColor: context.colors.primary,
         ),
       ],
     ),
   );
 
-  Widget _buildNotificationPreview(bool isDark) => Container(
+  Widget _buildNotificationPreview() => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      gradient: const LinearGradient(
-        colors: AppTheme.primaryGradient,
+      gradient: LinearGradient(
+        colors: [context.colors.primary, context.colors.secondary],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
@@ -323,23 +313,23 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: context.colors.textOnFilled.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.notifications,
-                color: Colors.white,
+                color: context.colors.textOnFilled,
                 size: 20,
               ),
             ),
             const SizedBox(width: 12),
-            const Expanded(
+            Expanded(
               child: Text(
                 'Notification Preview',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  color: context.colors.textOnFilled,
                 ),
               ),
             ),
@@ -351,7 +341,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.1),
+            color: context.colors.textOnFilled.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -359,12 +349,12 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             children: [
               Row(
                 children: [
-                  const Text(
+                  Text(
                     'Nebu',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: context.colors.textOnFilled,
                     ),
                   ),
                   const Spacer(),
@@ -372,7 +362,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                     'now',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: context.colors.textOnFilled.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -382,7 +372,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 'Your voice command has been processed successfully!',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: context.colors.textOnFilled.withValues(alpha: 0.9),
                 ),
               ),
             ],
@@ -395,7 +385,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           'This is how notifications will appear on your device',
           style: TextStyle(
             fontSize: 12,
-            color: Colors.white.withValues(alpha: 0.7),
+            color: context.colors.textOnFilled.withValues(alpha: 0.7),
             fontStyle: FontStyle.italic,
           ),
         ),

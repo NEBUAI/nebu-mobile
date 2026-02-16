@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
@@ -98,15 +97,15 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [AppColors.greenMainLight, AppColors.green100Light],
+                            gradient: LinearGradient(
+                              colors: [context.colors.success, context.colors.success100],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(60),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.greenMainLight.withValues(alpha: 0.3),
+                                color: context.colors.success.withValues(alpha: 0.3),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
@@ -173,12 +172,12 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
     );
   }
 
-  Widget _buildSummarySection(SetupWizardState state, bool isDark) => Container(
+  Widget _buildSummarySection(SetupWizardState state) => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: isDark ? AppColors.grey700Dark : AppColors.grey800Light),
+      border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,12 +188,12 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                color: context.colors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.summarize,
-                color: AppTheme.primaryLight,
+                color: context.colors.primary,
                 size: 20,
               ),
             ),
@@ -212,28 +211,24 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
           icon: Icons.person,
           title: 'Profile',
           value: state.userName.isNotEmpty ? state.userName : 'Not set',
-          isDark: isDark,
         ),
 
         _buildSummaryItem(
           icon: Icons.language,
           title: 'Language',
           value: _getLanguageName(state.selectedLanguage),
-          isDark: isDark,
         ),
 
         _buildSummaryItem(
           icon: Icons.mic,
           title: 'Voice',
           value: state.voiceEnabled ? 'Enabled' : 'Disabled',
-          isDark: isDark,
         ),
 
         _buildSummaryItem(
           icon: Icons.notifications,
           title: 'Notifications',
           value: state.notificationsEnabled ? 'Enabled' : 'Disabled',
-          isDark: isDark,
         ),
       ],
     ),
@@ -243,7 +238,6 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
     required IconData icon,
     required String title,
     required String value,
-    required bool isDark,
   }) => Container(
     margin: const EdgeInsets.only(bottom: 12),
     child: Row(
@@ -252,10 +246,10 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
           width: 32,
           height: 32,
           decoration: BoxDecoration(
-            color: AppTheme.primaryLight.withValues(alpha: 0.1),
+            color: context.colors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(6),
           ),
-          child: Icon(icon, color: AppTheme.primaryLight, size: 16),
+          child: Icon(icon, color: context.colors.primary, size: 16),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -273,7 +267,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                 value,
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
+                  color: context.colors.grey400,
                 ),
               ),
             ],

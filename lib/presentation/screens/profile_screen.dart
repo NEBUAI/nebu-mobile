@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/config/config.dart';
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
 import '../providers/api_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/language_provider.dart';
@@ -92,7 +91,7 @@ class ProfileScreen extends ConsumerWidget {
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                        color: context.colors.primary.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: user?.avatar != null
@@ -108,7 +107,7 @@ class ProfileScreen extends ConsumerWidget {
                               child: Text(
                                 (user?.name ?? 'U')[0].toUpperCase(),
                                 style: theme.textTheme.headlineMedium?.copyWith(
-                                  color: AppTheme.primaryLight,
+                                  color: context.colors.primary,
                                 ),
                               ),
                             ),
@@ -248,12 +247,12 @@ class ProfileScreen extends ConsumerWidget {
                       onChanged: (value) {
                         ref.read(themeProvider.notifier).toggleDarkMode();
                       },
-                      activeTrackColor: AppTheme.primaryLight.withValues(
+                      activeTrackColor: context.colors.primary.withValues(
                         alpha: 0.5,
                       ),
                       thumbColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.selected)) {
-                          return AppTheme.primaryLight;
+                          return context.colors.primary;
                         }
                         return null;
                       }),
@@ -549,7 +548,7 @@ void _showAboutDialog(BuildContext context, String appVersion) {
       width: 64,
       height: 64,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: AppTheme.primaryGradient),
+        gradient: LinearGradient(colors: [context.colors.primary, context.colors.secondary]),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Icon(Icons.smart_toy, color: context.colors.textOnFilled, size: 32),

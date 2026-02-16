@@ -12,7 +12,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 import '../../../data/services/esp32_wifi_config_service.dart';
 import '../../../data/services/wifi_service.dart';
 import '../../providers/api_provider.dart';
@@ -493,7 +492,13 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: DecoratedBox(
-          decoration: AppTheme.primaryGradientDecoration,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [context.colors.primary, context.colors.secondary],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(24),
@@ -688,25 +693,25 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         onPressed: _isConnecting ? null : _connectToWifi,
         style: ElevatedButton.styleFrom(
           backgroundColor: context.colors.bgPrimary,
-          foregroundColor: AppTheme.primaryLight,
+          foregroundColor: context.colors.primary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
         ),
         child: _isConnecting
-            ? const SizedBox(
+            ? SizedBox(
                 height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 3,
-                  color: AppTheme.primaryLight,
+                  color: context.colors.primary,
                 ),
               )
             : Text(
                 'setup.wifi.connect_button'.tr(),
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppTheme.primaryLight,
+                  color: context.colors.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -855,9 +860,9 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: context.colors.textOnFilled,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -869,7 +874,7 @@ class _WifiNetworksSheetState extends State<_WifiNetworksSheet> {
               Text(
                 'setup.wifi.scan_networks'.tr(),
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  color: AppTheme.onBackgroundLight,
+                  color: context.colors.textNormal,
                   fontWeight: FontWeight.bold,
                 ),
               ),

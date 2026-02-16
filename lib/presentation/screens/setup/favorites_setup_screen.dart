@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 
 class FavoritesSetupScreen extends StatefulWidget {
   const FavoritesSetupScreen({super.key});
@@ -30,7 +29,13 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: DecoratedBox(
-      decoration: AppTheme.primaryGradientDecoration,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [context.colors.primary, context.colors.secondary],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),

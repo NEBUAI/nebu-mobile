@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 
 class PersonalitySetupScreen extends StatefulWidget {
   const PersonalitySetupScreen({super.key});
@@ -41,10 +40,15 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       body: DecoratedBox(
-        decoration: AppTheme.primaryGradientDecoration,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [context.colors.primary, context.colors.secondary],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -56,7 +60,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   alignment: Alignment.centerLeft,
                   child: IconButton(
                     onPressed: () => context.pop(),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
                   ),
                 ),
 
@@ -70,10 +74,10 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                 // Title
                 Text(
                   'setup.personality.title'.tr(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: context.colors.textOnFilled,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -84,7 +88,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   'setup.personality.subtitle'.tr(),
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: context.colors.textOnFilled.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -113,12 +117,12 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? Colors.white
-                                  : Colors.white.withValues(alpha: 0.2),
+                                  ? context.colors.textOnFilled
+                                  : context.colors.textOnFilled.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isSelected
-                                    ? Colors.white
+                                    ? context.colors.textOnFilled
                                     : Colors.transparent,
                                 width: 2,
                               ),
@@ -140,8 +144,8 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           color: isSelected
-                                              ? colorScheme.primary
-                                              : Colors.white,
+                                              ? context.colors.primary
+                                              : context.colors.textOnFilled,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -150,9 +154,9 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: isSelected
-                                              ? colorScheme.primary
+                                              ? context.colors.primary
                                                   .withValues(alpha: 0.7)
-                                              : Colors.white.withValues(alpha: 0.7),
+                                              : context.colors.textOnFilled.withValues(alpha: 0.7),
                                         ),
                                       ),
                                     ],
@@ -161,7 +165,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                 if (isSelected)
                                   Icon(
                                     Icons.check_circle,
-                                    color: colorScheme.primary,
+                                    color: context.colors.primary,
                                   ),
                               ],
                             ),
@@ -180,10 +184,10 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                       ? () => context.go(AppRoutes.voiceSetup.path)
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: colorScheme.primary,
-                    disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
-                    disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+                    backgroundColor: context.colors.textOnFilled,
+                    foregroundColor: context.colors.primary,
+                    disabledBackgroundColor: context.colors.textOnFilled.withValues(alpha: 0.3),
+                    disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -206,7 +210,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                   child: Text(
                     'setup.connection.skip_setup'.tr(),
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.8),
+                      color: context.colors.textOnFilled.withValues(alpha: 0.8),
                       fontSize: 16,
                     ),
                   ),
@@ -231,8 +235,8 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
             height: 8,
             decoration: BoxDecoration(
               color: index < current
-                  ? Colors.white
-                  : Colors.white.withValues(alpha: 0.3),
+                  ? context.colors.textOnFilled
+                  : context.colors.textOnFilled.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(4),
             ),
           ),

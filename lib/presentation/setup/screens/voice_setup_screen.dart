@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:record/record.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/gradient_text.dart';
 import '../../widgets/setup_progress_indicator.dart';
@@ -76,12 +75,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
   Widget build(BuildContext context) {
     final SetupWizardState state = ref.watch(setupWizardProvider);
     final SetupWizardNotifier notifier = ref.read(setupWizardProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark
-          ? AppTheme.backgroundDark
-          : AppTheme.backgroundLight,
+      backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -109,7 +105,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 'voice_setup.subtitle'.tr(),
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? AppColors.grey700Dark : AppColors.grey400Light,
+                  color: context.colors.grey400,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -123,12 +119,12 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                   child: Column(
                     children: [
                       // Voice test card
-                      _buildVoiceTestCard(isDark),
+                      _buildVoiceTestCard(),
 
                       const SizedBox(height: 32),
 
                       // Voice settings
-                      _buildVoiceSettings(isDark),
+                      _buildVoiceSettings(),
                     ],
                   ),
                 ),
@@ -149,7 +145,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                     child: Text(
                       'common.back'.tr(),
                       style: TextStyle(
-                        color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
+                        color: context.colors.grey400,
                         fontSize: 16,
                       ),
                     ),
@@ -165,18 +161,18 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     );
   }
 
-  Widget _buildVoiceTestCard(bool isDark) => Container(
+  Widget _buildVoiceTestCard() => Container(
     padding: const EdgeInsets.all(24),
     decoration: BoxDecoration(
-      gradient: const LinearGradient(
-        colors: AppTheme.primaryGradient,
+      gradient: LinearGradient(
+        colors: [context.colors.primary, context.colors.secondary],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
       borderRadius: BorderRadius.circular(20),
       boxShadow: [
         BoxShadow(
-          color: AppTheme.primaryLight.withValues(alpha: 0.3),
+          color: context.colors.primary.withValues(alpha: 0.3),
           blurRadius: 20,
           offset: const Offset(0, 10),
         ),
@@ -186,10 +182,10 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
       children: [
         Text(
           'voice_setup.test_your_voice'.tr(),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: context.colors.textOnFilled,
           ),
         ),
 
@@ -199,7 +195,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
           'voice_setup.test_hint'.tr(),
           style: TextStyle(
             fontSize: 14,
-            color: Colors.white.withValues(alpha: 0.8),
+            color: context.colors.textOnFilled.withValues(alpha: 0.8),
           ),
           textAlign: TextAlign.center,
         ),
@@ -219,11 +215,11 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.colors.bgPrimary,
                   borderRadius: BorderRadius.circular(40),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: context.colors.textNormal.withValues(alpha: 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -232,7 +228,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 child: Icon(
                   isRecording ? Icons.stop : Icons.mic,
                   size: 40,
-                  color: isRecording ? context.colors.error : AppTheme.primaryLight,
+                  color: isRecording ? context.colors.error : context.colors.primary,
                 ),
               ),
             ),
@@ -244,9 +240,9 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
         if (isRecording)
           Text(
             'voice_setup.listening'.tr(),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: Colors.white,
+              color: context.colors.textOnFilled,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -265,12 +261,12 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     ),
   );
 
-  Widget _buildVoiceSettings(bool isDark) => Container(
+  Widget _buildVoiceSettings() => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      color: isDark ? AppTheme.surfaceDark : AppTheme.surfaceLight,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: isDark ? AppColors.grey700Dark : AppColors.grey800Light),
+      border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,12 +277,12 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                color: context.colors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.settings_voice,
-                color: AppTheme.primaryLight,
+                color: context.colors.primary,
                 size: 20,
               ),
             ),
@@ -306,7 +302,6 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
             description: setting['description'] as String,
             icon: setting['icon'] as IconData,
             enabled: setting['enabled'] as bool,
-            isDark: isDark,
           ),
         ),
       ],
@@ -318,7 +313,6 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
     required String description,
     required IconData icon,
     required bool enabled,
-    required bool isDark,
   }) => Container(
     margin: const EdgeInsets.only(bottom: 12),
     child: Row(
@@ -328,13 +322,13 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
           height: 40,
           decoration: BoxDecoration(
             color: enabled
-                ? AppTheme.primaryLight.withValues(alpha: 0.1)
-                : (isDark ? AppColors.grey700Dark : AppColors.grey800Light),
+                ? context.colors.primary.withValues(alpha: 0.1)
+                : context.colors.grey700,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: enabled ? AppTheme.primaryLight : AppColors.grey400Light,
+            color: enabled ? context.colors.primary : context.colors.grey400,
             size: 20,
           ),
         ),
@@ -354,7 +348,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
                 description.tr(),
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDark ? AppColors.grey600Dark : AppColors.grey400Light,
+                  color: context.colors.grey400,
                 ),
               ),
             ],
@@ -373,7 +367,7 @@ class _VoiceSetupScreenState extends ConsumerState<VoiceSetupScreen>
               }
             });
           },
-          activeThumbColor: AppTheme.primaryLight,
+          activeThumbColor: context.colors.primary,
         ),
       ],
     ),

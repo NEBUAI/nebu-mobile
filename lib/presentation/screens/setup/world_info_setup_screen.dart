@@ -14,7 +14,13 @@ class WorldInfoSetupScreen extends StatelessWidget {
 
     return Scaffold(
       body: DecoratedBox(
-        decoration: AppTheme.primaryGradientDecoration,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [context.colors.primary, context.colors.secondary],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -26,14 +32,14 @@ class WorldInfoSetupScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: IconButton(
                     onPressed: () => context.pop(),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
                   ),
                 ),
 
                 const SizedBox(height: 20),
 
                 // Progress indicator
-                _buildProgressIndicator(7, 7),
+                _buildProgressIndicator(context, 7, 7),
 
                 const Spacer(),
 
@@ -43,11 +49,11 @@ class WorldInfoSetupScreen extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.colors.bgPrimary,
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
+                          color: context.colors.textNormal.withValues(alpha: 0.2),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -56,7 +62,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                     child: const Icon(
                       Icons.check,
                       size: 60,
-                      color: AppTheme.primaryLight,
+                      color: context.colors.primary,
                     ),
                   ),
                 ),
@@ -67,7 +73,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                 Text(
                   'setup.world_info.all_set'.tr(),
                   style: theme.textTheme.displaySmall?.copyWith(
-                    color: Colors.white,
+                    color: context.colors.textOnFilled,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -77,7 +83,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                 Text(
                   'setup.world_info.ready_message'.tr(),
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: context.colors.textOnFilled.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -86,18 +92,21 @@ class WorldInfoSetupScreen extends StatelessWidget {
 
                 // Features summary
                 _buildFeatureSummary(
+                  context,
                   theme,
                   Icons.check_circle,
                   'setup.world_info.device_connected'.tr(),
                 ),
                 const SizedBox(height: 16),
                 _buildFeatureSummary(
+                  context,
                   theme,
                   Icons.check_circle,
                   'setup.world_info.profile_configured'.tr(),
                 ),
                 const SizedBox(height: 16),
                 _buildFeatureSummary(
+                  context,
                   theme,
                   Icons.check_circle,
                   'setup.world_info.preferences_saved'.tr(),
@@ -112,8 +121,8 @@ class WorldInfoSetupScreen extends StatelessWidget {
                     context.go(AppRoutes.home.path);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppTheme.primaryLight,
+                    backgroundColor: context.colors.bgPrimary,
+                    foregroundColor: context.colors.primary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -125,7 +134,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                       Text(
                         'setup.world_info.start_using'.tr(),
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppTheme.primaryLight,
+                          color: context.colors.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -144,7 +153,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressIndicator(int current, int total) => Row(
+  Widget _buildProgressIndicator(BuildContext context, int current, int total) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: List.generate(
       total,
@@ -154,24 +163,24 @@ class WorldInfoSetupScreen extends StatelessWidget {
         height: 8,
         decoration: BoxDecoration(
           color: index < current
-              ? Colors.white
-              : Colors.white.withValues(alpha: 0.3),
+              ? context.colors.textOnFilled
+              : context.colors.textOnFilled.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),
     ),
   );
 
-  Widget _buildFeatureSummary(ThemeData theme, IconData icon, String text) =>
+  Widget _buildFeatureSummary(BuildContext context, ThemeData theme, IconData icon, String text) =>
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.white, size: 24),
+          Icon(icon, color: context.colors.textOnFilled, size: 24),
           const SizedBox(width: 12),
           Text(
             text,
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: Colors.white,
+              color: context.colors.textOnFilled,
               fontWeight: FontWeight.w500,
             ),
           ),

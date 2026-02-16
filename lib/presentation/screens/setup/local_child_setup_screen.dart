@@ -223,7 +223,13 @@ Communication style:
 
     return Scaffold(
       body: DecoratedBox(
-        decoration: AppTheme.primaryGradientDecoration,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [context.colors.primary, context.colors.secondary],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
         child: SafeArea(
           child: Column(
             children: [
@@ -257,7 +263,7 @@ Communication style:
                             'setup.local_child.child_info_title'.tr(),
                             style: theme.textTheme.headlineSmall?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.primaryLight,
+                              color: context.colors.primary,
                             ),
                           ),
 
@@ -322,12 +328,12 @@ Communication style:
                                   ),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AppTheme.primaryLight
+                                        ? context.colors.primary
                                         : context.colors.grey900,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: isSelected
-                                          ? AppTheme.primaryLight
+                                          ? context.colors.primary
                                           : context.colors.grey700,
                                       width: 2,
                                     ),
@@ -384,14 +390,14 @@ Communication style:
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AppTheme.primaryLight.withValues(
+                                        ? context.colors.primary.withValues(
                                             alpha: 0.1,
                                           )
                                         : context.colors.grey900,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: isSelected
-                                          ? AppTheme.primaryLight
+                                          ? context.colors.primary
                                           : context.colors.grey700,
                                       width: 2,
                                     ),
@@ -412,7 +418,7 @@ Communication style:
                                                 ? FontWeight.bold
                                                 : FontWeight.w500,
                                             color: isSelected
-                                                ? AppTheme.primaryLight
+                                                ? context.colors.primary
                                                 : context.colors.textNormal,
                                           ),
                                         ),
@@ -420,7 +426,7 @@ Communication style:
                                       if (isSelected)
                                         const Icon(
                                           Icons.check_circle,
-                                          color: AppTheme.primaryLight,
+                                          color: context.colors.primary,
                                         ),
                                     ],
                                   ),
@@ -468,7 +474,7 @@ Communication style:
                           ElevatedButton(
                             onPressed: _isSaving ? null : _saveData,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.primaryLight,
+                              backgroundColor: context.colors.primary,
                               foregroundColor: context.colors.textOnFilled,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(

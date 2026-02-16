@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 
 class AgeSetupScreen extends StatefulWidget {
   const AgeSetupScreen({super.key});
@@ -25,7 +25,13 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: DecoratedBox(
-      decoration: AppTheme.primaryGradientDecoration,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [context.colors.primary, context.colors.secondary],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -37,7 +43,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                   onPressed: () => context.pop(),
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
                 ),
               ),
 
@@ -51,10 +57,10 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
               // Title
               Text(
                 'setup.age.title'.tr(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: context.colors.textOnFilled,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -65,7 +71,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                 'setup.age.subtitle'.tr(),
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: context.colors.textOnFilled.withValues(alpha: 0.9),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -93,12 +99,12 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Colors.white
-                                : Colors.white.withValues(alpha: 0.2),
+                                ? context.colors.bgPrimary
+                                : context.colors.textOnFilled.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: isSelected
-                                  ? Colors.white
+                                  ? context.colors.bgPrimary
                                   : Colors.transparent,
                               width: 2,
                             ),
@@ -116,15 +122,15 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: isSelected
-                                      ? AppTheme.primaryLight
-                                      : Colors.white,
+                                      ? context.colors.primary
+                                      : context.colors.textOnFilled,
                                 ),
                               ),
                               const Spacer(),
                               if (isSelected)
-                                const Icon(
+                                Icon(
                                   Icons.check_circle,
-                                  color: AppTheme.primaryLight,
+                                  color: context.colors.primary,
                                 ),
                             ],
                           ),
@@ -143,10 +149,10 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                     ? () => context.go(AppRoutes.personalitySetup.path)
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AppTheme.primaryLight,
-                  disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
-                  disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+                  backgroundColor: context.colors.bgPrimary,
+                  foregroundColor: context.colors.primary,
+                  disabledBackgroundColor: context.colors.bgPrimary.withValues(alpha: 0.3),
+                  disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -169,7 +175,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                 child: Text(
                   'setup.connection.skip_setup'.tr(),
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: context.colors.textOnFilled.withValues(alpha: 0.8),
                     fontSize: 16,
                   ),
                 ),
@@ -193,8 +199,8 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
         height: 8,
         decoration: BoxDecoration(
           color: index < current
-              ? Colors.white
-              : Colors.white.withValues(alpha: 0.3),
+              ? context.colors.textOnFilled
+              : context.colors.textOnFilled.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(4),
         ),
       ),

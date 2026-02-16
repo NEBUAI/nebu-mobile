@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/theme/app_colors.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
 
@@ -427,13 +426,13 @@ class _PrimaryButton extends StatelessWidget {
         child: Container(
           height: 56,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF8B6FFF), Color(0xFF6B4EFF)],
+            gradient: LinearGradient(
+              colors: [context.colors.primary100, context.colors.primary],
             ),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF6B4EFF).withValues(alpha: 0.3),
+                color: context.colors.primary.withValues(alpha: 0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -441,18 +440,18 @@ class _PrimaryButton extends StatelessWidget {
           ),
           child: Center(
             child: isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     width: 24,
                     height: 24,
                     child: CircularProgressIndicator(
                       strokeWidth: 2.5,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(context.colors.textOnFilled),
                     ),
                   )
                 : Text(
                     text,
                     style: textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
+                      color: context.colors.textOnFilled,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.3,
                     ),
@@ -486,9 +485,9 @@ class _GoogleButton extends StatelessWidget {
         child: Container(
           height: 56,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.colors.bgPrimary,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey[200]!, width: 1.5),
+            border: Border.all(color: context.colors.grey800, width: 1.5),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -500,14 +499,14 @@ class _GoogleButton extends StatelessWidget {
                 errorBuilder: (context, error, stackTrace) => Icon(
                   Icons.g_mobiledata,
                   size: 28,
-                  color: Colors.grey[700],
+                  color: context.colors.grey300,
                 ),
               ),
               const SizedBox(width: 12),
               Text(
                 text,
                 style: textTheme.titleMedium?.copyWith(
-                  color: Colors.grey[800],
+                  color: context.colors.grey200,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -525,18 +524,18 @@ class _OrDivider extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Row(
       children: [
-        Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
+        Expanded(child: Divider(color: context.colors.grey700, thickness: 1)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'auth.or'.tr(),
             style: textTheme.bodySmall?.copyWith(
-              color: Colors.grey[500],
+              color: context.colors.grey400,
               fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
+        Expanded(child: Divider(color: context.colors.grey700, thickness: 1)),
       ],
     );
   }
@@ -552,19 +551,19 @@ class _ErrorBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.red[50],
+        color: context.colors.errorBg,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.red[100]!),
+        border: Border.all(color: context.colors.error.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
-          Icon(Icons.error_outline_rounded, color: Colors.red[400], size: 22),
+          Icon(Icons.error_outline_rounded, color: context.colors.error, size: 22),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               message,
               style: textTheme.bodyMedium?.copyWith(
-                color: Colors.red[700],
+                color: context.colors.error,
                 fontWeight: FontWeight.w500,
               ),
             ),

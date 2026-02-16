@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
 
 enum ButtonVariant { primary, secondary, outline }
 
@@ -58,8 +57,8 @@ class CustomButton extends StatelessWidget {
           width: buttonWidth,
           height: buttonHeight,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: AppTheme.primaryGradient,
+            gradient: LinearGradient(
+              colors: [context.colors.primary, context.colors.secondary],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

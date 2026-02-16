@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
 
 class SetupProgressIndicator extends StatelessWidget {
   const SetupProgressIndicator({
@@ -38,8 +37,8 @@ class SetupProgressIndicator extends StatelessWidget {
             value: progress,
             minHeight: 8,
             backgroundColor: context.colors.grey800,
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              AppTheme.primaryLight,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              context.colors.primary,
             ),
           ),
         ),
