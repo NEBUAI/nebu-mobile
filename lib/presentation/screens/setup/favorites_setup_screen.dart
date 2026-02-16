@@ -54,7 +54,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
               const SizedBox(height: 20),
 
               // Progress indicator
-              _buildProgressIndicator(6, 7),
+              _buildProgressIndicator(7, 7),
 
               const SizedBox(height: 40),
 
@@ -114,12 +114,12 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? context.colors.textOnFilled
+                              ? context.colors.bgPrimary
                               : context.colors.textOnFilled.withValues(alpha: 0.2),
                           borderRadius: context.radius.panel,
                           border: Border.all(
                             color: isSelected
-                                ? context.colors.textOnFilled
+                                ? context.colors.bgPrimary
                                 : Colors.transparent,
                             width: 2,
                           ),
@@ -169,7 +169,7 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
                     ? () => context.go(AppRoutes.worldInfoSetup.path)
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: context.colors.textOnFilled,
+                  backgroundColor: context.colors.bgPrimary,
                   foregroundColor: context.colors.primary,
                   disabledBackgroundColor: context.colors.textOnFilled.withValues(alpha: 0.3),
                   disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),

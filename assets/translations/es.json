@@ -234,7 +234,14 @@
     "devices": "Dispositivos",
     "activity_log": "Registro de actividad",
     "setup_new_toy": "Configurar Nuevo Juguete",
-    "devices_error": "No se pudieron cargar los dispositivos conectados. Intenta de nuevo."
+    "devices_error": "No se pudieron cargar los dispositivos conectados. Intenta de nuevo.",
+    "greeting_name": "¡Hola, {0}!",
+    "greeting_default": "¡Hola!",
+    "subtitle": "¡A jugar!",
+    "toys_connected": "{0} juguetes conectados",
+    "all_good": "¡Todo se ve genial!",
+    "no_toys_hero": "Aún no hay juguetes",
+    "no_toys_hero_hint": "Conecta tu primer juguete Nebu para comenzar"
   },
   "profile": {
     "title": "Perfil",
@@ -376,7 +383,10 @@
     "firmware": "Firmware",
     "battery": "Batería",
     "signal": "Señal",
-    "pending": "Pendiente"
+    "pending": "Pendiente",
+    "pending_hint": "Este juguete necesita conexión al dispositivo para sincronizar",
+    "talk_to_toy": "Hablar con Juguete",
+    "configure_toy": "Configurar"
   },
   "device_management": {
     "title": "Mis Dispositivos",

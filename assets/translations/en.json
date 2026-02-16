@@ -234,7 +234,14 @@
     "devices": "Devices",
     "activity_log": "Activity Log",
     "setup_new_toy": "Setup New Toy",
-    "devices_error": "Could not load connected devices. Please try again."
+    "devices_error": "Could not load connected devices. Please try again.",
+    "greeting_name": "Hello, {0}!",
+    "greeting_default": "Hello!",
+    "subtitle": "Let's play!",
+    "toys_connected": "{0} toys connected",
+    "all_good": "Everything is looking great!",
+    "no_toys_hero": "No toys yet",
+    "no_toys_hero_hint": "Connect your first Nebu toy to get started"
   },
   "profile": {
     "title": "Profile",
@@ -376,7 +383,10 @@
     "firmware": "Firmware",
     "battery": "Battery",
     "signal": "Signal",
-    "pending": "Pending"
+    "pending": "Pending",
+    "pending_hint": "This toy needs device connection to sync",
+    "talk_to_toy": "Talk to Toy",
+    "configure_toy": "Configure"
   },
   "device_management": {
     "title": "My Devices",

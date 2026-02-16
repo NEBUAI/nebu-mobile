@@ -69,7 +69,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                 const SizedBox(height: 20),
 
                 // Progress indicator
-                _buildProgressIndicator(5, 7),
+                _buildProgressIndicator(6, 7),
 
                 const SizedBox(height: 40),
 

@@ -397,55 +397,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   // Toy Cards from API
                   if (toys.isEmpty) ...[
                     // Empty state
-                    Container(
-                      padding: EdgeInsets.all(context.spacing.paragraphBottomMargin),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surface,
-                        borderRadius: context.radius.panel,
-                        border: Border.all(
-                          color: theme.dividerColor.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.smart_toy_outlined,
-                            size: 64,
-                            color: theme.disabledColor,
-                          ),
-                          SizedBox(height: context.spacing.sectionTitleBottomMargin),
-                          Text(
-                            'toys.no_toys_title'.tr(),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: context.spacing.titleBottomMarginSm),
-                          Text(
-                            'toys.no_toys_subtitle'.tr(),
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                            ),
-                          ),
-                          SizedBox(height: context.spacing.titleBottomMargin),
-                          ElevatedButton.icon(
-                            onPressed: () => _addNewToy(context),
-                            icon: const Icon(Icons.add),
-                            label: Text('toys.setup_new_toy'.tr()),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.colorScheme.primary,
-                              foregroundColor: context.colors.textOnFilled,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    _buildEmptyState(context, theme),
                   ] else ...[
                     // Display toys from API
                     ...toys.map<Widget>(
@@ -566,6 +518,79 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       ),
     );
   }
+
+  Widget _buildEmptyState(BuildContext context, ThemeData theme) => Container(
+    padding: EdgeInsets.all(context.spacing.paragraphBottomMargin),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          context.colors.primary.withValues(alpha: 0.04),
+          context.colors.secondary.withValues(alpha: 0.05),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: context.radius.panel,
+      border: Border.all(
+        color: theme.dividerColor.withValues(alpha: 0.3),
+        width: 2,
+      ),
+    ),
+    child: Column(
+      children: [
+        Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                context.colors.primary.withValues(alpha: 0.08),
+                context.colors.secondary.withValues(alpha: 0.08),
+              ],
+            ),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.smart_toy_outlined,
+            size: 48,
+            color: context.colors.primary.withValues(alpha: 0.5),
+          ),
+        ),
+        SizedBox(height: context.spacing.sectionTitleBottomMargin),
+        Text(
+          'toys.no_toys_title'.tr(),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
+        Text(
+          'toys.no_toys_subtitle'.tr(),
+          textAlign: TextAlign.center,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
+        ),
+        SizedBox(height: context.spacing.titleBottomMargin),
+        ElevatedButton.icon(
+          onPressed: () => _addNewToy(context),
+          icon: const Icon(Icons.add),
+          label: Text('toys.setup_new_toy'.tr()),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: theme.colorScheme.primary,
+            foregroundColor: context.colors.textOnFilled,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 12,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: context.radius.button,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class _ToyCard extends StatelessWidget {
@@ -586,118 +611,291 @@ class _ToyCard extends StatelessWidget {
     final isOnline = toy.status == ToyStatus.active;
     final isPending = toy.status == ToyStatus.pending;
 
-    Color badgeColor;
+    Color accentColor;
     String badgeText;
     if (isPending) {
-      badgeColor = Colors.amber;
+      accentColor = Colors.amber;
       badgeText = 'toys.pending'.tr();
     } else if (isOnline) {
-      badgeColor = context.colors.success;
+      accentColor = context.colors.success;
       badgeText = 'toys.online'.tr();
     } else {
-      badgeColor = context.colors.error;
+      accentColor = context.colors.error;
       badgeText = 'toys.offline'.tr();
     }
 
-    return Card(
-      color: theme.colorScheme.surface,
-      elevation: isDark ? 4 : 2,
+    return Container(
       margin: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
-      shape: RoundedRectangleBorder(borderRadius: context.radius.modal),
-      child: InkWell(
-        onTap: onTap,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
         borderRadius: context.radius.panel,
-        child: Padding(
-          padding: EdgeInsets.all(context.spacing.alertPadding),
-          child: Row(
-            children: [
-              // Toy Icon
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: isPending
-                      ? Colors.amber.withValues(alpha: 0.15)
-                      : isOnline
-                          ? theme.colorScheme.primary.withValues(alpha: 0.15)
-                          : theme.disabledColor.withValues(alpha: 0.15),
-                  borderRadius: context.radius.panel,
-                ),
-                child: Icon(
-                  Icons.smart_toy,
-                  size: 28,
-                  color: isPending
-                      ? Colors.amber.shade700
-                      : isOnline
-                          ? theme.colorScheme.primary
-                          : theme.disabledColor,
-                ),
-              ),
-              const SizedBox(width: 16),
-              // Toy Info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      toy.name,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+        boxShadow: [
+          BoxShadow(
+            color: accentColor.withValues(alpha: 0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: context.radius.panel,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: context.radius.panel,
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                // Accent left border
+                Container(
+                  width: 4,
+                  decoration: BoxDecoration(
+                    color: accentColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      toy.model ?? 'Nebu Robot',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
+                  ),
+                ),
+                // Main content
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(context.spacing.alertPadding),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            // Toy Icon
+                            Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: isPending
+                                    ? Colors.amber.withValues(alpha: 0.15)
+                                    : isOnline
+                                        ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                                        : theme.disabledColor.withValues(alpha: 0.15),
+                                borderRadius: context.radius.panel,
+                              ),
+                              child: Icon(
+                                Icons.smart_toy,
+                                size: 28,
+                                color: isPending
+                                    ? Colors.amber.shade700
+                                    : isOnline
+                                        ? theme.colorScheme.primary
+                                        : theme.disabledColor,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            // Toy Info
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    toy.name,
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    toy.model ?? 'Nebu Robot',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Status Badge
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: accentColor.withValues(alpha: 0.1),
+                                borderRadius: context.radius.bottomSheet,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 6,
+                                    height: 6,
+                                    decoration: BoxDecoration(
+                                      color: accentColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    badgeText,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: accentColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.chevron_right,
+                              color: theme.iconTheme.color?.withValues(alpha: 0.4),
+                            ),
+                          ],
+                        ),
+                        // Pending banner
+                        if (isPending) ...[
+                          const SizedBox(height: 12),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withValues(alpha: 0.08),
+                              borderRadius: context.radius.tile,
+                              border: Border.all(
+                                color: Colors.amber.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.info_outline,
+                                  size: 16,
+                                  color: Colors.amber.shade700,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'toys.pending_hint'.tr(),
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: Colors.amber.shade700,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        // Quick action buttons for online toys
+                        if (isOnline) ...[
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _QuickActionButton(
+                                  icon: Icons.record_voice_over,
+                                  label: 'toys.talk_to_toy'.tr(),
+                                  color: context.colors.primary,
+                                  onTap: () => context.push(
+                                    AppRoutes.walkieTalkie.path,
+                                    extra: toy,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: _QuickActionButton(
+                                  icon: Icons.settings,
+                                  label: 'toys.configure_toy'.tr(),
+                                  color: context.colors.secondary,
+                                  onTap: () => context.push(
+                                    AppRoutes.toySettings.path,
+                                    extra: toy,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        // Last connected time for offline toys
+                        if (!isOnline && !isPending && toy.lastConnected != null) ...[
+                          const SizedBox(height: 8),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              _formatLastConnected(toy.lastConnected!),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              // Status Badge
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: badgeColor.withValues(alpha: 0.1),
-                  borderRadius: context.radius.bottomSheet,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: badgeColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      badgeText,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: badgeColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              Icon(
-                Icons.chevron_right,
-                color: theme.iconTheme.color?.withValues(alpha: 0.4),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  String _formatLastConnected(DateTime lastConnected) {
+    final now = DateTime.now();
+    final diff = now.difference(lastConnected);
+    if (diff.inMinutes < 1) return 'activity_log.just_now'.tr();
+    if (diff.inHours < 1) {
+      return 'activity_log.minutes_ago'.tr(args: [diff.inMinutes.toString()]);
+    }
+    if (diff.inDays < 1) {
+      return 'activity_log.hours_ago'.tr(args: [diff.inHours.toString()]);
+    }
+    return 'activity_log.days_ago'.tr(args: [diff.inDays.toString()]);
+  }
+}
+
+class _QuickActionButton extends StatelessWidget {
+  const _QuickActionButton({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    borderRadius: context.radius.tile,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: context.radius.tile,
+        border: Border.all(
+          color: color.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _InfoRow extends StatelessWidget {

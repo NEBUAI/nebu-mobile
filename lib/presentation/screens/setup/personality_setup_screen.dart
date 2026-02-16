@@ -15,25 +15,25 @@ class PersonalitySetupScreen extends StatefulWidget {
 class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
   String? _selectedPersonality;
 
-  final List<Map<String, String>> _personalities = [
+  final List<Map<String, dynamic>> _personalities = [
     {
       'label': 'setup.personality.playful',
-      'icon': '😄',
+      'icon': Icons.mood,
       'description': 'setup.personality.playful_desc',
     },
     {
       'label': 'setup.personality.calm',
-      'icon': '😌',
+      'icon': Icons.self_improvement,
       'description': 'setup.personality.calm_desc',
     },
     {
       'label': 'setup.personality.curious',
-      'icon': '🤔',
+      'icon': Icons.psychology,
       'description': 'setup.personality.curious_desc',
     },
     {
       'label': 'setup.personality.wise',
-      'icon': '🧙',
+      'icon': Icons.auto_awesome,
       'description': 'setup.personality.wise_desc',
     },
   ];
@@ -67,7 +67,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                 const SizedBox(height: 20),
 
                 // Progress indicator
-                _buildProgressIndicator(4, 7),
+                _buildProgressIndicator(5, 7),
 
                 const SizedBox(height: 40),
 
@@ -109,7 +109,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                         child: InkWell(
                           onTap: () {
                             setState(() {
-                              _selectedPersonality = personality['label'];
+                              _selectedPersonality = personality['label'] as String;
                             });
                           },
                           borderRadius: context.radius.panel,
@@ -117,21 +117,34 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? context.colors.textOnFilled
+                                  ? context.colors.bgPrimary
                                   : context.colors.textOnFilled.withValues(alpha: 0.2),
                               borderRadius: context.radius.panel,
                               border: Border.all(
                                 color: isSelected
-                                    ? context.colors.textOnFilled
+                                    ? context.colors.bgPrimary
                                     : Colors.transparent,
                                 width: 2,
                               ),
                             ),
                             child: Row(
                               children: [
-                                Text(
-                                  personality['icon']!,
-                                  style: const TextStyle(fontSize: 32),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? context.colors.primary
+                                            .withValues(alpha: 0.1)
+                                        : context.colors.textOnFilled.withValues(alpha: 0.1),
+                                    borderRadius: context.radius.tile,
+                                  ),
+                                  child: Icon(
+                                    personality['icon'] as IconData,
+                                    size: 28,
+                                    color: isSelected
+                                        ? context.colors.primary
+                                        : context.colors.textOnFilled,
+                                  ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
@@ -139,7 +152,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        personality['label']!.tr(),
+                                        (personality['label'] as String).tr(),
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
@@ -150,7 +163,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        personality['description']!.tr(),
+                                        (personality['description'] as String).tr(),
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: isSelected
@@ -184,7 +197,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                       ? () => context.go(AppRoutes.voiceSetup.path)
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colors.textOnFilled,
+                    backgroundColor: context.colors.bgPrimary,
                     foregroundColor: context.colors.primary,
                     disabledBackgroundColor: context.colors.textOnFilled.withValues(alpha: 0.3),
                     disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),

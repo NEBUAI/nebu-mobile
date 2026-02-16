@@ -15,11 +15,11 @@ class AgeSetupScreen extends StatefulWidget {
 class _AgeSetupScreenState extends State<AgeSetupScreen> {
   String? _selectedAge;
 
-  final List<Map<String, String>> _ageGroups = [
-    {'label': 'setup.age.age_3_5', 'icon': '👶'},
-    {'label': 'setup.age.age_6_8', 'icon': '🧒'},
-    {'label': 'setup.age.age_9_12', 'icon': '👦'},
-    {'label': 'setup.age.age_13_plus', 'icon': '👨'},
+  final List<Map<String, dynamic>> _ageGroups = [
+    {'label': 'setup.age.age_3_5', 'icon': Icons.child_care},
+    {'label': 'setup.age.age_6_8', 'icon': Icons.face},
+    {'label': 'setup.age.age_9_12', 'icon': Icons.boy},
+    {'label': 'setup.age.age_13_plus', 'icon': Icons.person},
   ];
 
   @override
@@ -50,7 +50,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
               const SizedBox(height: 20),
 
               // Progress indicator
-              _buildProgressIndicator(3, 7),
+              _buildProgressIndicator(4, 7),
 
               const SizedBox(height: 40),
 
@@ -91,7 +91,7 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            _selectedAge = age['label'];
+                            _selectedAge = age['label'] as String;
                           });
                         },
                         borderRadius: context.radius.panel,
@@ -111,13 +111,26 @@ class _AgeSetupScreenState extends State<AgeSetupScreen> {
                           ),
                           child: Row(
                             children: [
-                              Text(
-                                age['icon']!,
-                                style: const TextStyle(fontSize: 32),
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? context.colors.primary
+                                          .withValues(alpha: 0.1)
+                                      : context.colors.textOnFilled.withValues(alpha: 0.1),
+                                  borderRadius: context.radius.tile,
+                                ),
+                                child: Icon(
+                                  age['icon'] as IconData,
+                                  size: 28,
+                                  color: isSelected
+                                      ? context.colors.primary
+                                      : context.colors.textOnFilled,
+                                ),
                               ),
                               const SizedBox(width: 16),
                               Text(
-                                age['label']!.tr(),
+                                (age['label'] as String).tr(),
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
