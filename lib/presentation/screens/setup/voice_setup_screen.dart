@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../../core/theme/app_border_radius.dart';
 import '../../../core/theme/app_colors.dart';
 
 class VoiceSetupScreen extends StatefulWidget {
@@ -110,14 +111,14 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                               _selectedVoice = voice['label'] as String;
                             });
                           },
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: context.radius.panel,
                           child: Container(
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? context.colors.bgPrimary
                                   : context.colors.textOnFilled.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: context.radius.panel,
                               border: Border.all(
                                 color: isSelected
                                     ? context.colors.bgPrimary
@@ -134,7 +135,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                         ? context.colors.primary
                                             .withValues(alpha: 0.1)
                                         : context.colors.textOnFilled.withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: context.radius.tile,
                                   ),
                                   child: Icon(
                                     voice['icon'] as IconData,
@@ -202,7 +203,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                     disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.tile,
                     ),
                   ),
                   child: Text(
@@ -248,7 +249,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
           color: index < current
               ? context.colors.textOnFilled
               : context.colors.textOnFilled.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: context.radius.checkbox,
         ),
       ),
     ),

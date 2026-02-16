@@ -185,7 +185,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
           ),
           backgroundColor: context.colors.success,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.button)),
           margin: EdgeInsets.all(context.spacing.alertPadding),
         ),
       );
@@ -208,7 +208,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
           ),
           backgroundColor: context.colors.error,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.button)),
           margin: EdgeInsets.all(context.spacing.alertPadding),
         ),
       );
@@ -276,7 +276,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   height: 64,
                   decoration: BoxDecoration(
                     color: context.colors.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: context.radius.bottomSheet,
                   ),
                   child: Icon(
                     Icons.settings_rounded,
@@ -481,7 +481,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                 height: 120,
                 decoration: BoxDecoration(
                   color: context.colors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(60),
+                  borderRadius: context.radius.largeIcon,
                 ),
                 child: Center(
                   child: Container(
@@ -489,7 +489,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     height: 80,
                     decoration: BoxDecoration(
                       color: context.colors.primary.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: context.radius.button,
                     ),
                     child: Center(
                       child: Icon(
@@ -535,7 +535,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             height: 100,
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: context.radius.largeIcon,
             ),
             child: Icon(
               Icons.bluetooth_rounded,
@@ -584,7 +584,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: context.colors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: context.radius.tile,
               ),
               child: Text(
                 '${_scanResults.length}',
@@ -639,7 +639,7 @@ class _BackButton extends StatelessWidget {
         height: 44,
         decoration: BoxDecoration(
           color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: context.radius.tile,
         ),
         child: Icon(
           Icons.arrow_back_ios_new_rounded,
@@ -672,7 +672,7 @@ class _StepIndicator extends StatelessWidget {
               color: isActive
                   ? context.colors.primary
                   : context.colors.primary.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: context.radius.checkbox,
             ),
           );
         }),

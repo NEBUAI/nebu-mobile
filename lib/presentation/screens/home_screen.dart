@@ -102,7 +102,7 @@ class HomeScreen extends ConsumerWidget {
       return connectedDevices.when(
         data: (devices) {
           if (devices.isEmpty) {
-            return _buildNoToysPlaceholder(theme);
+            return _buildNoToysPlaceholder(context, theme);
           }
 
           return Column(
@@ -113,23 +113,25 @@ class HomeScreen extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => _buildErrorBanner(
+          context,
           theme,
           'home.devices_error'.tr(),
         ),
       );
     } on Exception {
       return _buildErrorBanner(
+        context,
         theme,
         'home.devices_error'.tr(),
       );
     }
   }
 
-  Widget _buildErrorBanner(ThemeData theme, String message) => Container(
+  Widget _buildErrorBanner(BuildContext context, ThemeData theme, String message) => Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: context.radius.tile,
       border: Border.all(
         color: theme.colorScheme.error.withValues(alpha: 0.3),
       ),
@@ -154,11 +156,11 @@ class HomeScreen extends ConsumerWidget {
     ),
   );
 
-  Widget _buildNoToysPlaceholder(ThemeData theme) => Container(
+  Widget _buildNoToysPlaceholder(BuildContext context, ThemeData theme) => Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         border: Border.all(color: theme.dividerColor.withAlpha(77)),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
       ),
       child: Column(
         children: [
@@ -237,10 +239,10 @@ class _QuickActionCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: context.radius.modal),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Padding(
           padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Column(

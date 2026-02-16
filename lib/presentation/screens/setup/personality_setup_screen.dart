@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../../core/theme/app_border_radius.dart';
 import '../../../core/theme/app_colors.dart';
 
 class PersonalitySetupScreen extends StatefulWidget {
@@ -112,14 +113,14 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                               _selectedPersonality = personality['label'];
                             });
                           },
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: context.radius.panel,
                           child: Container(
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? context.colors.textOnFilled
                                   : context.colors.textOnFilled.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: context.radius.panel,
                               border: Border.all(
                                 color: isSelected
                                     ? context.colors.textOnFilled
@@ -190,7 +191,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
                     disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.tile,
                     ),
                   ),
                   child: Text(
@@ -237,7 +238,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
               color: index < current
                   ? context.colors.textOnFilled
                   : context.colors.textOnFilled.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: context.radius.checkbox,
             ),
           ),
         ),
