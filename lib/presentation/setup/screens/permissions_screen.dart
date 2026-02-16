@@ -137,7 +137,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: context.radius.panel,
       border: Border.all(
         color: isGranted
             ? context.colors.primary
@@ -154,7 +154,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
             color: isGranted
                 ? context.colors.primary.withValues(alpha: 0.1)
                 : context.colors.grey800,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: context.radius.tile,
           ),
           child: Icon(
             icon,
@@ -185,7 +185,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                       ),
                       decoration: BoxDecoration(
                         color: context.colors.warning.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: context.radius.tile,
                       ),
                       child: Text(
                         'Optional',

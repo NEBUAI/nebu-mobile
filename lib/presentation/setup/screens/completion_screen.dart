@@ -102,7 +102,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.circular(60),
+                            borderRadius: context.radius.largeIcon,
                             boxShadow: [
                               BoxShadow(
                                 color: context.colors.success.withValues(alpha: 0.3),
@@ -176,7 +176,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: context.radius.panel,
       border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
@@ -189,7 +189,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
               height: 40,
               decoration: BoxDecoration(
                 color: context.colors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: context.radius.tile,
               ),
               child: Icon(
                 Icons.summarize,
@@ -247,7 +247,7 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen>
           height: 32,
           decoration: BoxDecoration(
             color: context.colors.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: context.radius.smallInput,
           ),
           child: Icon(icon, color: context.colors.primary, size: 16),
         ),

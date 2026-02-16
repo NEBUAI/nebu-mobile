@@ -208,7 +208,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: context.radius.panel,
       border: Border.all(color: context.colors.grey700),
     ),
     child: Column(
@@ -221,7 +221,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               height: 40,
               decoration: BoxDecoration(
                 color: context.colors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: context.radius.tile,
               ),
               child: Icon(icon, color: context.colors.primary, size: 20),
             ),
@@ -255,7 +255,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             color: enabled
                 ? context.colors.primary.withValues(alpha: 0.1)
                 : context.colors.grey700,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: context.radius.tile,
           ),
           child: Icon(
             icon,
@@ -302,7 +302,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: context.radius.panel,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,7 +314,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               height: 40,
               decoration: BoxDecoration(
                 color: context.colors.textOnFilled.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: context.radius.tile,
               ),
               child: Icon(
                 Icons.notifications,
@@ -342,7 +342,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: context.colors.textOnFilled.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: context.radius.tile,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

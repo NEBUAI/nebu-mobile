@@ -251,7 +251,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: context.radius.tile,
               onTap: () =>
                   notifier.updateSelectedTheme(theme['code'] as String),
               child: Container(
@@ -260,7 +260,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                   color: isSelected
                       ? context.colors.primary.withValues(alpha: 0.1)
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: context.radius.tile,
                   border: Border.all(
                     color: isSelected
                         ? context.colors.primary

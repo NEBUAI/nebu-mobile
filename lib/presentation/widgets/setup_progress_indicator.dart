@@ -32,7 +32,7 @@ class SetupProgressIndicator extends StatelessWidget {
         ),
         SizedBox(height: context.spacing.titleBottomMarginSm),
         ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: context.radius.tile,
           child: LinearProgressIndicator(
             value: progress,
             minHeight: 8,

@@ -213,7 +213,7 @@ class _PrivacySettingsScreenState extends ConsumerState<PrivacySettingsScreen> {
       DecoratedBox(
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           boxShadow: [
             BoxShadow(
               color: context.colors.textNormal.withValues(alpha: 0.05),

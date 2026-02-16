@@ -211,7 +211,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         hintText: 'toy_settings.toy_name_hint'.tr(),
                         prefixIcon: const Icon(Icons.label),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: context.radius.tile,
                         ),
                       ),
                       validator: (value) {

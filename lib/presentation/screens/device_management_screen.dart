@@ -125,7 +125,7 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
                     padding: EdgeInsets.all(context.spacing.alertPadding),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.alert,
                       border: Border.all(
                         color: theme.colorScheme.error.withValues(alpha: 0.3),
                       ),
