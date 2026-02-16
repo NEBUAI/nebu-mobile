@@ -39,8 +39,7 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -236,7 +235,6 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
         ),
       ),
     );
-  }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
         mainAxisAlignment: MainAxisAlignment.center,

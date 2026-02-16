@@ -838,7 +838,9 @@ class _ToyCard extends StatelessWidget {
   String _formatLastConnected(DateTime lastConnected) {
     final now = DateTime.now();
     final diff = now.difference(lastConnected);
-    if (diff.inMinutes < 1) return 'activity_log.just_now'.tr();
+    if (diff.inMinutes < 1) {
+      return 'activity_log.just_now'.tr();
+    }
     if (diff.inHours < 1) {
       return 'activity_log.minutes_ago'.tr(args: [diff.inMinutes.toString()]);
     }

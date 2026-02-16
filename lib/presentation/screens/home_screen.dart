@@ -344,9 +344,15 @@ class _DeviceBatteryCard extends ConsumerWidget {
   final fbp.BluetoothDevice device;
 
   IconData _batteryIcon(int level) {
-    if (level > 80) return Icons.battery_full;
-    if (level > 50) return Icons.battery_5_bar;
-    if (level > 20) return Icons.battery_3_bar;
+    if (level > 80) {
+      return Icons.battery_full;
+    }
+    if (level > 50) {
+      return Icons.battery_5_bar;
+    }
+    if (level > 20) {
+      return Icons.battery_3_bar;
+    }
     return Icons.battery_alert;
   }
 
