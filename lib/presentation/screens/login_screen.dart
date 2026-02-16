@@ -64,7 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('auth.forgot_password_body'.tr()),
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.sectionTitleBottomMargin),
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -153,7 +153,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text('auth.reset_password_body'.tr()),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   TextField(
                     controller: tokenController,
                     decoration: InputDecoration(

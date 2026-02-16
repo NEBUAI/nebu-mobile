@@ -69,7 +69,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
     ),
     body: Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(context.spacing.alertPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -92,12 +92,12 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
               foregroundColor: context.colors.textOnFilled,
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: context.spacing.panelPadding),
           if (_errorMessage != null)
             Card(
               color: context.colors.errorBg,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(context.spacing.alertPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
