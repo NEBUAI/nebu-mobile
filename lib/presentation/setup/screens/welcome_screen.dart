@@ -18,10 +18,10 @@ class WelcomeScreen extends ConsumerWidget {
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
               // Progress indicator
               SetupProgressIndicator(
                 currentStep: state.currentStep + 1,
@@ -55,7 +55,7 @@ class WelcomeScreen extends ConsumerWidget {
                 ),
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: context.spacing.largePageBottomMargin),
 
               // Welcome title
               const GradientText(
@@ -64,7 +64,7 @@ class WelcomeScreen extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
               // Subtitle
               Text(
@@ -89,14 +89,14 @@ class WelcomeScreen extends ConsumerWidget {
                       title: 'Voice Commands',
                       description: 'Control your app with natural speech',
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
                     _buildFeatureItem(
                       context: context,
                       icon: Icons.psychology,
                       title: 'AI Assistant',
                       description: 'Get intelligent help and suggestions',
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
                     _buildFeatureItem(
                       context: context,
                       icon: Icons.notifications,
@@ -116,7 +116,7 @@ class WelcomeScreen extends ConsumerWidget {
                     isFullWidth: true,
                     icon: Icons.arrow_forward,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   TextButton(
                     onPressed: () => context.go('/main'),
                     child: Text(
@@ -130,7 +130,7 @@ class WelcomeScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: context.spacing.titleBottomMargin),
             ],
           ),
         ),

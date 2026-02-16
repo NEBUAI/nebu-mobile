@@ -46,7 +46,7 @@ class ChildProfileScreen extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.child_care, size: 80, color: context.colors.grey500),
-        const SizedBox(height: 20),
+        SizedBox(height: context.spacing.titleBottomMargin),
         Text(
           'child_profile.no_data_title'.tr(),
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -81,7 +81,7 @@ class ChildProfileScreen extends ConsumerWidget {
     final childPersonality = childData['personality'];
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(context.spacing.alertPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -96,7 +96,7 @@ class ChildProfileScreen extends ConsumerWidget {
                     style: TextStyle(fontSize: 40, color: colorScheme.primary),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: context.spacing.paragraphBottomMarginSm),
                 Text(
                   childName,
                   style: const TextStyle(

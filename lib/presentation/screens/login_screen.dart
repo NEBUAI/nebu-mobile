@@ -299,15 +299,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: context.spacing.pageEdgeInsets,
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   _BackButton(onPressed: () => context.pop()),
-                  const SizedBox(height: 32),
+                  SizedBox(height: context.spacing.paragraphBottomMargin),
                   Text(
                     'auth.welcome_back'.tr(),
                     style: textTheme.displaySmall?.copyWith(
@@ -316,21 +316,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       color: context.colors.textNormal,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: context.spacing.titleBottomMarginSm),
                   Text(
                     'auth.sign_in_subtitle_long'.tr(),
                     style: textTheme.titleMedium?.copyWith(
                       color: context.colors.grey400,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: context.spacing.largePageBottomMargin),
                   if (authState.hasError && !authState.isLoading)
                     _ErrorBanner(
                       message: authState.error
                           .toString()
                           .replaceFirst('Exception: ', ''),
                     ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.spacing.titleBottomMargin),
                   _CustomTextField(
                     controller: _identifierController,
                     label: 'auth.username_or_email'.tr(),
@@ -344,7 +344,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.spacing.titleBottomMargin),
                   _CustomTextField(
                     controller: _passwordController,
                     label: 'auth.password'.tr(),
@@ -366,7 +366,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
@@ -380,21 +380,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: context.spacing.paragraphBottomMargin),
                   _PrimaryButton(
                     text: 'auth.sign_in'.tr(),
                     isLoading: authState.isLoading,
                     onPressed: _handleEmailLogin,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
                   _OrDivider(),
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
                   _GoogleButton(
                     text: 'auth.continue_with_google'.tr(),
                     isLoading: authState.isLoading,
                     onPressed: _handleGoogleSignIn,
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: context.spacing.paragraphBottomMargin),
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -418,7 +418,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
                 ],
               ),
             ),

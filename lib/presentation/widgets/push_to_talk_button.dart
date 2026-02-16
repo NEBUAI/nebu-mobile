@@ -118,7 +118,7 @@ class _PushToTalkButtonState extends State<PushToTalkButton>
             },
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: context.spacing.sectionTitleBottomMargin),
         Text(
           widget.isTalking
               ? 'walkie_talkie.talking'.tr()

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+export 'app_spacing.dart';
+
 /// Color tokens exported from Figma design system.
 /// Each color group has Light and Dark mode variants.
 class AppColors {

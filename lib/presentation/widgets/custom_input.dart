@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../core/theme/app_colors.dart';
+
 class CustomInput extends StatefulWidget {
   const CustomInput({
     super.key,
@@ -64,7 +66,7 @@ class _CustomInputState extends State<CustomInput> {
           widget.label!,
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
       ],
       TextFormField(
         controller: widget.controller,

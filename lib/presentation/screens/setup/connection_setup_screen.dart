@@ -186,7 +186,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
           backgroundColor: context.colors.success,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          margin: const EdgeInsets.all(16),
+          margin: EdgeInsets.all(context.spacing.alertPadding),
         ),
       );
 
@@ -209,7 +209,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
           backgroundColor: context.colors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          margin: const EdgeInsets.all(16),
+          margin: EdgeInsets.all(context.spacing.alertPadding),
         ),
       );
     } finally {
@@ -258,7 +258,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
               color: context.colors.textOnFilled,
               borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(context.spacing.pageMargin),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -270,7 +270,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: context.spacing.panelPadding),
                 Container(
                   width: 64,
                   height: 64,
@@ -284,7 +284,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     size: 32,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: context.spacing.titleBottomMargin),
                 Text(
                   'setup.connection.setup_options'.tr(),
                   style: textTheme.headlineSmall?.copyWith(
@@ -292,14 +292,14 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                     color: context.colors.textNormal,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: context.spacing.titleBottomMarginSm),
                 Text(
                   'setup.connection.setup_options_desc'.tr(),
                   style: textTheme.bodyMedium?.copyWith(
                     color: context.colors.grey400,
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: context.spacing.titleBottomMargin),
 
                 // Option 1: Configure Locally
                 _OptionCard(
@@ -312,7 +312,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   },
                 ),
 
-                const SizedBox(height: 12),
+                SizedBox(height: context.spacing.paragraphBottomMarginSm),
 
                 // Option 2: Skip
                 _OptionCard(
@@ -326,7 +326,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                   },
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.sectionTitleBottomMargin),
               ],
             ),
           );
@@ -381,10 +381,10 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
             // Content
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: context.spacing.pageEdgeInsets,
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    SizedBox(height: context.spacing.titleBottomMargin),
 
                     // Title section
                     Text(
@@ -394,7 +394,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                         letterSpacing: -0.5,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
                     Text(
                       _isScanning
                           ? 'setup.connection.searching'.tr()
@@ -404,7 +404,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                       ),
                     ),
 
-                    const SizedBox(height: 40),
+                    SizedBox(height: context.spacing.largePageBottomMargin),
 
                     // Main content area
                     Expanded(
@@ -437,7 +437,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                       },
                     ),
 
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                     GestureDetector(
                       onTap: _showSkipSetupSheet,
@@ -453,7 +453,7 @@ class _ConnectionSetupScreenState extends ConsumerState<ConnectionSetupScreen>
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
                   ],
                 ),
               ),

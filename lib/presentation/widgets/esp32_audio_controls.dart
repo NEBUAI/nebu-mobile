@@ -34,7 +34,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
     return Card(
       margin: EdgeInsets.zero,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.spacing.alertPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,7 +99,7 @@ class _ESP32AudioControlsState extends ConsumerState<ESP32AudioControls> {
               ],
             ),
 
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
 
             // Mute Button
             Row(

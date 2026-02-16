@@ -156,7 +156,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.spacing.alertPadding),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -165,7 +165,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                     // Toy Info Card
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(context.spacing.alertPadding),
                         child: Column(
                           children: [
                             CircleAvatar(
@@ -178,12 +178,12 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                                 color: context.colors.primary,
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: context.spacing.sectionTitleBottomMargin),
                             Text(
                               _currentToy.model ?? 'toy_settings.unknown_model'.tr(),
                               style: theme.textTheme.titleLarge,
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: context.spacing.titleBottomMarginSm),
                             Text(
                               'ID: ${_currentToy.iotDeviceId}',
                               style: theme.textTheme.bodySmall?.copyWith(
@@ -195,7 +195,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
 
                     // Name Setting
                     Text(
@@ -204,7 +204,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
                     TextFormField(
                       controller: _nameController,
                       decoration: InputDecoration(
@@ -222,7 +222,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                       },
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
 
                     // Device Status
                     Text(
@@ -231,10 +231,10 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(context.spacing.alertPadding),
                         child: Column(
                           children: [
                             _buildStatusRow(
@@ -272,7 +272,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
 
                     // Audio Controls (Volume & Mute)
                     Text(
@@ -281,10 +281,10 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
                     const ESP32AudioControls(),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.panelPadding),
 
                     // Walkie Talkie
                     Text(
@@ -293,7 +293,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
                     ElevatedButton.icon(
                       onPressed: _currentToy.iotDeviceId != null
                           ? () => context.push(
@@ -320,7 +320,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                         ),
                       ),
 
-                    const SizedBox(height: 32),
+                    SizedBox(height: context.spacing.paragraphBottomMargin),
 
                     // Save Button
                     ElevatedButton(
@@ -332,7 +332,7 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
                       child: Text('toy_settings.save_changes'.tr()),
                     ),
 
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                     // Remove Toy Button
                     OutlinedButton.icon(

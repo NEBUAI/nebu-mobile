@@ -106,18 +106,18 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(context.spacing.pageMargin),
           child: Form(
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 40),
+                SizedBox(height: context.spacing.largePageBottomMargin),
                 // Progress indicator
                 SetupProgressIndicator(
                   currentStep: state.currentStep + 1,
                   totalSteps: SetupWizardState.totalSteps,
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: context.spacing.largePageBottomMargin),
 
                 // Title
                 const GradientText(
@@ -126,7 +126,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                 // Subtitle
                 Text(
@@ -139,7 +139,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: context.spacing.largePageBottomMargin),
 
                 // Avatar section
                 Center(
