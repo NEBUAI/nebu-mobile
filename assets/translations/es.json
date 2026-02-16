@@ -37,8 +37,8 @@
       "connection_failed": "Falló la conexión. Por favor intenta de nuevo.",
       "setup_options": "Opciones de Configuración",
       "setup_options_desc": "Elige cómo quieres continuar",
-      "configure_locally": "Configurar Localmente",
-      "configure_locally_desc": "Configura la info del niño sin un dispositivo",
+      "configure_locally": "Continuar Configuración",
+      "configure_locally_desc": "Configura nombre, edad y preferencias",
       "skip_setup_desc": "Continuar al inicio y configurar después",
       "looking_for_devices": "Buscando dispositivos",
       "make_sure_on": "Asegúrate de que tu Nebu esté encendido",
@@ -375,7 +375,8 @@
     "model": "Modelo",
     "firmware": "Firmware",
     "battery": "Batería",
-    "signal": "Señal"
+    "signal": "Señal",
+    "pending": "Pendiente"
   },
   "device_management": {
     "title": "Mis Dispositivos",

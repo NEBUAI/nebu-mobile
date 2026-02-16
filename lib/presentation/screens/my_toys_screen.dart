@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/models/toy.dart';
+import '../providers/auth_provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/toy_provider.dart';
 
@@ -27,7 +28,22 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
   }
 
   Future<void> _loadToys() async {
-    await ref.read(toyProvider.notifier).loadMyToys();
+    final user = ref.read(authProvider).value;
+    final notifier = ref.read(toyProvider.notifier);
+
+    if (user != null) {
+      // Authenticated: load from backend + local
+      await notifier.loadMyToys();
+      final localToys = await notifier.loadLocalToys();
+      if (localToys.isNotEmpty) {
+        final current = ref.read(toyProvider).value ?? [];
+        notifier.setToys([...current, ...localToys]);
+      }
+    } else {
+      // Unauthenticated: only local toys
+      final localToys = await notifier.loadLocalToys();
+      notifier.setToys(localToys);
+    }
   }
 
   Future<void> _deleteToy(Toy toy) async {
@@ -56,7 +72,11 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     }
 
     try {
-      await ref.read(toyProvider.notifier).deleteToy(toy.id);
+      if (toy.id.startsWith('local_')) {
+        await ref.read(toyProvider.notifier).removeLocalToy(toy.id);
+      } else {
+        await ref.read(toyProvider.notifier).deleteToy(toy.id);
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -79,6 +99,20 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
 
   void _showToyDetails(Toy toy, ThemeData theme, bool isDark) {
     final isOnline = toy.status == ToyStatus.active;
+    final isPending = toy.status == ToyStatus.pending;
+
+    Color statusColor;
+    String statusText;
+    if (isPending) {
+      statusColor = Colors.amber;
+      statusText = 'toys.pending'.tr();
+    } else if (isOnline) {
+      statusColor = context.colors.success;
+      statusText = 'toys.online'.tr();
+    } else {
+      statusColor = context.colors.error;
+      statusText = 'toys.offline'.tr();
+    }
 
     showModalBottomSheet<void>(
       context: context,
@@ -106,17 +140,21 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: isOnline
-                    ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                    : theme.disabledColor.withValues(alpha: 0.1),
+                color: isPending
+                    ? Colors.amber.withValues(alpha: 0.1)
+                    : isOnline
+                        ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                        : theme.disabledColor.withValues(alpha: 0.1),
                 borderRadius: context.radius.bottomSheet,
               ),
               child: Icon(
                 Icons.smart_toy,
                 size: 40,
-                color: isOnline
-                    ? theme.colorScheme.primary
-                    : theme.disabledColor,
+                color: isPending
+                    ? Colors.amber.shade700
+                    : isOnline
+                        ? theme.colorScheme.primary
+                        : theme.disabledColor,
               ),
             ),
             SizedBox(height: context.spacing.sectionTitleBottomMargin),
@@ -130,15 +168,13 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: isOnline
-                    ? context.colors.success.withValues(alpha: 0.1)
-                    : context.colors.error.withValues(alpha: 0.1),
+                color: statusColor.withValues(alpha: 0.1),
                 borderRadius: context.radius.bottomSheet,
               ),
               child: Text(
-                isOnline ? 'toys.online'.tr() : 'toys.offline'.tr(),
+                statusText,
                 style: TextStyle(
-                  color: isOnline ? context.colors.success : context.colors.error,
+                  color: statusColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -548,6 +584,20 @@ class _ToyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isOnline = toy.status == ToyStatus.active;
+    final isPending = toy.status == ToyStatus.pending;
+
+    Color badgeColor;
+    String badgeText;
+    if (isPending) {
+      badgeColor = Colors.amber;
+      badgeText = 'toys.pending'.tr();
+    } else if (isOnline) {
+      badgeColor = context.colors.success;
+      badgeText = 'toys.online'.tr();
+    } else {
+      badgeColor = context.colors.error;
+      badgeText = 'toys.offline'.tr();
+    }
 
     return Card(
       color: theme.colorScheme.surface,
@@ -565,17 +615,21 @@ class _ToyCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: isOnline
-                      ? theme.colorScheme.primary.withValues(alpha: 0.15)
-                      : theme.disabledColor.withValues(alpha: 0.15),
+                  color: isPending
+                      ? Colors.amber.withValues(alpha: 0.15)
+                      : isOnline
+                          ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                          : theme.disabledColor.withValues(alpha: 0.15),
                   borderRadius: context.radius.panel,
                 ),
                 child: Icon(
                   Icons.smart_toy,
                   size: 28,
-                  color: isOnline
-                      ? theme.colorScheme.primary
-                      : theme.disabledColor,
+                  color: isPending
+                      ? Colors.amber.shade700
+                      : isOnline
+                          ? theme.colorScheme.primary
+                          : theme.disabledColor,
                 ),
               ),
               const SizedBox(width: 16),
@@ -607,9 +661,7 @@ class _ToyCard extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: isOnline
-                      ? context.colors.success.withValues(alpha: 0.1)
-                      : context.colors.error.withValues(alpha: 0.1),
+                  color: badgeColor.withValues(alpha: 0.1),
                   borderRadius: context.radius.bottomSheet,
                 ),
                 child: Row(
@@ -619,16 +671,16 @@ class _ToyCard extends StatelessWidget {
                       width: 6,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: isOnline ? context.colors.success : context.colors.error,
+                        color: badgeColor,
                         shape: BoxShape.circle,
                       ),
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      isOnline ? 'toys.online'.tr() : 'toys.offline'.tr(),
+                      badgeText,
                       style: TextStyle(
                         fontSize: 12,
-                        color: isOnline ? context.colors.success : context.colors.error,
+                        color: badgeColor,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

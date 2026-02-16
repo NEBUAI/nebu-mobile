@@ -18,6 +18,8 @@ enum ToyStatus {
   error,
   @JsonValue('blocked')
   blocked,
+  @JsonValue('pending')
+  pending,
 }
 
 @freezed

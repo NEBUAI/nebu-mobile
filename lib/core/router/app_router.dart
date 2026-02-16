@@ -105,6 +105,7 @@ class AppRouter {
         ...unauthenticatedRoutes,
         AppRoutes.home.path,
         AppRoutes.activityLog.path,
+        AppRoutes.myToys.path,
         AppRoutes.settings.path,
       ];
 

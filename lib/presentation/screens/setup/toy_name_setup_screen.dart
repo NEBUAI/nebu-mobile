@@ -113,6 +113,9 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
           .read(loggerProvider)
           .i('✅ [TOY_SETUP] Device registered successfully: $deviceId');
 
+      // Marcar que el dispositivo fue registrado en el backend
+      await prefs.setBool(StorageKeys.setupDeviceRegistered, true);
+
       // Limpiar el Device ID de SharedPreferences (ya está registrado)
       await prefs.remove(StorageKeys.currentDeviceId);
       ref

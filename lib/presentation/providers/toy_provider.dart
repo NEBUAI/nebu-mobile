@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/storage_keys.dart';
 import '../../data/models/toy.dart';
 import '../../data/services/toy_service.dart';
 import 'api_provider.dart';
+import 'auth_provider.dart' as auth_provider;
 
 // Toy state provider using AsyncNotifier
 final toyProvider = AsyncNotifierProvider<ToyNotifier, List<Toy>>(
@@ -215,8 +219,73 @@ class ToyNotifier extends AsyncNotifier<List<Toy>> {
     }
   }
 
+  /// Set the toy list directly
+  void setToys(List<Toy> toys) {
+    state = AsyncValue.data(toys);
+  }
+
   /// Clear all toys
   void clear() {
     state = const AsyncValue.data([]);
+  }
+
+  // --- Local Toys (stored in SharedPreferences) ---
+
+  /// Save a local toy to SharedPreferences
+  Future<void> saveLocalToy(Toy toy) async {
+    final prefs = await ref.read(
+      auth_provider.sharedPreferencesProvider.future,
+    );
+    final existing = prefs.getString(StorageKeys.localToys);
+    final List<dynamic> toyList =
+        existing != null ? json.decode(existing) as List<dynamic> : [];
+    toyList.add(toy.toJson());
+    await prefs.setString(StorageKeys.localToys, json.encode(toyList));
+
+    ref.read(loggerProvider).d('Local toy saved: ${toy.name}');
+
+    // Add to current state
+    final currentState = state.value ?? [];
+    state = AsyncValue.data([...currentState, toy]);
+  }
+
+  /// Load local toys from SharedPreferences
+  Future<List<Toy>> loadLocalToys() async {
+    final prefs = await ref.read(
+      auth_provider.sharedPreferencesProvider.future,
+    );
+    final stored = prefs.getString(StorageKeys.localToys);
+    if (stored == null) return [];
+
+    final List<dynamic> toyList = json.decode(stored) as List<dynamic>;
+    final toys = toyList
+        .map((e) => Toy.fromJson(e as Map<String, dynamic>))
+        .toList();
+
+    ref.read(loggerProvider).d('Loaded ${toys.length} local toys');
+    return toys;
+  }
+
+  /// Remove a local toy from SharedPreferences
+  Future<void> removeLocalToy(String id) async {
+    final prefs = await ref.read(
+      auth_provider.sharedPreferencesProvider.future,
+    );
+    final stored = prefs.getString(StorageKeys.localToys);
+    if (stored == null) return;
+
+    final List<dynamic> toyList = json.decode(stored) as List<dynamic>;
+    toyList.removeWhere(
+      (e) => (e as Map<String, dynamic>)['id'] == id,
+    );
+    await prefs.setString(StorageKeys.localToys, json.encode(toyList));
+
+    ref.read(loggerProvider).d('Local toy removed: $id');
+
+    // Remove from current state
+    final currentState = state.value ?? [];
+    state = AsyncValue.data(
+      currentState.where((toy) => toy.id != id).toList(),
+    );
   }
 }

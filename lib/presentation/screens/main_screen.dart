@@ -43,6 +43,8 @@ class MainScreen extends ConsumerWidget {
         BottomNavigationBarItem(
             icon: const Icon(Icons.history), label: 'nav.activity'.tr()),
         BottomNavigationBarItem(
+            icon: const Icon(Icons.dashboard), label: 'nav.my_toys'.tr()),
+        BottomNavigationBarItem(
             icon: const Icon(Icons.settings), label: 'nav.settings'.tr()),
       ];
 
@@ -64,8 +66,11 @@ class MainScreen extends ConsumerWidget {
         return 3;
       }
     } else {
-      if (location.startsWith(AppRoutes.settings.path)) {
+      if (location.startsWith(AppRoutes.myToys.path)) {
         return 2;
+      }
+      if (location.startsWith(AppRoutes.settings.path)) {
+        return 3;
       }
     }
 
@@ -79,14 +84,12 @@ class MainScreen extends ConsumerWidget {
       case 1:
         context.go(AppRoutes.activityLog.path);
       case 2:
-        if (isLoggedIn) {
-          context.go(AppRoutes.myToys.path);
-        } else {
-          context.go(AppRoutes.settings.path);
-        }
+        context.go(AppRoutes.myToys.path);
       case 3:
         if (isLoggedIn) {
           context.go(AppRoutes.profile.path);
+        } else {
+          context.go(AppRoutes.settings.path);
         }
     }
   }

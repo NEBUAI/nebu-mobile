@@ -60,6 +60,7 @@ const _$ToyStatusEnumMap = {
   ToyStatus.maintenance: 'maintenance',
   ToyStatus.error: 'error',
   ToyStatus.blocked: 'blocked',
+  ToyStatus.pending: 'pending',
 };
 
 _CreateToyRequest _$CreateToyRequestFromJson(Map<String, dynamic> json) =>

@@ -1,15 +1,54 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../../core/constants/storage_keys.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../data/models/toy.dart';
+import '../../providers/auth_provider.dart' as auth_provider;
+import '../../providers/toy_provider.dart';
 
-class WorldInfoSetupScreen extends StatelessWidget {
+class WorldInfoSetupScreen extends ConsumerWidget {
   const WorldInfoSetupScreen({super.key});
 
+  Future<void> _finishSetup(BuildContext context, WidgetRef ref) async {
+    final prefs = await ref.read(
+      auth_provider.sharedPreferencesProvider.future,
+    );
+
+    final deviceRegistered =
+        prefs.getBool(StorageKeys.setupDeviceRegistered) ?? false;
+
+    if (!deviceRegistered) {
+      // Device was NOT registered in backend — save as local toy with pending status
+      final toyName =
+          prefs.getString(StorageKeys.setupToyName) ?? 'My Nebu';
+
+      final localToy = Toy(
+        id: 'local_${DateTime.now().millisecondsSinceEpoch}',
+        name: toyName,
+        status: ToyStatus.pending,
+        model: 'Nebu',
+        manufacturer: 'NEBU',
+        createdAt: DateTime.now(),
+      );
+
+      await ref.read(toyProvider.notifier).saveLocalToy(localToy);
+    }
+
+    // Clean up temporary setup flags
+    await prefs.remove(StorageKeys.setupDeviceRegistered);
+    await prefs.setBool(StorageKeys.setupCompleted, true);
+
+    if (context.mounted) {
+      context.go(AppRoutes.home.path);
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -116,10 +155,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
 
                 // Finish button
                 ElevatedButton(
-                  onPressed: () {
-                    // Mark setup as complete and navigate to home
-                    context.go(AppRoutes.home.path);
-                  },
+                  onPressed: () => _finishSetup(context, ref),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: context.colors.bgPrimary,
                     foregroundColor: context.colors.primary,

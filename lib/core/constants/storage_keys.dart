@@ -29,6 +29,10 @@ class StorageKeys {
   static const String localChildPersonality = 'local_child_personality';
   static const String localCustomPrompt = 'local_custom_prompt';
 
+  // Local Toys
+  static const String localToys = 'local_toys';
+  static const String setupDeviceRegistered = 'setup_device_registered';
+
   // Activity Migration
   static const String localUserId = 'local_user_id';
   static const String activitiesMigrated = 'activities_migrated';
