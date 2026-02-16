@@ -204,7 +204,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
             child: Icon(
               Icons.history,
               size: 80,
-              color: theme.colorScheme.outline,
+              color: context.colors.warning,
             ),
           ),
           SizedBox(height: context.spacing.paragraphBottomMargin),

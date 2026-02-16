@@ -21,118 +21,158 @@ class HomeScreen extends ConsumerWidget {
         ? 'home.greeting_name'.tr(args: [user!.name!])
         : 'home.greeting_default'.tr();
 
+    final isAuthenticated = user != null;
+
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(context.spacing.alertPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header with greeting + settings
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(context.spacing.alertPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header with greeting + settings
+                    Row(
                       children: [
-                        Text(
-                          greeting,
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                greeting,
+                                style: theme.textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'home.subtitle'.tr(),
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: theme.colorScheme.onSurface
+                                      .withValues(alpha: 0.6),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'home.subtitle'.tr(),
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
-                          ),
+                        IconButton(
+                          icon: const Icon(Icons.settings_outlined),
+                          onPressed: () =>
+                              context.push(AppRoutes.settings.path),
                         ),
                       ],
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.settings_outlined),
-                    onPressed: () => context.push(AppRoutes.settings.path),
-                  ),
-                ],
+
+                    SizedBox(height: context.spacing.panelPadding),
+
+                    // Hero gradient card
+                    _buildHeroCard(context, ref, theme),
+
+                    SizedBox(height: context.spacing.panelPadding),
+
+                    // My Toys Section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'home.my_active_toys'.tr(),
+                          style: theme.textTheme.titleLarge,
+                        ),
+                        TextButton.icon(
+                          onPressed: () =>
+                              context.push(AppRoutes.connectionSetup.path),
+                          icon: const Icon(Icons.add),
+                          label: Text('home.add_toy'.tr()),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                    // Active Toys List
+                    _buildActiveToysList(context, ref),
+
+                    SizedBox(height: context.spacing.panelPadding),
+
+                    // Quick Actions
+                    Text(
+                      'home.quick_actions'.tr(),
+                      style: theme.textTheme.titleLarge,
+                    ),
+
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                    GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _QuickActionCard(
+                          icon: Icons.qr_code_scanner,
+                          title: 'home.scan_qr'.tr(),
+                          color: context.colors.primary,
+                          onTap: () => context.push(AppRoutes.qrScanner.path),
+                        ),
+                        _QuickActionCard(
+                          icon: Icons.devices_other,
+                          title: 'home.devices'.tr(),
+                          color: context.colors.secondary,
+                          onTap: () => context.push(AppRoutes.allDevices.path),
+                        ),
+                        _QuickActionCard(
+                          icon: Icons.dashboard,
+                          title: 'home.my_toys'.tr(),
+                          color: context.colors.success,
+                          onTap: () => context.go(AppRoutes.myToys.path),
+                        ),
+                        _QuickActionCard(
+                          icon: Icons.history,
+                          title: 'home.activity_log'.tr(),
+                          color: context.colors.warning,
+                          onTap: () => context.go(AppRoutes.activityLog.path),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
+            ),
 
-              SizedBox(height: context.spacing.panelPadding),
-
-              // Hero gradient card
-              _buildHeroCard(context, ref, theme),
-
-              SizedBox(height: context.spacing.panelPadding),
-
-              // My Toys Section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'home.my_active_toys'.tr(),
-                    style: theme.textTheme.titleLarge,
+            // Conditional Sign In button at bottom
+            if (!isAuthenticated)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.spacing.alertPadding,
+                  vertical: context.spacing.paragraphBottomMarginSm,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  border: Border(
+                    top: BorderSide(
+                      color: theme.dividerColor.withValues(alpha: 0.2),
+                    ),
                   ),
-                  TextButton.icon(
-                    onPressed: () =>
-                        context.push(AppRoutes.connectionSetup.path),
-                    icon: const Icon(Icons.add),
-                    label: Text('home.add_toy'.tr()),
+                ),
+                child: ElevatedButton.icon(
+                  onPressed: () => context.push(AppRoutes.login.path),
+                  icon: const Icon(Icons.login),
+                  label: Text('auth.sign_in'.tr()),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.colors.primary,
+                    foregroundColor: context.colors.textOnFilled,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: context.radius.button,
+                    ),
                   ),
-                ],
+                ),
               ),
-
-              SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
-              // Active Toys List
-              _buildActiveToysList(context, ref),
-
-              SizedBox(height: context.spacing.panelPadding),
-
-              // Quick Actions
-              Text(
-                'home.quick_actions'.tr(),
-                style: theme.textTheme.titleLarge,
-              ),
-
-              SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
-              GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  _QuickActionCard(
-                    icon: Icons.qr_code_scanner,
-                    title: 'home.scan_qr'.tr(),
-                    color: context.colors.primary,
-                    onTap: () => context.push(AppRoutes.qrScanner.path),
-                  ),
-                  _QuickActionCard(
-                    icon: Icons.devices_other,
-                    title: 'home.devices'.tr(),
-                    color: context.colors.secondary,
-                    onTap: () => context.push(AppRoutes.allDevices.path),
-                  ),
-                  _QuickActionCard(
-                    icon: Icons.dashboard,
-                    title: 'home.my_toys'.tr(),
-                    color: context.colors.success,
-                    onTap: () => context.go(AppRoutes.myToys.path),
-                  ),
-                  _QuickActionCard(
-                    icon: Icons.history,
-                    title: 'home.activity_log'.tr(),
-                    color: context.colors.warning,
-                    onTap: () => context.go(AppRoutes.activityLog.path),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );
