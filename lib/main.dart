@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,8 @@ import 'presentation/providers/theme_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Easy Localization
+  // Initialize Easy Localization (only show warnings and errors)
+  EasyLocalization.logger.enableLevels = [LevelMessages.warning, LevelMessages.error];
   await EasyLocalization.ensureInitialized();
 
   // Load configuration (from .env in dev, dart-define in prod)

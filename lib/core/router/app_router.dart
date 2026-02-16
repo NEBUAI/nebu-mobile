@@ -36,7 +36,6 @@ import '../../presentation/screens/terms_of_service_screen.dart';
 import '../../presentation/screens/toy_settings_screen.dart';
 import '../../presentation/screens/walkie_talkie_screen.dart';
 import '../../presentation/screens/welcome_screen.dart';
-import '../config/config.dart';
 import '../constants/app_routes.dart';
 
 /// Notifier that bridges Riverpod auth state changes to GoRouter's refreshListenable
@@ -55,7 +54,6 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     initialLocation: AppRoutes.splash.path,
-    debugLogDiagnostics: Config.enableDebugLogs,
     refreshListenable: _authChangeNotifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
