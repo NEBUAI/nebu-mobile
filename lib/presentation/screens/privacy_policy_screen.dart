@@ -38,6 +38,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Introduction
             _buildSection(
+              context,
               theme,
               'privacy_policy.introduction_title'.tr(),
               'privacy_policy.introduction_content'.tr(args: [Config.appName]),
@@ -45,6 +46,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Information We Collect
             _buildSection(
+              context,
               theme,
               'privacy_policy.collect_title'.tr(),
               'privacy_policy.collect_content'.tr(),
@@ -57,6 +59,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // How We Use Your Information
             _buildSection(
+              context,
               theme,
               'privacy_policy.use_title'.tr(),
               'privacy_policy.use_content'.tr(),
@@ -69,6 +72,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Data Sharing
             _buildSection(
+              context,
               theme,
               'privacy_policy.sharing_title'.tr(),
               'privacy_policy.sharing_content'.tr(),
@@ -76,6 +80,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Children's Privacy
             _buildSection(
+              context,
               theme,
               'privacy_policy.children_title'.tr(),
               'privacy_policy.children_content'.tr(),
@@ -83,6 +88,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Your Rights
             _buildSection(
+              context,
               theme,
               'privacy_policy.rights_title'.tr(),
               'privacy_policy.rights_content'.tr(),
@@ -95,6 +101,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Account & Data Deletion
             _buildSection(
+              context,
               theme,
               'privacy_policy.delete_title'.tr(),
               'privacy_policy.delete_content'.tr(),
@@ -123,6 +130,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Data Security
             _buildSection(
+              context,
               theme,
               'privacy_policy.security_title'.tr(),
               'privacy_policy.security_content'.tr(),
@@ -130,6 +138,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Changes to Policy
             _buildSection(
+              context,
               theme,
               'privacy_policy.changes_title'.tr(),
               'privacy_policy.changes_content'.tr(),
@@ -137,6 +146,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
             // Contact
             _buildSection(
+              context,
               theme,
               'privacy_policy.contact_title'.tr(),
               'privacy_policy.contact_content'.tr(),
@@ -185,9 +195,9 @@ class PrivacyPolicyScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSection(ThemeData theme, String title, String content) =>
+  Widget _buildSection(BuildContext context, ThemeData theme, String title, String content) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.only(bottom: context.spacing.sectionTitleBottomMargin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -197,7 +207,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.spacing.titleBottomMarginSm),
             Text(
               content,
               style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),

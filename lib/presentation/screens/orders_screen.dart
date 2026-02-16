@@ -338,7 +338,7 @@ class _OrderDetailsSheet extends StatelessWidget {
               ),
             ),
             SizedBox(height: context.spacing.paragraphBottomMarginSm),
-            ...order.items.map((item) => _buildItemRow(item, theme)),
+            ...order.items.map((item) => _buildItemRow(context, item, theme)),
             const Divider(height: 32),
 
             // Summary
@@ -489,7 +489,7 @@ class _OrderDetailsSheet extends StatelessWidget {
   );
   }
 
-  Widget _buildItemRow(_OrderItem item, ThemeData theme) => Padding(
+  Widget _buildItemRow(BuildContext context, _OrderItem item, ThemeData theme) => Padding(
     padding: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
