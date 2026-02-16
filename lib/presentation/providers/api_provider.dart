@@ -39,9 +39,10 @@ final dioProvider = Provider<Dio>((ref) => Dio());
 final loggerProvider = Provider<Logger>(
   (ref) => Logger(
     printer: PrettyPrinter(
-      methodCount: 1,
-      errorMethodCount: 3,
+      methodCount: 0,
+      errorMethodCount: 5,
       lineLength: 80,
+      noBoxingByDefault: true,
       dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
     ),
   ),

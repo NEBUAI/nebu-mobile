@@ -90,16 +90,6 @@ abstract final class Config {
   }
 
   /// Información de debug para logs
-  static String getDebugInfo() =>
-      '''
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📱 Nebu Mobile Configuration
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-App: $appName
-Environment: $environment
-API URL: $apiBaseUrl
-Debug Logs: $enableDebugLogs
-Crash Reporting: $enableCrashReporting
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-''';
+  static String getDebugInfo() => '''
+[Nebu] env=$environment | api=$apiBaseUrl | debug=$enableDebugLogs''';
 }

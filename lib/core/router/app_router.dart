@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants/app_routes.dart';
 import '../../data/models/toy.dart';
+import '../config/config.dart';
+import '../constants/app_routes.dart';
 import '../../data/models/user.dart';
 import '../../presentation/providers/auth_provider.dart';
 import '../../presentation/screens/activity_log_screen.dart';
@@ -54,7 +55,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     initialLocation: AppRoutes.splash.path,
-    debugLogDiagnostics: true,
+    debugLogDiagnostics: Config.enableDebugLogs,
     refreshListenable: _authChangeNotifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
