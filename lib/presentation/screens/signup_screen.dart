@@ -88,18 +88,18 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: context.spacing.pageEdgeInsets,
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                   // Back button
                   _BackButton(onPressed: () => context.pop()),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: context.spacing.paragraphBottomMargin),
 
                   // Header
                   Text(
@@ -110,7 +110,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       color: context.colors.textNormal,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: context.spacing.titleBottomMarginSm),
                   Text(
                     'auth.create_account_subtitle'.tr(),
                     style: textTheme.titleMedium?.copyWith(
@@ -127,7 +127,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           .toString()
                           .replaceFirst('Exception: ', ''),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: context.spacing.titleBottomMargin),
                   ],
 
                   // Name row
@@ -165,7 +165,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.spacing.titleBottomMargin),
 
                   // Email field
                   _CustomTextField(
@@ -184,7 +184,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     },
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.spacing.titleBottomMargin),
 
                   // Password field
                   _CustomTextField(
@@ -209,7 +209,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     },
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: context.spacing.titleBottomMargin),
 
                   // Confirm Password field
                   _CustomTextField(
@@ -235,7 +235,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     },
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: context.spacing.paragraphBottomMargin),
 
                   // Sign up button
                   _PrimaryButton(
@@ -244,12 +244,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     onPressed: _handleEmailSignUp,
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
 
                   // Divider
                   _OrDivider(),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
 
                   // Google button
                   _GoogleButton(
@@ -258,7 +258,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     onPressed: _handleGoogleSignUp,
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: context.spacing.paragraphBottomMargin),
 
                   // Sign in link
                   Center(
@@ -285,7 +285,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
                 ],
               ),
             ),
@@ -550,7 +550,7 @@ class _ErrorBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: context.colors.errorBg,
         borderRadius: BorderRadius.circular(12),

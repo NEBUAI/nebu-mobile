@@ -115,7 +115,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
                     Text(
                       _errorMessage!,
                       style: TextStyle(color: context.colors.error),
@@ -128,7 +128,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
             Expanded(
               child: Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(context.spacing.alertPadding),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,7 +200,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           'health_check.information'.tr(),
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
         _buildInfoRow('Version', status.version),
         _buildInfoRow('Environment', status.environment),
         _buildInfoRow('Uptime', _formatUptime(status.uptime)),
@@ -222,7 +222,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           'health_check.memory_usage'.tr(),
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
         _buildInfoRow('Heap Used', '${memory.heapUsed.toStringAsFixed(2)} MB'),
         _buildInfoRow(
           'Heap Total',
@@ -246,7 +246,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           'health_check.health_checks'.tr(),
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
         _buildCheckRow('Database', checks.database),
         _buildCheckRow('Redis', checks.redis),
         _buildCheckRow('Configuration', checks.configuration),
@@ -267,7 +267,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           'health_check.performance'.tr(),
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: context.spacing.titleBottomMarginSm),
         _buildInfoRow('Response Time', '${performance.responseTime}ms'),
         _buildInfoRow('Process ID', '${performance.pid}'),
         _buildInfoRow('Platform', performance.platform),

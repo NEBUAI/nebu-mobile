@@ -71,7 +71,7 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
                     size: 64,
                     color: theme.disabledColor,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   Text(
                     'device_management.no_devices'.tr(),
                     style: theme.textTheme.titleMedium,
@@ -84,7 +84,7 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
           return RefreshIndicator(
             onRefresh: _refreshDevices,
             child: ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.spacing.alertPadding),
               itemCount: toys.length,
               itemBuilder: (context, index) {
                 final toy = toys[index];
@@ -102,7 +102,7 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
           onRefresh: _refreshDevices,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(context.spacing.pageMargin),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +112,7 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
                     size: 64,
                     color: theme.colorScheme.error,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
                   Text(
                     'device_management.error_loading'.tr(),
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -120,9 +120,9 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(context.spacing.alertPadding),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(12),
@@ -138,7 +138,7 @@ class _DeviceManagementScreenState extends ConsumerState<DeviceManagementScreen>
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.spacing.panelPadding),
                   ElevatedButton.icon(
                     onPressed: _refreshDevices,
                     icon: const Icon(Icons.refresh),
@@ -178,7 +178,7 @@ class _DeviceCard extends StatelessWidget {
     final isOnline = toy.status == ToyStatus.active;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: context.spacing.paragraphBottomMarginSm),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: isOnline

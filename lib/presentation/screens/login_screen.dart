@@ -161,7 +161,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       prefixIcon: const Icon(Icons.key_outlined),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
                   TextField(
                     controller: passwordController,
                     obscureText: true,
@@ -170,7 +170,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       prefixIcon: const Icon(Icons.lock_outline),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
                   TextField(
                     controller: confirmController,
                     obscureText: true,
@@ -180,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   if (errorText != null) ...[
-                    const SizedBox(height: 12),
+                    SizedBox(height: context.spacing.paragraphBottomMarginSm),
                     Text(
                       errorText!,
                       style: TextStyle(color: context.colors.error, fontSize: 13),
@@ -687,7 +687,7 @@ class _ErrorBanner extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: context.colors.errorBg,
         borderRadius: BorderRadius.circular(12),
