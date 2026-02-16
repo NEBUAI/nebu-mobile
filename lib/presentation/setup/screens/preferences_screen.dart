@@ -223,7 +223,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       ),
                     ),
                     if (isSelected)
-                      const Icon(
+                      Icon(
                         Icons.check_circle,
                         color: context.colors.primary,
                         size: 20,
@@ -238,7 +238,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     );
   }
 
-  Widget _buildThemeSelector(bool isDark) {
+  Widget _buildThemeSelector() {
     final state = ref.watch(setupWizardProvider);
     final notifier = ref.read(setupWizardProvider.notifier);
 
@@ -290,7 +290,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                       ),
                     ),
                     if (isSelected)
-                      const Icon(
+                      Icon(
                         Icons.check_circle,
                         color: context.colors.primary,
                         size: 20,
@@ -305,7 +305,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     );
   }
 
-  Widget _buildAdditionalSettings(bool isDark) {
+  Widget _buildAdditionalSettings() {
     final state = ref.watch(setupWizardProvider);
     final notifier = ref.read(setupWizardProvider.notifier);
 

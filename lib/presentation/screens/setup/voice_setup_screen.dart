@@ -175,7 +175,7 @@ class _VoiceSetupScreenState extends State<VoiceSetupScreen> {
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Icon(
+                                  Icon(
                                     Icons.check_circle,
                                     color: context.colors.primary,
                                   ),
