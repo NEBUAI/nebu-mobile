@@ -41,155 +41,185 @@ class SettingsScreen extends ConsumerWidget {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(context.spacing.alertPadding),
-          child: Column(
-            children: [
-              // Settings Card
-              _SettingsCard(
-                theme: theme,
-                isDark: isDark,
-                children: [
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.dark_mode_outlined,
-                    title: 'profile.dark_mode'.tr(),
-                    trailing: Switch(
-                      value: themeState?.isDarkMode ?? false,
-                      onChanged: (value) {
-                        ref.read(themeProvider.notifier).toggleDarkMode();
-                      },
-                      activeTrackColor:
-                          context.colors.primary.withValues(alpha: 0.5),
-                      thumbColor: WidgetStateProperty.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return context.colors.primary;
-                        }
-                        return null;
-                      }),
-                    ),
-                  ),
-                  Divider(height: 1, indent: 56, color: theme.dividerColor),
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.language_outlined,
-                    title: 'profile.language'.tr(),
-                    trailing: DropdownButton<String>(
-                      value: languageState?.languageCode ?? 'en',
-                      underline: const SizedBox(),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      dropdownColor: theme.colorScheme.surface,
-                      items: [
-                        DropdownMenuItem(
-                          value: 'en',
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CountryFlag.fromLanguageCode('en',
-                                  theme: const ImageTheme(
-                                      height: 24, width: 32)),
-                              const SizedBox(width: 8),
-                              const Text('English'),
-                            ],
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(context.spacing.alertPadding),
+                child: Column(
+                  children: [
+                    // Settings Card
+                    _SettingsCard(
+                      theme: theme,
+                      isDark: isDark,
+                      children: [
+                        _SettingsTile(
+                          theme: theme,
+                          icon: Icons.dark_mode_outlined,
+                          iconColor: context.colors.secondary,
+                          title: 'profile.dark_mode'.tr(),
+                          trailing: Switch(
+                            value: themeState?.isDarkMode ?? false,
+                            onChanged: (value) {
+                              ref.read(themeProvider.notifier).toggleDarkMode();
+                            },
+                            activeTrackColor:
+                                context.colors.primary.withValues(alpha: 0.5),
+                            thumbColor:
+                                WidgetStateProperty.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return context.colors.primary;
+                              }
+                              return null;
+                            }),
                           ),
                         ),
-                        DropdownMenuItem(
-                          value: 'es',
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CountryFlag.fromLanguageCode('es',
-                                  theme: const ImageTheme(
-                                      height: 24, width: 32)),
-                              const SizedBox(width: 8),
-                              const Text('Español'),
+                        Divider(
+                          height: 1,
+                          indent: 56,
+                          color: theme.dividerColor.withValues(alpha: 0.3),
+                        ),
+                        _SettingsTile(
+                          theme: theme,
+                          icon: Icons.language_outlined,
+                          iconColor: context.colors.primary,
+                          title: 'profile.language'.tr(),
+                          trailing: DropdownButton<String>(
+                            value: languageState?.languageCode ?? 'en',
+                            underline: const SizedBox(),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurface,
+                            ),
+                            dropdownColor: theme.colorScheme.surface,
+                            items: [
+                              DropdownMenuItem(
+                                value: 'en',
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CountryFlag.fromLanguageCode('en',
+                                        theme: const ImageTheme(
+                                            height: 24, width: 32)),
+                                    const SizedBox(width: 8),
+                                    const Text('English'),
+                                  ],
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 'es',
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CountryFlag.fromLanguageCode('es',
+                                        theme: const ImageTheme(
+                                            height: 24, width: 32)),
+                                    const SizedBox(width: 8),
+                                    const Text('Español'),
+                                  ],
+                                ),
+                              ),
                             ],
+                            onChanged: (value) {
+                              if (value != null) {
+                                context.setLocale(Locale(value));
+                                ref
+                                    .read(languageProvider.notifier)
+                                    .setLanguage(value);
+                              }
+                            },
                           ),
                         ),
                       ],
-                      onChanged: (value) {
-                        if (value != null) {
-                          context.setLocale(Locale(value));
-                          ref
-                              .read(languageProvider.notifier)
-                              .setLanguage(value);
-                        }
-                      },
                     ),
-                  ),
-                ],
+
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                    // Help & About Section
+                    _SettingsCard(
+                      theme: theme,
+                      isDark: isDark,
+                      children: [
+                        _SettingsTile(
+                          theme: theme,
+                          icon: Icons.help_outline,
+                          iconColor: context.colors.success,
+                          title: 'profile.help_support'.tr(),
+                          trailing: Icon(
+                            Icons.chevron_right,
+                            color: context.colors.grey400,
+                          ),
+                          onTap: () {
+                            _showHelpDialog(context);
+                          },
+                        ),
+                        Divider(
+                          height: 1,
+                          indent: 56,
+                          color: theme.dividerColor.withValues(alpha: 0.3),
+                        ),
+                        _SettingsTile(
+                          theme: theme,
+                          icon: Icons.info_outline,
+                          iconColor: context.colors.warning,
+                          title: 'profile.about'.tr(),
+                          trailing: Text(
+                            'v$appVersion',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.5),
+                            ),
+                          ),
+                          onTap: () {
+                            _showAboutAppDialog(context, appVersion);
+                          },
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: context.spacing.panelPadding),
+                  ],
+                ),
               ),
+            ),
 
-              SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
-              // Help & About Section
-              _SettingsCard(
-                theme: theme,
-                isDark: isDark,
-                children: [
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.help_outline,
-                    title: 'profile.help_support'.tr(),
-                    trailing: Icon(
-                      Icons.chevron_right,
-                      color: context.colors.grey400,
-                    ),
-                    onTap: () {
-                      _showHelpDialog(context);
-                    },
-                  ),
-                  Divider(height: 1, indent: 56, color: theme.dividerColor),
-                  _SettingsTile(
-                    theme: theme,
-                    icon: Icons.info_outline,
-                    title: 'profile.about'.tr(),
-                    trailing: Text(
-                      'v$appVersion',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface
-                            .withValues(alpha: 0.5),
-                      ),
-                    ),
-                    onTap: () {
-                      _showAboutAppDialog(context, appVersion);
-                    },
-                  ),
-                ],
-              ),
-
-              if (!isLoggedIn) ...[
-                SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
-                SizedBox(
-                  width: double.infinity,
-                  height: 54,
-                  child: ElevatedButton.icon(
-                    onPressed: () => context.go(AppRoutes.login.path),
-                    icon: const Icon(Icons.login),
-                    label: Text(
-                      'welcome.sign_in'.tr(),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: context.colors.textOnFilled,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: context.colors.primary,
-                      foregroundColor: context.colors.textOnFilled,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: context.radius.tile,
-                      ),
+            // Conditional Sign In button at bottom
+            if (!isLoggedIn)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.spacing.alertPadding,
+                  vertical: context.spacing.paragraphBottomMarginSm,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  border: Border(
+                    top: BorderSide(
+                      color: theme.dividerColor.withValues(alpha: 0.15),
                     ),
                   ),
                 ),
-              ],
-
-              SizedBox(height: context.spacing.panelPadding),
-            ],
-          ),
+                child: ElevatedButton.icon(
+                  onPressed: () => context.go(AppRoutes.login.path),
+                  icon: const Icon(Icons.login),
+                  label: Text(
+                    'auth.sign_in'.tr(),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: context.colors.textOnFilled,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.colors.primary,
+                    foregroundColor: context.colors.textOnFilled,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: context.radius.button,
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -309,6 +339,7 @@ class _SettingsTile extends StatelessWidget {
     required this.theme,
     required this.icon,
     required this.title,
+    this.iconColor,
     this.trailing,
     this.onTap,
   });
@@ -316,25 +347,33 @@ class _SettingsTile extends StatelessWidget {
   final ThemeData theme;
   final IconData icon;
   final String title;
+  final Color? iconColor;
   final Widget? trailing;
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-        leading: Icon(
-          icon,
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-          size: 24,
+  Widget build(BuildContext context) {
+    final color = iconColor ?? theme.colorScheme.onSurface.withValues(alpha: 0.8);
+
+    return ListTile(
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: context.radius.tile,
         ),
-        title: Text(
-          title,
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.colorScheme.onSurface,
-          ),
+        child: Icon(icon, color: color, size: 22),
+      ),
+      title: Text(
+        title,
+        style: theme.textTheme.bodyLarge?.copyWith(
+          color: theme.colorScheme.onSurface,
         ),
-        trailing: trailing,
-        onTap: onTap,
-      );
+      ),
+      trailing: trailing,
+      onTap: onTap,
+    );
+  }
 }

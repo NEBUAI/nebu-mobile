@@ -413,39 +413,27 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   if (toys.isNotEmpty) ...[
                     SizedBox(height: context.spacing.panelPadding),
                     // Add more hint
-                    Container(
-                      padding: EdgeInsets.all(context.spacing.panelPadding),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surface,
-                        borderRadius: context.radius.panel,
-                        border: Border.all(
-                          color: theme.dividerColor.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: context.spacing.alertPadding,
+                        vertical: context.spacing.paragraphBottomMarginSm,
                       ),
-                      child: Column(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.add_circle_outline,
-                            size: 48,
-                            color: theme.disabledColor,
+                            Icons.smart_toy_outlined,
+                            size: 18,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                           ),
-                          SizedBox(height: context.spacing.paragraphBottomMarginSm),
-                          Text(
-                            'toys.add_more_hint'.tr(),
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                              height: 1.4,
-                            ),
-                          ),
-                          SizedBox(height: context.spacing.sectionTitleBottomMargin),
-                          TextButton.icon(
-                            onPressed: () => _addNewToy(context),
-                            icon: const Icon(Icons.add),
-                            label: Text('toys.setup_new_toy'.tr()),
-                            style: TextButton.styleFrom(
-                              foregroundColor: theme.colorScheme.primary,
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              'toys.add_more_hint'.tr(),
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                              ),
                             ),
                           ),
                         ],
