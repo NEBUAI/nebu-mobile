@@ -146,7 +146,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: context.radius.tile,
                   ),
                   child: Row(
                     children: [
@@ -191,7 +191,7 @@ class _ToyAssignmentScreenState extends State<ToyAssignmentScreen> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.errorContainer,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.tile,
                     ),
                     child: Row(
                       children: [

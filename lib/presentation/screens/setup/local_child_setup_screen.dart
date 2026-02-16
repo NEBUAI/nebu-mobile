@@ -244,8 +244,8 @@ Communication style:
                   decoration: BoxDecoration(
                     color: context.colors.textOnFilled,
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(32),
+                      topLeft: Radius.circular(AppRadius.artboard),
+                      topRight: Radius.circular(AppRadius.artboard),
                     ),
                   ),
                   child: SingleChildScrollView(
@@ -285,7 +285,7 @@ Communication style:
                               hintText: 'setup.local_child.child_name_hint'.tr(),
                               prefixIcon: const Icon(Icons.person),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: context.radius.input,
                               ),
                             ),
                             validator: (value) {
@@ -319,7 +319,7 @@ Communication style:
                                     _selectedAge = age['value'];
                                   });
                                 },
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: context.radius.tile,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
@@ -329,7 +329,7 @@ Communication style:
                                     color: isSelected
                                         ? context.colors.primary
                                         : context.colors.grey900,
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: context.radius.tile,
                                     border: Border.all(
                                       color: isSelected
                                           ? context.colors.primary
@@ -384,7 +384,7 @@ Communication style:
                                     _selectedPersonality = personality['value'];
                                   });
                                 },
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: context.radius.tile,
                                 child: Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
@@ -393,7 +393,7 @@ Communication style:
                                             alpha: 0.1,
                                           )
                                         : context.colors.grey900,
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: context.radius.tile,
                                     border: Border.all(
                                       color: isSelected
                                           ? context.colors.primary
@@ -462,7 +462,7 @@ Communication style:
                               hintText:
                                   'setup.local_child.custom_instructions_hint'.tr(),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: context.radius.input,
                               ),
                             ),
                           ),
@@ -477,7 +477,7 @@ Communication style:
                               foregroundColor: context.colors.textOnFilled,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppRadius.button),
                               ),
                             ),
                             child: _isSaving

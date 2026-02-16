@@ -411,7 +411,7 @@ class ProfileScreen extends ConsumerWidget {
                       foregroundColor: context.colors.textOnFilled,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: context.radius.tile,
                       ),
                     ),
                     child: Text(
@@ -549,7 +549,7 @@ void _showAboutDialog(BuildContext context, String appVersion) {
       height: 64,
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [context.colors.primary, context.colors.secondary]),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
       ),
       child: Icon(Icons.smart_toy, color: context.colors.textOnFilled, size: 32),
     ),
@@ -578,7 +578,7 @@ class _SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) => DecoratedBox(
     decoration: BoxDecoration(
       color: theme.colorScheme.surface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: context.radius.panel,
       boxShadow: [
         BoxShadow(
           color: context.colors.textNormal.withValues(alpha: isDark ? 0.3 : 0.08),

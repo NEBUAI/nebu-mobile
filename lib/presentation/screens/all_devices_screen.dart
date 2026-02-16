@@ -159,7 +159,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
                   padding: EdgeInsets.all(context.spacing.alertPadding),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: context.radius.tile,
                     border: Border.all(
                       color: theme.colorScheme.error.withValues(alpha: 0.3),
                     ),
@@ -249,7 +249,7 @@ class _AllDevicesScreenState extends ConsumerState<AllDevicesScreen>
             elevation: 2,
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: context.radius.tile,
             ),
             child: ListTile(
               contentPadding: EdgeInsets.all(context.spacing.alertPadding),

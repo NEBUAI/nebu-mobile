@@ -159,7 +159,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                 color: theme.colorScheme.primaryContainer.withValues(
                   alpha: 0.3,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: context.radius.tile,
               ),
               child: Row(
                 children: [

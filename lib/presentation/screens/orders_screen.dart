@@ -110,10 +110,10 @@ class _OrderCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.only(bottom: context.spacing.sectionTitleBottomMargin),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: context.radius.modal),
       child: InkWell(
         onTap: () => _showOrderDetails(context, order),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Padding(
           padding: EdgeInsets.all(context.spacing.alertPadding),
           child: Column(
@@ -370,7 +370,7 @@ class _OrderDetailsSheet extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: context.radius.tile,
                   ),
                 ),
                 child: Text('orders.track_order'.tr()),
@@ -386,7 +386,7 @@ class _OrderDetailsSheet extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: context.radius.tile,
                 ),
               ),
               child: Text('orders.contact_support'.tr()),
@@ -407,7 +407,7 @@ class _OrderDetailsSheet extends StatelessWidget {
       padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: context.radius.tile,
       ),
       child: Column(
         children: [

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
-import '../../../core/theme/app_border_radius.dart';
 import '../../../core/theme/app_colors.dart';
 
 class VoiceSetupScreen extends StatefulWidget {

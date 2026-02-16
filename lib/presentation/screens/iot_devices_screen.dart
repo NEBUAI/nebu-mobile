@@ -43,7 +43,7 @@ class IoTDevicesScreen extends ConsumerWidget {
                           elevation: 2,
                           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: context.radius.tile,
                           ),
                           child: ListTile(
                             contentPadding: EdgeInsets.all(context.spacing.alertPadding),

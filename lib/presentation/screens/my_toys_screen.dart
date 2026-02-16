@@ -109,7 +109,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 color: isOnline
                     ? theme.colorScheme.primary.withValues(alpha: 0.1)
                     : theme.disabledColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: context.radius.bottomSheet,
               ),
               child: Icon(
                 Icons.smart_toy,
@@ -133,7 +133,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 color: isOnline
                     ? context.colors.success.withValues(alpha: 0.1)
                     : context.colors.error.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: context.radius.bottomSheet,
               ),
               child: Text(
                 isOnline ? 'toys.online'.tr() : 'toys.offline'.tr(),
@@ -150,7 +150,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerHighest
                     .withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: context.radius.tile,
                 border: Border.all(
                   color: theme.dividerColor.withValues(alpha: 0.2),
                 ),
@@ -222,7 +222,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   foregroundColor: context.colors.textOnFilled,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: context.radius.tile,
                   ),
                 ),
                 icon: const Icon(Icons.settings),
@@ -242,7 +242,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   side: BorderSide(color: context.colors.error),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: context.radius.tile,
                   ),
                 ),
                 icon: const Icon(Icons.delete_outline),
@@ -319,13 +319,13 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                       DecoratedBox(
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primary,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: context.radius.tile,
                         ),
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () => _addNewToy(context),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: context.radius.tile,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
@@ -365,7 +365,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                       padding: EdgeInsets.all(context.spacing.paragraphBottomMargin),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: context.radius.panel,
                         border: Border.all(
                           color: theme.dividerColor.withValues(alpha: 0.3),
                           width: 2,
@@ -429,7 +429,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                       padding: EdgeInsets.all(context.spacing.panelPadding),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: context.radius.panel,
                         border: Border.all(
                           color: theme.dividerColor.withValues(alpha: 0.3),
                           width: 2,

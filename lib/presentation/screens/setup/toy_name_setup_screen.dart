@@ -272,7 +272,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                               filled: true,
                               fillColor: context.colors.textOnFilled.withValues(alpha: 0.2),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: context.radius.input,
                                 borderSide: BorderSide.none,
                               ),
                               contentPadding: const EdgeInsets.all(20),
@@ -317,7 +317,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
                       foregroundColor: context.colors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppRadius.button),
                       ),
                     ),
                     child: _isRegistering
@@ -373,7 +373,7 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
           color: index < current
               ? context.colors.textOnFilled
               : context.colors.textOnFilled.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: context.radius.checkbox,
         ),
       ),
     ),

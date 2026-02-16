@@ -124,9 +124,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     decoration: InputDecoration(
       labelText: label,
       prefixIcon: Icon(icon, color: colorScheme.primary),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      border: OutlineInputBorder(borderRadius: context.radius.input),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: context.radius.input,
         borderSide: BorderSide(color: colorScheme.primary, width: 2),
       ),
       filled: true,

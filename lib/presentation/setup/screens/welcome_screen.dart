@@ -39,7 +39,7 @@ class WelcomeScreen extends ConsumerWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: context.radius.tag,
                   boxShadow: [
                     BoxShadow(
                       color: context.colors.primary.withValues(alpha: 0.3),
@@ -150,7 +150,7 @@ class WelcomeScreen extends ConsumerWidget {
         height: 50,
         decoration: BoxDecoration(
           color: context.colors.primary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: context.radius.tile,
         ),
         child: Icon(icon, color: context.colors.primary, size: 24),
       ),

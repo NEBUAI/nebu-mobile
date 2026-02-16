@@ -310,7 +310,7 @@ class _BackButton extends StatelessWidget {
           height: 44,
           decoration: BoxDecoration(
             color: context.colors.grey900,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: context.radius.input,
           ),
           child: Icon(
             Icons.arrow_back_ios_new_rounded,
@@ -379,23 +379,23 @@ class _CustomTextField extends StatelessWidget {
         filled: true,
         fillColor: context.colors.grey900,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           borderSide: BorderSide(color: context.colors.grey800),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           borderSide: BorderSide(color: context.colors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           borderSide: BorderSide(color: context.colors.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           borderSide: BorderSide(color: context.colors.error, width: 1.5),
         ),
         contentPadding:
@@ -423,14 +423,14 @@ class _PrimaryButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Container(
           height: 56,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [context.colors.primary100, context.colors.primary],
             ),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: context.radius.panel,
             boxShadow: [
               BoxShadow(
                 color: context.colors.primary.withValues(alpha: 0.3),
@@ -482,12 +482,12 @@ class _GoogleButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: isLoading ? null : onPressed,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Container(
           height: 56,
           decoration: BoxDecoration(
             color: context.colors.bgPrimary,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: context.radius.panel,
             border: Border.all(color: context.colors.grey800, width: 1.5),
           ),
           child: Row(
@@ -553,7 +553,7 @@ class _ErrorBanner extends StatelessWidget {
       padding: EdgeInsets.all(context.spacing.alertPadding),
       decoration: BoxDecoration(
         color: context.colors.errorBg,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: context.radius.tile,
         border: Border.all(color: context.colors.error.withValues(alpha: 0.3)),
       ),
       child: Row(

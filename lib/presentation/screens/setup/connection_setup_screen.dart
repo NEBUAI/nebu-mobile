@@ -787,7 +787,7 @@ class _DeviceCard extends StatelessWidget {
                 color: isSelected
                     ? context.colors.primary.withValues(alpha: 0.15)
                     : colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: context.radius.panel,
               ),
               child: isConnecting
                   ? Center(
@@ -912,7 +912,7 @@ class _BottomSheet extends StatelessWidget {
             height: 64,
             decoration: BoxDecoration(
               color: iconColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: context.radius.bottomSheet,
             ),
             child: Icon(icon, color: iconColor, size: 32),
           ),
@@ -940,7 +940,7 @@ class _BottomSheet extends StatelessWidget {
               height: 52,
               decoration: BoxDecoration(
                 color: iconColor,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: context.radius.panel,
               ),
               child: Center(
                 child: Text(
@@ -999,7 +999,7 @@ class _OptionCard extends StatelessWidget {
           color: isSecondary
               ? context.colors.grey900
               : context.colors.primary.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: context.radius.panel,
           border: Border.all(
             color: isSecondary
                 ? context.colors.grey700
@@ -1015,7 +1015,7 @@ class _OptionCard extends StatelessWidget {
                 color: isSecondary
                     ? context.colors.grey800
                     : context.colors.primary.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: context.radius.tile,
               ),
               child: Icon(
                 icon,

@@ -125,7 +125,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
                     foregroundColor: context.colors.primary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: context.radius.tile,
                     ),
                   ),
                   child: Row(
@@ -165,7 +165,7 @@ class WorldInfoSetupScreen extends StatelessWidget {
           color: index < current
               ? context.colors.textOnFilled
               : context.colors.textOnFilled.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: context.radius.checkbox,
         ),
       ),
     ),

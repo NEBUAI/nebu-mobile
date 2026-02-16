@@ -40,7 +40,7 @@ class WelcomeScreen extends StatelessWidget {
                   height: 140,
                   decoration: BoxDecoration(
                     color: context.colors.bgPrimary,
-                    borderRadius: BorderRadius.circular(36),
+                    borderRadius: context.radius.tag,
                     boxShadow: [
                       // Sombra oscura
                       BoxShadow(
@@ -153,12 +153,12 @@ class _PrimaryButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Container(
           height: 56,
           decoration: BoxDecoration(
             color: context.colors.bgPrimary,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: context.radius.panel,
             boxShadow: [
               BoxShadow(
                 color: context.colors.textNormal.withValues(alpha: 0.15),
@@ -198,12 +198,12 @@ class _SecondaryButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: context.radius.panel,
         child: Container(
           height: 56,
           decoration: BoxDecoration(
             color: context.colors.textOnFilled.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: context.radius.panel,
             border: Border.all(
               color: context.colors.textOnFilled.withValues(alpha: 0.4),
               width: 1.5,
