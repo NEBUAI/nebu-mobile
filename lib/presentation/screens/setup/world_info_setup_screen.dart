@@ -50,173 +50,213 @@ class WorldInfoSetupScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [context.colors.primary, context.colors.secondary],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+              child: Row(
+                children: [
+                  _buildBackButton(context, colorScheme),
+                  const Spacer(),
+                  _buildStepIndicator(context, 7, 7),
+                  const Spacer(),
+                  const SizedBox(width: 44),
+                ],
+              ),
             ),
-          ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Back button
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: () => context.pop(),
-                    icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
-                  ),
-                ),
 
-                const SizedBox(height: 20),
+            // Content
+            Expanded(
+              child: Padding(
+                padding: context.spacing.pageEdgeInsets,
+                child: Column(
+                  children: [
+                    const Spacer(),
 
-                // Progress indicator
-                _buildProgressIndicator(context, 7, 7),
-
-                const Spacer(),
-
-                // Completion icon
-                Center(
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: context.colors.bgPrimary,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: context.colors.textNormal.withValues(alpha: 0.2),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
+                    // Completion icon
+                    Center(
+                      child: Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: context.colors.primary.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
                         ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.check,
-                      size: 60,
-                      color: context.colors.primary,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 40),
-
-                // Title
-                Text(
-                  'setup.world_info.all_set'.tr(),
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    color: context.colors.textOnFilled,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 16),
-
-                Text(
-                  'setup.world_info.ready_message'.tr(),
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: context.colors.textOnFilled.withValues(alpha: 0.9),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 40),
-
-                // Features summary
-                _buildFeatureSummary(
-                  context,
-                  theme,
-                  Icons.check_circle,
-                  'setup.world_info.device_connected'.tr(),
-                ),
-                const SizedBox(height: 16),
-                _buildFeatureSummary(
-                  context,
-                  theme,
-                  Icons.check_circle,
-                  'setup.world_info.profile_configured'.tr(),
-                ),
-                const SizedBox(height: 16),
-                _buildFeatureSummary(
-                  context,
-                  theme,
-                  Icons.check_circle,
-                  'setup.world_info.preferences_saved'.tr(),
-                ),
-
-                const Spacer(),
-
-                // Finish button
-                ElevatedButton(
-                  onPressed: () => _finishSetup(context, ref),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colors.bgPrimary,
-                    foregroundColor: context.colors.primary,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: context.radius.tile,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'setup.world_info.start_using'.tr(),
-                        style: theme.textTheme.titleMedium?.copyWith(
+                        child: Icon(
+                          Icons.check,
+                          size: 60,
                           color: context.colors.primary,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.arrow_forward),
-                    ],
-                  ),
-                ),
+                    ),
 
-                const SizedBox(height: 40),
-              ],
+                    SizedBox(height: context.spacing.largePageBottomMargin),
+
+                    // Title
+                    Text(
+                      'setup.world_info.all_set'.tr(),
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
+
+                    Text(
+                      'setup.world_info.ready_message'.tr(),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    SizedBox(height: context.spacing.largePageBottomMargin),
+
+                    // Features summary
+                    _buildFeatureSummary(
+                      context,
+                      theme,
+                      Icons.check_circle,
+                      'setup.world_info.device_connected'.tr(),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildFeatureSummary(
+                      context,
+                      theme,
+                      Icons.check_circle,
+                      'setup.world_info.profile_configured'.tr(),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildFeatureSummary(
+                      context,
+                      theme,
+                      Icons.check_circle,
+                      'setup.world_info.preferences_saved'.tr(),
+                    ),
+
+                    const Spacer(),
+
+                    // Finish button
+                    _buildPrimaryButton(
+                      context,
+                      text: 'setup.world_info.start_using'.tr(),
+                      onPressed: () => _finishSetup(context, ref),
+                    ),
+
+                    SizedBox(height: context.spacing.panelPadding),
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildProgressIndicator(BuildContext context, int current, int total) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: List.generate(
-      total,
-      (index) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        width: index < current ? 24 : 8,
-        height: 8,
-        decoration: BoxDecoration(
-          color: index < current
-              ? context.colors.textOnFilled
-              : context.colors.textOnFilled.withValues(alpha: 0.3),
-          borderRadius: context.radius.checkbox,
+  Widget _buildBackButton(BuildContext context, ColorScheme colorScheme) =>
+      GestureDetector(
+        onTap: () => context.pop(),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: context.radius.tile,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 18,
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
-  Widget _buildFeatureSummary(BuildContext context, ThemeData theme, IconData icon, String text) =>
+  Widget _buildStepIndicator(
+          BuildContext context, int current, int total) =>
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(total, (index) {
+          final isActive = index < current;
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3),
+            width: isActive ? 20 : 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: isActive
+                  ? context.colors.primary
+                  : context.colors.primary.withValues(alpha: 0.2),
+              borderRadius: context.radius.checkbox,
+            ),
+          );
+        }),
+      );
+
+  Widget _buildPrimaryButton(
+    BuildContext context, {
+    required String text,
+    required VoidCallback onPressed,
+  }) =>
+      GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                context.colors.primary100,
+                context.colors.primary,
+              ],
+            ),
+            borderRadius: context.radius.panel,
+            boxShadow: [
+              BoxShadow(
+                color: context.colors.primary.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: context.colors.textOnFilled,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward,
+                  color: context.colors.textOnFilled,
+                  size: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildFeatureSummary(
+          BuildContext context, ThemeData theme, IconData icon, String text) =>
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: context.colors.textOnFilled, size: 24),
+          Icon(icon, color: context.colors.primary, size: 24),
           const SizedBox(width: 12),
           Text(
             text,
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: context.colors.textOnFilled,
               fontWeight: FontWeight.w500,
             ),
           ),

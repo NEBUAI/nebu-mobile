@@ -104,7 +104,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     Color statusColor;
     String statusText;
     if (isPending) {
-      statusColor = Colors.amber;
+      statusColor = context.colors.warning;
       statusText = 'toys.pending'.tr();
     } else if (isOnline) {
       statusColor = context.colors.success;
@@ -141,7 +141,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               height: 80,
               decoration: BoxDecoration(
                 color: isPending
-                    ? Colors.amber.withValues(alpha: 0.1)
+                    ? context.colors.warning.withValues(alpha: 0.1)
                     : isOnline
                         ? theme.colorScheme.primary.withValues(alpha: 0.1)
                         : theme.disabledColor.withValues(alpha: 0.1),
@@ -602,7 +602,7 @@ class _ToyCard extends StatelessWidget {
     Color accentColor;
     String badgeText;
     if (isPending) {
-      accentColor = Colors.amber;
+      accentColor = context.colors.warning;
       badgeText = 'toys.pending'.tr();
     } else if (isOnline) {
       accentColor = context.colors.success;
@@ -657,7 +657,7 @@ class _ToyCard extends StatelessWidget {
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
                                 color: isPending
-                                    ? Colors.amber.withValues(alpha: 0.15)
+                                    ? context.colors.warning.withValues(alpha: 0.15)
                                     : isOnline
                                         ? theme.colorScheme.primary.withValues(alpha: 0.15)
                                         : theme.disabledColor.withValues(alpha: 0.15),
@@ -741,10 +741,10 @@ class _ToyCard extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
-                              color: Colors.amber.withValues(alpha: 0.08),
+                              color: context.colors.warning.withValues(alpha: 0.08),
                               borderRadius: context.radius.tile,
                               border: Border.all(
-                                color: Colors.amber.withValues(alpha: 0.2),
+                                color: context.colors.warning.withValues(alpha: 0.2),
                               ),
                             ),
                             child: Row(
