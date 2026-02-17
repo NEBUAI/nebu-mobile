@@ -491,47 +491,104 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        body: DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [context.colors.primary, context.colors.secondary],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+        body: SafeArea(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                child: Row(
                   children: [
-                    _buildHeader(context),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            _buildTitle(theme),
-                            const SizedBox(height: 40),
-                            _buildQuickActions(theme),
-                            const SizedBox(height: 12),
-                            _buildHotspotHint(),
-                            const SizedBox(height: 16),
-                            _buildSsidInput(theme),
-                            const SizedBox(height: 20),
-                            _buildPasswordInput(theme),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildFooterButtons(context, theme),
+                    _buildBackButton(theme.colorScheme),
+                    const Spacer(),
+                    _buildStepIndicator(2, 7),
+                    const Spacer(),
+                    const SizedBox(width: 44),
                   ],
                 ),
               ),
-            ),
+
+              // Content
+              Expanded(
+                child: Padding(
+                  padding: context.spacing.pageEdgeInsets,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        SizedBox(height: context.spacing.titleBottomMargin),
+
+                        Text(
+                          'setup.wifi.title'.tr(),
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: context.spacing.titleBottomMarginSm),
+                        Text(
+                          'setup.wifi.subtitle'.tr(),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+
+                        SizedBox(height: context.spacing.largePageBottomMargin),
+
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                _buildQuickActions(theme),
+                                const SizedBox(height: 12),
+                                _buildHotspotHint(),
+                                const SizedBox(height: 16),
+                                _buildSsidInput(theme),
+                                const SizedBox(height: 20),
+                                _buildPasswordInput(theme),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Connect button
+                        _buildPrimaryButton(
+                          text: 'setup.wifi.connect_button'.tr(),
+                          isLoading: _isConnecting,
+                          onPressed: _connectToWifi,
+                        ),
+
+                        SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                        GestureDetector(
+                          onTap: _isConnecting ? _cancelConnection : _skipWifiSetup,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(
+                              _isConnecting
+                                  ? 'setup.wifi.cancel_button'.tr()
+                                  : 'setup.wifi.skip_button'.tr(),
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: _isConnecting
+                                    ? context.colors.error
+                                    : theme.colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: context.spacing.panelPadding),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -540,14 +597,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
   Widget _buildHotspotHint() => Row(
     children: [
-      Icon(Icons.info_outline, size: 14, color: context.colors.textOnFilled.withAlpha(179)),
+      Icon(
+        Icons.info_outline,
+        size: 14,
+        color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+      ),
       const SizedBox(width: 6),
       Expanded(
         child: Text(
           'setup.wifi.hotspot_hint'.tr(),
           style: TextStyle(
             fontSize: 12,
-            color: context.colors.textOnFilled.withAlpha(179),
+            color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
           ),
         ),
       ),
@@ -577,44 +638,26 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     ],
   );
 
-  Widget _buildHeader(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      IconButton(
-        onPressed: () => context.pop(),
-        icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
-      ),
-      const Spacer(),
-      _buildProgressIndicator(2, 7), // This is now step 2
-      const Spacer(),
-      const Opacity(
-        opacity: 0,
-        child: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
-      ),
-    ],
-  );
-
-  Widget _buildTitle(ThemeData theme) => Column(
-    children: [
-      Text(
-        'setup.wifi.title'.tr(),
-        style: theme.textTheme.headlineMedium?.copyWith(color: context.colors.textOnFilled),
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(height: 12),
-      Text(
-        'setup.wifi.subtitle'.tr(),
-        style: theme.textTheme.bodyLarge?.copyWith(
-          color: context.colors.textOnFilled.withAlpha(230),
+  Widget _buildBackButton(ColorScheme colorScheme) => GestureDetector(
+        onTap: () => context.pop(),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: context.radius.tile,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 18,
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
-        textAlign: TextAlign.center,
-      ),
-    ],
-  );
+      );
 
   Widget _buildSsidInput(ThemeData theme) => TextFormField(
     controller: _ssidController,
-    style: theme.textTheme.titleMedium?.copyWith(color: context.colors.textOnFilled),
+    style: theme.textTheme.titleMedium,
     decoration: _buildInputDecoration(theme, 'setup.wifi.ssid_hint'.tr()),
     validator: (value) {
       if (value == null || value.trim().isEmpty) {
@@ -638,14 +681,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   Widget _buildPasswordInput(ThemeData theme) => TextFormField(
     controller: _passwordController,
     obscureText: !_isPasswordVisible,
-    style: theme.textTheme.titleMedium?.copyWith(color: context.colors.textOnFilled),
+    style: theme.textTheme.titleMedium,
     decoration: _buildInputDecoration(
       theme,
       'setup.wifi.password_hint'.tr(),
       suffixIcon: IconButton(
         icon: Icon(
           _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-          color: context.colors.textOnFilled.withAlpha(179),
+          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
         ),
         onPressed: () {
           setState(() {
@@ -675,63 +718,74 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     Widget? suffixIcon,
   }) => InputDecoration(
     hintText: hintText,
-    hintStyle: TextStyle(color: context.colors.textOnFilled.withAlpha(128)),
+    hintStyle: TextStyle(
+      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+    ),
     filled: true,
-    fillColor: context.colors.textOnFilled.withAlpha(51),
+    fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
     border: OutlineInputBorder(
       borderRadius: context.radius.input,
-      borderSide: BorderSide.none,
+      borderSide: BorderSide(color: theme.colorScheme.outline),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: context.radius.input,
+      borderSide: BorderSide(color: theme.colorScheme.outline),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: context.radius.input,
+      borderSide: BorderSide(color: context.colors.primary, width: 2),
     ),
     contentPadding: const EdgeInsets.all(20),
     suffixIcon: suffixIcon,
   );
 
-  Widget _buildFooterButtons(BuildContext context, ThemeData theme) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      ElevatedButton(
-        onPressed: _isConnecting ? null : _connectToWifi,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: context.colors.bgPrimary,
-          foregroundColor: context.colors.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.button),
-          ),
-        ),
-        child: _isConnecting
-            ? SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  color: context.colors.primary,
-                ),
-              )
-            : Text(
-                'setup.wifi.connect_button'.tr(),
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: context.colors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
+  Widget _buildPrimaryButton({
+    required String text,
+    required VoidCallback onPressed,
+    bool isLoading = false,
+  }) =>
+      GestureDetector(
+        onTap: isLoading ? null : onPressed,
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                context.colors.primary100,
+                context.colors.primary,
+              ],
+            ),
+            borderRadius: context.radius.panel,
+            boxShadow: [
+              BoxShadow(
+                color: context.colors.primary.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
-      ),
-      const SizedBox(height: 12),
-      TextButton(
-        onPressed: _isConnecting ? _cancelConnection : _skipWifiSetup,
-        child: Text(
-          _isConnecting
-              ? 'setup.wifi.cancel_button'.tr()
-              : 'setup.wifi.skip_button'.tr(),
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: _isConnecting
-                ? context.colors.error.withAlpha(204)
-                : context.colors.textOnFilled.withAlpha(204),
+            ],
+          ),
+          child: Center(
+            child: isLoading
+                ? SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        context.colors.textOnFilled,
+                      ),
+                    ),
+                  )
+                : Text(
+                    text,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: context.colors.textOnFilled,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
           ),
         ),
-      ),
-    ],
-  );
+      );
 
   void _cancelConnection() {
     _log('🛑 [WIFI_SCREEN] User cancelled WiFi connection');
@@ -752,21 +806,23 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     context.push(AppRoutes.toyNameSetup.path);
   }
 
-  Widget _buildProgressIndicator(int current, int total) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: List.generate(
-      total,
-      (index) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        width: index < current ? 24 : 8,
-        height: 8,
-        decoration: BoxDecoration(
-          color: index < current ? context.colors.textOnFilled : context.colors.textOnFilled.withAlpha(77),
-          borderRadius: context.radius.checkbox,
-        ),
-      ),
-    ),
-  );
+  Widget _buildStepIndicator(int current, int total) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(total, (index) {
+          final isActive = index < current;
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3),
+            width: isActive ? 20 : 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: isActive
+                  ? context.colors.primary
+                  : context.colors.primary.withValues(alpha: 0.2),
+              borderRadius: context.radius.checkbox,
+            ),
+          );
+        }),
+      );
 }
 
 class _QuickActionButton extends StatelessWidget {
@@ -782,23 +838,26 @@ class _QuickActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return InkWell(
       onTap: onPressed,
       borderRadius: context.radius.input,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: context.colors.textOnFilled.withAlpha(40),
+          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
           borderRadius: context.radius.input,
-          border: Border.all(color: context.colors.textOnFilled.withAlpha(60)),
+          border: Border.all(color: colorScheme.outline),
         ),
         child: Column(
           children: [
-            Icon(icon, color: context.colors.textOnFilled, size: 28),
+            Icon(icon, color: context.colors.primary, size: 28),
             const SizedBox(height: 4),
             Text(
               label,
-              style: theme.textTheme.labelMedium?.copyWith(color: context.colors.textOnFilled),
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: colorScheme.onSurface,
+              ),
             ),
           ],
         ),
