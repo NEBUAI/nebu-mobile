@@ -308,21 +308,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: context.spacing.sectionTitleBottomMargin),
-                      _BackButton(onPressed: () {
-                        if (context.canPop()) {
-                          context.pop();
-                        } else {
-                          context.go(AppRoutes.home.path);
-                        }
-                      }),
-                      SizedBox(height: context.spacing.paragraphBottomMargin),
-                      Text(
-                        'auth.welcome_back'.tr(),
-                        style: textTheme.displaySmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.5,
-                          color: context.colors.textNormal,
-                        ),
+                      Row(
+                        children: [
+                          _BackButton(onPressed: () {
+                            if (context.canPop()) {
+                              context.pop();
+                            } else {
+                              context.go(AppRoutes.home.path);
+                            }
+                          }),
+                          const SizedBox(width: 12),
+                          Flexible(
+                            child: Text(
+                              'auth.welcome_back'.tr(),
+                              style: textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: -0.5,
+                                color: context.colors.textNormal,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: context.spacing.titleBottomMarginSm),
                       Text(
