@@ -289,6 +289,7 @@ class ProfileScreen extends ConsumerWidget {
               SizedBox(height: context.spacing.panelPadding),
             ],
           ),
+        ),
       ),
     );
   }

@@ -73,16 +73,8 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
     if (user == null) {
       ref
           .read(loggerProvider)
-          .w('⚠️  [TOY_SETUP] User not authenticated, cannot register device');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('setup.toy_name.error_not_authenticated'.tr()),
-            backgroundColor: context.colors.error,
-          ),
-        );
-      }
-      return false;
+          .d('📱 [TOY_SETUP] User not authenticated, will save locally');
+      return true; // El juguete se guardará localmente al final del setup
     }
 
     setState(() {
