@@ -297,136 +297,146 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: context.spacing.pageEdgeInsets,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
-                  _BackButton(onPressed: () {
-                    if (context.canPop()) {
-                      context.pop();
-                    } else {
-                      context.go(AppRoutes.home.path);
-                    }
-                  }),
-                  SizedBox(height: context.spacing.paragraphBottomMargin),
-                  Text(
-                    'auth.welcome_back'.tr(),
-                    style: textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.5,
-                      color: context.colors.textNormal,
-                    ),
-                  ),
-                  SizedBox(height: context.spacing.titleBottomMarginSm),
-                  Text(
-                    'auth.sign_in_subtitle_long'.tr(),
-                    style: textTheme.titleMedium?.copyWith(
-                      color: context.colors.grey400,
-                    ),
-                  ),
-                  SizedBox(height: context.spacing.largePageBottomMargin),
-                  if (authState.hasError && !authState.isLoading)
-                    _ErrorBanner(
-                      message: authState.error
-                          .toString()
-                          .replaceFirst('Exception: ', ''),
-                    ),
-                  SizedBox(height: context.spacing.titleBottomMargin),
-                  _CustomTextField(
-                    controller: _identifierController,
-                    label: 'auth.username_or_email'.tr(),
-                    hintText: 'auth.username_or_email_hint'.tr(),
-                    keyboardType: TextInputType.text,
-                    prefixIcon: Icons.person_outline_rounded,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'auth.username_or_email_required'.tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: context.spacing.titleBottomMargin),
-                  _CustomTextField(
-                    controller: _passwordController,
-                    label: 'auth.password'.tr(),
-                    obscureText: _obscurePassword,
-                    prefixIcon: Icons.lock_outline_rounded,
-                    suffixIcon: _obscurePassword
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    onSuffixTap: () {
-                      setState(() => _obscurePassword = !_obscurePassword);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'auth.password_required'.tr();
-                      }
-                      if (value.length < 6) {
-                        return 'auth.password_short'.tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: context.spacing.paragraphBottomMarginSm),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: _showForgotPasswordDialog,
-                      child: Text(
-                        'auth.forgot_password'.tr(),
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.primary,
-                          fontWeight: FontWeight.w600,
+        child: Padding(
+          padding: context.spacing.pageEdgeInsets,
+          child: Form(
+            key: _formKey,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: context.spacing.sectionTitleBottomMargin),
+                      _BackButton(onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go(AppRoutes.home.path);
+                        }
+                      }),
+                      SizedBox(height: context.spacing.paragraphBottomMargin),
+                      Text(
+                        'auth.welcome_back'.tr(),
+                        style: textTheme.displaySmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.5,
+                          color: context.colors.textNormal,
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: context.spacing.paragraphBottomMargin),
-                  _PrimaryButton(
-                    text: 'auth.sign_in'.tr(),
-                    isLoading: authState.isLoading,
-                    onPressed: _handleEmailLogin,
-                  ),
-                  SizedBox(height: context.spacing.panelPadding),
-                  _OrDivider(),
-                  SizedBox(height: context.spacing.panelPadding),
-                  _GoogleButton(
-                    text: 'auth.continue_with_google'.tr(),
-                    isLoading: authState.isLoading,
-                    onPressed: _handleGoogleSignIn,
-                  ),
-                  SizedBox(height: context.spacing.paragraphBottomMargin),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${'auth.no_account'.tr()} ',
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: context.colors.grey400,
-                          ),
+                      SizedBox(height: context.spacing.titleBottomMarginSm),
+                      Text(
+                        'auth.sign_in_subtitle_long'.tr(),
+                        style: textTheme.titleMedium?.copyWith(
+                          color: context.colors.grey400,
                         ),
-                        GestureDetector(
-                          onTap: () => context.push(AppRoutes.signUp.path),
+                      ),
+                      SizedBox(height: context.spacing.largePageBottomMargin),
+                      if (authState.hasError && !authState.isLoading)
+                        _ErrorBanner(
+                          message: authState.error
+                              .toString()
+                              .replaceFirst('Exception: ', ''),
+                        ),
+                      SizedBox(height: context.spacing.titleBottomMargin),
+                      _CustomTextField(
+                        controller: _identifierController,
+                        label: 'auth.username_or_email'.tr(),
+                        hintText: 'auth.username_or_email_hint'.tr(),
+                        keyboardType: TextInputType.text,
+                        prefixIcon: Icons.person_outline_rounded,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'auth.username_or_email_required'.tr();
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: context.spacing.titleBottomMargin),
+                      _CustomTextField(
+                        controller: _passwordController,
+                        label: 'auth.password'.tr(),
+                        obscureText: _obscurePassword,
+                        prefixIcon: Icons.lock_outline_rounded,
+                        suffixIcon: _obscurePassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        onSuffixTap: () {
+                          setState(() => _obscurePassword = !_obscurePassword);
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'auth.password_required'.tr();
+                          }
+                          if (value.length < 6) {
+                            return 'auth.password_short'.tr();
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: context.spacing.paragraphBottomMarginSm),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: _showForgotPasswordDialog,
                           child: Text(
-                            'auth.sign_up'.tr(),
+                            'auth.forgot_password'.tr(),
                             style: textTheme.bodyMedium?.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: context.spacing.panelPadding),
-                ],
-              ),
+                ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    children: [
+                      const Spacer(),
+                      SizedBox(height: context.spacing.panelPadding),
+                      _PrimaryButton(
+                        text: 'auth.sign_in'.tr(),
+                        isLoading: authState.isLoading,
+                        onPressed: _handleEmailLogin,
+                      ),
+                      SizedBox(height: context.spacing.panelPadding),
+                      _OrDivider(),
+                      SizedBox(height: context.spacing.panelPadding),
+                      _GoogleButton(
+                        text: 'auth.continue_with_google'.tr(),
+                        isLoading: authState.isLoading,
+                        onPressed: _handleGoogleSignIn,
+                      ),
+                      SizedBox(height: context.spacing.paragraphBottomMargin),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${'auth.no_account'.tr()} ',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: context.colors.grey400,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => context.push(AppRoutes.signUp.path),
+                            child: Text(
+                              'auth.sign_up'.tr(),
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: context.spacing.panelPadding),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

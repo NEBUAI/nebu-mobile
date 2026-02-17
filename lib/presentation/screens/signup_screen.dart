@@ -87,214 +87,224 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return Scaffold(
       backgroundColor: context.colors.bgPrimary,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: context.spacing.pageEdgeInsets,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
-                  // Back button
-                  _BackButton(onPressed: () {
-                    if (context.canPop()) {
-                      context.pop();
-                    } else {
-                      context.go(AppRoutes.home.path);
-                    }
-                  }),
-
-                  SizedBox(height: context.spacing.paragraphBottomMargin),
-
-                  // Header
-                  Text(
-                    'auth.create_account'.tr(),
-                    style: textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.5,
-                      color: context.colors.textNormal,
-                    ),
-                  ),
-                  SizedBox(height: context.spacing.titleBottomMarginSm),
-                  Text(
-                    'auth.create_account_subtitle'.tr(),
-                    style: textTheme.titleMedium?.copyWith(
-                      color: context.colors.grey400,
-                    ),
-                  ),
-
-                  const SizedBox(height: 36),
-
-                  // Error message
-                  if (authState.hasError && !authState.isLoading) ...[
-                    _ErrorBanner(
-                      message: authState.error
-                          .toString()
-                          .replaceFirst('Exception: ', ''),
-                    ),
-                    SizedBox(height: context.spacing.titleBottomMargin),
-                  ],
-
-                  // Name row
-                  Row(
+        child: Padding(
+          padding: context.spacing.pageEdgeInsets,
+          child: Form(
+            key: _formKey,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: _CustomTextField(
-                          controller: _firstNameController,
-                          label: 'auth.first_name'.tr(),
-                          prefixIcon: Icons.person_outline_rounded,
-                          textCapitalization: TextCapitalization.words,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'auth.required'.tr();
-                            }
-                            return null;
-                          },
+                      SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                      // Back button
+                      _BackButton(onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go(AppRoutes.home.path);
+                        }
+                      }),
+
+                      SizedBox(height: context.spacing.paragraphBottomMargin),
+
+                      // Header
+                      Text(
+                        'auth.create_account'.tr(),
+                        style: textTheme.displaySmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.5,
+                          color: context.colors.textNormal,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _CustomTextField(
-                          controller: _lastNameController,
-                          label: 'auth.last_name'.tr(),
-                          prefixIcon: Icons.person_outline_rounded,
-                          textCapitalization: TextCapitalization.words,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'auth.required'.tr();
-                            }
-                            return null;
-                          },
+                      SizedBox(height: context.spacing.titleBottomMarginSm),
+                      Text(
+                        'auth.create_account_subtitle'.tr(),
+                        style: textTheme.titleMedium?.copyWith(
+                          color: context.colors.grey400,
                         ),
+                      ),
+
+                      const SizedBox(height: 36),
+
+                      // Error message
+                      if (authState.hasError && !authState.isLoading) ...[
+                        _ErrorBanner(
+                          message: authState.error
+                              .toString()
+                              .replaceFirst('Exception: ', ''),
+                        ),
+                        SizedBox(height: context.spacing.titleBottomMargin),
+                      ],
+
+                      // First name
+                      _CustomTextField(
+                        controller: _firstNameController,
+                        label: 'auth.first_name'.tr(),
+                        prefixIcon: Icons.person_outline_rounded,
+                        textCapitalization: TextCapitalization.words,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'auth.required'.tr();
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: context.spacing.titleBottomMargin),
+
+                      // Last name
+                      _CustomTextField(
+                        controller: _lastNameController,
+                        label: 'auth.last_name'.tr(),
+                        prefixIcon: Icons.person_outline_rounded,
+                        textCapitalization: TextCapitalization.words,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'auth.required'.tr();
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: context.spacing.titleBottomMargin),
+
+                      // Email field
+                      _CustomTextField(
+                        controller: _emailController,
+                        label: 'auth.email'.tr(),
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icons.mail_outline_rounded,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'auth.email_required'.tr();
+                          }
+                          if (!value.contains('@')) {
+                            return 'auth.email_invalid'.tr();
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: context.spacing.titleBottomMargin),
+
+                      // Password field
+                      _CustomTextField(
+                        controller: _passwordController,
+                        label: 'auth.password'.tr(),
+                        obscureText: _obscurePassword,
+                        prefixIcon: Icons.lock_outline_rounded,
+                        suffixIcon: _obscurePassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        onSuffixTap: () {
+                          setState(() => _obscurePassword = !_obscurePassword);
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'auth.password_required'.tr();
+                          }
+                          if (value.length < 6) {
+                            return 'auth.password_short'.tr();
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: context.spacing.titleBottomMargin),
+
+                      // Confirm Password field
+                      _CustomTextField(
+                        controller: _confirmPasswordController,
+                        label: 'auth.confirm_password'.tr(),
+                        obscureText: _obscureConfirmPassword,
+                        prefixIcon: Icons.lock_outline_rounded,
+                        suffixIcon: _obscureConfirmPassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        onSuffixTap: () {
+                          setState(() =>
+                              _obscureConfirmPassword = !_obscureConfirmPassword);
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'auth.confirm_password_required'.tr();
+                          }
+                          if (value != _passwordController.text) {
+                            return 'auth.passwords_dont_match'.tr();
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
+                ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    children: [
+                      const Spacer(),
+                      SizedBox(height: context.spacing.panelPadding),
 
-                  SizedBox(height: context.spacing.titleBottomMargin),
+                      // Sign up button
+                      _PrimaryButton(
+                        text: 'auth.create_account'.tr(),
+                        isLoading: authState.isLoading,
+                        onPressed: _handleEmailSignUp,
+                      ),
 
-                  // Email field
-                  _CustomTextField(
-                    controller: _emailController,
-                    label: 'auth.email'.tr(),
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.mail_outline_rounded,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'auth.email_required'.tr();
-                      }
-                      if (!value.contains('@')) {
-                        return 'auth.email_invalid'.tr();
-                      }
-                      return null;
-                    },
-                  ),
+                      SizedBox(height: context.spacing.panelPadding),
 
-                  SizedBox(height: context.spacing.titleBottomMargin),
+                      // Divider
+                      _OrDivider(),
 
-                  // Password field
-                  _CustomTextField(
-                    controller: _passwordController,
-                    label: 'auth.password'.tr(),
-                    obscureText: _obscurePassword,
-                    prefixIcon: Icons.lock_outline_rounded,
-                    suffixIcon: _obscurePassword
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    onSuffixTap: () {
-                      setState(() => _obscurePassword = !_obscurePassword);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'auth.password_required'.tr();
-                      }
-                      if (value.length < 6) {
-                        return 'auth.password_short'.tr();
-                      }
-                      return null;
-                    },
-                  ),
+                      SizedBox(height: context.spacing.panelPadding),
 
-                  SizedBox(height: context.spacing.titleBottomMargin),
+                      // Google button
+                      _GoogleButton(
+                        text: 'auth.continue_with_google'.tr(),
+                        isLoading: authState.isLoading,
+                        onPressed: _handleGoogleSignUp,
+                      ),
 
-                  // Confirm Password field
-                  _CustomTextField(
-                    controller: _confirmPasswordController,
-                    label: 'auth.confirm_password'.tr(),
-                    obscureText: _obscureConfirmPassword,
-                    prefixIcon: Icons.lock_outline_rounded,
-                    suffixIcon: _obscureConfirmPassword
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    onSuffixTap: () {
-                      setState(() =>
-                          _obscureConfirmPassword = !_obscureConfirmPassword);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'auth.confirm_password_required'.tr();
-                      }
-                      if (value != _passwordController.text) {
-                        return 'auth.passwords_dont_match'.tr();
-                      }
-                      return null;
-                    },
-                  ),
+                      SizedBox(height: context.spacing.paragraphBottomMargin),
 
-                  SizedBox(height: context.spacing.paragraphBottomMargin),
-
-                  // Sign up button
-                  _PrimaryButton(
-                    text: 'auth.create_account'.tr(),
-                    isLoading: authState.isLoading,
-                    onPressed: _handleEmailSignUp,
-                  ),
-
-                  SizedBox(height: context.spacing.panelPadding),
-
-                  // Divider
-                  _OrDivider(),
-
-                  SizedBox(height: context.spacing.panelPadding),
-
-                  // Google button
-                  _GoogleButton(
-                    text: 'auth.continue_with_google'.tr(),
-                    isLoading: authState.isLoading,
-                    onPressed: _handleGoogleSignUp,
-                  ),
-
-                  SizedBox(height: context.spacing.paragraphBottomMargin),
-
-                  // Sign in link
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "${'auth.already_have_account'.tr()} ",
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: context.colors.grey400,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => context.pop(),
-                          child: Text(
-                            'auth.sign_in'.tr(),
+                      // Sign in link
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${'auth.already_have_account'.tr()} ",
                             style: textTheme.bodyMedium?.copyWith(
-                              color: context.colors.primary,
-                              fontWeight: FontWeight.w600,
+                              color: context.colors.grey400,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                          GestureDetector(
+                            onTap: () {
+                              if (context.canPop()) {
+                                context.pop();
+                              } else {
+                                context.go(AppRoutes.login.path);
+                              }
+                            },
+                            child: Text(
+                              'auth.sign_in'.tr(),
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: context.colors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
 
-                  SizedBox(height: context.spacing.panelPadding),
-                ],
-              ),
+                      SizedBox(height: context.spacing.panelPadding),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
