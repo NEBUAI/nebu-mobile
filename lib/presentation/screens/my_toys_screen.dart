@@ -334,6 +334,11 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               onPressed: _loadToys,
               tooltip: 'toys.reload'.tr(),
             ),
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => _addNewToy(context),
+            tooltip: 'toys.add_toy'.tr(),
+          ),
         ],
       ),
       body: toysAsync.when(
@@ -342,59 +347,6 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           child: ListView(
                 padding: EdgeInsets.all(context.spacing.alertPadding),
                 children: [
-                  // Header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'toys.my_toys'.tr(),
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          borderRadius: context.radius.tile,
-                        ),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () => _addNewToy(context),
-                            borderRadius: context.radius.tile,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 10,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: theme.colorScheme.onPrimary,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    'toys.add_toy'.tr(),
-                                    style: TextStyle(
-                                      color: theme.colorScheme.onPrimary,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: context.spacing.titleBottomMargin),
-
-                  // Toy Cards from API
                   if (toys.isEmpty) ...[
                     // Empty state
                     _buildEmptyState(context, theme),
