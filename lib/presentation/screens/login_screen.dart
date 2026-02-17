@@ -307,30 +307,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: context.spacing.sectionTitleBottomMargin),
-                      Row(
-                        children: [
-                          _BackButton(onPressed: () {
-                            if (context.canPop()) {
-                              context.pop();
-                            } else {
-                              context.go(AppRoutes.home.path);
-                            }
-                          }),
-                          const SizedBox(width: 12),
-                          Flexible(
-                            child: Text(
-                              'auth.welcome_back'.tr(),
-                              style: textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: -0.5,
-                                color: context.colors.textNormal,
-                              ),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 8),
+                      _BackButton(onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go(AppRoutes.home.path);
+                        }
+                      }),
+                      const SizedBox(height: 16),
+                      Text(
+                        'auth.welcome_back'.tr(),
+                        style: textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.5,
+                          color: context.colors.textNormal,
+                        ),
                       ),
-                      SizedBox(height: context.spacing.titleBottomMarginSm),
+                      const SizedBox(height: 6),
                       Text(
                         'auth.sign_in_subtitle_long'.tr(),
                         style: textTheme.titleMedium?.copyWith(
