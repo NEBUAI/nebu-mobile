@@ -85,12 +85,7 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('activity_log.title'.tr()),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshActivities,
-          ),
-        ],
+        actions: const [],
       ),
       body: _buildBody(state, theme),
     );
@@ -164,7 +159,16 @@ class _ActivityLogScreenState extends ConsumerState<ActivityLogScreen> {
     }
 
     if (state.activities.isEmpty) {
-      return _buildEmptyState(theme);
+      return RefreshIndicator(
+        onRefresh: _refreshActivities,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: _buildEmptyState(theme),
+          ),
+        ),
+      );
     }
 
     return RefreshIndicator(

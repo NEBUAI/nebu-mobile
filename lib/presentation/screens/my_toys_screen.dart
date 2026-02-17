@@ -328,12 +328,6 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
           ),
         ),
         actions: [
-          if (!toysAsync.isLoading)
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: _loadToys,
-              tooltip: 'toys.reload'.tr(),
-            ),
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => _addNewToy(context),
