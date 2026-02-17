@@ -156,7 +156,12 @@ class _ToySettingsScreenState extends ConsumerState<ToySettingsScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: EdgeInsets.all(context.spacing.alertPadding),
+              padding: EdgeInsets.fromLTRB(
+                context.spacing.alertPadding,
+                context.spacing.alertPadding,
+                context.spacing.alertPadding,
+                context.spacing.alertPadding + MediaQuery.of(context).padding.bottom + 24,
+              ),
               child: Form(
                 key: _formKey,
                 child: Column(

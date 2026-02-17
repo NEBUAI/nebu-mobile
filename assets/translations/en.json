@@ -101,7 +101,10 @@
       "hint": "Enter a name",
       "validation_empty": "Please enter a name for your toy",
       "validation_short": "Name must be at least 2 characters",
-      "next": "Next"
+      "next": "Next",
+      "error_not_authenticated": "You need to sign in to register a toy",
+      "device_registered": "Toy registered successfully!",
+      "error_registering_device": "Could not register the toy. Please try again."
     },
     "age": {
       "title": "Child's Age",
