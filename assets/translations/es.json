@@ -236,7 +236,7 @@
     "setup_new_toy": "Configurar Nuevo Juguete",
     "devices_error": "No se pudieron cargar los dispositivos conectados. Intenta de nuevo.",
     "greeting_name": "¡Hola, {0}!",
-    "greeting_default": "¡Hola!",
+    "greeting_default": "¡Hola, Invitado!",
     "subtitle": "¡A jugar!",
     "toys_connected": "{0} juguetes conectados",
     "all_good": "¡Todo se ve genial!",

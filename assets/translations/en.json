@@ -236,7 +236,7 @@
     "setup_new_toy": "Setup New Toy",
     "devices_error": "Could not load connected devices. Please try again.",
     "greeting_name": "Hello, {0}!",
-    "greeting_default": "Hello!",
+    "greeting_default": "Hello, Guest!",
     "subtitle": "Let's play!",
     "toys_connected": "{0} toys connected",
     "all_good": "Everything is looking great!",
