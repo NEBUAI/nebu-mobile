@@ -120,6 +120,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      isScrollControlled: true,
       builder: (context) => SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -128,9 +129,10 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
             context.spacing.pageMargin,
             context.spacing.pageMargin,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
               // Handle bar
               Container(
                 width: 40,
@@ -273,6 +275,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 ),
               ),
             ],
+            ),
           ),
         ),
       ),
