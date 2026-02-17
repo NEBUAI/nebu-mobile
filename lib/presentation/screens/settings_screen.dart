@@ -25,7 +25,6 @@ class SettingsScreen extends ConsumerWidget {
     final languageAsync = ref.watch(languageProvider);
     final themeState = themeAsync.value;
     final languageState = languageAsync.value;
-    final isDark = themeState?.isDarkMode ?? false;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -48,132 +47,110 @@ class SettingsScreen extends ConsumerWidget {
                 padding: EdgeInsets.all(context.spacing.alertPadding),
                 child: Column(
                   children: [
-                    // Settings Card
-                    _SettingsCard(
+                    _SettingsTile(
                       theme: theme,
-                      isDark: isDark,
-                      children: [
-                        _SettingsTile(
-                          theme: theme,
-                          icon: Icons.dark_mode_outlined,
-                          iconColor: context.colors.secondary,
-                          title: 'profile.dark_mode'.tr(),
-                          trailing: Switch(
-                            value: themeState?.isDarkMode ?? false,
-                            onChanged: (value) {
-                              ref.read(themeProvider.notifier).toggleDarkMode();
-                            },
-                            activeTrackColor:
-                                context.colors.primary.withValues(alpha: 0.5),
-                            thumbColor:
-                                WidgetStateProperty.resolveWith((states) {
-                              if (states.contains(WidgetState.selected)) {
-                                return context.colors.primary;
-                              }
-                              return null;
-                            }),
-                          ),
-                        ),
-                        Divider(
-                          height: 1,
-                          indent: 56,
-                          color: theme.dividerColor.withValues(alpha: 0.3),
-                        ),
-                        _SettingsTile(
-                          theme: theme,
-                          icon: Icons.language_outlined,
-                          iconColor: context.colors.primary,
-                          title: 'profile.language'.tr(),
-                          trailing: DropdownButton<String>(
-                            value: languageState?.languageCode ?? 'en',
-                            underline: const SizedBox(),
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface,
-                            ),
-                            dropdownColor: theme.colorScheme.surface,
-                            items: [
-                              DropdownMenuItem(
-                                value: 'en',
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CountryFlag.fromLanguageCode('en',
-                                        theme: const ImageTheme(
-                                            height: 24, width: 32)),
-                                    const SizedBox(width: 8),
-                                    const Text('English'),
-                                  ],
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: 'es',
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CountryFlag.fromLanguageCode('es',
-                                        theme: const ImageTheme(
-                                            height: 24, width: 32)),
-                                    const SizedBox(width: 8),
-                                    const Text('Español'),
-                                  ],
-                                ),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              if (value != null) {
-                                context.setLocale(Locale(value));
-                                ref
-                                    .read(languageProvider.notifier)
-                                    .setLanguage(value);
-                              }
-                            },
-                          ),
-                        ),
-                      ],
+                      icon: Icons.dark_mode_outlined,
+                      iconColor: context.colors.secondary,
+                      title: 'profile.dark_mode'.tr(),
+                      trailing: Switch(
+                        value: themeState?.isDarkMode ?? false,
+                        onChanged: (value) {
+                          ref.read(themeProvider.notifier).toggleDarkMode();
+                        },
+                        activeTrackColor:
+                            context.colors.primary.withValues(alpha: 0.5),
+                        thumbColor:
+                            WidgetStateProperty.resolveWith((states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return context.colors.primary;
+                          }
+                          return null;
+                        }),
+                      ),
                     ),
 
-                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
-
-                    // Help & About Section
-                    _SettingsCard(
+                    _SettingsTile(
                       theme: theme,
-                      isDark: isDark,
-                      children: [
-                        _SettingsTile(
-                          theme: theme,
-                          icon: Icons.help_outline,
-                          iconColor: context.colors.success,
-                          title: 'profile.help_support'.tr(),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            color: context.colors.grey400,
-                          ),
-                          onTap: () {
-                            _showHelpDialog(context);
-                          },
+                      icon: Icons.language_outlined,
+                      iconColor: context.colors.primary,
+                      title: 'profile.language'.tr(),
+                      trailing: DropdownButton<String>(
+                        value: languageState?.languageCode ?? 'en',
+                        underline: const SizedBox(),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface,
                         ),
-                        Divider(
-                          height: 1,
-                          indent: 56,
-                          color: theme.dividerColor.withValues(alpha: 0.3),
-                        ),
-                        _SettingsTile(
-                          theme: theme,
-                          icon: Icons.info_outline,
-                          iconColor: context.colors.warning,
-                          title: 'profile.about'.tr(),
-                          trailing: Text(
-                            'v$appVersion',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface
-                                  .withValues(alpha: 0.5),
+                        dropdownColor: theme.colorScheme.surface,
+                        items: [
+                          DropdownMenuItem(
+                            value: 'en',
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CountryFlag.fromLanguageCode('en',
+                                    theme: const ImageTheme(
+                                        height: 24, width: 32)),
+                                const SizedBox(width: 8),
+                                const Text('English'),
+                              ],
                             ),
                           ),
-                          onTap: () {
-                            _showAboutAppDialog(context, appVersion);
-                          },
+                          DropdownMenuItem(
+                            value: 'es',
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CountryFlag.fromLanguageCode('es',
+                                    theme: const ImageTheme(
+                                        height: 24, width: 32)),
+                                const SizedBox(width: 8),
+                                const Text('Español'),
+                              ],
+                            ),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            context.setLocale(Locale(value));
+                            ref
+                                .read(languageProvider.notifier)
+                                .setLanguage(value);
+                          }
+                        },
+                      ),
+                    ),
+
+                    SizedBox(height: context.spacing.paragraphBottomMarginSm),
+
+                    _SettingsTile(
+                      theme: theme,
+                      icon: Icons.help_outline,
+                      iconColor: context.colors.success,
+                      title: 'profile.help_support'.tr(),
+                      trailing: Icon(
+                        Icons.chevron_right,
+                        color: context.colors.grey400,
+                      ),
+                      onTap: () {
+                        _showHelpDialog(context);
+                      },
+                    ),
+
+                    _SettingsTile(
+                      theme: theme,
+                      icon: Icons.info_outline,
+                      iconColor: context.colors.warning,
+                      title: 'profile.about'.tr(),
+                      trailing: Text(
+                        'v$appVersion',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.5),
                         ),
-                      ],
+                      ),
+                      onTap: () {
+                        _showAboutAppDialog(context, appVersion);
+                      },
                     ),
 
                     SizedBox(height: context.spacing.panelPadding),
@@ -305,35 +282,6 @@ void _showAboutAppDialog(BuildContext context, String appVersion) {
   );
 }
 
-class _SettingsCard extends StatelessWidget {
-  const _SettingsCard({
-    required this.children,
-    required this.theme,
-    required this.isDark,
-  });
-
-  final List<Widget> children;
-  final ThemeData theme;
-  final bool isDark;
-
-  @override
-  Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: context.radius.panel,
-          boxShadow: [
-            BoxShadow(
-              color: context.colors.textNormal
-                  .withValues(alpha: isDark ? 0.3 : 0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(children: children),
-      );
-}
-
 class _SettingsTile extends StatelessWidget {
   const _SettingsTile({
     required this.theme,
@@ -353,7 +301,8 @@ class _SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = iconColor ?? theme.colorScheme.onSurface.withValues(alpha: 0.8);
+    final color =
+        iconColor ?? theme.colorScheme.onSurface.withValues(alpha: 0.8);
 
     return ListTile(
       contentPadding:

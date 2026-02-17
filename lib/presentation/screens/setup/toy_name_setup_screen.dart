@@ -191,194 +191,245 @@ class _ToyNameSetupScreenState extends ConsumerState<ToyNameSetupScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      resizeToAvoidBottomInset:
-          true, // Asegura que el teclado no cause overflow
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [context.colors.primary, context.colors.secondary],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+              child: Row(
                 children: [
-                  // Back button and Progress
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () => context.pop(),
-                        icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
+                  GestureDetector(
+                    onTap: () => context.pop(),
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerHighest
+                            .withValues(alpha: 0.5),
+                        borderRadius: context.radius.tile,
                       ),
-                      const Spacer(),
-                      _buildProgressIndicator(3, 7), // This is now step 3
-                      const Spacer(),
-                      // Placeholder to balance the row
-                      const Opacity(
-                        opacity: 0,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: null,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Use a scrollable view for the main content
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          // Title
-                          Text(
-                            'setup.toy_name.title'.tr(),
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              color: context.colors.textOnFilled,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          Text(
-                            'setup.toy_name.subtitle'.tr(),
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: context.colors.textOnFilled.withValues(alpha: 0.9),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          const SizedBox(height: 60),
-
-                          // Name input
-                          TextFormField(
-                            controller: _controller,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: context.colors.textOnFilled,
-                            ),
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              hintText: 'setup.toy_name.hint'.tr(),
-                              hintStyle: TextStyle(
-                                color: context.colors.textOnFilled.withValues(alpha: 0.5),
-                              ),
-                              filled: true,
-                              fillColor: context.colors.textOnFilled.withValues(alpha: 0.2),
-                              border: OutlineInputBorder(
-                                borderRadius: context.radius.input,
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.all(20),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'setup.toy_name.validation_empty'.tr();
-                              }
-                              if (value.trim().length < 2) {
-                                return 'setup.toy_name.validation_short'.tr();
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 18,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 16),
-
-                  // Bottom Buttons
-                  // Next button
-                  ElevatedButton(
-                    onPressed: _isRegistering
-                        ? null
-                        : () async {
-                            if (_formKey.currentState!.validate()) {
-                              // Save toy name to storage
-                              await _saveToyName();
-
-                              // Register device in backend if Device ID exists
-                              final success = await _registerDeviceIfNeeded();
-
-                              if (success && context.mounted) {
-                                await context.push(AppRoutes.ageSetup.path);
-                              }
-                            }
-                          },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: context.colors.bgPrimary,
-                      foregroundColor: context.colors.primary,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.button),
-                      ),
-                    ),
-                    child: _isRegistering
-                        ? SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              color: context.colors.primary,
-                            ),
-                          )
-                        : Text(
-                            'setup.toy_name.next'.tr(),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: context.colors.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  // Skip button
-                  TextButton(
-                    onPressed: _showSkipSetupDialog,
-                    child: Text(
-                      'setup.connection.skip_setup'.tr(),
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: context.colors.textOnFilled.withValues(alpha: 0.8),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
+                  const Spacer(),
+                  _buildProgressIndicator(3, 7),
+                  const Spacer(),
+                  const SizedBox(width: 44),
                 ],
               ),
             ),
-          ),
+
+            // Content
+            Expanded(
+              child: Padding(
+                padding: context.spacing.pageEdgeInsets,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: context.spacing.titleBottomMargin),
+
+                      // Use a scrollable view for the main content
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Text(
+                                'setup.toy_name.title'.tr(),
+                                style:
+                                    theme.textTheme.headlineMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.5,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+
+                              SizedBox(
+                                  height: context.spacing.titleBottomMarginSm),
+
+                              Text(
+                                'setup.toy_name.subtitle'.tr(),
+                                style:
+                                    theme.textTheme.titleMedium?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+
+                              SizedBox(
+                                  height:
+                                      context.spacing.largePageBottomMargin),
+
+                              // Name input
+                              TextFormField(
+                                controller: _controller,
+                                style: theme.textTheme.titleMedium,
+                                textCapitalization:
+                                    TextCapitalization.words,
+                                decoration: InputDecoration(
+                                  hintText: 'setup.toy_name.hint'.tr(),
+                                  hintStyle: TextStyle(
+                                    color: colorScheme.onSurfaceVariant
+                                        .withValues(alpha: 0.5),
+                                  ),
+                                  filled: true,
+                                  fillColor: colorScheme
+                                      .surfaceContainerHighest
+                                      .withValues(alpha: 0.3),
+                                  border: OutlineInputBorder(
+                                    borderRadius: context.radius.input,
+                                    borderSide: BorderSide(
+                                      color: colorScheme.outline,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: context.radius.input,
+                                    borderSide: BorderSide(
+                                      color: colorScheme.outline,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: context.radius.input,
+                                    borderSide: BorderSide(
+                                      color: context.colors.primary,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  contentPadding: const EdgeInsets.all(20),
+                                ),
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.trim().isEmpty) {
+                                    return 'setup.toy_name.validation_empty'
+                                        .tr();
+                                  }
+                                  if (value.trim().length < 2) {
+                                    return 'setup.toy_name.validation_short'
+                                        .tr();
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Next button
+                      GestureDetector(
+                        onTap: _isRegistering
+                            ? null
+                            : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await _saveToyName();
+                                  final success =
+                                      await _registerDeviceIfNeeded();
+                                  if (success && context.mounted) {
+                                    await context
+                                        .push(AppRoutes.ageSetup.path);
+                                  }
+                                }
+                              },
+                        child: Container(
+                          height: 56,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                context.colors.primary100,
+                                context.colors.primary,
+                              ],
+                            ),
+                            borderRadius: context.radius.panel,
+                            boxShadow: [
+                              BoxShadow(
+                                color: context.colors.primary
+                                    .withValues(alpha: 0.3),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: _isRegistering
+                                ? SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
+                                        context.colors.textOnFilled,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    'setup.toy_name.next'.tr(),
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(
+                                      color: context.colors.textOnFilled,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(
+                          height: context.spacing.sectionTitleBottomMargin),
+
+                      GestureDetector(
+                        onTap: _showSkipSetupDialog,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            'setup.connection.skip_setup'.tr(),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: context.spacing.panelPadding),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildProgressIndicator(int current, int total) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: List.generate(
-      total,
-      (index) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        width: index < current ? 24 : 8,
+    mainAxisSize: MainAxisSize.min,
+    children: List.generate(total, (index) {
+      final isActive = index < current;
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 3),
+        width: isActive ? 20 : 8,
         height: 8,
         decoration: BoxDecoration(
-          color: index < current
-              ? context.colors.textOnFilled
-              : context.colors.textOnFilled.withValues(alpha: 0.3),
+          color: isActive
+              ? context.colors.primary
+              : context.colors.primary.withValues(alpha: 0.2),
           borderRadius: context.radius.checkbox,
         ),
-      ),
-    ),
+      );
+    }),
   );
 }

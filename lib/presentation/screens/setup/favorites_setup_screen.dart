@@ -27,207 +27,260 @@ class _FavoritesSetupScreenState extends State<FavoritesSetupScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [context.colors.primary, context.colors.secondary],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Back button
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
-                ),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final canProceed = _selectedFavorites.length >= 2;
+
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+              child: Row(
+                children: [
+                  _buildBackButton(colorScheme),
+                  const Spacer(),
+                  _buildStepIndicator(7, 7),
+                  const Spacer(),
+                  const SizedBox(width: 44),
+                ],
               ),
+            ),
 
-              const SizedBox(height: 20),
+            // Content
+            Expanded(
+              child: Padding(
+                padding: context.spacing.pageEdgeInsets,
+                child: Column(
+                  children: [
+                    SizedBox(height: context.spacing.titleBottomMargin),
 
-              // Progress indicator
-              _buildProgressIndicator(7, 7),
+                    Text(
+                      'setup.favorites.title'.tr(),
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
+                    Text(
+                      'setup.favorites.subtitle'.tr(),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
 
-              const SizedBox(height: 40),
+                    SizedBox(height: context.spacing.largePageBottomMargin),
 
-              // Title
-              Text(
-                'setup.favorites.title'.tr(),
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: context.colors.textOnFilled,
-                ),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 12),
-
-              Text(
-                'setup.favorites.subtitle'.tr(),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: context.colors.textOnFilled.withValues(alpha: 0.9),
-                ),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 40),
-
-              // Categories grid
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 1.2,
-                  ),
-                  itemCount: _categories.length,
-                  itemBuilder: (context, index) {
-                    final category = _categories[index];
-                    final isSelected = _selectedFavorites.contains(
-                      category['label'] as String,
-                    );
-
-                    return InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (isSelected) {
-                            _selectedFavorites.remove(
-                              category['label'] as String,
-                            );
-                          } else {
-                            _selectedFavorites.add(category['label'] as String);
-                          }
-                        });
-                      },
-                      borderRadius: context.radius.panel,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? context.colors.bgPrimary
-                              : context.colors.textOnFilled.withValues(alpha: 0.2),
-                          borderRadius: context.radius.panel,
-                          border: Border.all(
-                            color: isSelected
-                                ? context.colors.bgPrimary
-                                : Colors.transparent,
-                            width: 2,
-                          ),
+                    // Categories grid
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1.2,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              category['icon'] as IconData,
-                              size: 40,
-                              color: isSelected
-                                  ? context.colors.primary
-                                  : context.colors.textOnFilled,
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              (category['label'] as String).tr(),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                        itemCount: _categories.length,
+                        itemBuilder: (context, index) {
+                          final category = _categories[index];
+                          final isSelected = _selectedFavorites
+                              .contains(category['label'] as String);
+
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (isSelected) {
+                                  _selectedFavorites
+                                      .remove(category['label'] as String);
+                                } else {
+                                  _selectedFavorites
+                                      .add(category['label'] as String);
+                                }
+                              });
+                            },
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
                                 color: isSelected
                                     ? context.colors.primary
-                                    : context.colors.textOnFilled,
+                                        .withValues(alpha: 0.08)
+                                    : colorScheme.surfaceContainerHighest
+                                        .withValues(alpha: 0.3),
+                                borderRadius: context.radius.panel,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? context.colors.primary
+                                      : colorScheme.outline,
+                                  width: isSelected ? 2 : 1,
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 48,
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? context.colors.primary
+                                              .withValues(alpha: 0.15)
+                                          : colorScheme
+                                              .surfaceContainerHighest,
+                                      borderRadius: context.radius.panel,
+                                    ),
+                                    child: Icon(
+                                      category['icon'] as IconData,
+                                      size: 24,
+                                      color: isSelected
+                                          ? context.colors.primary
+                                          : colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    (category['label'] as String).tr(),
+                                    style:
+                                        theme.textTheme.titleSmall?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: isSelected
+                                          ? context.colors.primary
+                                          : colorScheme.onSurface,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            if (isSelected) ...[
-                              const SizedBox(height: 8),
-                              Icon(
-                                Icons.check_circle,
-                                color: context.colors.primary,
-                                size: 20,
-                              ),
-                            ],
-                          ],
+                          );
+                        },
+                      ),
+                    ),
+
+                    // Primary button
+                    _buildPrimaryButton(
+                      text: canProceed
+                          ? 'setup.favorites.next_with_count'.tr(
+                              args: [_selectedFavorites.length.toString()],
+                            )
+                          : 'setup.favorites.select_at_least'.tr(),
+                      isEnabled: canProceed,
+                      onPressed: () =>
+                          context.go(AppRoutes.worldInfoSetup.path),
+                    ),
+
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                    GestureDetector(
+                      onTap: () => context.go(AppRoutes.home.path),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          'setup.connection.skip_setup'.tr(),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+
+                    SizedBox(height: context.spacing.panelPadding),
+                  ],
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-              const SizedBox(height: 20),
-
-              // Next button
-              ElevatedButton(
-                onPressed: _selectedFavorites.length >= 2
-                    ? () => context.go(AppRoutes.worldInfoSetup.path)
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: context.colors.bgPrimary,
-                  foregroundColor: context.colors.primary,
-                  disabledBackgroundColor: context.colors.textOnFilled.withValues(alpha: 0.3),
-                  disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: context.radius.tile,
-                  ),
-                ),
-                child: Text(
-                  _selectedFavorites.length >= 2
-                      ? 'setup.favorites.next_with_count'.tr(
-                          args: [_selectedFavorites.length.toString()],
-                        )
-                      : 'setup.favorites.select_at_least'.tr(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              // Skip button
-              TextButton(
-                onPressed: () => context.go(AppRoutes.home.path),
-                child: Text(
-                  'setup.connection.skip_setup'.tr(),
-                  style: TextStyle(
-                    color: context.colors.textOnFilled.withValues(alpha: 0.8),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-            ],
+  Widget _buildBackButton(ColorScheme colorScheme) => GestureDetector(
+        onTap: () => context.pop(),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: context.radius.tile,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 18,
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
-      ),
-    ),
-  );
+      );
 
-  Widget _buildProgressIndicator(int current, int total) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: List.generate(
-      total,
-      (index) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        width: index < current ? 24 : 8,
-        height: 8,
-        decoration: BoxDecoration(
-          color: index < current
-              ? context.colors.textOnFilled
-              : context.colors.textOnFilled.withValues(alpha: 0.3),
-          borderRadius: context.radius.checkbox,
+  Widget _buildStepIndicator(int current, int total) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(total, (index) {
+          final isActive = index < current;
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3),
+            width: isActive ? 20 : 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: isActive
+                  ? context.colors.primary
+                  : context.colors.primary.withValues(alpha: 0.2),
+              borderRadius: context.radius.checkbox,
+            ),
+          );
+        }),
+      );
+
+  Widget _buildPrimaryButton({
+    required String text,
+    required bool isEnabled,
+    required VoidCallback onPressed,
+  }) =>
+      GestureDetector(
+        onTap: isEnabled ? onPressed : null,
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: isEnabled
+                ? LinearGradient(
+                    colors: [
+                      context.colors.primary100,
+                      context.colors.primary,
+                    ],
+                  )
+                : null,
+            color: isEnabled
+                ? null
+                : Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest
+                    .withValues(alpha: 0.5),
+            borderRadius: context.radius.panel,
+            boxShadow: isEnabled
+                ? [
+                    BoxShadow(
+                      color: context.colors.primary.withValues(alpha: 0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: isEnabled
+                        ? context.colors.textOnFilled
+                        : Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }
