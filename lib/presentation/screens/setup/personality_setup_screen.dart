@@ -39,216 +39,281 @@ class _PersonalitySetupScreenState extends State<PersonalitySetupScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [context.colors.primary, context.colors.secondary],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Back button
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: () => context.pop(),
-                    icon: Icon(Icons.arrow_back, color: context.colors.textOnFilled),
-                  ),
-                ),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final canProceed = _selectedPersonality != null;
 
-                const SizedBox(height: 20),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+              child: Row(
+                children: [
+                  _buildBackButton(colorScheme),
+                  const Spacer(),
+                  _buildStepIndicator(5, 7),
+                  const Spacer(),
+                  const SizedBox(width: 44),
+                ],
+              ),
+            ),
 
-                // Progress indicator
-                _buildProgressIndicator(5, 7),
+            // Content
+            Expanded(
+              child: Padding(
+                padding: context.spacing.pageEdgeInsets,
+                child: Column(
+                  children: [
+                    SizedBox(height: context.spacing.titleBottomMargin),
 
-                const SizedBox(height: 40),
+                    Text(
+                      'setup.personality.title'.tr(),
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: context.spacing.titleBottomMarginSm),
+                    Text(
+                      'setup.personality.subtitle'.tr(),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
 
-                // Title
-                Text(
-                  'setup.personality.title'.tr(),
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: context.colors.textOnFilled,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                    SizedBox(height: context.spacing.largePageBottomMargin),
 
-                const SizedBox(height: 12),
+                    // Personality options
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: _personalities.length,
+                        itemBuilder: (context, index) {
+                          final personality = _personalities[index];
+                          final isSelected =
+                              _selectedPersonality == personality['label'];
 
-                Text(
-                  'setup.personality.subtitle'.tr(),
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: context.colors.textOnFilled.withValues(alpha: 0.9),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 40),
-
-                // Personality options
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _personalities.length,
-                    itemBuilder: (context, index) {
-                      final personality = _personalities[index];
-                      final isSelected =
-                          _selectedPersonality == personality['label'];
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              _selectedPersonality = personality['label'] as String;
-                            });
-                          },
-                          borderRadius: context.radius.panel,
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? context.colors.bgPrimary
-                                  : context.colors.textOnFilled.withValues(alpha: 0.2),
-                              borderRadius: context.radius.panel,
-                              border: Border.all(
-                                color: isSelected
-                                    ? context.colors.bgPrimary
-                                    : Colors.transparent,
-                                width: 2,
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedPersonality =
+                                      personality['label'] as String;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? context.colors.primary
+                                          .withValues(alpha: 0.08)
+                                      : colorScheme.surfaceContainerHighest
+                                          .withValues(alpha: 0.3),
+                                  borderRadius: context.radius.panel,
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? context.colors.primary
+                                        : colorScheme.outline,
+                                    width: isSelected ? 2 : 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 48,
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: isSelected
+                                            ? context.colors.primary
+                                                .withValues(alpha: 0.15)
+                                            : colorScheme
+                                                .surfaceContainerHighest,
+                                        borderRadius: context.radius.panel,
+                                      ),
+                                      child: Icon(
+                                        personality['icon'] as IconData,
+                                        size: 24,
+                                        color: isSelected
+                                            ? context.colors.primary
+                                            : colorScheme.onSurfaceVariant,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            (personality['label'] as String)
+                                                .tr(),
+                                            style: theme.textTheme.titleMedium
+                                                ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: isSelected
+                                                  ? context.colors.primary
+                                                  : colorScheme.onSurface,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            (personality['description']
+                                                    as String)
+                                                .tr(),
+                                            style: theme.textTheme.bodySmall
+                                                ?.copyWith(
+                                              color: isSelected
+                                                  ? context.colors.primary
+                                                      .withValues(alpha: 0.7)
+                                                  : colorScheme
+                                                      .onSurfaceVariant,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (isSelected)
+                                      Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          color: context.colors.primary,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.check_rounded,
+                                          color: context.colors.textOnFilled,
+                                          size: 16,
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? context.colors.primary
-                                            .withValues(alpha: 0.1)
-                                        : context.colors.textOnFilled.withValues(alpha: 0.1),
-                                    borderRadius: context.radius.tile,
-                                  ),
-                                  child: Icon(
-                                    personality['icon'] as IconData,
-                                    size: 28,
-                                    color: isSelected
-                                        ? context.colors.primary
-                                        : context.colors.textOnFilled,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        (personality['label'] as String).tr(),
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: isSelected
-                                              ? context.colors.primary
-                                              : context.colors.textOnFilled,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        (personality['description'] as String).tr(),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: isSelected
-                                              ? context.colors.primary
-                                                  .withValues(alpha: 0.7)
-                                              : context.colors.textOnFilled.withValues(alpha: 0.7),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (isSelected)
-                                  Icon(
-                                    Icons.check_circle,
-                                    color: context.colors.primary,
-                                  ),
-                              ],
-                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    // Primary button
+                    _buildPrimaryButton(
+                      text: 'common.next'.tr(),
+                      isEnabled: canProceed,
+                      onPressed: () => context.go(AppRoutes.voiceSetup.path),
+                    ),
+
+                    SizedBox(height: context.spacing.sectionTitleBottomMargin),
+
+                    GestureDetector(
+                      onTap: () => context.go(AppRoutes.home.path),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          'setup.connection.skip_setup'.tr(),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Next button
-                ElevatedButton(
-                  onPressed: _selectedPersonality != null
-                      ? () => context.go(AppRoutes.voiceSetup.path)
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colors.bgPrimary,
-                    foregroundColor: context.colors.primary,
-                    disabledBackgroundColor: context.colors.textOnFilled.withValues(alpha: 0.3),
-                    disabledForegroundColor: context.colors.textOnFilled.withValues(alpha: 0.5),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: context.radius.tile,
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    'common.next'.tr(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+
+                    SizedBox(height: context.spacing.panelPadding),
+                  ],
                 ),
-
-                const SizedBox(height: 12),
-
-                // Skip button
-                TextButton(
-                  onPressed: () => context.go(AppRoutes.home.path),
-                  child: Text(
-                    'setup.connection.skip_setup'.tr(),
-                    style: TextStyle(
-                      color: context.colors.textOnFilled.withValues(alpha: 0.8),
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
+  }
 
-  Widget _buildProgressIndicator(int current, int total) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(
-          total,
-          (index) => Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: index < current ? 24 : 8,
+  Widget _buildBackButton(ColorScheme colorScheme) => GestureDetector(
+        onTap: () => context.pop(),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: context.radius.tile,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 18,
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+      );
+
+  Widget _buildStepIndicator(int current, int total) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(total, (index) {
+          final isActive = index < current;
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3),
+            width: isActive ? 20 : 8,
             height: 8,
             decoration: BoxDecoration(
-              color: index < current
-                  ? context.colors.textOnFilled
-                  : context.colors.textOnFilled.withValues(alpha: 0.3),
+              color: isActive
+                  ? context.colors.primary
+                  : context.colors.primary.withValues(alpha: 0.2),
               borderRadius: context.radius.checkbox,
+            ),
+          );
+        }),
+      );
+
+  Widget _buildPrimaryButton({
+    required String text,
+    required bool isEnabled,
+    required VoidCallback onPressed,
+  }) =>
+      GestureDetector(
+        onTap: isEnabled ? onPressed : null,
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: isEnabled
+                ? LinearGradient(
+                    colors: [
+                      context.colors.primary100,
+                      context.colors.primary,
+                    ],
+                  )
+                : null,
+            color: isEnabled
+                ? null
+                : Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest
+                    .withValues(alpha: 0.5),
+            borderRadius: context.radius.panel,
+            boxShadow: isEnabled
+                ? [
+                    BoxShadow(
+                      color: context.colors.primary.withValues(alpha: 0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: isEnabled
+                        ? context.colors.textOnFilled
+                        : Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           ),
         ),
