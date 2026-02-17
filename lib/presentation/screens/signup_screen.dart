@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../providers/auth_provider.dart';
 import '../providers/google_signin_provider.dart';
@@ -97,7 +98,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   SizedBox(height: context.spacing.sectionTitleBottomMargin),
 
                   // Back button
-                  _BackButton(onPressed: () => context.pop()),
+                  _BackButton(onPressed: () {
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go(AppRoutes.home.path);
+                    }
+                  }),
 
                   SizedBox(height: context.spacing.paragraphBottomMargin),
 
@@ -303,20 +310,12 @@ class _BackButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: context.colors.grey900,
-            borderRadius: context.radius.input,
-          ),
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 18,
-            color: context.colors.grey200,
-          ),
+  Widget build(BuildContext context) => IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: 20,
+          color: context.colors.textNormal,
         ),
       );
 }

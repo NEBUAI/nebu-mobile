@@ -306,7 +306,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: context.spacing.sectionTitleBottomMargin),
-                  _BackButton(onPressed: () => context.pop()),
+                  _BackButton(onPressed: () {
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go(AppRoutes.home.path);
+                    }
+                  }),
                   SizedBox(height: context.spacing.paragraphBottomMargin),
                   Text(
                     'auth.welcome_back'.tr(),
@@ -437,20 +443,12 @@ class _BackButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: context.colors.grey900,
-            borderRadius: context.radius.input,
-          ),
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 18,
-            color: context.colors.grey200,
-          ),
+  Widget build(BuildContext context) => IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: 20,
+          color: context.colors.textNormal,
         ),
       );
 }

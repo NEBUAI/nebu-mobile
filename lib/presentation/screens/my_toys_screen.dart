@@ -199,35 +199,24 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               // Pending warning
               if (isPending) ...[
                 const SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: context.colors.warning.withValues(alpha: 0.08),
-                    borderRadius: context.radius.tile,
-                    border: Border.all(
-                      color: context.colors.warning.withValues(alpha: 0.2),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      size: 18,
+                      color: context.colors.warning,
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        size: 18,
-                        color: context.colors.warning,
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'toys.pending_hint'.tr(),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: context.colors.warning,
-                            fontWeight: FontWeight.w500,
-                          ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'toys.pending_hint'.tr(),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: context.colors.warning,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
               const SizedBox(height: 24),
