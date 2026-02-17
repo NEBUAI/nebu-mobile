@@ -41,14 +41,6 @@ class HomeScreen extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'home.subtitle'.tr(),
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -320,19 +312,6 @@ class HomeScreen extends ConsumerWidget {
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurface.withAlpha(153),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () => context.push(AppRoutes.connectionSetup.path),
-                icon: const Icon(Icons.add),
-                label: Text('home.setup_new_toy'.tr()),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: context.colors.primary,
-                  foregroundColor: context.colors.textOnFilled,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: context.radius.button,
-                  ),
                 ),
               ),
             ],
