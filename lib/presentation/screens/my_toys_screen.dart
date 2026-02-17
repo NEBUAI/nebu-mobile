@@ -117,21 +117,22 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: theme.colorScheme.surface,
-      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.55,
-        minChildSize: 0.3,
-        maxChildSize: 0.85,
-        expand: false,
-        builder: (context, scrollController) => Column(
-          children: [
-            // Handle bar (fixed at top)
-            Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 8),
-              child: Container(
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            context.spacing.pageMargin,
+            12,
+            context.spacing.pageMargin,
+            context.spacing.pageMargin,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle bar
+              Container(
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
@@ -139,193 +140,100 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-            ),
-            // Scrollable content
-            Expanded(
-              child: ListView(
-                controller: scrollController,
-                padding: EdgeInsets.symmetric(
-                  horizontal: context.spacing.pageMargin,
+              const SizedBox(height: 20),
+              // Icon
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
                 ),
-                children: [
-                  const SizedBox(height: 8),
-                  // Header: icon + name + status
-                  Center(
-                    child: Container(
-                      width: 72,
-                      height: 72,
+                child: Icon(
+                  Icons.smart_toy,
+                  size: 32,
+                  color: statusColor,
+                ),
+              ),
+              const SizedBox(height: 14),
+              // Name
+              Text(
+                toy.name,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Status pill
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
                       decoration: BoxDecoration(
-                        color: isPending
-                            ? context.colors.warning.withValues(alpha: 0.1)
-                            : isOnline
-                                ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                                : theme.disabledColor.withValues(alpha: 0.1),
+                        color: statusColor,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
-                        Icons.smart_toy,
-                        size: 36,
-                        color: isPending
-                            ? context.colors.warning
-                            : isOnline
-                                ? theme.colorScheme.primary
-                                : theme.disabledColor,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      statusText,
+                      style: TextStyle(
+                        color: statusColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Center(
-                    child: Text(
-                      toy.name,
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: statusColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 7,
-                            height: 7,
-                            decoration: BoxDecoration(
-                              color: statusColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            statusText,
-                            style: TextStyle(
-                              color: statusColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: context.spacing.panelPadding),
-                  // Device info section
-                  Container(
-                    padding: EdgeInsets.all(context.spacing.alertPadding),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.3),
-                      borderRadius: context.radius.tile,
-                      border: Border.all(
-                        color: theme.dividerColor.withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.memory,
-                              size: 20,
-                              color: theme.colorScheme.primary,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'toys.iot_device'.tr(),
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: context.spacing.paragraphBottomMarginSm),
-                        if (toy.iotDeviceId != null)
-                          _InfoRow(
-                            label: 'ID',
-                            value: toy.iotDeviceId!.length > 12
-                                ? '${toy.iotDeviceId!.substring(0, 12)}...'
-                                : toy.iotDeviceId!,
-                            theme: theme,
-                          ),
-                        if (toy.model != null)
-                          _InfoRow(
-                            label: 'toys.model'.tr(),
-                            value: toy.model!,
-                            theme: theme,
-                          ),
-                        if (toy.firmwareVersion != null)
-                          _InfoRow(
-                            label: 'toys.firmware'.tr(),
-                            value: toy.firmwareVersion!,
-                            theme: theme,
-                          ),
-                        if (toy.batteryLevel != null)
-                          _InfoRow(
-                            label: 'toys.battery'.tr(),
-                            value: toy.batteryLevel!,
-                            theme: theme,
-                          ),
-                        if (toy.signalStrength != null)
-                          _InfoRow(
-                            label: 'toys.signal'.tr(),
-                            value: toy.signalStrength!,
-                            theme: theme,
-                          ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: context.spacing.panelPadding),
-                  // Action buttons
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        context.push(AppRoutes.toySettings.path, extra: toy);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.primary,
-                        foregroundColor: context.colors.textOnFilled,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: context.radius.tile,
-                        ),
-                      ),
-                      icon: const Icon(Icons.settings, size: 20),
-                      label: Text('toys.configure'.tr()),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton.icon(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        _deleteToy(toy);
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: context.colors.error.withValues(alpha: 0.8),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: context.radius.tile,
-                        ),
-                      ),
-                      icon: const Icon(Icons.delete_outline, size: 20),
-                      label: Text('toys.remove'.tr()),
-                    ),
-                  ),
-                  // Bottom safe area padding
-                  SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 24),
+              // Configure button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    context.push(AppRoutes.toySettings.path, extra: toy);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: context.colors.textOnFilled,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: context.radius.tile,
+                    ),
+                  ),
+                  icon: const Icon(Icons.settings, size: 20),
+                  label: Text('toys.configure'.tr()),
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Remove button
+              SizedBox(
+                width: double.infinity,
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _deleteToy(toy);
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: context.colors.error.withValues(alpha: 0.7),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  icon: const Icon(Icons.delete_outline, size: 20),
+                  label: Text('toys.remove'.tr()),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -871,38 +779,4 @@ class _QuickActionButton extends StatelessWidget {
       ),
     ),
   );
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({
-    required this.label,
-    required this.value,
-    required this.theme,
-  });
-
-  final String label;
-  final String value;
-  final ThemeData theme;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-            ),
-          ),
-          Text(
-            value,
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
 }
