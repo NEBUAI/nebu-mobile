@@ -36,9 +36,7 @@ class AppTheme {
   static ColorScheme get _lightColorScheme => const ColorScheme.light(
         primary: primaryLight,
         secondary: secondaryLight,
-        surface: surfaceLight,
         error: errorLight,
-        onPrimary: onPrimaryLight,
         onSecondary: AppColors.textFilledButtonLight,
         onSurface: onBackgroundLight,
       );
@@ -115,7 +113,7 @@ class AppTheme {
         elevatedButtonTheme: _getElevatedButtonTheme(_lightColorScheme),
         outlinedButtonTheme: _getOutlinedButtonTheme(_lightColorScheme),
         inputDecorationTheme: _getInputDecorationTheme(_lightColorScheme),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: surfaceLight,
           selectedItemColor: primaryLight,
           unselectedItemColor: AppColors.grey500Light,
@@ -147,7 +145,7 @@ class AppTheme {
         elevatedButtonTheme: _getElevatedButtonTheme(_darkColorScheme),
         outlinedButtonTheme: _getOutlinedButtonTheme(_darkColorScheme),
         inputDecorationTheme: _getInputDecorationTheme(_darkColorScheme),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: surfaceDark,
           selectedItemColor: primaryDark,
           unselectedItemColor: AppColors.grey500Dark,

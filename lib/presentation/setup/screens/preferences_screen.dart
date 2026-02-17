@@ -192,7 +192,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
             child: InkWell(
               borderRadius: context.radius.tile,
               onTap: () {
-                  final code = language['code'] as String;
+                  final code = language['code']!;
                   notifier.updateSelectedLanguage(code);
                   context.setLocale(Locale(code));
                   ref.read(languageProvider.notifier).setLanguage(code);
@@ -219,7 +219,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        language['name'] as String,
+                        language['name']!,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: isSelected

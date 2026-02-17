@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_routes.dart';
 import '../../core/theme/app_colors.dart';
@@ -33,36 +32,6 @@ class WelcomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Spacer(flex: 2),
-
-                // Logo con efecto neumorfismo
-                Container(
-                  width: 140,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    color: context.colors.bgPrimary,
-                    borderRadius: context.radius.tag,
-                    boxShadow: [
-                      // Sombra oscura
-                      BoxShadow(
-                        color: const Color(0xFF3D2E99).withValues(alpha: 0.4),
-                        blurRadius: 30,
-                        offset: const Offset(8, 12),
-                      ),
-                      // Luz superior
-                      BoxShadow(
-                        color: context.colors.textOnFilled.withValues(alpha: 0.2),
-                        blurRadius: 20,
-                        offset: const Offset(-4, -4),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(28),
-                    child: SvgPicture.asset('assets/icon_flow.svg'),
-                  ),
-                ),
-
-                const SizedBox(height: 48),
 
                 // Título
                 Text(
