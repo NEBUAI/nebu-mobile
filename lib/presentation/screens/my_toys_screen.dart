@@ -151,7 +151,7 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
                 Icons.smart_toy,
                 size: 40,
                 color: isPending
-                    ? Colors.amber.shade700
+                    ? context.colors.warning
                     : isOnline
                         ? theme.colorScheme.primary
                         : theme.disabledColor,
@@ -667,7 +667,7 @@ class _ToyCard extends StatelessWidget {
                                 Icons.smart_toy,
                                 size: 28,
                                 color: isPending
-                                    ? Colors.amber.shade700
+                                    ? context.colors.warning
                                     : isOnline
                                         ? theme.colorScheme.primary
                                         : theme.disabledColor,
@@ -752,14 +752,14 @@ class _ToyCard extends StatelessWidget {
                                 Icon(
                                   Icons.info_outline,
                                   size: 16,
-                                  color: Colors.amber.shade700,
+                                  color: context.colors.warning,
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
                                     'toys.pending_hint'.tr(),
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: Colors.amber.shade700,
+                                      color: context.colors.warning,
                                     ),
                                   ),
                                 ),

@@ -62,7 +62,7 @@ class CustomButton extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: context.radius.panel,
             boxShadow: onPressed != null && !isLoading
                 ? [
                     BoxShadow(
@@ -80,7 +80,7 @@ class CustomButton extends StatelessWidget {
               foregroundColor: context.colors.textOnFilled,
               shadowColor: Colors.transparent,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: context.radius.panel,
               ),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             ),
@@ -99,7 +99,7 @@ class CustomButton extends StatelessWidget {
               foregroundColor: colorScheme.primary,
               elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: context.radius.panel,
               ),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             ),
@@ -120,7 +120,7 @@ class CustomButton extends StatelessWidget {
                 width: 2,
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: context.radius.panel,
               ),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             ),
