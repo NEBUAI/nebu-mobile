@@ -219,14 +219,20 @@ class _MyToysScreenState extends ConsumerState<MyToysScreen> {
               // Remove button
               SizedBox(
                 width: double.infinity,
-                child: TextButton.icon(
+                child: OutlinedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
                     _deleteToy(toy);
                   },
-                  style: TextButton.styleFrom(
-                    foregroundColor: context.colors.error.withValues(alpha: 0.7),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: context.colors.error,
+                    side: BorderSide(
+                      color: context.colors.error.withValues(alpha: 0.4),
+                    ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: context.radius.tile,
+                    ),
                   ),
                   icon: const Icon(Icons.delete_outline, size: 20),
                   label: Text('toys.remove'.tr()),
@@ -510,204 +516,162 @@ class _ToyCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: context.radius.panel,
+        border: Border.all(
+          color: theme.dividerColor.withValues(alpha: 0.15),
+        ),
         boxShadow: [
           BoxShadow(
-            color: accentColor.withValues(alpha: 0.1),
-            blurRadius: 8,
+            color: theme.shadowColor.withValues(alpha: 0.05),
+            blurRadius: 10,
             offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: context.radius.panel,
+      child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           borderRadius: context.radius.panel,
-          child: IntrinsicHeight(
-            child: Row(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
               children: [
-                // Accent left border
-                Container(
-                  width: 4,
-                  decoration: BoxDecoration(
-                    color: accentColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      bottomLeft: Radius.circular(16),
+                Row(
+                  children: [
+                    // Toy Icon (circle)
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: accentColor.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.smart_toy,
+                        size: 24,
+                        color: accentColor,
+                      ),
                     ),
-                  ),
-                ),
-                // Main content
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(context.spacing.alertPadding),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            // Toy Icon
-                            Container(
-                              padding: const EdgeInsets.all(14),
-                              decoration: BoxDecoration(
-                                color: isPending
-                                    ? context.colors.warning.withValues(alpha: 0.15)
-                                    : isOnline
-                                        ? theme.colorScheme.primary.withValues(alpha: 0.15)
-                                        : theme.disabledColor.withValues(alpha: 0.15),
-                                borderRadius: context.radius.panel,
-                              ),
-                              child: Icon(
-                                Icons.smart_toy,
-                                size: 28,
-                                color: isPending
-                                    ? context.colors.warning
-                                    : isOnline
-                                        ? theme.colorScheme.primary
-                                        : theme.disabledColor,
-                              ),
+                    const SizedBox(width: 14),
+                    // Name + status
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            toy.name,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
                             ),
-                            const SizedBox(width: 16),
-                            // Toy Info
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    toy.name,
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    toy.model ?? 'Nebu Robot',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Status Badge
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: accentColor.withValues(alpha: 0.1),
-                                borderRadius: context.radius.bottomSheet,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 6,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                      color: accentColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    badgeText,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: accentColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Icon(
-                              Icons.chevron_right,
-                              color: theme.iconTheme.color?.withValues(alpha: 0.4),
-                            ),
-                          ],
-                        ),
-                        // Pending banner
-                        if (isPending) ...[
-                          const SizedBox(height: 12),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: context.colors.warning.withValues(alpha: 0.08),
-                              borderRadius: context.radius.tile,
-                              border: Border.all(
-                                color: context.colors.warning.withValues(alpha: 0.2),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.info_outline,
-                                  size: 16,
-                                  color: context.colors.warning,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    'toys.pending_hint'.tr(),
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      color: context.colors.warning,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ],
-                        // Quick action buttons for online toys
-                        if (isOnline) ...[
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 4),
                           Row(
                             children: [
-                              Expanded(
-                                child: _QuickActionButton(
-                                  icon: Icons.record_voice_over,
-                                  label: 'toys.talk_to_toy'.tr(),
-                                  color: context.colors.primary,
-                                  onTap: () => context.push(
-                                    AppRoutes.walkieTalkie.path,
-                                    extra: toy,
-                                  ),
+                              Container(
+                                width: 7,
+                                height: 7,
+                                decoration: BoxDecoration(
+                                  color: accentColor,
+                                  shape: BoxShape.circle,
                                 ),
                               ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: _QuickActionButton(
-                                  icon: Icons.settings,
-                                  label: 'toys.configure_toy'.tr(),
-                                  color: context.colors.secondary,
-                                  onTap: () => context.push(
-                                    AppRoutes.toySettings.path,
-                                    extra: toy,
-                                  ),
+                              const SizedBox(width: 6),
+                              Text(
+                                badgeText,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: accentColor,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
                           ),
                         ],
-                        // Last connected time for offline toys
-                        if (!isOnline && !isPending && toy.lastConnected != null) ...[
-                          const SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              _formatLastConnected(toy.lastConnected!),
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                              ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                      color: theme.iconTheme.color?.withValues(alpha: 0.3),
+                    ),
+                  ],
+                ),
+                // Pending banner
+                if (isPending) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: context.colors.warning.withValues(alpha: 0.08),
+                      borderRadius: context.radius.tile,
+                      border: Border.all(
+                        color: context.colors.warning.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          size: 16,
+                          color: context.colors.warning,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'toys.pending_hint'.tr(),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: context.colors.warning,
                             ),
                           ),
-                        ],
+                        ),
                       ],
                     ),
                   ),
-                ),
+                ],
+                // Quick action buttons for online toys
+                if (isOnline) ...[
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _QuickActionButton(
+                          icon: Icons.record_voice_over,
+                          label: 'toys.talk_to_toy'.tr(),
+                          color: context.colors.primary,
+                          onTap: () => context.push(
+                            AppRoutes.walkieTalkie.path,
+                            extra: toy,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _QuickActionButton(
+                          icon: Icons.settings,
+                          label: 'toys.configure_toy'.tr(),
+                          color: context.colors.secondary,
+                          onTap: () => context.push(
+                            AppRoutes.toySettings.path,
+                            extra: toy,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                // Last connected time for offline toys
+                if (!isOnline && !isPending && toy.lastConnected != null) ...[
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _formatLastConnected(toy.lastConnected!),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
